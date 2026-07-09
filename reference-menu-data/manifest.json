@@ -1,0 +1,63 @@
+{
+  "version": "2026-07-10",
+  "description": "Compressed reference menu screenshots and app mock dataset mapping for MenuLens.",
+  "compression": {
+    "source": "/Users/kevin/Downloads/IMG_2816.PNG through IMG_2836.PNG",
+    "outputFormat": "jpeg",
+    "maxDimensionPx": 1000,
+    "jpegQuality": 68
+  },
+  "restaurants": [
+    {
+      "id": "mawangzi",
+      "nameCn": "马旺子",
+      "cuisine": "川菜",
+      "dishCount": 54,
+      "folder": "mawangzi-sichuan",
+      "images": [
+        "mawangzi-sichuan/images/IMG_2823.jpg",
+        "mawangzi-sichuan/images/IMG_2824.jpg",
+        "mawangzi-sichuan/images/IMG_2825.jpg",
+        "mawangzi-sichuan/images/IMG_2826.jpg",
+        "mawangzi-sichuan/images/IMG_2827.jpg",
+        "mawangzi-sichuan/images/IMG_2828.jpg"
+      ],
+      "mockData": "src/lib/mockData.ts#mawangzi"
+    },
+    {
+      "id": "lei-garden",
+      "nameCn": "利苑酒家",
+      "cuisine": "粤菜",
+      "dishCount": 72,
+      "folder": "lei-garden-cantonese",
+      "images": [
+        "lei-garden-cantonese/images/IMG_2829.jpg",
+        "lei-garden-cantonese/images/IMG_2830.jpg",
+        "lei-garden-cantonese/images/IMG_2831.jpg",
+        "lei-garden-cantonese/images/IMG_2832.jpg",
+        "lei-garden-cantonese/images/IMG_2833.jpg",
+        "lei-garden-cantonese/images/IMG_2834.jpg",
+        "lei-garden-cantonese/images/IMG_2835.jpg",
+        "lei-garden-cantonese/images/IMG_2836.jpg"
+      ],
+      "mockData": "src/lib/mockData.ts#lei-garden"
+    },
+    {
+      "id": "beijing-cuisine",
+      "nameCn": "北京菜餐厅",
+      "cuisine": "北京菜",
+      "dishCount": 60,
+      "folder": "beijing-cuisine",
+      "images": [
+        "beijing-cuisine/images/IMG_2816.jpg",
+        "beijing-cuisine/images/IMG_2817.jpg",
+        "beijing-cuisine/images/IMG_2818.jpg",
+        "beijing-cuisine/images/IMG_2819.jpg",
+        "beijing-cuisine/images/IMG_2820.jpg",
+        "beijing-cuisine/images/IMG_2821.jpg",
+        "beijing-cuisine/images/IMG_2822.jpg"
+      ],
+      "mockData": "src/lib/mockData.ts#beijing-cuisine"
+    }
+  ]
+}

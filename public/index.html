@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MenuLens - Scan Chinese menus with confidence</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #171717;
+    --muted: #737373;
+    --paper: #ffffff;
+    --line: #e5e5e5;
+    --danger: #b91c1c;
+    --warn: #b45309;
+  }
+  body {
+    min-height: 100dvh;
+    background: #fafafa;
+    color: var(--ink);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap {
+    width: min(100%, 520px);
+    min-height: 100dvh;
+    margin: 0 auto;
+    padding: max(16px, env(safe-area-inset-top)) 16px max(16px, env(safe-area-inset-bottom));
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  header { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  h1 { font-size: 19px; line-height: 1; letter-spacing: 0; }
+  #langSelect {
+    min-height: 36px;
+    border: 1px solid #d4d4d4;
+    border-radius: 999px;
+    padding: 6px 12px;
+    background: #fff;
+    color: #262626;
+    font-size: 14px;
+  }
+  #hero {
+    flex: 1;
+    min-height: 420px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    text-align: center;
+  }
+  .mark {
+    width: 68px;
+    height: 68px;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: #fff;
+    font-size: 31px;
+    font-weight: 800;
+  }
+  .lead { max-width: 320px; color: var(--muted); font-size: 16px; line-height: 1.45; }
+  .demo-picker {
+    width: min(100%, 320px);
+    display: grid;
+    gap: 6px;
+    text-align: left;
+  }
+  .demo-picker label {
+    color: #8a8a8a;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  #demoRestaurant {
+    width: 100%;
+    min-height: 42px;
+    border: 1px solid #d4d4d4;
+    border-radius: 12px;
+    padding: 8px 12px;
+    background: #fff;
+    color: #262626;
+    font-size: 15px;
+  }
+  button, select { font: inherit; }
+  .btn-primary, .btn-secondary, #retryBtn {
+    min-height: 48px;
+    border: none;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .btn-primary {
+    min-width: 210px;
+    padding: 0 24px;
+    background: var(--ink);
+    color: #fff;
+    font-size: 17px;
+  }
+  .btn-secondary {
+    width: 100%;
+    background: #fff;
+    color: #262626;
+    border: 1px solid #d4d4d4;
+  }
+  button:active { transform: scale(.98); }
+  #preview {
+    width: 100%;
+    max-height: 136px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  #results { display: flex; flex-direction: column; gap: 10px; }
+  .section-title {
+    margin: 6px 0 0;
+    color: #8a8a8a;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+  }
+  .card {
+    margin-top: 8px;
+    padding: 15px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--paper);
+    box-shadow: 0 1px 2px rgba(0,0,0,.04);
+  }
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
+  .name-cn { font-size: 16px; font-weight: 800; line-height: 1.25; overflow-wrap: anywhere; }
+  .pinyin { display: inline-block; margin-left: 7px; color: #8a8a8a; font-size: 13px; font-weight: 500; }
+  .name { margin-top: 3px; color: #3f3f46; font-size: 14px; font-weight: 650; line-height: 1.25; }
+  .price { white-space: nowrap; font-size: 14px; font-weight: 800; }
+  .desc { margin-top: 9px; color: #525252; font-size: 14px; line-height: 1.4; }
+  .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+  .tag { border-radius: 999px; padding: 3px 9px; font-size: 12px; font-weight: 700; }
+  .tag-red { background: #fee2e2; color: var(--danger); }
+  .tag-amber { background: #fef3c7; color: var(--warn); }
+  .ingredients { margin-top: 9px; color: #8a8a8a; font-size: 12px; line-height: 1.35; }
+  #skeleton .bar {
+    height: 12px;
+    border-radius: 999px;
+    background: #e5e5e5;
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+  #errorBox {
+    padding: 15px;
+    border-radius: 12px;
+    background: #fef2f2;
+    color: var(--danger);
+    font-size: 14px;
+    line-height: 1.4;
+  }
+  #retryBtn {
+    width: 100%;
+    margin-top: 10px;
+    background: var(--danger);
+    color: #fff;
+  }
+  footer {
+    margin-top: auto;
+    padding-top: 8px;
+    color: #8a8a8a;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>MenuLens</h1>
+    <select id="langSelect" aria-label="Result language">
+      <option value="en">English</option>
+      <option value="ja">日本語</option>
+      <option value="ko">한국어</option>
+      <option value="es">Español</option>
+      <option value="fr">Français</option>
+    </select>
+  </header>
+
+  <main id="hero">
+    <div class="mark">ML</div>
+    <p class="lead">Scan a Chinese menu and get dish cards you can actually order from.</p>
+    <div class="demo-picker">
+      <label for="demoRestaurant">Demo restaurant</label>
+      <select id="demoRestaurant">
+        <option value="mawangzi">马旺子 · Sichuan</option>
+        <option value="lei-garden">利苑酒家 · Cantonese</option>
+        <option value="beijing-cuisine">北京菜餐厅 · Beijing</option>
+      </select>
+    </div>
+    <button class="btn-primary" type="button" onclick="startScan()">Scan Menu</button>
+  </main>
+
+  <img id="preview" class="hidden" alt="Uploaded menu preview">
+  <div id="results">
+    <div id="skeleton" class="card hidden" aria-live="polite">
+      <div class="bar" style="width:42%"></div>
+      <div class="bar" style="width:66%;margin-top:9px"></div>
+      <div class="bar" style="width:100%;margin-top:14px"></div>
+      <div class="bar" style="width:78%;margin-top:8px"></div>
+    </div>
+  </div>
+  <div id="errorBox" class="hidden">
+    <span id="errorMsg"></span>
+    <button id="retryBtn" class="hidden" type="button">Retry</button>
+  </div>
+  <button id="scanAgainBtn" class="btn-secondary hidden" type="button" onclick="startScan()">Scan another menu</button>
+
+  <input id="fileInput" type="file" accept="image/*" capture="environment" class="hidden">
+
+  <footer>
+    AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil.
+    If you have severe allergies, always confirm with staff.
+  </footer>
+</div>
+
+<script>
+const ALLERGEN_LABELS = {
+  peanut: "Peanut",
+  tree_nut: "Tree nut",
+  gluten: "Gluten",
+  soy: "Soy",
+  dairy: "Dairy",
+  egg: "Egg",
+  fish: "Fish",
+  shellfish: "Shellfish",
+  sesame: "Sesame",
+};
+const ERROR_COPY = {
+  not_a_menu: "That doesn't look like a menu. Try again with the menu filling the frame.",
+  unreadable: "Too blurry to read. Hold steady and try again.",
+  upstream_error: "Something went wrong on our side. Please retry.",
+};
+const LANG_KEY = "menulens.lang";
+const $ = (id) => document.getElementById(id);
+const fileInput = $("fileInput");
+const FILE_DEMO_MODE = location.protocol === "file:";
+const MOCK_ROWS = {
+  mawangzi: [
+    ["Signature Dishes","砂锅美蛙","¥148"],["Signature Dishes","锅巴肉片","¥68"],["Signature Dishes","老檀花椒鲈鱼","¥118"],["Signature Dishes","椒香盐菜虾","¥138"],["Signature Dishes","酸汤花枝煲","¥56"],["Signature Dishes","大头菜川汁鲍鱼","¥88"],["Signature Dishes","手撕藤椒鸡","¥79"],["Signature Dishes","夫妻肺片","¥79"],["Signature Dishes","口水鸡","¥79"],["Signature Dishes","肝腰合炒","¥68"],["Signature Dishes","蒜泥白肉","¥59"],["Signature Dishes","回锅肉","¥56"],["Signature Dishes","柠檬土鸡爪","¥79"],["Signature Dishes","老坛花椒鱼","¥148"],["Signature Dishes","双椒雪花牛肉粒","¥168"],["Signature Dishes","酥脆咸烧白","¥48"],["Signature Dishes","豆瓣鱼","¥158"],["Signature Dishes","鱼香肉丝","¥68"],["Signature Dishes","糖醋排骨","¥89"],["Signature Dishes","水煮牛肉","¥98"],["Signature Dishes","毛血旺","¥118"],["Signature Dishes","宫保茄香虾球","¥118"],["Signature Dishes","甜皮鹅","¥79"],["Vegetables","冷灼桑椹尖","¥39"],["Vegetables","青豆油丝瓜","¥42"],["Vegetables","清炒豌豆尖","¥59"],["Vegetables","清炒丝瓜尖","¥39"],["Vegetables","风味萝卜","¥29"],["Vegetables","豌杂奶白菜","¥58"],["Vegetables","麻婆豆腐","¥49"],["Vegetables","糊辣儿菜","¥39"],["Vegetables","椒汁浸苦瓜","¥39"],["Vegetables","热拌油泼香干","¥39"],["Desserts","青汁豆泥","¥39起"],["Desserts","冰粉","¥12"],["Snacks","秘制爽口萝卜","¥29"],["Snacks","四川热卤","¥89"],["Snacks","夫妻肺片拼旋子凉粉","¥79"],["Snacks","糖油果子","¥5"],["Snacks","旋子凉粉","¥28"],["Snacks","油鸡枞拌辣木苗","¥69"],["Snacks","皮蛋双拼","¥39"],["Snacks","焦糖荔枝年糕","¥19"],["Soups","骨汤冬寒尖","¥69"],["Soups","鸡豆花","¥22"],["Staples","鲜肉软锅盔","¥28"],["Staples","凉面","¥39"],["Staples","红油水饺","¥12"],["Staples","担担面","¥13"],["Staples","川西腊味拌饭","¥68"],["Staples","玉米粑粑","¥5"],["Drinks","赣南鲜橙汁","¥28"],["Drinks","鲜果葡萄汁","¥28"],["Drinks","菠萝苹果汁","¥28"]
+  ],
+  "lei-garden": [
+    ["Roast & BBQ","香烧乳鸭仔（1只）","¥140起"],["Roast & BBQ","鼓油鸡","¥0"],["Roast & BBQ","黑椒脆皮乳鸽","¥110起"],["Roast & BBQ","葱油贵妃鸡","¥128起"],["Seafood","大老虎斑件（双冬焖）","¥568"],["Seafood","鸡翅中","¥328"],["Seafood","鸿图蟹皇翅","¥488"],["Seafood","啫鲜鲍鱼","¥2"],["Seafood","清蒸瓜子斑","¥980"],["Seafood","XO酱八爪鱼","¥168"],["Seafood","斗门海花竹虾","¥198"],["Seafood","美极煎海竹花虾","¥198"],["Seafood","石锅烧笋壳鱼","¥450"],["Seafood","鲍汁花胶","¥498"],["Seafood","XO酱蟹肉粉丝煲","¥248"],["Seafood","虾蟹肉蒸蛋白","¥0"],["Seafood","龙虾贵妃泡饭","¥218"],["Seafood","蟹肉龙虾汤包","¥70"],["Seafood","龙虾面","¥68"],["Seafood","龙虾汤贵妃泡饭","¥160"],["Meat Dishes","古法双冬焖羊腩煲","¥0"],["Meat Dishes","冰烧三层肉（小份）","¥130起"],["Meat Dishes","酸辣藕芽炒猪爽肉","¥130"],["Meat Dishes","陈村粉蒸排骨","¥45"],["Meat Dishes","鲍汁凤爪","¥98"],["Meat Dishes","葱爆牛柳粒","¥360"],["Meat Dishes","椒盐鸭舌","¥0"],["Vegetables","罗汉斋","¥40"],["Vegetables","芦笋","¥98"],["Vegetables","老干妈煸四季豆","¥98"],["Vegetables","千叶豆腐","¥120"],["Vegetables","虾酱啫唐生菜（小份）","¥90起"],["Vegetables","煎酿四季豆","¥98"],["Dim Sum & Staples","金馒头","¥12"],["Dim Sum & Staples","明火香煲腊味饭","¥0"],["Dim Sum & Staples","京川滑饺子","¥35"],["Dim Sum & Staples","黑松露小笼包","¥28"],["Dim Sum & Staples","原只鲜虾饺 4件","¥48起"],["Dim Sum & Staples","野菌贡菜饺","¥35"],["Dim Sum & Staples","干炒牛河（小份）","¥118起"],["Dim Sum & Staples","利苑小笼包 4件","¥380起"],["Dim Sum & Staples","和牛包","¥33"],["Desserts","甜品组合","¥98"],["Desserts","蜜汁叉烧酥 4件","¥38起"],["Desserts","蛋挞","¥35"],["Desserts","芝士蓝莓拿破仑","¥38"],["Desserts","马拉糕","¥35"],["Desserts","杏仁蛋白","¥38"],["Desserts","雪山包","¥33"],["Snacks","烙烤银杏","¥45"],["Snacks","金蒜拍青瓜","¥40"],["Snacks","空心煎堆","¥35"],["Snacks","香煎萝卜糕","¥35"],["Snacks","卤水拼盘","¥40"],["Snacks","粉粿","¥36"],["Snacks","盐酥鸡脆骨","¥58"],["Snacks","咸水角","¥35"],["Snacks","海蜇","¥0"],["Snacks","琥珀核桃","¥0"],["Soups","安南子炖雪莲","¥45"],["Soups","金银菜炖白肺","¥280"],["Soups","例汤","¥248"],["Soups","姬松茸炖老鸽","¥388"],["Soups","龙虾汤过桥象拔蚌","¥120"],["Soups","炖天山雪莲","¥42"],["Drinks","青柠提子汁","¥15"],["Drinks","鲜制杨枝甘露","¥58"],["Set Menus","午市2位用套餐推介","¥682"],["Set Menus","雪岭雄峰 4件","¥38起"],["Set Menus","鱼翅捞饭双人餐","¥0"],["Set Menus","龙腾四海","¥100"],["Set Menus","午市4位用套餐推介","¥1088"]
+  ],
+  "beijing-cuisine": [
+    ["Meat Dishes","糖醋里脊","¥0"],["Meat Dishes","酸汤蛤蜊煮生蚝","¥139"],["Meat Dishes","霉干菜豚骨烧京东栗子","¥139"],["Meat Dishes","辣椒炒黑毛猪肉","¥69"],["Meat Dishes","干烧黄鱼","¥169"],["Meat Dishes","胶东海鲜拼","¥129"],["Meat Dishes","青苹果炖老鸭","¥399"],["Meat Dishes","麻辣小青龙","¥499"],["Meat Dishes","松露烧海参","¥169"],["Meat Dishes","青岛大虾烧胶东白菜","¥99"],["Meat Dishes","山楂鹅肝","¥59"],["Meat Dishes","黑叉烧","¥59"],["Meat Dishes","丝瓜烧蛏子","¥59"],["Meat Dishes","藤椒火箭鱿鱼","¥139"],["Meat Dishes","梅干菜猪软骨烧京东板栗","¥0"],["Meat Dishes","芫爆肚丝","¥139"],["Meat Dishes","火爆血旺","¥99"],["Meat Dishes","葱烧海参","¥169"],["Meat Dishes","意大利黑醋酥皮小牛肉","¥119"],["Meat Dishes","鲜花椒猪雪花牛肉","¥799"],["Meat Dishes","酸菜鸭血","¥49"],["Meat Dishes","麻辣大块毛肚","¥99"],["Snacks","芝麻酱菠菜","¥49"],["Snacks","干炸丸子","¥69"],["Snacks","老北京麻酱菠菜","¥49"],["Snacks","乾隆白菜","¥39"],["Snacks","冷菜四拼盘","¥99起"],["Snacks","点心拼盘","¥79"],["Snacks","莴笋拌蜇皮","¥59"],["Snacks","芒种虾皮拌时蔬","¥59"],["Soups","羊肚菌花胶汤","¥79"],["Soups","谭府佛跳墙","¥199"],["Soups","鸭架汤","¥25"],["Soups","松茸菌菇汤","¥69"],["Soups","菌菇汤","¥59"],["Soups","羊杂汤","¥98"],["Soups","青苹果老鸭汤","¥299"],["Soups","新会陈皮浓汤极品鲍","¥339"],["Staples","炸酱面","¥0"],["Staples","黑松露雪花牛肉煲仔饭","¥169"],["Staples","小花菇鲍鱼捞饭","¥199"],["Staples","老北京糖油饼配意大利黑醋","¥39"],["Staples","虾饺","¥54"],["Staples","老北京酱肉卷饼","¥139"],["Staples","肉汁炖老家粉皮","¥10"],["Staples","桂花山药烙","¥16"],["Staples","老北京糖油饼","¥19"],["Drinks","鸭屎香手打柠檬茶","¥18"],["Drinks","长和翡翠霞多丽干白葡萄酒","¥79"],["Drinks","橙皮酸奶","¥16"],["Drinks","罗圣山马尔堡珍藏黑皮诺红葡萄酒","¥79"],["Drinks","一品黄坛子","¥99"],["Drinks","手打柠檬茶","¥18"],["Drinks","茉莉龙珠茶","¥28"],["Drinks","（古法熬制）老北京酸梅汤","¥16"],["Drinks","海底椰无花果雪梨水","¥28"],["Other","袁枚梨撞虾/豆豆蛙（二选一）","¥99"],["Other","0.1元+收藏打卡门店送桂花山药酪","¥16"],["Other","老北京头条","¥19"],["Other","0.1元","¥16"]
+  ],
+};
+function localDish([category, nameCn, price]) {
+  const seafood = /虾|蟹|龙虾|蛤|蚝|蛏/.test(nameCn);
+  const fish = /鱼|鲍|花胶|鱼翅/.test(nameCn);
+  const gluten = /面|饼|包|糕|粉皮/.test(nameCn);
+  const soy = /豆腐|炸酱/.test(nameCn);
+  const spicy = /麻辣|毛血旺|水煮|麻婆|藤椒|鲜花椒|双椒/.test(nameCn) ? 3 : (/辣|椒|红油|担担|口水|酸辣|川汁|热卤/.test(nameCn) ? 2 : 0);
+  const allergens = [];
+  if (seafood) allergens.push({ type: "shellfish", level: "contains" });
+  if (fish) allergens.push({ type: "fish", level: "contains" });
+  if (gluten) allergens.push({ type: "gluten", level: "contains" });
+  if (soy) allergens.push({ type: "soy", level: "contains" });
+  return {
+    category,
+    nameCn,
+    pinyin: "",
+    name: nameCn,
+    description: "Reference menu item from the selected restaurant screenshots. Use the Chinese name and price as source of truth.",
+    price,
+    spicy,
+    vegetarian: !/(肉|鸡|鸭|鹅|鱼|虾|蟹|鲍|蚝|蛤|牛|羊|猪|肚|血|鳝|蛏|鸽|翅|海参|花胶|排骨|肥肠|毛肚|龙虾)/.test(nameCn),
+    allergens,
+    ingredients: [nameCn, "seasoning"],
+  };
+}
+const MOCK_RESTAURANTS = Object.fromEntries(Object.entries(MOCK_ROWS).map(([id, rows]) => [id, rows.map(localDish)]));
+let lastImage = null;
+let groupEls = new Map();
+
+const saved = localStorage.getItem(LANG_KEY);
+if (saved && ["en", "ja", "ko", "es", "fr"].includes(saved)) $("langSelect").value = saved;
+$("langSelect").addEventListener("change", (e) => localStorage.setItem(LANG_KEY, e.target.value));
+
+function startScan() {
+  if (FILE_DEMO_MODE) {
+    analyze(null);
+  } else {
+    fileInput.click();
+  }
+}
+
+fileInput.addEventListener("change", async (e) => {
+  const file = e.target.files && e.target.files[0];
+  e.target.value = "";
+  if (!file) return;
+  const image = await compressImage(file);
+  lastImage = image;
+  $("preview").src = image;
+  $("preview").classList.remove("hidden");
+  analyze(image);
+});
+
+async function compressImage(file) {
+  const bitmap = await createImageBitmap(file);
+  const scale = Math.min(1, 1568 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.round(bitmap.width * scale);
+  canvas.height = Math.round(bitmap.height * scale);
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL("image/jpeg", 0.8);
+}
+
+function resetResults() {
+  groupEls = new Map();
+  [...$("results").children].forEach((el) => {
+    if (el.id !== "skeleton") el.remove();
+  });
+  $("errorBox").classList.add("hidden");
+  $("scanAgainBtn").classList.add("hidden");
+}
+
+async function analyze(image) {
+  $("hero").classList.add("hidden");
+  resetResults();
+  if (FILE_DEMO_MODE) $("preview").classList.add("hidden");
+  $("skeleton").classList.remove("hidden");
+  if (FILE_DEMO_MODE) {
+    await runLocalDemo();
+    return;
+  }
+  try {
+    const res = await fetch("/api/analyze", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ image, lang: $("langSelect").value, mockRestaurant: $("demoRestaurant").value }),
+    });
+    if (!res.ok || !res.body) return showError("upstream_error");
+    const reader = res.body.getReader();
+    const decoder = new TextDecoder();
+    let buf = "";
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buf += decoder.decode(value, { stream: true });
+      const lines = buf.split("\n");
+      buf = lines.pop() || "";
+      for (const line of lines) {
+        if (!handleLine(line)) {
+          reader.cancel();
+          return;
+        }
+      }
+    }
+    if (buf.trim()) handleLine(buf);
+  } catch {
+    showError("upstream_error");
+  }
+}
+
+async function runLocalDemo() {
+  const dishes = MOCK_RESTAURANTS[$("demoRestaurant").value] || MOCK_RESTAURANTS.mawangzi;
+  for (const dish of dishes) {
+    await new Promise((resolve) => setTimeout(resolve, 35));
+    appendDish(dish);
+  }
+  finish();
+}
+
+function handleLine(line) {
+  if (!line.trim()) return true;
+  let ev;
+  try {
+    ev = JSON.parse(line);
+  } catch {
+    return true;
+  }
+  if (ev.type === "dish" && ev.data) appendDish(ev.data);
+  else if (ev.type === "error") {
+    showError(ev.code);
+    return false;
+  } else if (ev.type === "done") {
+    finish();
+  }
+  return true;
+}
+
+function appendDish(d) {
+  const key = d.category == null ? "" : d.category;
+  let group = groupEls.get(key);
+  if (!group) {
+    group = document.createElement("section");
+    if (key) group.innerHTML = '<h2 class="section-title">' + esc(key) + "</h2>";
+    groupEls.set(key, group);
+    $("results").insertBefore(group, $("skeleton"));
+  }
+  group.insertAdjacentHTML("beforeend", dishCardHTML(d));
+}
+
+function dishCardHTML(d) {
+  const tags = (d.allergens || []).map((a) =>
+    '<span class="tag ' + (a.level === "contains" ? "tag-red" : "tag-amber") + '">' +
+    (a.level === "contains" ? "Contains" : "May contain") + ": " + esc(ALLERGEN_LABELS[a.type] || a.type) + "</span>"
+  ).join("");
+  return '<article class="card">' +
+    '<div class="card-top"><div>' +
+      '<div class="name-cn">' + esc(d.nameCn) + (d.pinyin ? '<span class="pinyin">' + esc(d.pinyin) + "</span>" : "") + "</div>" +
+      '<div class="name">' + esc(d.name) + (d.vegetarian ? " · Vegetarian" : "") + (d.spicy ? " · " + "Spicy ".repeat(d.spicy).trim() : "") + "</div>" +
+    "</div>" +
+    (d.price ? '<div class="price">' + esc(d.price) + "</div>" : "") +
+    "</div>" +
+    (d.description ? '<p class="desc">' + esc(d.description) + "</p>" : "") +
+    (tags ? '<div class="tags">' + tags + "</div>" : "") +
+    (d.ingredients && d.ingredients.length ? '<p class="ingredients">Main: ' + esc(d.ingredients.join(", ")) + "</p>" : "") +
+  "</article>";
+}
+
+function finish() {
+  $("skeleton").classList.add("hidden");
+  $("scanAgainBtn").classList.remove("hidden");
+}
+
+function showError(code) {
+  $("skeleton").classList.add("hidden");
+  $("errorBox").classList.remove("hidden");
+  $("errorMsg").textContent = ERROR_COPY[code] || ERROR_COPY.upstream_error;
+  const retry = $("retryBtn");
+  if (code === "upstream_error" && lastImage) {
+    retry.classList.remove("hidden");
+    retry.onclick = () => analyze(lastImage);
+  } else {
+    retry.classList.add("hidden");
+  }
+  $("scanAgainBtn").classList.remove("hidden");
+}
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+</script>
+</body>
+</html>
