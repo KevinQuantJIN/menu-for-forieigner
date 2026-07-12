@@ -12,9 +12,10 @@
      ===================================================================== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --paper: #fbf8f1; --paper-2: #f6f1e6;
+    /* 暖纸白：介于旧版纸色与香槟白之间，保留亮度、去掉灰绿感 */
+    --paper: #f8f4e9; --paper-2: #f3edde;
     --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a; --ink-4: #b9ad97;
-    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #f0e9da;
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #ece3cc;
     --dot: clamp(28px, 2.2vw, 38px);
   }
   html, body { height: 100%; }
@@ -29,7 +30,7 @@
   /* 纸纹颗粒 */
   .grain {
     position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.04'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
   }
   /* 文武边（印刷版框） */
   .stage {
@@ -66,14 +67,14 @@
   .wordmark span { display: block; margin-top: 4px; font-size: clamp(12px, .95vw, 16px); letter-spacing: .42em; color: var(--ink-3); }
   h1.headline { margin-top: clamp(18px, 2.2vh, 30px); font-size: clamp(25px, 2.35vw, 42px); font-weight: 900; line-height: 1.5; }
   h1.headline em { font-style: normal; white-space: nowrap; box-shadow: inset 0 -.18em 0 rgba(178,58,47,.28); }
-  .sub { margin-top: 12px; font-size: clamp(13px, 1vw, 17px); color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; text-wrap: balance; }
+  .sub { margin-top: 12px; font-size: clamp(13px, 1vw, 17px); color: var(--ink-2); line-height: 2; letter-spacing: .05em; text-wrap: balance; }
   .points { margin-top: clamp(16px, 2vh, 26px); }
   .point { display: flex; align-items: baseline; padding: .6em 2px .55em; border-bottom: 1px solid rgba(38,32,25,.22); }
   .point:first-child { border-top: 2.5px solid var(--ink); }
   .point .cn { font-weight: 900; font-size: clamp(14px, 1.05vw, 19px); letter-spacing: .12em; flex: none; }
   .point .lead { flex: none; width: clamp(22px, 2vw, 38px); border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
-  .point .en { font-size: clamp(12px, .92vw, 16px); color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
-  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: clamp(12px, .88vw, 15px); color: var(--ink-3); line-height: 1.9; font-family: "PingFang SC", sans-serif; text-wrap: balance; }
+  .point .en { font-size: clamp(12px, .92vw, 16px); color: var(--ink-3); letter-spacing: .04em; }
+  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: clamp(12px, .88vw, 15px); color: var(--ink-3); line-height: 2; letter-spacing: .04em; text-wrap: balance; }
   .tryline b { color: var(--zhu); font-weight: 700; }
 
   /* ---------- 中：手机（屏内恒为 393x852 调试尺寸，整体 scale 适配） ---------- */
@@ -113,11 +114,12 @@
 
   /* ---------- 底：用户动线时间轴（手卷，宽度流式缩放） ---------- */
   .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 10px; padding: 10px 6px 1.6vh; position: relative; }
-  .jcap { text-align: center; height: 2.2em; font-size: clamp(13px, .95vw, 17px); color: var(--ink-2); font-family: "PingFang SC", sans-serif; }
+  .jcap { text-align: center; height: 2.2em; font-size: clamp(13px, .95vw, 17px); color: var(--ink-2); letter-spacing: .05em; }
   .jcap b { font-family: "Songti SC", serif; font-size: 1.12em; color: var(--ink); margin-right: 10px; letter-spacing: .08em; }
   .jcap b i { font-style: normal; color: var(--zhu); font-family: ui-monospace, monospace; }
   .jtrack { position: relative; margin-top: 8px; }
-  .jline { position: absolute; left: 3%; right: 3%; top: calc(var(--dot) / 2); border-top: 1px solid rgba(38,32,25,.3); }
+  /* 点线引导（菜账 leader dots 质感），朱线进度覆盖其上 */
+  .jline { position: absolute; left: 3%; right: 3%; top: calc(var(--dot) / 2); border-top: 2px dotted rgba(38,32,25,.35); }
   .jfill { position: absolute; left: 3%; top: calc(var(--dot) / 2 - 1px); height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
   .jnodes { position: relative; display: flex; justify-content: space-between; padding: 0 3%; }
   .jnode { background: none; border: none; cursor: pointer; font: inherit; text-align: center; width: clamp(96px, 10vw, 170px); }
@@ -128,7 +130,7 @@
     transition: background .2s, color .2s, border-color .2s, transform .2s; position: relative; z-index: 2;
   }
   .jnode .tt { margin-top: 7px; font-size: clamp(12.5px, 1vw, 18px); font-weight: 800; letter-spacing: .05em; }
-  .jnode .zh { margin-top: 2px; font-size: clamp(10.5px, .82vw, 14px); color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
+  .jnode .zh { margin-top: 3px; font-size: clamp(10.5px, .82vw, 14px); color: var(--ink-3); letter-spacing: .08em; }
   .jnode:hover .dot { background: var(--ink); color: var(--paper); }
   .jnode.on .dot { background: var(--zhu); border-color: var(--zhu-deep); color: #f6efdc; transform: scale(1.12) rotate(-3deg); }
   .jnode.on .tt { color: var(--zhu); }
