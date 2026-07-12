@@ -265,7 +265,20 @@ const beijingRows: Row[] = [
 const special: Record<string, DishHints> = {
   麻婆豆腐: { name: "Mapo Tofu", pinyin: "Mápó Dòufu", spicy: 3, vegetarian: false },
   口水鸡: { name: "Mouthwatering Chicken", pinyin: "Kǒushuǐ Jī", spicy: 2, allergens: [{ type: "sesame", level: "contains" }] },
-  夫妻肺片: { name: "Sliced Beef Offal in Chili Oil", pinyin: "Fūqī Fèipiàn", spicy: 2, allergens: [{ type: "peanut", level: "contains" }, { type: "sesame", level: "may_contain" }] },
+  夫妻肺片: {
+    name: "Sliced Beef Offal in Chili Oil",
+    pinyin: "Fūqī Fèipiàn",
+    spicy: 2,
+    allergens: [
+      { type: "peanut", level: "contains" },
+      { type: "sesame", level: "may_contain" },
+    ],
+    textures: ["offal"],
+    description:
+      "Despite the scary name, there are no lungs: thin-sliced beef and offal in fragrant chili oil — a classic Sichuan cold starter.",
+    story:
+      "Named after a husband-and-wife street vendor duo in 1930s Chengdu; 'lung' stuck from an old word mix-up.",
+  },
   担担面: { name: "Dan Dan Noodles", pinyin: "Dàndàn Miàn", spicy: 2, allergens: [{ type: "gluten", level: "contains" }, { type: "sesame", level: "contains" }] },
   香烧乳鸭仔: { name: "Roasted Young Duck", spicy: 0 },
   "香烧乳鸭仔（1只）": { name: "Roasted Young Duck", spicy: 0 },
