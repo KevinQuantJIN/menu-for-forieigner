@@ -1,13 +1,14 @@
 /* ChopStory · 数据层：汇率/菜品/文案标签 —— 内容改这里 */
 /* 货币系统（7.13 A 案）：¥ 原价永远保留在价签，仅切换 ≈ 换算行。
    静态汇率、approximate / for reference only（诚实红线）。JPY 符号用 JP¥ 避免与人民币 ¥ 混淆 */
+/* unit = 弹层里展示换算的惯例基数（外汇牌价习惯：小额货币用 100/1000） */
 const CURRENCIES = [
-  { code:"USD", sym:"$",   flag:"🇺🇸", name:"US Dollar",         perCny: 0.140 },
-  { code:"EUR", sym:"€",   flag:"🇪🇺", name:"Euro",              perCny: 0.128 },
-  { code:"GBP", sym:"£",   flag:"🇬🇧", name:"British Pound",     perCny: 0.110 },
-  { code:"JPY", sym:"JP¥", flag:"🇯🇵", name:"Japanese Yen",      perCny: 21.5  },
-  { code:"KRW", sym:"₩",   flag:"🇰🇷", name:"Korean Won",        perCny: 193   },
-  { code:"AUD", sym:"A$",  flag:"🇦🇺", name:"Australian Dollar", perCny: 0.213 },
+  { code:"USD", sym:"$",   flag:"🇺🇸", name:"US Dollar",         perCny: 0.140, unit: 1 },
+  { code:"EUR", sym:"€",   flag:"🇪🇺", name:"Euro",              perCny: 0.128, unit: 1 },
+  { code:"GBP", sym:"£",   flag:"🇬🇧", name:"British Pound",     perCny: 0.110, unit: 1 },
+  { code:"JPY", sym:"JP¥", flag:"🇯🇵", name:"Japanese Yen",      perCny: 21.5,  unit: 100 },
+  { code:"KRW", sym:"₩",   flag:"🇰🇷", name:"Korean Won",        perCny: 193,   unit: 1000 },
+  { code:"AUD", sym:"A$",  flag:"🇦🇺", name:"Australian Dollar", perCny: 0.213, unit: 1 },
 ];
 let curCode = localStorage.getItem("ml.currency") || "USD";
 function curDef() { return CURRENCIES.find(c => c.code === curCode) || CURRENCIES[0]; }

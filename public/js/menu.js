@@ -125,8 +125,8 @@ function openCurrency() {
     <h4 class="cur-title">Show prices in…</h4>
     <p class="cur-sub">We convert ¥ (CNY) prices into a currency you're familiar with, for your convenience — the rate is approximate and for reference only.</p>
     ${CURRENCIES.map(c => `<div class="cur-row ${c.code === curCode ? "on" : ""}" onclick="setCurrency('${c.code}')">
-      <span class="fl">${c.flag}</span><b>${c.name}</b><span class="cd">${c.code} ${c.sym}</span>
-      <span class="pv">¥100 ≈ ${c.sym}${fxFmt(100 * c.perCny)}</span></div>`).join("")}`;
+      <span class="fl">${c.flag}</span><b>${c.name}</b><span class="cd">${c.code}</span>
+      <span class="pv"><i class="u">${c.sym}${c.unit === 1 ? "1" : c.unit.toLocaleString("en-US")}</i><i class="r">≈ ¥${(c.unit / c.perCny).toFixed(2)}</i></span></div>`).join("")}`;
   document.getElementById("cur-mask").classList.remove("hidden");
   sheet.classList.remove("hidden");
 }

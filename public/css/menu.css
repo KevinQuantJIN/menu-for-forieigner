@@ -204,16 +204,21 @@
 .cur-title { font-family: var(--sh-en); font-size: 16px; font-weight: 800; margin-top: 6px; }
 .cur-sub { font-size: 10.5px; color: var(--sh-sub); margin-top: 5px; line-height: 1.6; }
 .cur-row {
-  display: flex; align-items: center; gap: 10px; padding: 13px 2px;
+  display: flex; align-items: center; gap: 10px; padding: 13px 10px;
   border-bottom: 1px solid rgba(28,26,23,.08); font-size: 13.5px; font-weight: 650; cursor: pointer;
+  border-radius: 10px;
 }
 .cur-row:last-child { border-bottom: none; }
 .cur-row .fl { font-size: 17px; }
 .cur-row .cd { font-family: var(--sh-num); font-size: 10.5px; color: var(--sh-sub); }
-.cur-row .pv { margin-left: auto; font-family: var(--sh-num); font-size: 11px; color: var(--sh-sub); font-variant-numeric: tabular-nums; }
-.cur-row.on { color: #b23a26; font-weight: 800; }
-.cur-row.on .pv, .cur-row.on .cd { color: #b23a26; }
-.cur-row.on::after { content: "✓"; font-weight: 900; margin-left: 6px; }
+/* 换算预览：用户货币 1 单位 ≈ ¥X。两段固定宽 → 「≈」全列对齐，右缘也对齐 */
+.cur-row .pv { margin-left: auto; display: flex; gap: 5px; font-family: var(--sh-num); font-size: 11px; font-variant-numeric: tabular-nums; }
+.cur-row .pv i { font-style: normal; }
+.cur-row .pv .u { min-width: 56px; text-align: right; font-weight: 700; color: var(--sh-ink); }
+.cur-row .pv .r { min-width: 62px; text-align: left; color: var(--sh-sub); }
+/* 选中态 = 整行朱红描边 + 微染底（不用尾部对号，保住右侧对齐） */
+.cur-row.on { box-shadow: inset 0 0 0 2px #d24b33; background: #fbeeea; color: #b23a26; font-weight: 800; border-bottom-color: transparent; }
+.cur-row.on .pv .u, .cur-row.on .pv .r, .cur-row.on .cd { color: #b23a26; }
 
 /* original menu overlay */
 #orig-mask { position: absolute; inset: 0; background: rgba(20,15,10,.72); z-index: 50; display: grid; place-items: center; padding: 30px; animation: screen-in var(--dur) var(--ease); }
