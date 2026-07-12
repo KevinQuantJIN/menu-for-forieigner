@@ -55,6 +55,6 @@ Cloudflare Workers 配置已包含：
 
 ```bash
 npx wrangler login
-npx wrangler secret put DASHSCOPE_API_KEY
+npx wrangler secret put GOOGLE_API_KEY
 npm run deploy
 ```

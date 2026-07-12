@@ -228,11 +228,37 @@
   /* ---------- analyzing ---------- */
   #s-analyzing { text-align: center; }
   .thumb {
-    width: 62%; margin: 26px auto 0; border-radius: var(--r-sm); background: #fbf7ef; border: 1px solid var(--line);
-    padding: 14px 12px; font-family: "Songti SC", serif; font-size: 11px; color: #71614a; line-height: 1.6;
+    width: 72%; margin: 26px auto 0; border-radius: var(--r-sm); background: #fbf7ef; border: 1px solid var(--line);
+    padding: 10px; font-family: "Songti SC", serif; font-size: 11px; color: #71614a; line-height: 1.6;
     flex: none; overflow: hidden;
   }
   .thumb img { width: 100%; max-height: 150px; object-fit: cover; object-position: top; border-radius: 6px; display: block; margin: -6px 0; }
+  .thumb-strip { display: flex; gap: 8px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
+  .thumb-strip::-webkit-scrollbar { display: none; }
+  .thumb-strip .tpage {
+    flex: 0 0 auto; width: 86px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: #fff;
+    position: relative;
+  }
+  .thumb-strip .tpage img { width: 86px; height: 110px; object-fit: cover; object-position: top; display: block; margin: 0; }
+  .thumb-strip .tpage .pg {
+    position: absolute; left: 4px; bottom: 4px; background: rgba(38,32,25,.78); color: #fff;
+    font-size: 10px; font-weight: 800; border-radius: 999px; padding: 1px 6px; font-family: var(--font-num);
+  }
+  .thumb-meta { margin-top: 8px; font-size: 11.5px; color: var(--muted); font-weight: 700; font-family: var(--font-num); }
+  #orig-mask {
+    position: absolute; inset: 0; z-index: 50; background: rgba(20,16,13,.78);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px;
+  }
+  #orig-mask.hidden { display: none !important; }
+  #orig-gallery {
+    display: flex; gap: 10px; overflow-x: auto; max-width: 100%; max-height: 78%;
+    padding: 4px; scrollbar-width: thin;
+  }
+  #orig-gallery img {
+    max-height: 72vh; width: auto; max-width: min(82vw, 320px); border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5); background: #fff; object-fit: contain;
+  }
+  #orig-gallery .hidden { display: none !important; }
   #s-analyzing h2 { margin-top: 24px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
   #s-analyzing .sub { color: var(--muted); font-size: var(--t-sub); margin-top: 6px; line-height: 1.5; }
   .steps { margin: 24px auto 0; width: 100%; max-width: 320px; display: grid; gap: 0; text-align: left; border-top: 2.5px solid var(--ink); }
@@ -473,8 +499,8 @@
   .polaroid .sub2 { color: var(--faint); margin-top: 1px; font-family: ui-monospace, monospace; font-size: 9px; }
   .citytag { position: absolute; background: #052e16; color: #86efac; font-family: ui-monospace, monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; }
 
-  /* original menu overlay */
-  #orig-mask { position: absolute; inset: 0; background: rgba(20,15,10,.72); z-index: 50; display: grid; place-items: center; padding: 30px; animation: screen-in var(--dur) var(--ease); }
+  /* original menu overlay (base; multi-page gallery styles earlier) */
+  #orig-mask { animation: screen-in var(--dur) var(--ease); }
 
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
@@ -491,7 +517,8 @@
       <h1 class="slogan">Read it. Order it.<br><i>Eat the story.</i></h1>
       <div class="scan-row">
         <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
-        <button class="album-link" onclick="startScan('album')">🖼️ Album</button>
+        <button type="button" class="album-link" onclick="pickAlbum()">🖼️ Album</button>
+        <input id="albumInput" type="file" accept="image/*" multiple hidden />
       </div>
       <div class="profile-strip" id="profileStrip"></div>
     </div>
@@ -540,8 +567,7 @@
       <div class="chips" data-group="allergens">
         <button class="chip" data-v="peanut">🥜 Peanut</button>
         <button class="chip" data-v="tree_nut">🌰 Tree nut</button>
-        <button class="chip" data-v="crustacean">🦐 Shrimp/Crab</button>
-        <button class="chip" data-v="mollusk">🦪 Shellfish (mollusk)</button>
+        <button class="chip" data-v="shellfish">🦐 Shellfish</button>
         <button class="chip" data-v="gluten">🌾 Gluten</button>
         <button class="chip" data-v="soy">🫘 Soy</button>
         <button class="chip" data-v="egg">🥚 Egg</button>
@@ -610,13 +636,15 @@
   <section class="screen hidden" id="s-analyzing">
     <div class="thumb" id="anaThumb">川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……</div>
     <h2>Reading the menu…</h2>
-    <p class="sub">AI is identifying <b id="anaCount">14</b> dishes and checking them against your profile</p>
+    <p class="sub">AI is identifying <b id="anaCount">0</b> dishes and checking them against your profile</p>
     <div class="steps">
       <div class="step" id="st1"><span>🔍 Reading text & layout</span><span class="st">…</span></div>
       <div class="step" id="st2"><span>🧠 Translating & explaining each dish</span><span class="st">waiting</span></div>
       <div class="step" id="st3"><span>🛡️ Checking your allergies & dislikes</span><span class="st">waiting</span></div>
     </div>
-    <p class="anal-foot">usually under 10 seconds</p>
+    <p class="anal-foot" id="analFoot">usually under 10 seconds</p>
+    <p class="anal-foot hidden" id="analErr" style="color:var(--accent);font-weight:700"></p>
+    <button class="btn btn-ghost hidden" id="analRetry" style="margin:14px auto 0;display:none" onclick="startAnalyze()">Try again</button>
   </section>
 
   <!-- ============ S1 LIST ============ -->
@@ -701,8 +729,8 @@
   </section>
 
   <!-- original menu photo overlay -->
-  <div id="orig-mask" class="hidden" onclick="this.classList.add('hidden')">
-    <div id="orig-paper" class="menu-paper" style="transform:none;width:100%">
+  <div id="orig-mask" class="hidden" onclick="closeOrig(event)">
+    <div id="orig-paper" class="menu-paper" style="transform:none;width:min(100%,320px)">
       <h4>川辣小馆·川菜</h4>
       <div class="sec">经典凉菜</div>
       <div class="row"><span>夫妻肺片</span><span>25</span></div>
@@ -722,29 +750,66 @@
       <div class="row"><span>龙抄手</span><span>18</span></div>
       <div class="row"><span>红糖糍粑</span><span>16</span></div>
     </div>
-    <img id="orig-photo" class="hidden" src="real-menu-mawangzi.jpg" alt="Menu photo" style="max-width:100%;max-height:82%;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)">
+    <div id="orig-gallery" class="hidden"></div>
+    <button type="button" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)" onclick="closeOrig()">Close</button>
   </div>
 </div>
 
 <script>
 /* =====================================================================
-   Chopstory — interactive UI prototype (mock data, no backend)
-   Backend hookup later: replace streamDishes() with fetch('/api/analyze')
-   reading NDJSON events {type:'dish',data}|{type:'done'} — same shapes.
+   Chopstory — UI wired to analyze contract v1
+   POST /api/analyze { images: dataURL[] } → NDJSON dish | done | error
+   Progress page counts stream events; list cascade after done.
+   Camera path keeps offline 14-dish demo; Album path hits real API.
    ===================================================================== */
 
-const FX = 7.16; // static CNY→USD, labeled approximate
-const usd = (cny) => "≈ $" + (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1);
-const usdN = (cny) => (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1); // number only, $ first displays
+const FX = 7.16;
+const usdN = (cny) => {
+  const n = Number(cny) || 0;
+  return (n / FX).toFixed(n / FX >= 10 ? 0 : 1);
+};
+const parsePrice = (p) => {
+  if (p == null || p === "") return 0;
+  if (typeof p === "number") return p;
+  const m = String(p).replace(/,/g, "").match(/(\d+(?:\.\d+)?)/);
+  return m ? Number(m[1]) : 0;
+};
+const priceLabel = (p) => {
+  if (p == null || p === "") return "—";
+  if (typeof p === "number") return String(p);
+  return String(p).replace(/^¥\s*/, "");
+};
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
 /* ---------------- profile (Jake defaults: peanut allergy, mild spice) ---------------- */
 let profile = JSON.parse(localStorage.getItem("ml.profile") || "null") || {
   allergens: ["peanut"], avoid: [], spice: 1,
 };
-const ALLERGEN_LABEL = { peanut:"Peanut", tree_nut:"Tree nut", crustacean:"Shrimp/Crab", mollusk:"Shellfish", gluten:"Gluten", soy:"Soy", egg:"Egg", dairy:"Dairy", sesame:"Sesame", fish:"Fish" };
+if (profile.allergens) {
+  profile.allergens = [...new Set(profile.allergens.map((a) =>
+    (a === "crustacean" || a === "mollusk") ? "shellfish" : a
+  ))];
+}
+const ALLERGEN_LABEL = {
+  peanut:"Peanut", tree_nut:"Tree nut", shellfish:"Shellfish", gluten:"Gluten",
+  soy:"Soy", egg:"Egg", dairy:"Dairy", sesame:"Sesame", fish:"Fish",
+  crustacean:"Shellfish", mollusk:"Shellfish",
+};
 const AVOID_LABEL = { offal:"Organ meats", cilantro:"Cilantro", bone_in:"On the bone", fatty:"Fatty pork", whole_head:"Whole fish head", chicken_feet:"Chicken feet" };
-const ALLERGEN_CN = { peanut:"花生", tree_nut:"坚果", crustacean:"虾蟹类", mollusk:"贝类", gluten:"麸质（面筋）", soy:"大豆", egg:"鸡蛋", dairy:"奶制品", sesame:"芝麻", fish:"鱼类" };
+const ALLERGEN_CN = {
+  peanut:"花生", tree_nut:"坚果", shellfish:"虾蟹贝类", gluten:"麸质（面筋）",
+  soy:"大豆", egg:"鸡蛋", dairy:"奶制品", sesame:"芝麻", fish:"鱼类",
+  crustacean:"虾蟹类", mollusk:"贝类",
+};
 const AVOID_CN = { offal:"内脏", cilantro:"香菜", bone_in:"带骨的肉", fatty:"肥肉", whole_head:"整鱼", chicken_feet:"鸡爪" };
+const ERROR_COPY = {
+  not_a_menu: "That doesn't look like a menu photo. Try again with a clearer shot of the menu.",
+  unreadable: "We couldn't read that photo clearly. Better light and a flatter page help.",
+  upstream_error: "Something went wrong on our side. Please retry.",
+  invalid_images: "That image couldn't be used. Try another photo.",
+  invalid_json: "Something went wrong on our side. Please retry.",
+  too_many_images: "Too many photos — please send up to 9.",
+};
 /* order-page requests — user picks in English, waiter view shows Chinese */
 const REQ_DEFS = [
   { k:"mild",        en:"🌶 Mild spice",  cn:"请做微辣" },
@@ -772,117 +837,183 @@ function toggleProfileItem(group, v) {
 }
 function orderEdit(on) {
   orderEditing = on;
-  if (!on) { // Done: persist + refresh everything that depends on the profile
+  if (!on) {
     localStorage.setItem("ml.profile", JSON.stringify(profile));
     renderProfileStrip();
-    if (streamed.length) renderList();
+    if (menuDishes.length) renderList();
   }
   renderOrder();
 }
 
-/* ---------------- demo dishes (demo-data/demo-menu-plan.md · 14 道，每道一个演示点)
-   字段与 PRD 契约对齐：catStd/catOriginal/cuisine/flavorBars{spicy,numbing,richness 0-10}/story/howToEat ---------------- */
-const DISHES = [
-  { id:1, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"夫妻肺片", pinyin:"fū qī fèi piàn", name:"'Couple's Lung Slices' — No Lungs, Promise", emoji:"🥩", cuisine:"Sichuan · Chengdu classic",
-    desc:"Despite the terrifying translation, there are no lungs: thin-sliced beef, tripe and tongue in fragrant chili oil. One of Sichuan's most beloved cold starters.",
+/* ---------------- demo dishes (offline camera path · 14 道演示点)
+   Aligned to contract v1: category, nameCn, pinyin, name, description,
+   price, spicy, vegetarian, allergens[{type,level}], textures[], ingredients[], story|null
+   Client-only: emoji for hero. No flavorBars / signature / howToEat / cuisine. */
+const DEMO_DISHES = [
+  { id:1, category:"Cold Starters", nameCn:"夫妻肺片", pinyin:"fū qī fèi piàn", name:"'Couple's Lung Slices' — No Lungs, Promise", emoji:"🥩",
+    description:"Despite the terrifying translation, there are no lungs: thin-sliced beef, tripe and tongue in fragrant chili oil. One of Sichuan's most beloved cold starters.",
     story:"Named after a husband-and-wife street vendor duo in 1930s Chengdu whose offal salad became legendary — 'lung' stuck from an old word mix-up.",
-    price:25, spicy:2, flavorBars:{spicy:6,numbing:5,richness:6}, veg:false,
-    allergens:[{t:"peanut",l:"may"},{t:"sesame",l:"may"}], textures:["offal"], ingredients:["🥩 Beef & tripe","🌶 Chili oil","🌿 Celery","🥜 Peanut crumbs"] },
-  { id:2, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"口水鸡", pinyin:"kǒu shuǐ jī", name:"Mouthwatering Chicken (Served Cold)", emoji:"🍗", cuisine:"Sichuan cold classic",
-    desc:"Poached chicken served cool under a glossy chili-sesame sauce. 'Saliva chicken' just means it makes your mouth water — and yes, cold chicken is intentional here.",
-    story:null,
-    price:24, spicy:2, flavorBars:{spicy:6,numbing:3,richness:5}, veg:false,
-    allergens:[{t:"sesame",l:"contains"},{t:"peanut",l:"may"}], textures:["bone_in"], ingredients:["🍗 Poached chicken","🌶 Chili oil","⚪ Sesame","🧄 Garlic"] },
-  { id:3, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"钵钵鸡", pinyin:"bō bō jī", name:"Bobo Chicken — Cold Skewers in Chili Broth", emoji:"🍢", cuisine:"Sichuan · Leshan specialty", signature:true,
-    desc:"Skewers of chicken and vegetables soaking in a cold, fragrant chili-sesame broth. Not 'Bowl Bowl Chicken' — bō is the clay pot it's served in.",
+    price:"25", spicy:2, vegetarian:false,
+    allergens:[{type:"peanut",level:"may_contain"},{type:"sesame",level:"may_contain"}], textures:["offal"], ingredients:["Beef & tripe","Chili oil","Celery","Peanut crumbs"] },
+  { id:2, category:"Cold Starters", nameCn:"口水鸡", pinyin:"kǒu shuǐ jī", name:"Mouthwatering Chicken (Served Cold)", emoji:"🍗",
+    description:"Poached chicken served cool under a glossy chili-sesame sauce. 'Saliva chicken' just means it makes your mouth water — and yes, cold chicken is intentional here.",
+    story:null, price:"24", spicy:2, vegetarian:false,
+    allergens:[{type:"sesame",level:"contains"},{type:"peanut",level:"may_contain"}], textures:["bone_in"], ingredients:["Poached chicken","Chili oil","Sesame","Garlic"] },
+  { id:3, category:"Cold Starters", nameCn:"钵钵鸡", pinyin:"bō bō jī", name:"Bobo Chicken — Cold Skewers in Chili Broth", emoji:"🍢",
+    description:"Skewers of chicken and vegetables soaking in a cold, fragrant chili-sesame broth. Not 'Bowl Bowl Chicken' — bō is the clay pot it's served in.",
     story:"From Leshan near Chengdu: vendors carried clay pots (钵) of skewers through the streets; the name is literally the sound of the pot.",
-    howToEat:"Pick skewers straight from the pot; you're charged by the empty sticks at the end.",
-    price:28, spicy:2, flavorBars:{spicy:5,numbing:4,richness:5}, veg:false,
-    allergens:[{t:"sesame",l:"contains"},{t:"peanut",l:"may"}], textures:[], ingredients:["🍗 Chicken skewers","🥬 Veggie skewers","🌶 Cold chili broth","⚪ Sesame"] },
-  { id:4, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"蒜泥白肉", pinyin:"suàn ní bái ròu", name:"Sliced Pork Belly in Garlic Sauce", emoji:"🥓", cuisine:"Sichuan cold classic",
-    desc:"Paper-thin pork belly, briefly poached, draped in a punchy garlic-soy dressing. Silky and rich — the soft fat is the point here.",
-    story:null,
-    price:25, spicy:1, flavorBars:{spicy:3,numbing:0,richness:8}, veg:false,
-    allergens:[{t:"soy",l:"contains"},{t:"gluten",l:"may"}], textures:["fatty"], ingredients:["🥓 Pork belly","🧄 Garlic","🫗 Soy dressing","🥒 Cucumber"] },
-  { id:5, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"凉拌皮蛋", pinyin:"liáng bàn pí dàn", name:"Century Egg with Chili Dressing", emoji:"🥚", cuisine:"Chinese classic",
-    desc:"Preserved duck egg — translucent amber white, creamy dark yolk — under a bright chili-garlic dressing. The look surprises first-timers; the taste is mellow and savory.",
-    story:null,
-    price:18, spicy:1, flavorBars:{spicy:3,numbing:0,richness:6}, veg:true,
-    allergens:[{t:"egg",l:"contains"}], textures:["century_egg"], ingredients:["🥚 Century egg","🌶 Chili dressing","🧄 Garlic"] },
-  { id:6, cat:"Cold Starters", catOriginal:"经典凉菜", nameCn:"凉拌折耳根", pinyin:"liáng bàn zhé ěr gēn", name:"Houttuynia Root Salad — The 'Fishy Herb'", emoji:"🌿", cuisine:"Sichuan / Guizhou local favorite",
-    desc:"Crunchy roots of the houttuynia plant with chili and vinegar. Locals adore it; most visitors find the flavor intensely herbal-fishy. Order it to eat like a local — you've been warned.",
-    story:null,
-    price:15, spicy:1, flavorBars:{spicy:4,numbing:0,richness:2}, veg:true,
-    allergens:[], textures:["fishy_herb"], ingredients:["🌿 Houttuynia root","🌶 Chili","🍶 Vinegar"] },
-  { id:7, cat:"Mains", catOriginal:"招牌热菜", nameCn:"宫保鸡丁", pinyin:"gōng bǎo jī dīng", name:"Kung Pao Chicken", emoji:"🥜", cuisine:"Sichuan · the one you know",
-    desc:"The dish you know from home — diced chicken in a sweet-tangy glaze. But heads up: those crunchy bits are real roasted peanuts, and there are a lot of them.",
+    price:"28", spicy:2, vegetarian:false,
+    allergens:[{type:"sesame",level:"contains"},{type:"peanut",level:"may_contain"}], textures:[], ingredients:["Chicken skewers","Veggie skewers","Cold chili broth","Sesame"] },
+  { id:4, category:"Cold Starters", nameCn:"蒜泥白肉", pinyin:"suàn ní bái ròu", name:"Sliced Pork Belly in Garlic Sauce", emoji:"🥓",
+    description:"Paper-thin pork belly, briefly poached, draped in a punchy garlic-soy dressing. Silky and rich — the soft fat is the point here.",
+    story:null, price:"25", spicy:1, vegetarian:false,
+    allergens:[{type:"soy",level:"contains"},{type:"gluten",level:"may_contain"}], textures:["fatty"], ingredients:["Pork belly","Garlic","Soy dressing","Cucumber"] },
+  { id:5, category:"Cold Starters", nameCn:"凉拌皮蛋", pinyin:"liáng bàn pí dàn", name:"Century Egg with Chili Dressing", emoji:"🥚",
+    description:"Preserved duck egg — translucent amber white, creamy dark yolk — under a bright chili-garlic dressing. The look surprises first-timers; the taste is mellow and savory.",
+    story:null, price:"18", spicy:1, vegetarian:true,
+    allergens:[{type:"egg",level:"contains"}], textures:["century egg"], ingredients:["Century egg","Chili dressing","Garlic"] },
+  { id:6, category:"Cold Starters", nameCn:"凉拌折耳根", pinyin:"liáng bàn zhé ěr gēn", name:"Houttuynia Root Salad — The 'Fishy Herb'", emoji:"🌿",
+    description:"Crunchy roots of the houttuynia plant with chili and vinegar. Locals adore it; most visitors find the flavor intensely herbal-fishy. Order it to eat like a local — you've been warned.",
+    story:null, price:"15", spicy:1, vegetarian:true,
+    allergens:[], textures:["fishy herb"], ingredients:["Houttuynia root","Chili","Vinegar"] },
+  { id:7, category:"Mains", nameCn:"宫保鸡丁", pinyin:"gōng bǎo jī dīng", name:"Kung Pao Chicken", emoji:"🥜",
+    description:"The dish you know from home — diced chicken in a sweet-tangy glaze. But heads up: those crunchy bits are real roasted peanuts, and there are a lot of them.",
     story:"Named after Ding Baozhen, a Qing-dynasty governor of Sichuan whose court title was 'Gongbao' (palace guardian) — his kitchen made this dish famous.",
-    price:42, spicy:1, flavorBars:{spicy:4,numbing:2,richness:6}, veg:false,
-    allergens:[{t:"peanut",l:"contains"}], textures:[], ingredients:["🍗 Diced chicken","🥜 Roasted peanuts","🌶 Dried chili","🧅 Scallion"] },
-  { id:8, cat:"Mains", catOriginal:"招牌热菜", nameCn:"麻婆豆腐", pinyin:"má pó dòu fu", name:"Mapo Tofu", emoji:"🌶️", cuisine:"Sichuan · Chengdu classic", signature:true,
-    desc:"Soft tofu in a bubbling chili-bean sauce with minced beef. The Sichuan pepper makes your lips tingle — like a faint electric buzz. That's 'má' (numbing), not more heat, and it's worth experiencing once.",
+    price:"42", spicy:1, vegetarian:false,
+    allergens:[{type:"peanut",level:"contains"}], textures:[], ingredients:["Diced chicken","Roasted peanuts","Dried chili","Scallion"] },
+  { id:8, category:"Mains", nameCn:"麻婆豆腐", pinyin:"má pó dòu fu", name:"Mapo Tofu", emoji:"🌶️",
+    description:"Soft tofu in a bubbling chili-bean sauce with minced beef. The Sichuan pepper makes your lips tingle — like a faint electric buzz. That's 'má' (numbing), not more heat, and it's worth experiencing once.",
     story:"Traced to a pockmarked ('ma') grandma ('po') who ran a tofu eatery by a Chengdu bridge in 1862 — her name is on the dish worldwide.",
-    price:32, spicy:2, flavorBars:{spicy:6,numbing:7,richness:6}, veg:false,
-    allergens:[{t:"soy",l:"contains"},{t:"gluten",l:"may"}], textures:[], ingredients:["🧊 Soft tofu","🥩 Minced beef","🌶 Chili bean paste","🟤 Sichuan pepper"] },
-  { id:9, cat:"Mains", catOriginal:"招牌热菜", nameCn:"水煮鱼", pinyin:"shuǐ zhǔ yú", name:"Fish Fillets in Fiery Chili Oil", emoji:"🔥", cuisine:"Sichuan · Chongqing style", signature:true,
-    desc:"'Water-boiled fish' sounds gentle. It is not: silky fish fillets arrive under a bubbling layer of chili oil, dried chilies and Sichuan pepper. For western palates this is a 3-alarm dish.",
-    story:null,
-    price:58, spicy:3, flavorBars:{spicy:9,numbing:6,richness:8}, veg:false,
-    allergens:[{t:"fish",l:"contains"}], textures:[], ingredients:["🐟 Fish fillets","🌶 Chili oil","🟤 Sichuan pepper","🥬 Bean sprouts"] },
-  { id:10, cat:"Mains", catOriginal:"招牌热菜", nameCn:"鱼香肉丝", pinyin:"yú xiāng ròu sī", name:"'Fish-Fragrant' Pork — No Fish Involved", emoji:"🥢", cuisine:"Sichuan classic",
-    desc:"Shredded pork in a glossy sweet-sour-garlicky sauce. 'Fish-fragrant' names the seasoning style once used for fish — there is no fish or seafood in it. Safe for seafood allergies.",
-    story:null,
-    price:36, spicy:1, flavorBars:{spicy:4,numbing:0,richness:6}, veg:false,
-    allergens:[{t:"soy",l:"contains"}], textures:[], ingredients:["🥩 Shredded pork","🎋 Bamboo shoots","🍄 Wood ear","🧄 Pickled chili & garlic"] },
-  { id:11, cat:"Mains", catOriginal:"招牌热菜", nameCn:"蚂蚁上树", pinyin:"mǎ yǐ shàng shù", name:"'Ants Climbing a Tree' — Glass Noodles & Pork", emoji:"🍝", cuisine:"Sichuan homestyle",
-    desc:"No ants! Glass noodles tossed with minced pork in a savory bean sauce — the pork specks clinging to the noodles look like ants on branches. Comforting, mildly spicy.",
-    story:null,
-    price:30, spicy:1, flavorBars:{spicy:3,numbing:0,richness:5}, veg:false,
-    allergens:[{t:"soy",l:"contains"}], textures:[], ingredients:["🍝 Glass noodles","🥩 Minced pork","🌶 Bean sauce"] },
-  { id:12, cat:"Vegetables", catOriginal:"时蔬", nameCn:"干煸四季豆", pinyin:"gān biān sì jì dòu", name:"Dry-Fried Green Beans (Usually Not Vegetarian!)", emoji:"🫛", cuisine:"Sichuan classic",
-    desc:"Blistered green beans, wrinkled and smoky. Looks like a vegetable dish — but the classic recipe stir-fries them with minced pork and tiny dried shrimp. Vegetarians: ask first.",
-    story:null,
-    price:28, spicy:1, flavorBars:{spicy:4,numbing:2,richness:5}, veg:false,
-    allergens:[{t:"crustacean",l:"may"}], textures:[], hiddenRisks:["minced_pork"], ingredients:["🫛 Green beans","🥩 Minced pork","🦐 Dried shrimp","🌶 Dried chili"] },
-  { id:13, cat:"Rice & Noodles", catOriginal:"主食甜品", nameCn:"龙抄手", pinyin:"lóng chāo shǒu", name:"Long Chao Shou — Silky Pork Wontons", emoji:"🥟", cuisine:"Sichuan · Chengdu classic",
-    desc:"Delicate pork wontons in a mellow broth — not 'Copying Hands', whatever the machine translation says. Thin silky wrappers, gentle flavor, a safe and beloved order.",
+    price:"32", spicy:2, vegetarian:false,
+    allergens:[{type:"soy",level:"contains"},{type:"gluten",level:"may_contain"}], textures:[], ingredients:["Soft tofu","Minced beef","Chili bean paste","Sichuan pepper"] },
+  { id:9, category:"Mains", nameCn:"水煮鱼", pinyin:"shuǐ zhǔ yú", name:"Fish Fillets in Fiery Chili Oil", emoji:"🔥",
+    description:"'Water-boiled fish' sounds gentle. It is not: silky fish fillets arrive under a bubbling layer of chili oil, dried chilies and Sichuan pepper. For western palates this is a 3-alarm dish.",
+    story:null, price:"58", spicy:3, vegetarian:false,
+    allergens:[{type:"fish",level:"contains"}], textures:[], ingredients:["Fish fillets","Chili oil","Sichuan pepper","Bean sprouts"] },
+  { id:10, category:"Mains", nameCn:"鱼香肉丝", pinyin:"yú xiāng ròu sī", name:"'Fish-Fragrant' Pork — No Fish Involved", emoji:"🥢",
+    description:"Shredded pork in a glossy sweet-sour-garlicky sauce. 'Fish-fragrant' names the seasoning style once used for fish — there is no fish or seafood in it. Safe for seafood allergies.",
+    story:null, price:"36", spicy:1, vegetarian:false,
+    allergens:[{type:"soy",level:"contains"}], textures:[], ingredients:["Shredded pork","Bamboo shoots","Wood ear","Pickled chili & garlic"] },
+  { id:11, category:"Mains", nameCn:"蚂蚁上树", pinyin:"mǎ yǐ shàng shù", name:"'Ants Climbing a Tree' — Glass Noodles & Pork", emoji:"🍝",
+    description:"No ants! Glass noodles tossed with minced pork in a savory bean sauce — the pork specks clinging to the noodles look like ants on branches. Comforting, mildly spicy.",
+    story:null, price:"30", spicy:1, vegetarian:false,
+    allergens:[{type:"soy",level:"contains"}], textures:[], ingredients:["Glass noodles","Minced pork","Bean sauce"] },
+  { id:12, category:"Vegetables", nameCn:"干煸四季豆", pinyin:"gān biān sì jì dòu", name:"Dry-Fried Green Beans (Usually Not Vegetarian!)", emoji:"🫛",
+    description:"Blistered green beans, wrinkled and smoky. Looks like a vegetable dish — but the classic recipe stir-fries them with minced pork and tiny dried shrimp. Vegetarians: ask first.",
+    story:null, price:"28", spicy:1, vegetarian:false,
+    allergens:[{type:"shellfish",level:"may_contain"}], textures:["usually has minced pork"], ingredients:["Green beans","Minced pork","Dried shrimp","Dried chili"] },
+  { id:13, category:"Rice & Noodles", nameCn:"龙抄手", pinyin:"lóng chāo shǒu", name:"Long Chao Shou — Silky Pork Wontons", emoji:"🥟",
+    description:"Delicate pork wontons in a mellow broth — not 'Copying Hands', whatever the machine translation says. Thin silky wrappers, gentle flavor, a safe and beloved order.",
     story:"'Chāo shǒu' means 'crossed hands': the wrapper folds like arms tucked into sleeves against the cold. Chengdu's Long Chao Shou shop has served them since 1941.",
-    price:18, spicy:0, flavorBars:{spicy:0,numbing:0,richness:4}, veg:false,
-    allergens:[{t:"gluten",l:"contains"},{t:"egg",l:"may"}], textures:[], ingredients:["🥟 Pork wontons","🍵 Clear broth","🧅 Scallion"] },
-  { id:14, cat:"Dessert", catOriginal:"主食甜品", nameCn:"红糖糍粑", pinyin:"hóng táng cí bā", name:"Brown-Sugar Sticky Rice Cakes", emoji:"🍡", cuisine:"Sichuan dessert",
-    desc:"Warm sticky-rice cakes, fried until lightly crisp, drenched in dark brown-sugar syrup. Sweet, chewy, zero spice — the perfect way to land after a fiery meal.",
-    story:null,
-    price:16, spicy:0, flavorBars:{spicy:0,numbing:0,richness:5}, veg:true,
-    allergens:[], textures:[], ingredients:["🍡 Sticky rice","🟤 Brown sugar syrup","🌾 Soybean flour dusting"] },
+    price:"18", spicy:0, vegetarian:false,
+    allergens:[{type:"gluten",level:"contains"},{type:"egg",level:"may_contain"}], textures:[], ingredients:["Pork wontons","Clear broth","Scallion"] },
+  { id:14, category:"Dessert", nameCn:"红糖糍粑", pinyin:"hóng táng cí bā", name:"Brown-Sugar Sticky Rice Cakes", emoji:"🍡",
+    description:"Warm sticky-rice cakes, fried until lightly crisp, drenched in dark brown-sugar syrup. Sweet, chewy, zero spice — the perfect way to land after a fiery meal.",
+    story:null, price:"16", spicy:0, vegetarian:true,
+    allergens:[], textures:[], ingredients:["Sticky rice","Brown sugar syrup","Soybean flour dusting"] },
 ];
-const CATS = ["All","⭐ Signature","Cold Starters","Mains","Vegetables","Rice & Noodles","Dessert"];
+
+const HERO_EMOJI = ["🍜","🥢","🍲","🥘","🥟","🌶️","🥩","🍗","🐟","🥬","🍵","🍡","🥓","🥚","🌿","🔥"];
+function dishEmoji(d) {
+  if (d.emoji) return d.emoji;
+  return HERO_EMOJI[(Number(d.id) || 1) % HERO_EMOJI.length];
+}
+function normalizeDish(raw) {
+  const allergens = (raw.allergens || []).map((a) => {
+    if (a && a.type) {
+      let type = a.type;
+      if (type === "crustacean" || type === "mollusk") type = "shellfish";
+      const level = a.level === "may" || a.level === "may_contain" ? "may_contain" : "contains";
+      return { type, level };
+    }
+    if (a && a.t) {
+      let type = a.t;
+      if (type === "crustacean" || type === "mollusk") type = "shellfish";
+      const level = a.l === "may" || a.l === "may_contain" ? "may_contain" : "contains";
+      return { type, level };
+    }
+    return null;
+  }).filter(Boolean);
+  return {
+    id: raw.id,
+    category: raw.category ?? raw.cat ?? null,
+    nameCn: raw.nameCn || "",
+    pinyin: raw.pinyin || "",
+    name: raw.name || raw.nameCn || "Dish",
+    description: raw.description || raw.desc || "",
+    price: raw.price == null ? null : String(raw.price),
+    spicy: Math.max(0, Math.min(3, Number(raw.spicy) || 0)),
+    vegetarian: !!(raw.vegetarian ?? raw.veg),
+    allergens,
+    textures: Array.isArray(raw.textures) ? raw.textures.map(String) : [],
+    ingredients: Array.isArray(raw.ingredients) ? raw.ingredients.map(String) : [],
+    story: raw.story == null || raw.story === "" ? null : String(raw.story),
+    emoji: raw.emoji || null,
+  };
+}
 
 /* ---------------- personalization ---------------- */
+function textureKey(t) {
+  const s = String(t).toLowerCase();
+  if (/offal|organ|tripe|lung|肚|内脏/.test(s)) return "offal";
+  if (/bone|带骨/.test(s)) return "bone_in";
+  if (/fatty|肥|wobbly/.test(s)) return "fatty";
+  if (/whole.?head|whole fish|整鱼/.test(s)) return "whole_head";
+  if (/chicken.?feet|鸡爪|凤爪/.test(s)) return "chicken_feet";
+  if (/cilantro|香菜/.test(s)) return "cilantro";
+  return null;
+}
+function textureLabel(t) {
+  const k = textureKey(t);
+  if (k && AVOID_LABEL[k]) return AVOID_LABEL[k];
+  const known = {
+    offal:"🫀 organ meats", "organ meats":"🫀 organ meats",
+    bone_in:"🦴 on the bone", "on the bone":"🦴 on the bone",
+    fatty:"🥓 fatty cut", "fatty pork":"🥓 fatty cut",
+    whole_head:"🐟 whole head", "chicken feet":"🐔 chicken feet",
+    "century egg":"🥚 century egg", "fishy herb":"🌿 fishy herb — dare?",
+    "usually has minced pork":"🍖 usually has minced pork",
+  };
+  const low = String(t).toLowerCase();
+  return known[low] || known[t] || ("· " + t);
+}
 function personalHits(d) {
   const hits = [];
-  for (const a of d.allergens) if (a.l === "contains" && profile.allergens.includes(a.t)) hits.push("contains " + ALLERGEN_LABEL[a.t].toLowerCase());
-  for (const t of d.textures) if (profile.avoid.includes(t)) hits.push(AVOID_LABEL[t].toLowerCase());
+  for (const a of d.allergens) {
+    if (a.level === "contains" && profile.allergens.includes(a.type)) {
+      hits.push("contains " + (ALLERGEN_LABEL[a.type] || a.type).toLowerCase());
+    }
+  }
+  for (const t of d.textures) {
+    const k = textureKey(t);
+    if (k && profile.avoid.includes(k)) hits.push((AVOID_LABEL[k] || t).toLowerCase());
+  }
   return hits;
 }
-const GENERIC_TAG = { offal:"🫀 organ meats", whole_head:"🐟 whole head", bone_in:"🦴 on the bone", fatty:"🥓 fatty cut", chicken_feet:"🐔 chicken feet", century_egg:"🥚 century egg", fishy_herb:"🌿 fishy herb — dare?" };
-const HIDDEN_RISK_LABEL = { meat_broth:"🍲 made with meat broth", minced_pork:"🍖 usually has minced pork & dried shrimp" };
 function previewTags(d) {
   const tags = [];
   const hits = personalHits(d);
-  if (hits.length) tags.push(`<span class="tag tag-red">⚠ ${hits[0]}</span>`);
-  for (const t of d.textures) { if (tags.length >= 2) break; if (!profile.avoid.includes(t)) tags.push(`<span class="tag tag-gray">${GENERIC_TAG[t]}</span>`); }
-  if (tags.length < 2 && d.veg) tags.push(`<span class="tag tag-green">🌱 vegetarian</span>`);
-  if (tags.length < 2 && d.signature) tags.push(`<span class="tag tag-amber">👑 signature</span>`);
-  if (tags.length < 2 && d.uncertain) tags.push(`<span class="tag tag-amber">🤔 not sure</span>`);
+  if (hits.length) tags.push(`<span class="tag tag-red">⚠ ${esc(hits[0])}</span>`);
+  for (const t of d.textures) {
+    if (tags.length >= 2) break;
+    const k = textureKey(t);
+    if (k && profile.avoid.includes(k)) continue;
+    tags.push(`<span class="tag tag-gray">${esc(textureLabel(t))}</span>`);
+  }
+  if (tags.length < 2 && d.vegetarian) tags.push(`<span class="tag tag-green">🌱 vegetarian</span>`);
   return tags.join("");
 }
 
 /* ---------------- state ---------------- */
-const order = new Map(); // id -> qty
+const order = new Map();
 let currentCat = "All";
-let streamed = []; // dishes revealed so far
+let menuDishes = [];
 let waiterMode = false;
-let waiterSeen = false; // guide banner shows until the user has switched to For waiter once
+let waiterSeen = false;
+let scanSource = "camera";
+let lastImages = [];
+let lastPreviewUrls = [];
+let analyzing = false;
 
 /* ---------------- navigation ---------------- */
 function go(name) {
@@ -890,16 +1021,58 @@ function go(name) {
   document.getElementById("s-" + name).classList.remove("hidden");
   document.getElementById("s-" + name).scrollTop = 0;
 }
-let scanSource = "camera"; // camera → mock 菜单纸；album → 真实菜单照片
 function startScan(src) {
   scanSource = src;
-  if (src === "album") startAnalyze(); // 从相册选：跳过取景，直接进识别
+  if (src === "album") pickAlbum();
   else go("camera");
 }
+function pickAlbum() {
+  const input = document.getElementById("albumInput");
+  if (!input) return;
+  input.value = "";
+  input.click();
+}
+function clearPreviewUrls() {
+  for (const u of lastPreviewUrls) {
+    try { URL.revokeObjectURL(u); } catch {}
+  }
+  lastPreviewUrls = [];
+}
+function renderThumbPreview(urls) {
+  const thumb = document.getElementById("anaThumb");
+  if (!urls?.length) {
+    thumb.textContent = "川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……";
+    return;
+  }
+  if (urls.length === 1) {
+    thumb.innerHTML = `<img src="${urls[0]}" alt="Menu photo">`;
+    return;
+  }
+  thumb.innerHTML =
+    `<div class="thumb-strip">${urls.map((u, i) =>
+      `<div class="tpage"><img src="${u}" alt="Page ${i + 1}"><span class="pg">${i + 1}/${urls.length}</span></div>`
+    ).join("")}</div>` +
+    `<div class="thumb-meta">${urls.length} pages selected</div>`;
+}
 function showOrig() {
-  document.getElementById("orig-paper").classList.toggle("hidden", scanSource === "album");
-  document.getElementById("orig-photo").classList.toggle("hidden", scanSource !== "album");
+  const paper = document.getElementById("orig-paper");
+  const gallery = document.getElementById("orig-gallery");
+  const urls = lastPreviewUrls.length ? lastPreviewUrls : lastImages;
+  const hasAlbum = scanSource === "album" && urls.length > 0;
+  paper.classList.toggle("hidden", hasAlbum);
+  gallery.classList.toggle("hidden", !hasAlbum);
+  if (hasAlbum) {
+    gallery.innerHTML = urls.map((u, i) =>
+      `<img src="${u}" alt="Menu page ${i + 1}">`
+    ).join("");
+  } else {
+    gallery.innerHTML = "";
+  }
   document.getElementById("orig-mask").classList.remove("hidden");
+}
+function closeOrig(ev) {
+  if (ev && ev.target !== document.getElementById("orig-mask") && ev.target?.tagName !== "BUTTON") return;
+  document.getElementById("orig-mask").classList.add("hidden");
 }
 
 /* ---------------- profile sheet ---------------- */
@@ -943,36 +1116,253 @@ function closeSheet(save) {
   if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
 }
 
-/* ---------------- analyze flow (mock streaming) ---------------- */
-function startAnalyze() {
-  const thumb = document.getElementById("anaThumb");
-  if (scanSource === "album") thumb.innerHTML = `<img src="real-menu-mawangzi.jpg" alt="Menu photo">`;
-  else thumb.textContent = "川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……";
-  go("analyzing");
-  const set = (id, cls, txt) => { const s = document.getElementById(id); s.className = "step " + cls; s.querySelector(".st").textContent = txt; };
-  set("st1","doing","reading…"); set("st2","","waiting"); set("st3","","waiting");
-  setTimeout(() => { set("st1","done","done ✓"); set("st2","doing","translating…"); }, 900);
-  setTimeout(() => { set("st2","done","done ✓"); set("st3","doing","checking…"); }, 1800);
-  setTimeout(() => { set("st3","done","done ✓"); beginStream(); }, 2400);
+/* ---------------- analyze flow ---------------- */
+function setStep(id, cls, txt) {
+  const s = document.getElementById(id);
+  s.className = "step " + cls;
+  s.querySelector(".st").textContent = txt;
 }
-function beginStream() {
-  /* whole-menu reveal: analysis done → present the entire decoded menu at once
-     (cards cascade in within ~0.6s via per-card animation-delay — feels like
-     "here is your whole menu", not dishes trickling in one by one) */
-  streamed = DISHES.slice(); currentCat = "All"; foldOpen = false;
-  document.getElementById("restoName").textContent = scanSource === "album" ? "Ma Wang Zi 马旺子" : "Chuanla Kitchen 川辣小馆";
-  document.getElementById("dishCount").textContent = DISHES.length;
-  renderCats(); renderList(true);
+function setAnaCount(n) {
+  document.getElementById("anaCount").textContent = String(n);
+}
+function showAnalyzeError(code) {
+  analyzing = false;
+  document.getElementById("analFoot")?.classList.add("hidden");
+  const err = document.getElementById("analErr");
+  if (err) {
+    err.classList.remove("hidden");
+    err.textContent = ERROR_COPY[code] || ERROR_COPY.upstream_error;
+  }
+  const retry = document.getElementById("analRetry");
+  if (retry) {
+    retry.classList.remove("hidden");
+    retry.style.display = "block";
+  }
+  setStep("st1", "done", "done ✓");
+  setStep("st2", "", "failed");
+  setStep("st3", "", "—");
+}
+function clearAnalyzeError() {
+  document.getElementById("analFoot")?.classList.remove("hidden");
+  const err = document.getElementById("analErr");
+  if (err) {
+    err.classList.add("hidden");
+    err.textContent = "";
+  }
+  const retry = document.getElementById("analRetry");
+  if (retry) {
+    retry.classList.add("hidden");
+    retry.style.display = "none";
+  }
+}
+
+async function compressBlob(blob) {
+  const bitmap = await createImageBitmap(blob);
+  const scale = Math.min(1, 1568 / Math.max(bitmap.width, bitmap.height));
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+  bitmap.close?.();
+  return canvas.toDataURL("image/jpeg", 0.8);
+}
+async function compressImageFromUrl(url) {
+  const res = await fetch(url);
+  return compressBlob(await res.blob());
+}
+async function compressFiles(files) {
+  const list = [...files].slice(0, 9);
+  const out = [];
+  for (const file of list) {
+    if (!file || !String(file.type || "").startsWith("image/")) continue;
+    out.push(await compressBlob(file));
+  }
+  return out;
+}
+
+async function startAnalyze(images) {
+  if (analyzing) return;
+  clearAnalyzeError();
+  if (scanSource === "album") {
+    renderThumbPreview(lastPreviewUrls.length ? lastPreviewUrls : (images || lastImages));
+  } else {
+    renderThumbPreview([]);
+  }
+  setAnaCount(0);
+  setStep("st1", "doing", "reading…");
+  setStep("st2", "", "waiting");
+  setStep("st3", "", "waiting");
+  go("analyzing");
+  analyzing = true;
+  order.clear();
+  menuDishes = [];
+
+  if (scanSource === "camera" && !images?.length) {
+    await runDemoAnalyze();
+    return;
+  }
+  try {
+    lastImages = images?.length ? images : lastImages;
+    if (!lastImages.length) {
+      showAnalyzeError("invalid_images");
+      return;
+    }
+    await streamDishes(lastImages);
+  } catch {
+    showAnalyzeError("upstream_error");
+  }
+}
+
+async function onAlbumSelected(ev) {
+  const files = ev.target?.files;
+  if (!files || !files.length) return;
+  scanSource = "album";
+  clearPreviewUrls();
+  lastPreviewUrls = [...files].slice(0, 9).map((f) => URL.createObjectURL(f));
+  try {
+    const images = await compressFiles(files);
+    if (!images.length) {
+      go("analyzing");
+      showAnalyzeError("invalid_images");
+      return;
+    }
+    await startAnalyze(images);
+  } catch {
+    go("analyzing");
+    showAnalyzeError("invalid_images");
+  }
+}
+
+function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
+
+async function runDemoAnalyze() {
+  setStep("st1", "doing", "reading…");
+  await sleep(700);
+  setStep("st1", "done", "done ✓");
+  setStep("st2", "doing", "translating…");
+  let n = 0;
+  for (const raw of DEMO_DISHES) {
+    await sleep(90);
+    n += 1;
+    setAnaCount(n);
+    if (n === 4) {
+      setStep("st2", "done", "done ✓");
+      setStep("st3", "doing", "checking…");
+    }
+  }
+  setStep("st3", "done", "done ✓");
+  await sleep(280);
+  presentMenu(DEMO_DISHES.map(normalizeDish), "Chuanla Kitchen 川辣小馆");
+}
+
+async function streamDishes(images) {
+  setStep("st1", "doing", "reading…");
+  const res = await fetch("/api/analyze", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ images }),
+  });
+  if (res.status === 400) {
+    let code = "invalid_images";
+    try { const j = await res.json(); if (j && j.code) code = j.code; } catch {}
+    showAnalyzeError(code);
+    return;
+  }
+  if (!res.ok || !res.body) {
+    showAnalyzeError("upstream_error");
+    return;
+  }
+
+  setStep("st1", "done", "done ✓");
+  setStep("st2", "doing", "translating…");
+
+  const collected = [];
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buf = "";
+  let sawDone = false;
+  let failed = false;
+
+  while (true) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    buf += decoder.decode(value, { stream: true });
+    const lines = buf.split("\n");
+    buf = lines.pop() || "";
+    for (const line of lines) {
+      if (!line.trim()) continue;
+      let ev;
+      try { ev = JSON.parse(line); } catch { continue; }
+      if (ev.type === "dish" && ev.data) {
+        collected.push(normalizeDish(ev.data));
+        setAnaCount(collected.length);
+        if (collected.length === 1) {
+          setStep("st2", "done", "done ✓");
+          setStep("st3", "doing", "checking…");
+        }
+      } else if (ev.type === "error") {
+        failed = true;
+        showAnalyzeError(ev.code || "upstream_error");
+        try { reader.cancel(); } catch {}
+        return;
+      } else if (ev.type === "done") {
+        sawDone = true;
+      }
+    }
+  }
+  if (buf.trim() && !failed) {
+    try {
+      const ev = JSON.parse(buf);
+      if (ev.type === "dish" && ev.data) collected.push(normalizeDish(ev.data));
+      if (ev.type === "error") { showAnalyzeError(ev.code || "upstream_error"); return; }
+      if (ev.type === "done") sawDone = true;
+    } catch {}
+  }
+  if (failed) return;
+  if (!collected.length && !sawDone) {
+    showAnalyzeError("upstream_error");
+    return;
+  }
+  setAnaCount(collected.length);
+  setStep("st2", "done", "done ✓");
+  setStep("st3", "done", "done ✓");
+  await sleep(220);
+  presentMenu(collected, scanSource === "album" ? "Your menu" : "Ma Wang Zi 马旺子");
+}
+
+function presentMenu(dishes, restoName) {
+  analyzing = false;
+  menuDishes = dishes.slice();
+  currentCat = "All";
+  foldOpen = false;
+  document.getElementById("restoName").textContent = restoName;
+  const meta = document.querySelector(".resto-bar .m");
+  if (meta) {
+    const pages = lastImages.length > 1 ? `${lastImages.length} pages · ` : "";
+    meta.innerHTML = `${pages}<span id="dishCount">${menuDishes.length}</span> dishes`;
+  } else {
+    document.getElementById("dishCount").textContent = menuDishes.length;
+  }
+  renderCats();
+  renderList(true);
   go("list");
 }
 
 /* ---------------- list rendering ---------------- */
+function categoryOrder(dishes) {
+  const seen = [];
+  for (const d of dishes) {
+    const c = d.category || "Other";
+    if (!seen.includes(c)) seen.push(c);
+  }
+  return seen;
+}
 function renderCats() {
-  const count = c => c === "All" ? streamed.length
-    : c === "⭐ Signature" ? streamed.filter(d => d.signature).length
-    : streamed.filter(d => d.cat === c).length;
-  document.getElementById("cats").innerHTML = CATS.filter(c => count(c) > 0).map(c =>
-    `<button class="cat ${c===currentCat?"on":""}" onclick="setCat('${c}')">${c}<i>${count(c)}</i></button>`).join("");
+  const cats = ["All", ...categoryOrder(menuDishes)];
+  const count = (c) => c === "All" ? menuDishes.length : menuDishes.filter((d) => (d.category || "Other") === c).length;
+  document.getElementById("cats").innerHTML = cats.filter((c) => count(c) > 0).map((c) =>
+    `<button class="cat ${c === currentCat ? "on" : ""}" onclick="setCat(${JSON.stringify(c)})">${esc(c)}<i>${count(c)}</i></button>`
+  ).join("");
 }
 function setCat(c) { currentCat = c; renderCats(); renderList(); }
 
@@ -983,15 +1373,17 @@ function speak(cn, ev) {
 }
 function pcardHTML(d, i = 0, stagger = false) {
   const inOrder = order.get(d.id) || 0;
+  const p = parsePrice(d.price);
+  const pl = priceLabel(d.price);
   return `<div class="pcard" style="--d:${stagger ? Math.min(i, 14) * 40 : 0}ms" onclick="openDetail(${d.id})">
     ${inOrder ? `<span class="qty-badge">×${inOrder}</span>` : ""}
-    <button class="addbtn ${inOrder?"in":""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>
+    <button class="addbtn ${inOrder ? "in" : ""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>
     <div class="pcard-top">
       <div>
-        <div class="name">${d.emoji} ${d.name}</div>
-        <div class="cn">${d.nameCn} · ${d.pinyin} <button class="speak" onclick="speak('${d.nameCn}',event)">🔊</button></div>
+        <div class="name">${dishEmoji(d)} ${esc(d.name)}</div>
+        <div class="cn">${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""} <button class="speak" onclick="speak(${JSON.stringify(d.nameCn)},event)">🔊</button></div>
       </div>
-      <div class="right price-dual"><b>≈ $${usdN(d.price)}</b><br><span>¥${d.price}</span>
+      <div class="right price-dual"><b>≈ $${usdN(p)}</b><br><span>¥${esc(pl)}</span>
         <div class="chili">${d.spicy ? "🌶".repeat(d.spicy) : `<span class="ns">not spicy</span>`}</div>
       </div>
     </div>
@@ -1001,75 +1393,67 @@ function pcardHTML(d, i = 0, stagger = false) {
 let foldOpen = false;
 function toggleFold() { foldOpen = !foldOpen; renderList(); }
 function renderList(stagger = false) {
-  const pool = streamed.filter(d => currentCat === "All" || (currentCat === "⭐ Signature" ? d.signature : d.cat === currentCat));
+  const pool = menuDishes.filter((d) => currentCat === "All" || (d.category || "Other") === currentCat);
   const shown = [], folded = [];
   for (const d of pool) (personalHits(d).length ? folded : shown).push(d);
   let idx = 0, html = "";
   if (currentCat === "All") {
-    /* All = whole menu, grouped with section headers (standard categories + original CN label) */
-    for (const c of CATS) {
-      if (c === "All" || c === "⭐ Signature") continue;
-      const grp = shown.filter(d => d.cat === c);
+    for (const c of categoryOrder(menuDishes)) {
+      const grp = shown.filter((d) => (d.category || "Other") === c);
       if (!grp.length) continue;
-      html += `<div class="sechead" style="--d:${stagger ? idx * 40 : 0}ms"><b>${c}</b><span>${grp[0].catOriginal || ""}</span></div>`;
-      html += grp.map(d => pcardHTML(d, ++idx, stagger)).join("");
+      html += `<div class="sechead" style="--d:${stagger ? idx * 40 : 0}ms"><b>${esc(c)}</b><span></span></div>`;
+      html += grp.map((d) => pcardHTML(d, ++idx, stagger)).join("");
     }
   } else {
-    html = shown.map(d => pcardHTML(d, idx++, stagger)).join("");
+    html = shown.map((d) => pcardHTML(d, idx++, stagger)).join("");
   }
   document.getElementById("cards").innerHTML = html;
   const fb = document.getElementById("foldBar"), fw = document.getElementById("foldedCards");
   if (folded.length) {
     fb.classList.remove("hidden");
     const reasons = [...new Set(folded.flatMap(personalHits))].join(" · ");
-    fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${reasons} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
+    fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${esc(reasons)} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
     fw.classList.toggle("hidden", !foldOpen);
-    fw.innerHTML = foldOpen ? folded.map(d => pcardHTML(d)).join("") : "";
+    fw.innerHTML = foldOpen ? folded.map((d) => pcardHTML(d)).join("") : "";
   } else { fb.classList.add("hidden"); fw.classList.add("hidden"); fw.innerHTML = ""; }
   renderCartBar();
 }
 
 /* ---------------- detail ---------------- */
-function flavorBarHTML(label, v) {
-  return `<div class="fbar"><span class="fl">${label}</span><span class="ft"><i style="width:${v * 10}%"></i></span><span class="fv">${v}</span></div>`;
-}
 function openDetail(id) {
-  const d = DISHES.find(x => x.id === id);
+  const d = menuDishes.find((x) => x.id === id);
+  if (!d) return;
   const hits = personalHits(d);
   const qty = order.get(id) || 0;
-  const LVL = { contains: `<span class="tag tag-red lvl">contains</span>`, may: `<span class="tag tag-amber lvl">may contain</span>` };
+  const p = parsePrice(d.price);
+  const pl = priceLabel(d.price);
+  const LVL = {
+    contains: `<span class="tag tag-red lvl">contains</span>`,
+    may_contain: `<span class="tag tag-amber lvl">may contain</span>`,
+  };
   const sheet = document.getElementById("detail-sheet");
   const keepScroll = !sheet.classList.contains("hidden") ? sheet.scrollTop : 0;
   sheet.innerHTML = `
     <div class="grabber"></div>
     <button class="dclose" onclick="closeDetail()" aria-label="Close">✕</button>
-    <div class="hero">${d.emoji}</div>
-    <div class="dname">${d.name}</div>
-    <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak('${d.nameCn}',event)">🔊</button></div>
-    ${d.cuisine ? `<div class="dcuisine">${d.cuisine}</div>` : ""}
-    <div class="dprice price-dual"><b>≈ $${usdN(d.price)}</b> <span>· ¥${d.price} on menu</span></div>
-    ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
-    ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${hits.join(", ")}</div>` : ""}
-    <div class="quote">${d.desc}</div>
-    ${d.flavorBars ? `<div class="dsec"><div class="gt">Flavor</div>
-      ${flavorBarHTML("🌶 Spicy", d.flavorBars.spicy)}
-      ${flavorBarHTML("⚡ Numbing 麻", d.flavorBars.numbing)}
-      ${flavorBarHTML("🛢 Richness", d.flavorBars.richness)}
-    </div>` : ""}
+    <div class="hero">${dishEmoji(d)}</div>
+    <div class="dname">${esc(d.name)}</div>
+    <div class="dcn">${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak(${JSON.stringify(d.nameCn)},event)">🔊</button></div>
+    <div class="dprice price-dual"><b>≈ $${usdN(p)}</b> <span>· ¥${esc(pl)} on menu</span></div>
+    ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${esc(hits.join(", "))}</div>` : ""}
+    ${d.description ? `<div class="quote">${esc(d.description)}</div>` : ""}
+    ${d.spicy ? `<div class="dsec"><div class="gt">Heat</div><div class="ing-chips"><span class="ing">${"🌶".repeat(d.spicy)} ${["","Mild","Medium","Hot"][d.spicy]}</span></div></div>` : ""}
     <div class="dsec"><div class="gt">Main ingredients</div>
-      <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${i}</span>`).join("")}</div></div>
+      <div class="ing-chips">${d.ingredients.length ? d.ingredients.map((i) => `<span class="ing">${esc(i)}</span>`).join("") : `<span class="ing" style="color:var(--muted)">Not listed</span>`}</div></div>
     <div class="dsec"><div class="gt">Allergens</div>
-      ${d.allergens.length ? d.allergens.map(a => `<div class="allergen-row">${ALLERGEN_LABEL[a.t]} ${LVL[a.l]}</div>`).join("") : `<div class="allergen-row" style="color:var(--muted)">None flagged for the typical recipe</div>`}
+      ${d.allergens.length ? d.allergens.map((a) => `<div class="allergen-row">${esc(ALLERGEN_LABEL[a.type] || a.type)} ${LVL[a.level] || LVL.contains}</div>`).join("") : `<div class="allergen-row" style="color:var(--muted)">None flagged for the typical recipe</div>`}
     </div>
-    ${d.textures.length || (d.hiddenRisks||[]).length ? `<div class="dsec"><div class="gt">Heads-up</div>
-      <div class="ing-chips">${d.textures.map(t => `<span class="ing">${GENERIC_TAG[t]}</span>`).join("")}
-      ${(d.hiddenRisks||[]).map(h => `<span class="ing">${HIDDEN_RISK_LABEL[h] || h}</span>`).join("")}</div></div>` : ""}
-    ${d.story || d.howToEat ? `<div class="dsec"><div class="gt">The story</div>
-      ${d.story ? `<p class="story">${d.story}</p>` : ""}
-      ${d.howToEat ? `<p class="story"><b>How to eat:</b> ${d.howToEat}</p>` : ""}</div>` : ""}
+    ${d.textures.length ? `<div class="dsec"><div class="gt">Heads-up</div>
+      <div class="ing-chips">${d.textures.map((t) => `<span class="ing">${esc(textureLabel(t))}</span>`).join("")}</div></div>` : ""}
+    ${d.story ? `<div class="dsec"><div class="gt">The story</div><p class="story">${esc(d.story)}</p></div>` : ""}
     <div class="detail-cta">
       ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
-            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈ $${usdN(d.price)}</button>`}
+            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈ $${usdN(p)}</button>`}
     </div>`;
   document.getElementById("detail-mask").classList.remove("hidden");
   sheet.classList.remove("hidden");
@@ -1087,71 +1471,75 @@ function addToOrder(id, delta) {
   if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
   renderCartBar();
 }
-function orderTotal() { let t = 0; for (const [id,q] of order) t += DISHES.find(d => d.id === id).price * q; return t; }
+function findDish(id) { return menuDishes.find((d) => d.id === id); }
+function orderTotal() {
+  let t = 0;
+  for (const [id, q] of order) {
+    const d = findDish(id);
+    if (d) t += parsePrice(d.price) * q;
+  }
+  return t;
+}
 function renderCartBar() {
-  /* persistent bar — always visible on the list so "My Order" is one tap away */
-  const n = [...order.values()].reduce((a,b) => a+b, 0);
+  const n = [...order.values()].reduce((a, b) => a + b, 0);
   const sum = document.getElementById("cartSum");
   if (!n) sum.innerHTML = `<span style="opacity:.72">Pick dishes to build your order</span>`;
-  else sum.textContent = `🧾 ${n} dish${n>1?"es":""} · ≈ $${usdN(orderTotal())} · ¥${orderTotal()}`;
+  else sum.textContent = `🧾 ${n} dish${n > 1 ? "es" : ""} · ≈ $${usdN(orderTotal())} · ¥${orderTotal()}`;
 }
 function openOrder() { waiterMode = false; renderOrder(); go("order"); }
 function renderOrder() {
-  const items = [...order.entries()].map(([id,q]) => ({ d: DISHES.find(x => x.id === id), q }));
+  const items = [...order.entries()].map(([id, q]) => ({ d: findDish(id), q })).filter((x) => x.d);
   const el = document.getElementById("s-order");
   seedRequests();
   if (waiterMode) { waiterSeen = true; orderEditing = false; }
-  const n = items.reduce((a,x) => a + x.q, 0);
+  const n = items.reduce((a, x) => a + x.q, 0);
   const total = orderTotal();
-  const reqSel = REQ_DEFS.filter(r => requests.has(r.k));
-  const allergenEN = profile.allergens.map(a => ALLERGEN_LABEL[a]).join(", ");
-  const allergenCN = profile.allergens.map(a => ALLERGEN_CN[a]).join("、");
-  const avoidEN = profile.avoid.map(a => AVOID_LABEL[a]).join(", ");
-  const avoidCN = profile.avoid.map(a => AVOID_CN[a]).join("、");
+  const reqSel = REQ_DEFS.filter((r) => requests.has(r.k));
+  const allergenEN = profile.allergens.map((a) => ALLERGEN_LABEL[a] || a).join(", ");
+  const allergenCN = profile.allergens.map((a) => ALLERGEN_CN[a] || a).join("、");
+  const avoidEN = profile.avoid.map((a) => AVOID_LABEL[a] || a).join(", ");
+  const avoidCN = profile.avoid.map((a) => AVOID_CN[a] || a).join("、");
   const keepScroll = el.scrollTop;
-  /* bilingual card note — same block on both faces (user AND waiter read it) */
   const NOTE = `<div class="onote">🧾 <b>This is an order card — the guest's picks, translated into Chinese.</b>这是一张点菜卡：顾客已选好以上菜品，请您确认后下单，谢谢！</div>`;
 
-  /* §2 dishes — one container card with its own empty state; total is a small
-     footnote (it's for the guest, not the waiter — dish names are the point) */
   const dishesEN = items.length
-    ? items.map(({d,q}) => `<div class="orow"><b>${d.emoji} ${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span class="price-dual"><span>≈ $${usdN(d.price*q)}</span></span></div>`).join("")
+    ? items.map(({ d, q }) => `<div class="orow"><b>${dishEmoji(d)} ${esc(d.name)}<small>${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""}</small></b><span class="q">×${q}</span><span class="price-dual"><span>≈ $${usdN(parsePrice(d.price) * q)}</span></span></div>`).join("")
       + `<div class="total-sm">Total ≈ $${usdN(total)} · ¥${total}</div>`
     : `<div class="sec-empty"><span class="e">🍽️</span>No dishes yet — browse the menu and tap ＋<br><button class="edit-btn" style="margin-top:10px" onclick="go('list')">Browse the menu</button></div>`;
   const dishesCN = items.length
-    ? items.map(({d,q}) => `<div class="orow"><b>${d.nameCn}<small>${d.name}</small></b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")
+    ? items.map(({ d, q }) => `<div class="orow"><b>${esc(d.nameCn)}<small>${esc(d.name)}</small></b><span class="q">×${q}</span><span>¥${parsePrice(d.price) * q}</span></div>`).join("")
       + `<div class="total-sm">合计 ¥${total}</div>`
     : `<div class="sec-empty"><span class="e">🍽️</span>还没有选菜</div>`;
 
-  /* §3 heads-up — allergy / avoid / requests / free note, each with its own
-     empty state; one Edit button governs the whole card */
-  const chipRow = (defs, group) => Object.entries(defs).map(([k, l]) =>
-    `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${l}</button>`).join("");
+  const chipRow = (defs, group) => Object.entries(defs)
+    .filter(([k]) => !["crustacean", "mollusk"].includes(k))
+    .map(([k, l]) =>
+      `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${esc(l)}</button>`
+    ).join("");
   const headsUpEN = orderEditing ? `
       <div class="chip-group"><div class="gt">Allergies</div><div class="chips">${chipRow(ALLERGEN_LABEL, "allergens")}</div></div>
       <div class="chip-group"><div class="gt">I'd rather avoid</div><div class="chips">${chipRow(AVOID_LABEL, "avoid")}</div></div>
-      <div class="chip-group"><div class="gt">Requests</div><div class="chips">${REQ_DEFS.map(r => `<button class="chip ${requests.has(r.k)?"on":""}" onclick="toggleReq('${r.k}')">${r.en}</button>`).join("")}</div></div>
-      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${customNote.replace(/"/g,"&quot;")}" onchange="customNote=this.value"></div>
+      <div class="chip-group"><div class="gt">Requests</div><div class="chips">${REQ_DEFS.map((r) => `<button class="chip ${requests.has(r.k) ? "on" : ""}" onclick="toggleReq('${r.k}')">${r.en}</button>`).join("")}</div></div>
+      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${esc(customNote)}" onchange="customNote=this.value"></div>
     ` : `
-      <div class="note-row danger"><span class="k">⚠️ Allergies</span><span class="v ${allergenEN?"":"none"}">${allergenEN || "None set — tap Edit"}</span></div>
-      <div class="note-row"><span class="k">🙅 Avoid</span><span class="v ${avoidEN?"":"none"}">${avoidEN || "Nothing marked"}</span></div>
-      <div class="note-row"><span class="k">📝 Requests</span><span class="v ${reqSel.length?"":"none"}">${reqSel.map(r => r.en.replace(/^\S+ /, "")).join(" · ") || "No requests"}</span></div>
-      ${customNote ? `<div class="note-row"><span class="k">💬 Note</span><span class="v">${customNote}</span></div>` : ""}
+      <div class="note-row danger"><span class="k">⚠️ Allergies</span><span class="v ${allergenEN ? "" : "none"}">${esc(allergenEN) || "None set — tap Edit"}</span></div>
+      <div class="note-row"><span class="k">🙅 Avoid</span><span class="v ${avoidEN ? "" : "none"}">${esc(avoidEN) || "Nothing marked"}</span></div>
+      <div class="note-row"><span class="k">📝 Requests</span><span class="v ${reqSel.length ? "" : "none"}">${esc(reqSel.map((r) => r.en.replace(/^\S+ /, "")).join(" · ")) || "No requests"}</span></div>
+      ${customNote ? `<div class="note-row"><span class="k">💬 Note</span><span class="v">${esc(customNote)}</span></div>` : ""}
     `;
   const headsUpCN = `
-      <div class="note-row danger"><span class="k">⚠️ 过敏</span><span class="v ${allergenCN?"":"none"}">${allergenCN ? `我对<b>${allergenCN}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分` : "无"}</span></div>
-      <div class="note-row"><span class="k">🙅 忌口</span><span class="v ${avoidCN?"":"none"}">${avoidCN ? `尽量不要${avoidCN}` : "无"}</span></div>
-      <div class="note-row"><span class="k">📝 备注</span><span class="v ${(reqSel.length||customNote)?"":"none"}">${[reqSel.map(r => r.cn).join("；"), customNote].filter(Boolean).join("；另外：") || "无"}</span></div>
+      <div class="note-row danger"><span class="k">⚠️ 过敏</span><span class="v ${allergenCN ? "" : "none"}">${allergenCN ? `我对<b>${esc(allergenCN)}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分` : "无"}</span></div>
+      <div class="note-row"><span class="k">🙅 忌口</span><span class="v ${avoidCN ? "" : "none"}">${avoidCN ? `尽量不要${esc(avoidCN)}` : "无"}</span></div>
+      <div class="note-row"><span class="k">📝 备注</span><span class="v ${(reqSel.length || customNote) ? "" : "none"}">${esc([reqSel.map((r) => r.cn).join("；"), customNote].filter(Boolean).join("；另外：")) || "无"}</span></div>
     `;
 
   el.className = "screen" + (waiterMode ? " waiter" : "");
-  /* both faces render the SAME section order: greeting → dishes card → heads-up card → note */
   el.innerHTML = `
     <div class="topbar">
       <button class="back" onclick="go('list')">‹</button>
       <div class="otabs">
-        <button class="otab ${!waiterMode?"on":""}" onclick="waiterMode=false;renderOrder()">For me<span class="s">English · $</span></button>
-        <button class="otab ${waiterMode?"on":""}" onclick="waiterMode=true;renderOrder()">For waiter<span class="s">中文 · ¥</span></button>
+        <button class="otab ${!waiterMode ? "on" : ""}" onclick="waiterMode=false;renderOrder()">For me<span class="s">English · $</span></button>
+        <button class="otab ${waiterMode ? "on" : ""}" onclick="waiterMode=true;renderOrder()">For waiter<span class="s">中文 · ¥</span></button>
       </div>
     </div>
     ${!waiterMode && !waiterSeen ? `<div class="guide-banner" onclick="waiterMode=true;renderOrder()"><span>Done choosing? Switch to <b>For waiter</b> and hand your phone over</span><span class="arr">→</span></div>` : ""}
@@ -1275,7 +1663,8 @@ async function renderHomeMap() { // 首页迷你预览（静态，点击进全�
 
 /* ---------------- boot ---------------- */
 renderProfileStrip();
-setTimeout(renderHomeMap, 500); // 首页迷你食迹地图，空闲时加载
+setTimeout(renderHomeMap, 500); // 首页迷你食迹地图，空闲时加载renderProfileStrip();
+document.getElementById("albumInput")?.addEventListener("change", onAlbumSelected);
 if (!localStorage.getItem("ml.profile")) setTimeout(openSheet, 600); // first run: quick prefs, skippable
 </script>
 </body>

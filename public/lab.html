@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chopstory Lab · Prompt / Model Playground</title>
+<style>
+  :root {
+    --bg: #f4f0e6;
+    --panel: #fbf7ea;
+    --ink: #262019;
+    --ink-2: #4c4437;
+    --muted: #75695a;
+    --faint: #8f8270;
+    --line: #ddd0b8;
+    --hair: rgba(38,32,25,.18);
+    --accent: #b23a2f;
+    --accent-soft: #f5e3da;
+    --green: #5c7d46;
+    --green-bg: #e9edd8;
+    --warn: #8f6e1f;
+    --warn-bg: #f3e9c9;
+    --danger: #b23a2f;
+    --danger-bg: #f7e3de;
+    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", sans-serif;
+    --r: 8px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; min-height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.45;
+  }
+  button, input, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  a { color: var(--accent); }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 20;
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    padding: 12px 20px;
+    background: var(--panel);
+    border-bottom: 1.5px solid var(--ink);
+  }
+  .brand { font-weight: 700; letter-spacing: .02em; }
+  .brand span { color: var(--accent); }
+  .topbar .meta { color: var(--muted); font-size: 12px; }
+  .topbar .spacer { flex: 1; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 4px 10px; border-radius: 999px;
+    border: 1px solid var(--line); background: #fff;
+    font-size: 12px; color: var(--muted);
+  }
+  .pill.ok { border-color: var(--green); color: var(--green); background: var(--green-bg); }
+  .pill.bad { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(320px, 420px) 1fr;
+    gap: 0;
+    min-height: calc(100dvh - 53px);
+  }
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; }
+  }
+
+  .sidebar {
+    border-right: 1px solid var(--line);
+    background: var(--panel);
+    padding: 16px;
+    display: flex; flex-direction: column; gap: 14px;
+    max-height: calc(100dvh - 53px);
+    overflow: auto;
+  }
+  .main {
+    padding: 16px 20px 40px;
+    max-height: calc(100dvh - 53px);
+    overflow: auto;
+  }
+
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label {
+    font-size: 11px; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  input[type="text"], input[type="number"], select, textarea {
+    width: 100%;
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: var(--r);
+    padding: 8px 10px;
+    outline: none;
+  }
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--ink);
+  }
+  textarea {
+    min-height: 140px;
+    resize: vertical;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  textarea.system { min-height: 220px; }
+  .hint { font-size: 12px; color: var(--faint); }
+
+  .btn {
+    border: 1.5px solid var(--ink);
+    background: var(--ink);
+    color: #fbf7ea;
+    border-radius: var(--r);
+    padding: 10px 14px;
+    font-weight: 600;
+  }
+  .btn:hover { background: #3a3228; }
+  .btn:disabled { opacity: .45; cursor: not-allowed; }
+  .btn.ghost {
+    background: transparent; color: var(--ink);
+  }
+  .btn.ghost:hover { background: var(--accent-soft); }
+  .btn.danger {
+    background: transparent; color: var(--danger); border-color: var(--danger);
+  }
+  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
+  .actions .btn { flex: 1; min-width: 110px; }
+
+  .drop {
+    border: 1.5px dashed var(--line);
+    border-radius: var(--r);
+    background: #fff;
+    padding: 14px;
+    text-align: center;
+    color: var(--muted);
+    cursor: pointer;
+    transition: border-color .15s, background .15s;
+  }
+  .drop.drag { border-color: var(--accent); background: var(--accent-soft); }
+  .drop strong { color: var(--ink); display: block; margin-bottom: 4px; }
+  .thumbs {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
+  }
+  .thumb {
+    position: relative;
+    width: 72px; height: 72px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #eee;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .thumb .n {
+    position: absolute; left: 4px; top: 4px;
+    background: rgba(38,32,25,.85); color: #fff;
+    font-size: 10px; font-family: var(--mono);
+    padding: 1px 5px; border-radius: 4px;
+  }
+  .thumb button {
+    position: absolute; right: 2px; top: 2px;
+    width: 18px; height: 18px; border: 0; border-radius: 50%;
+    background: rgba(178,58,47,.95); color: #fff; font-size: 12px; line-height: 1;
+  }
+
+  .panel {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin-bottom: 14px;
+  }
+  .panel h2 {
+    margin: 0 0 10px;
+    font-size: 13px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+  }
+  .stat {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 10px 12px;
+    background: #fff;
+  }
+  .stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
+  .stat .v { font-family: var(--mono); font-size: 20px; font-weight: 700; margin-top: 4px; }
+  .stat .v.good { color: var(--green); }
+  .stat .v.warn { color: var(--warn); }
+
+  .empty {
+    border: 1.5px dashed var(--line);
+    border-radius: 10px;
+    padding: 48px 20px;
+    text-align: center;
+    color: var(--muted);
+    background: rgba(255,255,255,.4);
+  }
+
+  .tabs {
+    display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .tab {
+    border: 1px solid var(--line);
+    background: #fff;
+    border-radius: 999px;
+    padding: 6px 12px;
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .tab.active {
+    border-color: var(--ink);
+    background: var(--ink);
+    color: #fbf7ea;
+  }
+
+  .dish-list { display: flex; flex-direction: column; gap: 10px; }
+  .dish {
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--ink);
+    border-radius: 8px;
+    background: #fff;
+    padding: 12px 14px;
+  }
+  .dish .head {
+    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
+  }
+  .dish .id {
+    font-family: var(--mono); font-size: 12px; color: var(--faint);
+  }
+  .dish .name { font-weight: 700; font-size: 15px; }
+  .dish .name-cn { color: var(--ink-2); }
+  .dish .price {
+    margin-left: auto;
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .dish .pinyin { color: var(--muted); font-size: 12px; width: 100%; }
+  .dish .desc { margin-top: 6px; color: var(--ink-2); }
+  .dish .meta-row {
+    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
+  }
+  .tag {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--ink-2);
+  }
+  .tag.cat { border-color: var(--ink); }
+  .tag.spicy { background: var(--accent-soft); border-color: #e0b6ad; color: var(--accent); }
+  .tag.veg { background: var(--green-bg); border-color: #b8c9a7; color: var(--green); }
+  .tag.allergen { background: var(--danger-bg); border-color: #e2b8b1; color: var(--danger); }
+  .tag.texture { background: var(--warn-bg); border-color: #e0d3a2; color: var(--warn); }
+  .story {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--line);
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .raw {
+    font-family: var(--mono);
+    font-size: 12px;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #1d1a16;
+    color: #e8dfcf;
+    border-radius: 8px;
+    padding: 12px;
+    max-height: 60vh;
+    overflow: auto;
+  }
+  .log-line { margin: 0 0 4px; }
+  .log-line.err { color: #ff8f84; }
+  .log-line.meta { color: #9ecbff; }
+  .log-line.dish { color: #9ed39a; }
+  .status-bar {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    margin-bottom: 12px;
+  }
+  .spinner {
+    width: 14px; height: 14px;
+    border: 2px solid var(--line);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin .7s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .progress-text { color: var(--muted); font-family: var(--mono); font-size: 12px; }
+  .error-box {
+    background: var(--danger-bg);
+    border: 1px solid #e2b8b1;
+    color: var(--danger);
+    border-radius: 8px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    white-space: pre-wrap;
+  }
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Chopstory <span>Lab</span></div>
+    <div class="meta">Prompt · Model · Menu image playground</div>
+    <div class="spacer"></div>
+    <div id="keyPill" class="pill">checking API key…</div>
+    <a class="pill" href="/app.html">← Product UI</a>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="field">
+        <label>Model</label>
+        <select id="model"></select>
+        <div class="hint">Uses server-side GOOGLE_API_KEY. Production default is gemini-2.5-flash.</div>
+      </div>
+
+      <div class="row">
+        <div class="field">
+          <label>Temperature</label>
+          <input id="temperature" type="number" min="0" max="2" step="0.1" value="0.2">
+        </div>
+        <div class="field">
+          <label>Max tokens</label>
+          <input id="maxTokens" type="number" min="256" max="65536" step="256" value="8192">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>System prompt</label>
+        <textarea id="systemPrompt" class="system" spellcheck="false"></textarea>
+        <div class="actions">
+          <button type="button" class="btn ghost" id="resetSystem">Reset production prompt</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>User prompt (per page)</label>
+        <textarea id="userPrompt" spellcheck="false"></textarea>
+        <div class="actions">
+          <button type="button" class="btn ghost" id="resetUser">Reset default user prompt</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Test images (1–9)</label>
+        <div class="drop" id="drop">
+          <strong>Drop images or click to upload</strong>
+          <div class="hint">Same multi-page strategy as production: each page is a separate Gemini call.</div>
+          <input id="fileInput" type="file" accept="image/*" multiple hidden>
+        </div>
+        <div class="thumbs" id="thumbs"></div>
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn" id="runBtn">Run analysis</button>
+        <button type="button" class="btn danger" id="stopBtn" disabled>Stop</button>
+      </div>
+      <div class="hint">Results stream into the right panel. Timing includes first_dish_ms vs total_ms.</div>
+    </aside>
+
+    <main class="main">
+      <div id="emptyState" class="empty">
+        Upload a menu image, tweak the prompt / model, then Run.<br>
+        Useful for comparing quality, completeness, and latency.
+      </div>
+
+      <div id="resultView" hidden>
+        <div class="status-bar">
+          <div id="runSpinner" class="spinner" hidden></div>
+          <div id="runStatus" class="progress-text">Idle</div>
+        </div>
+        <div id="errorBox" class="error-box" hidden></div>
+
+        <div class="panel">
+          <h2>Timing & summary</h2>
+          <div class="stats">
+            <div class="stat"><div class="k">Model</div><div class="v" id="statModel">—</div></div>
+            <div class="stat"><div class="k">Dishes</div><div class="v" id="statDishes">0</div></div>
+            <div class="stat"><div class="k">First dish</div><div class="v" id="statFirst">—</div></div>
+            <div class="stat"><div class="k">Total</div><div class="v" id="statTotal">—</div></div>
+            <div class="stat"><div class="k">Raw chars</div><div class="v" id="statRaw">0</div></div>
+            <div class="stat"><div class="k">Images</div><div class="v" id="statImages">0</div></div>
+          </div>
+        </div>
+
+        <div class="tabs">
+          <button type="button" class="tab active" data-tab="dishes">Dishes</button>
+          <button type="button" class="tab" data-tab="raw">Raw stream</button>
+          <button type="button" class="tab" data-tab="events">Events log</button>
+        </div>
+
+        <div id="tab-dishes" class="dish-list"></div>
+        <div id="tab-raw" class="raw" hidden></div>
+        <div id="tab-events" class="raw" hidden></div>
+      </div>
+    </main>
+  </div>
+
+<script>
+(() => {
+  const MAX_IMAGES = 9;
+  const $ = (id) => document.getElementById(id);
+
+  const els = {
+    model: $("model"),
+    temperature: $("temperature"),
+    maxTokens: $("maxTokens"),
+    systemPrompt: $("systemPrompt"),
+    userPrompt: $("userPrompt"),
+    resetSystem: $("resetSystem"),
+    resetUser: $("resetUser"),
+    drop: $("drop"),
+    fileInput: $("fileInput"),
+    thumbs: $("thumbs"),
+    runBtn: $("runBtn"),
+    stopBtn: $("stopBtn"),
+    keyPill: $("keyPill"),
+    emptyState: $("emptyState"),
+    resultView: $("resultView"),
+    runSpinner: $("runSpinner"),
+    runStatus: $("runStatus"),
+    errorBox: $("errorBox"),
+    statModel: $("statModel"),
+    statDishes: $("statDishes"),
+    statFirst: $("statFirst"),
+    statTotal: $("statTotal"),
+    statRaw: $("statRaw"),
+    statImages: $("statImages"),
+    tabDishes: $("tab-dishes"),
+    tabRaw: $("tab-raw"),
+    tabEvents: $("tab-events"),
+  };
+
+  let defaults = {
+    models: ["gemini-2.5-flash"],
+    defaultModel: "gemini-2.5-flash",
+    systemPrompt: "",
+    userPrompt: "",
+  };
+  let images = []; // { name, dataUrl }
+  let abortCtrl = null;
+  let dishes = [];
+  let rawText = "";
+  let eventLog = [];
+
+  function fmtMs(ms) {
+    if (ms == null || Number.isNaN(ms)) return "—";
+    if (ms < 1000) return `${ms}ms`;
+    return `${(ms / 1000).toFixed(1)}s`;
+  }
+
+  function setTab(name) {
+    document.querySelectorAll(".tab").forEach((t) => {
+      t.classList.toggle("active", t.dataset.tab === name);
+    });
+    els.tabDishes.hidden = name !== "dishes";
+    els.tabRaw.hidden = name !== "raw";
+    els.tabEvents.hidden = name !== "events";
+  }
+
+  document.querySelectorAll(".tab").forEach((t) => {
+    t.addEventListener("click", () => setTab(t.dataset.tab));
+  });
+
+  function renderThumbs() {
+    els.thumbs.innerHTML = "";
+    images.forEach((img, i) => {
+      const d = document.createElement("div");
+      d.className = "thumb";
+      d.innerHTML = `<span class="n">${i + 1}</span><img alt=""><button type="button" title="Remove">×</button>`;
+      d.querySelector("img").src = img.dataUrl;
+      d.querySelector("button").onclick = () => {
+        images.splice(i, 1);
+        renderThumbs();
+      };
+      els.thumbs.appendChild(d);
+    });
+  }
+
+  function fileToDataUrl(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  async function compressToDataUrl(file, maxSide = 1600, quality = 0.82) {
+    const dataUrl = await fileToDataUrl(file);
+    if (!file.type.startsWith("image/") || file.type === "image/gif") return dataUrl;
+    const img = new Image();
+    await new Promise((res, rej) => {
+      img.onload = res;
+      img.onerror = rej;
+      img.src = dataUrl;
+    });
+    let { width, height } = img;
+    const scale = Math.min(1, maxSide / Math.max(width, height));
+    width = Math.round(width * scale);
+    height = Math.round(height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(img, 0, 0, width, height);
+    return canvas.toDataURL("image/jpeg", quality);
+  }
+
+  async function addFiles(fileList) {
+    const files = Array.from(fileList || []).filter((f) => f.type.startsWith("image/"));
+    for (const f of files) {
+      if (images.length >= MAX_IMAGES) break;
+      const dataUrl = await compressToDataUrl(f);
+      images.push({ name: f.name, dataUrl });
+    }
+    renderThumbs();
+  }
+
+  els.drop.addEventListener("click", () => els.fileInput.click());
+  els.fileInput.addEventListener("change", async (e) => {
+    await addFiles(e.target.files);
+    els.fileInput.value = "";
+  });
+  ["dragenter", "dragover"].forEach((ev) => {
+    els.drop.addEventListener(ev, (e) => {
+      e.preventDefault();
+      els.drop.classList.add("drag");
+    });
+  });
+  ["dragleave", "drop"].forEach((ev) => {
+    els.drop.addEventListener(ev, (e) => {
+      e.preventDefault();
+      els.drop.classList.remove("drag");
+    });
+  });
+  els.drop.addEventListener("drop", async (e) => {
+    await addFiles(e.dataTransfer?.files);
+  });
+
+  function renderDish(d) {
+    const tags = [];
+    if (d.category) tags.push(`<span class="tag cat">${esc(d.category)}</span>`);
+    if (d.spicy > 0) tags.push(`<span class="tag spicy">spicy ${d.spicy}</span>`);
+    if (d.vegetarian) tags.push(`<span class="tag veg">vegetarian</span>`);
+    (d.allergens || []).forEach((a) => {
+      tags.push(`<span class="tag allergen">${esc(a.type)} · ${esc(a.level)}</span>`);
+    });
+    (d.textures || []).forEach((t) => tags.push(`<span class="tag texture">${esc(t)}</span>`));
+    (d.ingredients || []).forEach((t) => tags.push(`<span class="tag">${esc(t)}</span>`));
+
+    return `<article class="dish">
+      <div class="head">
+        <span class="id">#${d.id}</span>
+        <span class="name">${esc(d.name || "")}</span>
+        <span class="name-cn">${esc(d.nameCn || "")}</span>
+        ${d.price ? `<span class="price">${esc(d.price)}</span>` : ""}
+        ${d.pinyin ? `<div class="pinyin">${esc(d.pinyin)}</div>` : ""}
+      </div>
+      ${d.description ? `<div class="desc">${esc(d.description)}</div>` : ""}
+      <div class="meta-row">${tags.join("")}</div>
+      ${d.story ? `<div class="story">${esc(d.story)}</div>` : ""}
+    </article>`;
+  }
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function appendEvent(kind, text) {
+    eventLog.push({ kind, text });
+    const line = document.createElement("div");
+    line.className = `log-line ${kind}`;
+    line.textContent = text;
+    els.tabEvents.appendChild(line);
+    els.tabEvents.scrollTop = els.tabEvents.scrollHeight;
+  }
+
+  function resetResultUi() {
+    dishes = [];
+    rawText = "";
+    eventLog = [];
+    els.emptyState.hidden = true;
+    els.resultView.hidden = false;
+    els.errorBox.hidden = true;
+    els.errorBox.textContent = "";
+    els.tabDishes.innerHTML = "";
+    els.tabRaw.textContent = "";
+    els.tabEvents.innerHTML = "";
+    els.statModel.textContent = els.model.value || "—";
+    els.statDishes.textContent = "0";
+    els.statFirst.textContent = "—";
+    els.statTotal.textContent = "—";
+    els.statRaw.textContent = "0";
+    els.statImages.textContent = String(images.length);
+    els.statFirst.className = "v";
+    els.statTotal.className = "v";
+    setTab("dishes");
+  }
+
+  function setRunning(on) {
+    els.runBtn.disabled = on;
+    els.stopBtn.disabled = !on;
+    els.runSpinner.hidden = !on;
+  }
+
+  async function run() {
+    if (!images.length) {
+      alert("Please upload at least one menu image.");
+      return;
+    }
+    if (abortCtrl) abortCtrl.abort();
+    abortCtrl = new AbortController();
+    resetResultUi();
+    setRunning(true);
+    els.runStatus.textContent = "Starting…";
+
+    const body = {
+      images: images.map((i) => i.dataUrl),
+      model: els.model.value,
+      systemPrompt: els.systemPrompt.value,
+      userPrompt: els.userPrompt.value,
+      temperature: Number(els.temperature.value),
+      maxOutputTokens: Number(els.maxTokens.value),
+    };
+
+    let firstDishMs = null;
+    try {
+      const res = await fetch("/api/lab", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+        signal: abortCtrl.signal,
+      });
+
+      if (!res.ok) {
+        let msg = `HTTP ${res.status}`;
+        try {
+          const j = await res.json();
+          msg = j.message || j.code || msg;
+        } catch {}
+        throw new Error(msg);
+      }
+      if (!res.body) throw new Error("empty response body");
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buf = "";
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        let nl;
+        while ((nl = buf.indexOf("\n")) >= 0) {
+          const line = buf.slice(0, nl).trim();
+          buf = buf.slice(nl + 1);
+          if (!line) continue;
+          let ev;
+          try { ev = JSON.parse(line); } catch { continue; }
+          handleEvent(ev);
+        }
+      }
+      if (buf.trim()) {
+        try { handleEvent(JSON.parse(buf.trim())); } catch {}
+      }
+    } catch (err) {
+      if (err?.name === "AbortError") {
+        els.runStatus.textContent = "Stopped";
+        appendEvent("err", "aborted by user");
+      } else {
+        const msg = err?.message || String(err);
+        els.errorBox.hidden = false;
+        els.errorBox.textContent = msg;
+        els.runStatus.textContent = "Failed";
+        appendEvent("err", msg);
+      }
+    } finally {
+      setRunning(false);
+      abortCtrl = null;
+      if (els.runStatus.textContent === "Starting…") {
+        els.runStatus.textContent = "Finished";
+      }
+    }
+
+    function handleEvent(ev) {
+      if (ev.type === "meta") {
+        els.statModel.textContent = ev.model || "—";
+        els.statImages.textContent = String(ev.imageCount ?? images.length);
+        els.runStatus.textContent = `Running ${ev.model} · ${ev.imageCount} image(s)…`;
+        appendEvent("meta", `meta model=${ev.model} images=${ev.imageCount} temp=${ev.temperature}`);
+        return;
+      }
+      if (ev.type === "chunk") {
+        rawText += ev.text || "";
+        els.tabRaw.textContent = rawText;
+        els.statRaw.textContent = String(rawText.length);
+        els.runStatus.textContent = `Streaming… dishes=${dishes.length} raw=${rawText.length} @${fmtMs(ev.ms)}`;
+        return;
+      }
+      if (ev.type === "dish") {
+        dishes.push(ev.data);
+        els.tabDishes.insertAdjacentHTML("beforeend", renderDish(ev.data));
+        els.statDishes.textContent = String(dishes.length);
+        if (firstDishMs == null && typeof ev.ms === "number") {
+          firstDishMs = ev.ms;
+          els.statFirst.textContent = fmtMs(firstDishMs);
+          els.statFirst.className = firstDishMs < 20000 ? "v good" : "v warn";
+        }
+        els.runStatus.textContent = `Dish #${ev.data.id} @ ${fmtMs(ev.ms)}`;
+        appendEvent("dish", `#${ev.data.id} ${ev.data.nameCn || ""} / ${ev.data.name || ""} @${fmtMs(ev.ms)}`);
+        return;
+      }
+      if (ev.type === "raw_line") {
+        appendEvent("meta", `raw_line ${String(ev.text || "").slice(0, 200)}`);
+        return;
+      }
+      if (ev.type === "done") {
+        els.statDishes.textContent = String(ev.total ?? dishes.length);
+        els.statTotal.textContent = fmtMs(ev.totalMs);
+        els.statTotal.className = (ev.totalMs || 0) < 35000 ? "v good" : "v warn";
+        if (ev.firstDishMs != null) {
+          els.statFirst.textContent = fmtMs(ev.firstDishMs);
+          els.statFirst.className = ev.firstDishMs < 20000 ? "v good" : "v warn";
+        }
+        els.statRaw.textContent = String(ev.rawChars ?? rawText.length);
+        els.statModel.textContent = ev.model || els.statModel.textContent;
+        els.runStatus.textContent = `Done · ${ev.total ?? dishes.length} dishes · total ${fmtMs(ev.totalMs)} · first ${fmtMs(ev.firstDishMs)}`;
+        appendEvent("meta", `done total=${ev.total} totalMs=${ev.totalMs} firstDishMs=${ev.firstDishMs}`);
+        return;
+      }
+      if (ev.type === "error") {
+        const msg = `${ev.code || "error"}${ev.message ? ": " + ev.message : ""}`;
+        els.errorBox.hidden = false;
+        els.errorBox.textContent = msg;
+        if (typeof ev.ms === "number") els.statTotal.textContent = fmtMs(ev.ms);
+        els.runStatus.textContent = `Error @ ${fmtMs(ev.ms)}`;
+        appendEvent("err", msg);
+      }
+    }
+  }
+
+  els.runBtn.addEventListener("click", run);
+  els.stopBtn.addEventListener("click", () => abortCtrl?.abort());
+  els.resetSystem.addEventListener("click", () => {
+    els.systemPrompt.value = defaults.systemPrompt;
+  });
+  els.resetUser.addEventListener("click", () => {
+    els.userPrompt.value = defaults.userPrompt;
+  });
+
+  async function boot() {
+    try {
+      const res = await fetch("/api/lab");
+      const data = await res.json();
+      defaults = {
+        models: data.models || defaults.models,
+        defaultModel: data.defaultModel || defaults.defaultModel,
+        systemPrompt: data.systemPrompt || "",
+        userPrompt: data.userPrompt || "",
+      };
+      els.model.innerHTML = "";
+      const models = defaults.models.slice();
+      if (defaults.defaultModel && !models.includes(defaults.defaultModel)) {
+        models.unshift(defaults.defaultModel);
+      }
+      models.forEach((m) => {
+        const opt = document.createElement("option");
+        opt.value = m;
+        opt.textContent = m;
+        if (m === defaults.defaultModel) opt.selected = true;
+        els.model.appendChild(opt);
+      });
+      els.systemPrompt.value = defaults.systemPrompt;
+      els.userPrompt.value = defaults.userPrompt;
+      if (data.hasApiKey) {
+        els.keyPill.textContent = "API key ready";
+        els.keyPill.className = "pill ok";
+      } else {
+        els.keyPill.textContent = "No GOOGLE_API_KEY";
+        els.keyPill.className = "pill bad";
+      }
+    } catch (err) {
+      els.keyPill.textContent = "Lab API unavailable";
+      els.keyPill.className = "pill bad";
+      els.systemPrompt.placeholder = "Failed to load defaults from /api/lab";
+    }
+  }
+
+  boot();
+})();
+</script>
+</body>
+</html>

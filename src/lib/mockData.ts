@@ -20,6 +20,8 @@ interface DishHints {
   vegetarian?: boolean;
   allergens?: AllergenTag[];
   ingredients?: string[];
+  textures?: string[];
+  story?: string | null;
 }
 
 function hints(nameCn: string): DishHints {
@@ -63,7 +65,9 @@ function makeDish(cuisine: string, [category, nameCn, price]: Row, override: Dis
     spicy: override.spicy ?? spicyLevel(nameCn),
     vegetarian: override.vegetarian ?? isVegetarian(category, nameCn),
     allergens: override.allergens ?? auto.allergens ?? [],
+    textures: override.textures ?? [],
     ingredients: override.ingredients ?? auto.ingredients ?? [nameCn, "seasoning"],
+    story: override.story ?? null,
   };
 }
 

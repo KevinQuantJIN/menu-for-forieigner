@@ -49,14 +49,14 @@
 | `docs/concept.md` / `docs/HANDOVER.md` | **旧** MenuLens 设计/UI 交接，字段已过时，仅作历史 |
 | **`docs/HANDOFF-v0.md`（本文）** | 工程 + 契约 v1 交接 |
 
-原型与演示页（**未接新契约 API**）：
+原型与演示页：
 
-| 路径 | 角色 |
-|---|---|
-| `public/app.html` | 可交互全流程 mock UI（字段比契约肥：flavorBars 等） |
-| `public/stage.html` | 演示舞台壳，iframe 嵌 app.html |
-| `public/index.html` | 旧单页参考 UI |
-| `public/real-menu-mawangzi.jpg` | 相册真图 demo 用 |
+| 路径 | 角色 | API |
+|---|---|---|
+| **`public/app.html`** | **交互基准** · 全流程雕版 UI（~1282 行，单文件） | **未接**；内存 `DISHES` mock |
+| `public/stage.html` | 演示舞台壳，iframe 嵌 app.html | — |
+| `public/index.html` | 旧单页 UI（语言选择 + 流式卡片） | **已接** `/api/analyze`（可真模型） |
+| `public/real-menu-mawangzi.jpg` | 相册 demo 真图 | — |
 
 后端：
 
@@ -66,7 +66,7 @@
 | `src/lib/normalize.ts` | 模型脏输出 → Dish |
 | `src/lib/prompt.ts` | 系统 prompt（英文 only、多图） |
 | `src/lib/pipeline.ts` | NDJSON 流 → 契约事件 |
-| `src/lib/dashscope.ts` | 调 qwen-vl-max，多图 |
+| `src/lib/gemini.ts` | 调 Google Gemini（默认 gemini-2.5-flash），多图 |
 | `src/lib/mock.ts` + `mockData.ts` | 无 Key / MOCK_LLM 时的流 |
 | `src/app/api/analyze/route.ts` | 唯一 API |
 
@@ -175,37 +175,123 @@ npm test             # 当前 27 tests 应全绿
 
 ## 6. 已完成 vs 未完成
 
-### 已完成（v0 提交 c13a11a）
+### 已完成（v0 提交 c13a11a + 本轮）
 
 - [x] 产品契约讨论并冻结 v1  
-- [x] `contract` / `normalize` / `prompt` / `dashscope` / `route` / mock / 测试对齐  
+- [x] `contract` / `normalize` / `prompt` / `route` / mock / 测试对齐  
 - [x] 多图 1–9、英文 only、textures + story  
-- [x] 从 `ui-prototype` 切出 `v0`，**未污染 ui-prototype 工作区提交**
+- [x] 从 `ui-prototype` 切出 `v0`，**未污染 ui-prototype 工作区提交**  
+- [x] **模型：DashScope/qwen → Google Gemini `gemini-2.5-flash`**（`src/lib/gemini.ts`）  
+- [x] **已部署 Cloudflare**：`https://menulens.web3-fintech-op-service.workers.dev`  
+- [x] **真菜单图联调通过**（本地 + 线上）：马旺子 `IMG_2823` → 8 道菜 NDJSON，含拼音/过敏原/textures  
 
-### 未完成（建议新对话优先）
+环境：
+- 本地 `.env.local`：`GOOGLE_API_KEY`（gitignore，勿提交）  
+- Cloudflare secret：`GOOGLE_API_KEY`  
+- 无 Key 或 `MOCK_LLM=1` 仍走 mock  
 
-1. **前端接线**  
-   - `public/app.html` 仍用内存 `DISHES` mock，字段多于契约（`flavorBars`/`howToEat`/`signature`/`catOriginal` 等）  
-   - 应：`streamDishes()` → `POST /api/analyze`（`images[]`）  
-   - 进度页消费流式计数；`done` 后整单 cascade  
-   - UI 字段对齐契约：去掉麻/油腻条或仅 mock 展示；`story` null 隐藏  
+### 本轮已完成（2026-07-12 · UI 接线 + 多图 + 部署）
 
-2. **Demo 金标数据**  
-   - `demo-menu-plan.md` 14 道 vs 后端 `mockData` 三家店大批量截图菜  
-   - 应用一份与 PRD 演示点一致的 mock（或 mockRestaurant 增加 `demo-sichuan-14`）
+- [x] `public/app.html` 对齐契约 v1（去掉 flavorBars/signature/howToEat/catOriginal 等）  
+- [x] **产品入口** = `public/app.html`（`/` 与 `index.html` 跳到它）  
+- [x] Camera：离线 14 道 `DEMO_DISHES`  
+- [x] Album：**真实文件选择**（`#albumInput` multi，1–9 张）→ 压缩 → `POST /api/analyze`  
+- [x] 多图预览：分析页横滑缩略条；View original 多图画廊  
+- [x] 后端改为 **每页单独 Gemini 调用再合并**（一次塞多图会严重漏菜）  
+- [x] 模型源：`src/lib/gemini.ts`（已替掉 dashscope）  
+- [x] 线上：`https://menulens.web3-fintech-op-service.workers.dev`  
 
-3. **契约文档回写 PRD**  
-   - PRD 仍写着旧「Kevin 新增字段」列表（catStd、flavorBars…），与 v1 不一致  
-   - 应把 PRD §数据契约改成 v1，或注明「以 `contract.ts` + 本文为准」
+### 当前阻塞 / 下一 session 主目标：**多页体感慢**
 
-4. **远端**  
-   - `git push -u origin v0`  
-   - 是否从 v0 开 PR 到 main / 是否保留 ui-prototype 纯 UI  
+#### 现象与本地基准（必读）
 
-5. **可选增强**  
-   - normalize 层跨页同名去重（现仅靠 prompt）  
-   - story grounding 二段式（现单次 VLM）  
-   - `app.html` 与雕版 token 继续打磨（UI 同事主场）
+测试图（北京菜电子菜单截图 2 页）：
+
+- `reference-menu-data/beijing-cuisine/images/IMG_2816.jpg`（~58KB）
+- `reference-menu-data/beijing-cuisine/images/IMG_2817.jpg`（~47KB）
+
+| 实验 | 结果 |
+|---|---|
+| 两图**一次**塞进 Gemini | 只出 **2** 道（漏菜严重）→ 已废弃 |
+| 两图**分页并行**（现状） | **~34s**，出 **43** 道 |
+| 单页 2816 | ~39s，约 3+ 道（早期测） |
+| 单页 2817 | ~37s，约 4 道（早期测） |
+
+**现状流式特征（关键）：**
+
+```
+headers_ms ≈ total_ms ≈ 34s
+first_dish_ms ≈ last_dish_ms ≈ done_ms
+```
+
+→ 前端会干等半分钟，进度计数一直是 0，然后菜突然全到。  
+原因在 `src/lib/gemini.ts`：
+
+```ts
+// 多页路径
+const pages = await Promise.all(images.map(collectPageText)); // 等齐
+// 然后才 yield 菜行
+```
+
+`collectPageText` 把整页 SSE 收完才返回；`Promise.all` 再等最慢页。  
+**单页路径** `yield* geminiStreamOne` 是真流式；**多页路径不是**。
+
+#### 建议优化方向（按优先级）
+
+1. **页完成即推流（最大体感提升）**  
+   - 每页独立 `geminiStreamOne` 并行  
+   - 哪页先完整解析出 dish 行就先 `yield`（可带 page index）  
+   - 全部页结束后再 `done`  
+   - 目标：首菜 ~15–20s 出现，不必等 34s  
+
+2. **真增量流（更难）**  
+   - 页内 SSE 边到边 parse 边 emit（注意跨 chunk 半行 JSON）  
+   - 现有 `pipeline.modelTextToEvents` + `createLineSplitter` 已支持跨块行  
+
+3. **模型 / 输出成本**  
+   - 默认 `gemini-2.5-flash`（`MENULENS_MODEL`）  
+   - 每道 dish 字段多（description/story/allergens…）→ token 多、慢  
+   - 可试验：story 默认 null、description 更短、或两阶段（先名+价+过敏，详情后补）— **会动契约/产品，需确认**  
+
+4. **前端体感**  
+   - 多页时文案别写 “usually under 10 seconds”  
+   - 显示 “page 1/2 done…” 需后端额外 progress 事件（契约现无；可先只靠 dish 计数）  
+   - 现状 UI 已是：dish 事件累加计数，`done` 后整单 cascade 列表  
+
+5. **正确性旁路**  
+   - 跨页同名去重：现状靠 prompt，normalize 未做  
+   - 北京菜图含侧边栏分类 + 长列表，模型会多抽/幻觉个别菜名，需抽查  
+
+#### 复现命令（新 session 可直接跑）
+
+```bash
+# 本地 dev 已起：npm run dev → :3000
+node /tmp/time_analyze.js   # 或自写：POST /api/analyze with 两图 dataURL
+# 关注 first_dish_ms vs total_ms
+```
+
+关键文件：
+
+| 文件 | 改什么 |
+|---|---|
+| **`src/lib/gemini.ts`** | 多页 `Promise.all` → 页完成即 yield |
+| `src/app/api/analyze/route.ts` | timeout 现 `min(240s, 90s+30s*n)` |
+| `src/lib/pipeline.ts` | 已支持流式行切；多半不用大改 |
+| `public/app.html` | `streamDishes` / 进度文案 / 多图预览 |
+
+### 其它未完成
+
+1. Demo 金标：`demo-menu-plan` 14 道 vs `mockData` 三家店  
+2. PRD 数据契约回写 v1  
+3. `git push -u origin v0`（本地有大量未提交改动，见 `git status`）  
+4. 跨页 normalize 去重；story grounding  
+
+### 工作树注意
+
+- 分支：**`v0`**（未 push）  
+- 未提交：`public/app.html`、`src/lib/gemini.ts`（新文件）、`route.ts`、`prompt.ts`、`index.html` 等  
+- 已删：`src/lib/dashscope.ts`（改用 gemini）  
+- 环境：`.env.local` 有 `GOOGLE_API_KEY` / `GEMINI_API_KEY`  
 
 ---
 
@@ -217,7 +303,7 @@ npm test             # 当前 27 tests 应全绿
 | **客户端** | 画像（过敏/忌口 localStorage）、折叠、My Order、For waiter 双视图、≈$ 汇率、emoji、食迹地图 |
 | **UI 文件** | 继续以 `public/app.html` 为交互基准；视觉以 UI-DESIGN + style-lab 方案一 |
 
-旧 `src/lib/contract` 的多语言 `LANGS` **已删除**。旧 `public/index.html` / concept 仍可能写 `lang`——以 v0 API 为准。
+旧 `src/lib/contract` 的多语言 `LANGS` **已删除**。旧 `public/index.html` 仅跳转壳。
 
 ---
 
@@ -225,9 +311,10 @@ npm test             # 当前 27 tests 应全绿
 
 ```
 继续 Chopstory 分支 v0。
-先读 docs/HANDOFF-v0.md 与 src/lib/contract.ts。
-当前契约 v1 已冻结并在后端落地；ui-prototype 不要动。
-下一步：________（例如：把 app.html 接到 /api/analyze，或补 14 道 demo mock）
+先读 docs/HANDOFF-v0.md（尤其「多页体感慢」）与 src/lib/gemini.ts。
+当前 app.html 已接 /api/analyze，多图会分页并行，但 Promise.all 等齐后才吐流。
+本地基准：beijing-cuisine IMG_2816+2817 → ~34s / ~43 dishes，first_dish≈total。
+本轮目标：多页「页完成即推流」，降低首菜等待；不要回退到单次多图调用（会漏菜）。
 ```
 
 ---
@@ -242,7 +329,8 @@ npm test             # 当前 27 tests 应全绿
 | 雷点 | 自由 textures[]，非封闭枚举 |
 | 过敏 | Big 9，shellfish 合并 |
 | 语言 | en only |
-| 输入 | images 1–9 |
+| 输入 | images 1–9，真文件上传 |
+| 多图策略 | **分页识别**（召回），禁止一次塞多图（漏菜） |
 | 分支策略 | 实现走 v0；ui-prototype 留给 UI 文档/原型 |
 
 ---
