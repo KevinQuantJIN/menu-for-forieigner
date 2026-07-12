@@ -14,7 +14,7 @@ function renderCartBar() {
   const n = [...order.values()].reduce((a,b) => a+b, 0);
   const sum = document.getElementById("cartSum");
   if (!n) sum.innerHTML = `<span style="opacity:.72">Pick dishes to build your order</span>`;
-  else sum.textContent = `Total ¥${orderTotal()} ≈ $${usdN(orderTotal())}`;
+  else sum.textContent = `Total ¥${orderTotal()} ≈ ${curSym()}${fxN(orderTotal())}`;
 }
 function openOrder() { waiterMode = false; renderOrder(); go("order"); }
 function renderOrder() {
@@ -35,8 +35,8 @@ function renderOrder() {
 
   /* MY PICKS / 已选菜品 —— 行内不带 icon；Total/合计 在单元内、重线顶隔 */
   const dishesEN = items.length
-    ? items.map(({d,q}) => `<div class="orow"><b>${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span>≈ $${usdN(d.price*q)}</span></div>`).join("")
-      + `<div class="total-line"><span>Total</span><span>≈ $${usdN(total)} · ¥${total}</span></div>`
+    ? items.map(({d,q}) => `<div class="orow"><b>${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span>≈ ${curSym()}${fxN(d.price*q)}</span></div>`).join("")
+      + `<div class="total-line"><span>Total</span><span>≈ ${curSym()}${fxN(total)} · ¥${total}</span></div>`
     : `<div class="sec-empty"><span class="e">🍽️</span>Nothing here yet — tap ＋ on the menu</div>`;
   const dishesCN = items.length
     ? items.map(({d,q}) => `<div class="orow"><b>${d.nameCn}</b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")

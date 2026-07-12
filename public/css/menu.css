@@ -184,5 +184,36 @@
 .stepper button { border: none; background: none; color: #fdf8ec; font-size: 21px; font-weight: 800; cursor: pointer; padding: 14px 22px calc(16px + env(safe-area-inset-bottom)); }
 .stepper b { font-size: 16px; color: #fdf8ec; font-variant-numeric: tabular-nums; font-family: var(--sh-num); }
 
+/* ---------- 货币按钮 + 选择弹层（7.13 A 案：币徽 + 底部弹层） ---------- */
+.coinbtn {
+  width: 34px; height: 34px; border-radius: 999px; flex: none;
+  background: var(--sh-gold); border: 2px solid var(--sh-ink); color: var(--sh-ink);
+  font-family: var(--sh-num); font-size: 13.5px; font-weight: 700; cursor: pointer;
+  box-shadow: inset 0 0 0 2px rgba(255,253,246,.55), 2px 2px 0 rgba(28,26,23,.2);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.coinbtn:active { transform: scale(.9) rotate(8deg); }
+#cur-mask { position: absolute; inset: 0; background: rgba(36,32,26,.42); z-index: 46; animation: screen-in var(--dur) var(--ease); }
+#cur-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 47;
+  background: #fffdf5; color: var(--sh-ink); border-radius: 22px 22px 0 0;
+  box-shadow: 0 -14px 34px rgba(40,30,15,.25);
+  padding: 8px 18px calc(16px + env(safe-area-inset-bottom));
+  animation: sheet-in 320ms var(--ease);
+}
+.cur-title { font-family: var(--sh-en); font-size: 16px; font-weight: 800; margin-top: 6px; }
+.cur-sub { font-size: 10.5px; color: var(--sh-sub); margin-top: 5px; line-height: 1.6; }
+.cur-row {
+  display: flex; align-items: center; gap: 10px; padding: 13px 2px;
+  border-bottom: 1px solid rgba(28,26,23,.08); font-size: 13.5px; font-weight: 650; cursor: pointer;
+}
+.cur-row:last-child { border-bottom: none; }
+.cur-row .fl { font-size: 17px; }
+.cur-row .cd { font-family: var(--sh-num); font-size: 10.5px; color: var(--sh-sub); }
+.cur-row .pv { margin-left: auto; font-family: var(--sh-num); font-size: 11px; color: var(--sh-sub); font-variant-numeric: tabular-nums; }
+.cur-row.on { color: #b23a26; font-weight: 800; }
+.cur-row.on .pv, .cur-row.on .cd { color: #b23a26; }
+.cur-row.on::after { content: "✓"; font-weight: 900; margin-left: 6px; }
+
 /* original menu overlay */
 #orig-mask { position: absolute; inset: 0; background: rgba(20,15,10,.72); z-index: 50; display: grid; place-items: center; padding: 30px; animation: screen-in var(--dur) var(--ease); }

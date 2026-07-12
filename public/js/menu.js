@@ -33,7 +33,7 @@ function pcardHTML(d, i = 0, stagger = false) {
     <div class="addwrap" data-id="${d.id}">${addCtlHTML(d)}</div>
     <div class="name">${d.name}${sp ? `<span class="sp">${sp}</span>` : ""}</div>
     <div class="cn">${d.nameCn} · ${d.pinyin}</div>
-    <div class="right"><b>≈$${usdN(d.price)}</b><small>¥${d.price}</small></div>
+    <div class="right"><b>≈${curSym()}${fxN(d.price)}</b><small>¥${d.price}</small></div>
     <div class="tags">${previewTags(d)}</div>
   </div>`;
 }
@@ -106,7 +106,7 @@ function openDetail(id) {
     ${storyBlock}
     <div class="detail-cta">
       ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
-            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈$${usdN(d.price)}&nbsp;&nbsp;<small>¥${d.price}</small></button>`}
+            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈${curSym()}${fxN(d.price)}&nbsp;&nbsp;<small>¥${d.price}</small></button>`}
     </div>`;
   document.getElementById("detail-mask").classList.remove("hidden");
   sheet.classList.remove("hidden");
@@ -116,3 +116,30 @@ function closeDetail() {
   document.getElementById("detail-mask").classList.add("hidden");
   document.getElementById("detail-sheet").classList.add("hidden");
 }
+
+/* ---------------- 货币选择（7.13 A 案：币徽 + 底部弹层） ---------------- */
+function openCurrency() {
+  const sheet = document.getElementById("cur-sheet");
+  sheet.innerHTML = `
+    <div class="grabber"></div>
+    <h4 class="cur-title">Show prices in…</h4>
+    <p class="cur-sub">We convert ¥ (CNY) prices into a currency you're familiar with, for your convenience — the rate is approximate and for reference only.</p>
+    ${CURRENCIES.map(c => `<div class="cur-row ${c.code === curCode ? "on" : ""}" onclick="setCurrency('${c.code}')">
+      <span class="fl">${c.flag}</span><b>${c.name}</b><span class="cd">${c.code} ${c.sym}</span>
+      <span class="pv">¥100 ≈ ${c.sym}${fxFmt(100 * c.perCny)}</span></div>`).join("")}`;
+  document.getElementById("cur-mask").classList.remove("hidden");
+  sheet.classList.remove("hidden");
+}
+function closeCurrency() {
+  document.getElementById("cur-mask").classList.add("hidden");
+  document.getElementById("cur-sheet").classList.add("hidden");
+}
+function setCurrency(code) {
+  curCode = code;
+  localStorage.setItem("ml.currency", code);
+  document.getElementById("curBtn").textContent = curSym();
+  closeCurrency();
+  renderList();                                    // 价签 + 底栏联动刷新
+  if (!document.getElementById("s-order").classList.contains("hidden")) renderOrder();
+}
+document.getElementById("curBtn").textContent = curSym(); // 启动时恢复上次选择

@@ -169,6 +169,7 @@
     <div class="topbar">
       <button class="back" onclick="go('home')">‹</button>
       <h2>Your Decoded Menu</h2>
+      <button class="coinbtn" id="curBtn" onclick="openCurrency()" title="Currency">$</button>
     </div>
     <div class="resto-bar">
       <span class="emoji">🍜</span>
@@ -187,6 +188,10 @@
   <!-- ============ S2 DETAIL (bottom sheet over the list) ============ -->
   <div id="detail-mask" class="hidden" onclick="closeDetail()"></div>
   <div id="detail-sheet" class="hidden"></div>
+
+  <!-- 货币选择弹层（7.13 A 案） -->
+  <div id="cur-mask" class="hidden" onclick="closeCurrency()"></div>
+  <div id="cur-sheet" class="hidden"></div>
 
   <!-- ============ S3 ORDER ============ -->
   <section class="screen hidden" id="s-order"></section>

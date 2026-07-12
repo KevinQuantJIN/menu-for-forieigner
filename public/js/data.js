@@ -1,7 +1,21 @@
 /* ChopStory · 数据层：汇率/菜品/文案标签 —— 内容改这里 */
-const FX = 7.16; // static CNY→USD, labeled approximate
-const usd = (cny) => "≈ $" + (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1);
-const usdN = (cny) => (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1); // number only, $ first displays
+/* 货币系统（7.13 A 案）：¥ 原价永远保留在价签，仅切换 ≈ 换算行。
+   静态汇率、approximate / for reference only（诚实红线）。JPY 符号用 JP¥ 避免与人民币 ¥ 混淆 */
+const CURRENCIES = [
+  { code:"USD", sym:"$",   flag:"🇺🇸", name:"US Dollar",         perCny: 0.140 },
+  { code:"EUR", sym:"€",   flag:"🇪🇺", name:"Euro",              perCny: 0.128 },
+  { code:"GBP", sym:"£",   flag:"🇬🇧", name:"British Pound",     perCny: 0.110 },
+  { code:"JPY", sym:"JP¥", flag:"🇯🇵", name:"Japanese Yen",      perCny: 21.5  },
+  { code:"KRW", sym:"₩",   flag:"🇰🇷", name:"Korean Won",        perCny: 193   },
+  { code:"AUD", sym:"A$",  flag:"🇦🇺", name:"Australian Dollar", perCny: 0.213 },
+];
+let curCode = localStorage.getItem("ml.currency") || "USD";
+function curDef() { return CURRENCIES.find(c => c.code === curCode) || CURRENCIES[0]; }
+function curSym() { return curDef().sym; }
+function fxFmt(v) { return v >= 100 ? Math.round(v).toLocaleString("en-US") : v.toFixed(v >= 10 ? 0 : 1); }
+function fxN(cny) { return fxFmt(cny * curDef().perCny); } // number only, symbol added by caller
+const usdN = fxN;                                  // 兼容旧调用名
+const usd = (cny) => `≈ ${curSym()}${fxN(cny)}`;   // 兼容旧调用名
 
 /* ---------------- demo dishes (demo-data/demo-menu-plan.md · 14 道，每道一个演示点)
    字段与 PRD 契约对齐：catStd/catOriginal/cuisine/flavorBars{spicy,numbing,richness 0-10}/story/howToEat ---------------- */
