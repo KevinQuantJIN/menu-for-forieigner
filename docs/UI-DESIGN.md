@@ -1,6 +1,6 @@
 # MenuLens — UI 设计规范（One Page）· 雕版食单版
 
-> ⚠️ 同步副本（2026-07-12），源文件在 Julia 的 Hackathon 工作区，以源为准；文内相对路径（materials/ 等）指向源工作区。
+> ⚠️ 同步副本（2026-07-13），源文件在 Julia 的 Hackathon 工作区，以源为准。
 
 
 > 给所有做 UI 的 AI / 人的唯一样式事实来源。改样式先改这里，再改代码。
@@ -27,8 +27,9 @@
 | `css/menu.css` + `js/menu.js` | S1 list + S2 详情弹层 + 购物车条 | 认领后自由改 |
 | `css/order.css` + `js/order.js` | S3 点单卡双面 | 认领后自由改 |
 | `css/map.css` + `js/map.js` | S4 历史 + 食迹地图 | 认领后自由改 |
+| `public/stage.html`（及 stage-*.html 探索稿） | 舞台壳：背景/展示文案/跳屏时间轴 | 已认领（舞台线，Claude 单独迭代） |
 
-**协作纪律**：① 只改自己认领的文件；② 改完当轮就 commit + push（冲突大多来自攒着不提交）；③ 动 ⚠️ 文件先协调；④ `stage.html` 是舞台壳（iframe 引 app.html），基本不用动。
+**协作纪律**：① 只改自己认领的文件；② 改完当轮就 commit + push（冲突大多来自攒着不提交）；③ 动 ⚠️ 文件先协调；④ `stage.html` 舞台壳已被认领单独迭代；它跨 iframe 依赖 app 的全局函数 `go / startScan / startAnalyze / beginStream / openDetail / openOrder / addToOrder / histView / closeDetail / closeSheet`——改名或删除前先和舞台线同步。
 
 ## 设计立场：这是一册木刻印刷的食单
 
@@ -104,6 +105,7 @@
 | 分类 chips | 改为**鱼尾节标**分区（All 视图）；筛选 chips 保留但改墨线描边胶囊，选中 = 墨底纸字 |
 | `.btn` 主按钮 | 墨底纸字，radius 5px；**关键动作**（下单/服务员视图切换）= 朱底纸字 |
 | `.cart-bar` | 不再悬浮胶囊 → 页底**重界线 + 左合计(等宽) + 右朱底小按钮** |
+| S3 点菜卡（7.13 定稿） | 单行三件套顶行（‹+双 tab，tab 按面本地化）；圆框金签单元（--gold 金签=内容区、朱签=警示区，标题带 icon 行内无 icon）；CTA 两面同款墨底+金框 CN/EN 徽标；规格见 ui-lab/order-card-final.html |
 | 弹层 sheet | 保留 grabber，纸色底 + 顶部重界线，圆角收到 10px |
 | 警示 tag | contains = 朱字或朱底（与折叠条同源）；may = 赭黄；素 = 松绿；一律小号、可胶囊 |
 | 折叠条 | 上边 2.5px 朱线 + 下发丝线，朱字：「▸ 一道菜为你隐去 —— 含花生」 |
