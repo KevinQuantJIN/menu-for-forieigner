@@ -12,8 +12,23 @@
 
 1. 本文件全文
 2. `PRD.md` 中你负责那一屏的章节（S0–S4）
-3. `style-lab-v2.html` 方案一的两个 mockup（视觉基准）+ 现行 `public/app.html`（交互基准）
-4. 约束：单文件 HTML/CSS/JS、无构建、无框架、无外部字体；改完在 393px 宽截图验证；落地后回写 PRD 对应章节
+3. `style-lab-v2.html` 方案一的 mockup（视觉基准）+ 现行 `public/` 代码（交互基准）
+4. 约束：无构建、无框架、无外部字体（普通 `<link>`/`<script src>` 多文件，file:// 双击可开）；改完在 393px 宽截图验证；落地后回写 PRD 对应章节
+
+## 模块结构与认领规则（2026-07-12 拆分，commit 1c1b14a）
+
+| 文件 | 管什么 | 谁能改 |
+|---|---|---|
+| `public/app.html` | HTML 骨架 + 引入清单 | ⚠️ 动之前群里说一声 |
+| `css/tokens.css` | tokens/基础组件/弹层/chips | ⚠️ 只按本规范改，单一负责人 |
+| `js/core.js` | 画像/个性化/全局状态/导航 | ⚠️ 改动需协调 |
+| `js/data.js` | 汇率 + 14 道菜 + 文案标签常量 | 内容改动走这里 |
+| `css/home.css` + `js/home.js` | S0 首页/相机/识别中/画像面板 | 认领后自由改 |
+| `css/menu.css` + `js/menu.js` | S1 list + S2 详情弹层 + 购物车条 | 认领后自由改 |
+| `css/order.css` + `js/order.js` | S3 点单卡双面 | 认领后自由改 |
+| `css/map.css` + `js/map.js` | S4 历史 + 食迹地图 | 认领后自由改 |
+
+**协作纪律**：① 只改自己认领的文件；② 改完当轮就 commit + push（冲突大多来自攒着不提交）；③ 动 ⚠️ 文件先协调；④ `stage.html` 是舞台壳（iframe 引 app.html），基本不用动。
 
 ## 设计立场：这是一册木刻印刷的食单
 
