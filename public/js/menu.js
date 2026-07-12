@@ -24,8 +24,12 @@ function spiceLabel(d) {
 function pcardHTML(d, i = 0, stagger = false) {
   const inOrder = order.get(d.id) || 0;
   const sp = spiceLabel(d);
+  /* 加购前 = 柿红＋钮；加购后 = 就地 [− n ＋] 迷你 stepper（7.13 修正：不再变黑色数字钮） */
+  const addCtl = inOrder
+    ? `<div class="qtyctl" onclick="event.stopPropagation()"><button onclick="addToOrder(${d.id},-1)">−</button><b>${inOrder}</b><button onclick="addToOrder(${d.id},1)">＋</button></div>`
+    : `<button class="addbtn" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>`;
   return `<div class="pcard" style="--d:${stagger ? Math.min(i, 14) * 40 : 0}ms" onclick="openDetail(${d.id})">
-    <button class="addbtn ${inOrder?"in":""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">${inOrder || "＋"}</button>
+    ${addCtl}
     <div class="name">${d.name}${sp ? `<span class="sp">${sp}</span>` : ""}</div>
     <div class="cn">${d.nameCn} · ${d.pinyin}</div>
     <div class="right"><b>≈$${usdN(d.price)}</b><small>¥${d.price}</small></div>

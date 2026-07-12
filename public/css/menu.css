@@ -19,6 +19,8 @@
 
 /* ---------- S1 list ---------- */
 #s-list { background: linear-gradient(178deg, var(--sh-paper), var(--sh-paper-2)); color: var(--sh-ink); }
+/* 返回键轻量化（7.13）：去大框，纯 chevron */
+#s-list .back { width: 32px; height: 32px; border: none; background: none; font-size: 22px; font-weight: 600; color: var(--sh-ink); padding: 0; }
 .resto-bar {
   display: flex; align-items: center; gap: 10px; background: var(--sh-card);
   border: 2px solid var(--sh-ink); border-radius: 12px; box-shadow: 3px 3px 0 rgba(28,26,23,.18);
@@ -69,7 +71,7 @@
 }
 .pcard .right b { font-family: var(--sh-num); font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
 .pcard .right small { display: block; font-family: var(--sh-num); font-size: 7.5px; opacity: .75; font-variant-numeric: tabular-nums; }
-.pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding-right: 42px; min-height: 4px; }
+.pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding-right: 78px; min-height: 4px; }
 /* tag 三态（覆盖 tokens 的 .tag-*，仅 pcard 作用域）：过敏=柿红描边 / 雷点=灰墨描边 / 招牌=金 */
 .pcard .tag { font-family: var(--sh-en); font-size: 8.5px; font-weight: 800; border-radius: 999px; padding: 2.5px 8px; letter-spacing: .04em; border: 1.5px solid; background: var(--sh-card); }
 .pcard .tag-red { color: var(--sh-hot); border-color: var(--sh-hot); background: #fbeeea; }
@@ -86,8 +88,19 @@
 }
 .addbtn::after { content: ""; position: absolute; inset: -9px; } /* 44pt touch target */
 .addbtn:active { transform: scale(.9); }
-.addbtn.in { background: var(--sh-ink); color: var(--sh-gold); font-family: var(--sh-num); font-size: 12px; }
-.qty-badge { display: none; } /* 数量直接显示在加购态方钮内 */
+.qty-badge { display: none; }
+/* 加购态迷你 stepper：[− n ＋]（7.13 修正） */
+.qtyctl {
+  position: absolute; right: 10px; bottom: 9px; z-index: 2;
+  display: flex; align-items: center;
+  border: 2px solid var(--sh-ink); border-radius: 8px; background: var(--sh-card);
+  overflow: hidden; box-shadow: 2px 2px 0 rgba(28,26,23,.22);
+}
+.qtyctl button {
+  border: none; background: var(--sh-hot); color: #fdf8ec;
+  width: 24px; height: 24px; font-size: 14px; font-weight: 800; cursor: pointer; line-height: 1;
+}
+.qtyctl b { min-width: 22px; text-align: center; font-family: var(--sh-num); font-size: 11.5px; font-variant-numeric: tabular-nums; }
 
 /* 折叠条：柿红虚线 */
 .fold {
