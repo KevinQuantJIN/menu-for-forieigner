@@ -81,7 +81,27 @@ function errorCode(error: unknown): string {
 
 function safeMessage(error: unknown): string {
   const code = errorCode(error);
-  if (code === "provider_rejected") return "Provider rejected the request";
+  const message = error instanceof Error ? error.message : String(error);
+  const providerError = message.match(/^provider_http_(\d+):([\s\S]*)$/);
+  if (providerError) {
+    const [, status, rawBody] = providerError;
+    let detail = rawBody;
+    try {
+      const payload = JSON.parse(rawBody) as {
+        error?: { message?: string };
+        message?: string;
+        status_msg?: string;
+      };
+      detail = payload.error?.message ?? payload.message ?? payload.status_msg ?? detail;
+    } catch {
+      // Keep the already-truncated provider body when it is not JSON.
+    }
+    const sanitized = detail
+      .replace(/Bearer\s+[A-Za-z0-9._-]+/gi, "Bearer [redacted]")
+      .replace(/\bsk-[A-Za-z0-9_-]+/gi, "[redacted]")
+      .slice(0, 160);
+    return `HTTP ${status}: ${sanitized || "Provider rejected the request"}`;
+  }
   if (code === "unknown_provider_error") return "Provider request failed";
   return code;
 }
@@ -89,12 +109,13 @@ function safeMessage(error: unknown): string {
 export async function* streamLabRun(
   request: LabRequest,
   runtimeMeta: LabRuntimeMeta,
-  adapter: LabProviderAdapter = getProviderAdapter(request.provider),
+  adapter: LabProviderAdapter = getProviderAdapter(request),
 ): AsyncGenerator<LabStreamEvent> {
   const startedAt = Date.now();
   yield {
     type: "meta",
     provider: request.provider,
+    transport: request.transport,
     model: request.model,
     mode: request.mode,
     imageCount: request.images.length,

@@ -1,28 +1,97 @@
 import { parseSse } from "../sse";
-import type { LabProviderEvent, LabProviderId } from "../types";
+import type {
+  LabProviderEvent,
+  LabProviderId,
+  LabTransportId,
+} from "../types";
 import type { LabProviderAdapter } from "./index";
 
-type CompatibleProvider = Extract<LabProviderId, "qwen" | "doubao">;
+type CompatibleProvider = Extract<
+  LabProviderId,
+  "openai" | "qwen" | "doubao" | "minimax" | "stepfun" | "glm"
+>;
 
-function config(provider: CompatibleProvider): { apiKey: string; baseUrl: string } {
-  if (provider === "qwen") {
-    if (!process.env.DASHSCOPE_API_KEY || !process.env.DASHSCOPE_BASE_URL) {
-      throw new Error("missing_credentials");
-    }
+type CompatibleConfig = {
+  apiKey: string | undefined;
+  baseUrl: string | undefined;
+  maxTokenField: "max_tokens" | "max_completion_tokens";
+  extraBody?: Record<string, unknown>;
+  requestIdHeaders: string[];
+  textFirst?: boolean;
+};
+
+function config(
+  provider: CompatibleProvider,
+  transport: LabTransportId,
+): CompatibleConfig {
+  if (transport === "openrouter") {
     return {
-      apiKey: process.env.DASHSCOPE_API_KEY,
-      baseUrl: process.env.DASHSCOPE_BASE_URL,
+      apiKey: process.env.OPENROUTER_API_KEY,
+      baseUrl: "https://openrouter.ai/api/v1",
+      maxTokenField: "max_tokens",
+      requestIdHeaders: ["x-request-id"],
+      textFirst: true,
     };
   }
-  if (!process.env.ARK_API_KEY || !process.env.ARK_BASE_URL) {
-    throw new Error("missing_credentials");
+  if (transport === "dashscope-beijing") {
+    return {
+      apiKey: process.env.DASHSCOPE_API_KEY,
+      baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      maxTokenField: "max_tokens",
+      extraBody: { enable_thinking: false },
+      requestIdHeaders: ["x-request-id"],
+    };
   }
-  return { apiKey: process.env.ARK_API_KEY, baseUrl: process.env.ARK_BASE_URL };
+  if (transport === "dashscope-singapore") {
+    return {
+      apiKey: process.env.DASHSCOPE_INTL_API_KEY,
+      baseUrl: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+      maxTokenField: "max_tokens",
+      extraBody: { enable_thinking: false },
+      requestIdHeaders: ["x-request-id"],
+    };
+  }
+  if (transport === "dashscope-virginia") {
+    return {
+      apiKey: process.env.DASHSCOPE_US_API_KEY,
+      baseUrl: "https://dashscope-us.aliyuncs.com/compatible-mode/v1",
+      maxTokenField: "max_tokens",
+      extraBody: { enable_thinking: false },
+      requestIdHeaders: ["x-request-id"],
+    };
+  }
+  if (transport === "ark") {
+    return {
+      apiKey: process.env.ARK_API_KEY,
+      baseUrl: process.env.ARK_BASE_URL,
+      maxTokenField: "max_tokens",
+      requestIdHeaders: ["x-request-id", "x-tt-logid"],
+    };
+  }
+  if (transport === "minimax") {
+    return {
+      apiKey: process.env.MINIMAX_API_KEY,
+      baseUrl: process.env.MINIMAX_BASE_URL || "https://api.minimaxi.com/v1",
+      maxTokenField: "max_completion_tokens",
+      extraBody: { thinking: { type: "disabled" } },
+      requestIdHeaders: ["x-request-id"],
+    };
+  }
+  if (transport === "stepfun") {
+    return {
+      apiKey: process.env.STEPFUN_API_KEY,
+      baseUrl: process.env.STEPFUN_BASE_URL || "https://api.stepfun.com/v1",
+      maxTokenField: "max_tokens",
+      requestIdHeaders: ["x-request-id"],
+    };
+  }
+  throw new Error(`invalid_transport:${provider}:${transport}`);
 }
 
 async function* parseCompatibleResponse(
   response: Response,
   startedAt: number,
+  requestIdHeaders: string[],
 ): AsyncGenerator<LabProviderEvent> {
   if (!response.ok) {
     const message = await response.text().catch(() => "");
@@ -32,9 +101,9 @@ async function* parseCompatibleResponse(
   yield {
     type: "headers",
     requestId:
-      response.headers.get("x-request-id") ??
-      response.headers.get("x-tt-logid") ??
-      undefined,
+      requestIdHeaders
+        .map((header) => response.headers.get(header))
+        .find((value): value is string => Boolean(value)) ?? undefined,
     ms: Date.now() - startedAt,
   };
   for await (const payload of parseSse(response.body)) {
@@ -44,7 +113,11 @@ async function* parseCompatibleResponse(
         delta?: { content?: string };
         finish_reason?: string | null;
       }>;
-      usage?: { prompt_tokens?: number; completion_tokens?: number };
+      usage?: {
+        prompt_tokens?: number;
+        completion_tokens?: number;
+        completion_tokens_details?: { reasoning_tokens?: number };
+      };
     };
     try {
       event = JSON.parse(payload);
@@ -60,6 +133,7 @@ async function* parseCompatibleResponse(
         type: "usage",
         inputTokens: event.usage.prompt_tokens,
         outputTokens: event.usage.completion_tokens,
+        thinkingTokens: event.usage.completion_tokens_details?.reasoning_tokens,
       };
     }
   }
@@ -67,29 +141,38 @@ async function* parseCompatibleResponse(
 
 export function createOpenAICompatibleAdapter(
   provider: CompatibleProvider,
+  transport: LabTransportId,
 ): LabProviderAdapter {
   return {
     id: provider,
     async *streamPage({ request, image, prompt }): AsyncIterable<LabProviderEvent> {
       const startedAt = Date.now();
-      const providerConfig = config(provider);
+      const providerConfig = config(provider, transport);
+      if (!providerConfig.apiKey || !providerConfig.baseUrl) {
+        throw new Error("missing_credentials");
+      }
       const body: Record<string, unknown> = {
         model: request.model,
         messages: [
           {
             role: "user",
-            content: [
-              { type: "image_url", image_url: { url: image } },
-              { type: "text", text: prompt },
-            ],
+            content: providerConfig.textFirst
+              ? [
+                  { type: "text", text: prompt },
+                  { type: "image_url", image_url: { url: image } },
+                ]
+              : [
+                  { type: "image_url", image_url: { url: image } },
+                  { type: "text", text: prompt },
+                ],
           },
         ],
         stream: true,
         stream_options: { include_usage: true },
         temperature: request.temperature,
-        max_tokens: request.maxOutputTokens,
+        [providerConfig.maxTokenField]: request.maxOutputTokens,
+        ...providerConfig.extraBody,
       };
-      if (provider === "qwen") body.enable_thinking = false;
       const response = await fetch(
         `${providerConfig.baseUrl.replace(/\/$/, "")}/chat/completions`,
         {
@@ -102,7 +185,11 @@ export function createOpenAICompatibleAdapter(
           signal: request.signal,
         },
       );
-      yield* parseCompatibleResponse(response, startedAt);
+      yield* parseCompatibleResponse(
+        response,
+        startedAt,
+        providerConfig.requestIdHeaders,
+      );
     },
   };
 }

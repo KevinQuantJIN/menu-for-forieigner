@@ -2,11 +2,17 @@ import { MAX_IMAGES } from "@/lib/contract";
 import { getLabCatalog, getLabModel } from "@/lib/lab/catalog";
 import { getLabPrompt } from "@/lib/lab/prompts";
 import { streamLabRun } from "@/lib/lab/runner";
-import type { LabMode, LabProviderId, LabRequest } from "@/lib/lab/types";
+import { getCloudflareContext } from "@opennextjs/cloudflare";
+import {
+  LAB_PROVIDER_IDS,
+  LAB_TRANSPORT_IDS,
+  type LabMode,
+  type LabProviderId,
+  type LabRequest,
+} from "@/lib/lab/types";
 
 export const runtime = "nodejs";
 
-const PROVIDERS = ["gemini", "qwen", "doubao", "openai"] as const;
 const MODES = ["full_dish", "extract_only"] as const;
 
 function badRequest(code: string, message?: string, status = 400): Response {
@@ -33,6 +39,34 @@ function stringArray(raw: unknown, length: number): string[] | null {
 function boundedNumber(raw: unknown, fallback: number, min: number, max: number): number {
   if (typeof raw !== "number" || !Number.isFinite(raw)) return fallback;
   return Math.min(max, Math.max(min, raw));
+}
+
+function isCloudflareRequest(req: Request): boolean {
+  return Boolean(
+    req.headers.get("cf-ray") || (req as Request & { cf?: unknown }).cf,
+  );
+}
+
+function getRuntimeMeta(req: Request) {
+  const rayId = req.headers.get("cf-ray");
+  const requestCf = (req as Request & { cf?: { colo?: string } }).cf;
+  let colo = requestCf?.colo ?? null;
+
+  if (rayId && !colo) {
+    try {
+      const cf = getCloudflareContext().cf as { colo?: unknown } | undefined;
+      if (typeof cf?.colo === "string") colo = cf.colo;
+    } catch {
+      // Unit tests and `next dev` do not initialize the OpenNext request context.
+    }
+  }
+
+  return {
+    runtime: isCloudflareRequest(req) ? ("cloudflare" as const) : ("local" as const),
+    colo,
+    rayId,
+    placement: req.headers.get("cf-placement"),
+  };
 }
 
 export async function GET(): Promise<Response> {
@@ -62,6 +96,18 @@ export async function GET(): Promise<Response> {
 }
 
 export async function POST(req: Request): Promise<Response> {
+  const accessToken = process.env.LAB_ACCESS_TOKEN;
+  if (!accessToken && isCloudflareRequest(req)) {
+    return badRequest(
+      "lab_access_not_configured",
+      "Cloudflare Lab access is disabled until LAB_ACCESS_TOKEN is configured",
+      503,
+    );
+  }
+  if (accessToken && req.headers.get("authorization") !== `Bearer ${accessToken}`) {
+    return badRequest("unauthorized", "Lab access token is required", 401);
+  }
+
   let body: Record<string, unknown>;
   try {
     body = (await req.json()) as Record<string, unknown>;
@@ -70,12 +116,29 @@ export async function POST(req: Request): Promise<Response> {
   }
 
   const provider = (typeof body.provider === "string" ? body.provider : "gemini") as LabProviderId;
-  if (!(PROVIDERS as readonly string[]).includes(provider)) return badRequest("invalid_provider");
+  if (!(LAB_PROVIDER_IDS as readonly string[]).includes(provider)) {
+    return badRequest("invalid_provider");
+  }
   const mode = (typeof body.mode === "string" ? body.mode : "full_dish") as LabMode;
   if (!(MODES as readonly string[]).includes(mode)) return badRequest("invalid_mode");
   const model = typeof body.model === "string" ? body.model.trim() : "";
-  const modelSpec = getLabModel(provider, model);
-  if (!modelSpec || !modelSpec.modes.includes(mode)) return badRequest("invalid_model");
+  const requestedTransport = typeof body.transport === "string" ? body.transport : "";
+  if (!(LAB_TRANSPORT_IDS as readonly string[]).includes(requestedTransport)) {
+    return badRequest("invalid_transport");
+  }
+  const modelSpec = getLabModel(
+    provider,
+    model,
+    requestedTransport as LabRequest["transport"],
+  );
+  if (!modelSpec) return badRequest("invalid_model");
+  if (modelSpec.modes.length === 0) {
+    return badRequest(
+      "unsupported_input_capability",
+      "This provider is text-only. Use the future shared OCR track instead of the image benchmark.",
+    );
+  }
+  if (!modelSpec.modes.includes(mode)) return badRequest("invalid_model");
   if (!modelSpec.configured) return badRequest("missing_credentials", "Provider is not configured", 503);
 
   const images = parseImages(body.images);
@@ -94,6 +157,7 @@ export async function POST(req: Request): Promise<Response> {
 
   const request: LabRequest = {
     provider,
+    transport: modelSpec.transport,
     model,
     mode,
     images,
@@ -104,13 +168,7 @@ export async function POST(req: Request): Promise<Response> {
     maxOutputTokens: Math.round(boundedNumber(body.maxOutputTokens, 8192, 256, 65536)),
     signal: abort.signal,
   };
-  const cf = (req as Request & { cf?: { colo?: string } }).cf;
-  const source = streamLabRun(request, {
-    runtime: cf ? "cloudflare" : "local",
-    colo: cf?.colo ?? null,
-    rayId: req.headers.get("cf-ray"),
-    placement: req.headers.get("cf-placement"),
-  });
+  const source = streamLabRun(request, getRuntimeMeta(req));
   const encoder = new TextEncoder();
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {

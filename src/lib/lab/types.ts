@@ -1,6 +1,28 @@
 import type { Dish } from "@/lib/contract";
 
-export type LabProviderId = "gemini" | "qwen" | "doubao" | "openai";
+export const LAB_PROVIDER_IDS = [
+  "gemini",
+  "qwen",
+  "doubao",
+  "openai",
+  "minimax",
+  "stepfun",
+  "glm",
+  "deepseek",
+] as const;
+export type LabProviderId = (typeof LAB_PROVIDER_IDS)[number];
+export const LAB_TRANSPORT_IDS = [
+  "gemini",
+  "dashscope-beijing",
+  "dashscope-singapore",
+  "dashscope-virginia",
+  "ark",
+  "minimax",
+  "stepfun",
+  "openrouter",
+] as const;
+export type LabTransportId = (typeof LAB_TRANSPORT_IDS)[number];
+export type LabInputCapability = "vision" | "text";
 export type LabMode = "full_dish" | "extract_only";
 
 export interface ObservedMenuItem {
@@ -17,13 +39,18 @@ export interface LabProviderInfo {
   id: LabProviderId;
   label: string;
   configured: boolean;
+  capability: LabInputCapability;
+  missingEnvironment: string[];
 }
 
 export interface LabModelSpec {
   provider: LabProviderId;
+  transport: LabTransportId;
+  transportLabel: string;
   model: string;
   label: string;
   configured: boolean;
+  missingEnvironment: string[];
   modes: LabMode[];
   snapshot: boolean;
 }
@@ -35,6 +62,7 @@ export interface LabCatalog {
 
 export interface LabRequest {
   provider: LabProviderId;
+  transport: LabTransportId;
   model: string;
   mode: LabMode;
   images: string[];
@@ -94,6 +122,7 @@ export type LabStreamEvent =
   | {
       type: "meta";
       provider: LabProviderId;
+      transport: LabTransportId;
       model: string;
       mode: LabMode;
       imageCount: number;

@@ -14,6 +14,7 @@ const runtimeMeta = {
 function request(imageCount: number): LabRequest {
   return {
     provider: "gemini",
+    transport: "gemini",
     model: "gemini-2.5-flash",
     mode: "extract_only",
     images: Array.from({ length: imageCount }, () => image),
@@ -55,7 +56,11 @@ describe("streamLabRun", () => {
 
     const first = await iterator.next();
 
-    expect(first.value).toMatchObject({ type: "meta", runtime: "local" });
+    expect(first.value).toMatchObject({
+      type: "meta",
+      runtime: "local",
+      transport: "gemini",
+    });
     expect(started).toBe(false);
     await iterator.return?.(undefined);
   });
@@ -111,5 +116,26 @@ describe("streamLabRun", () => {
     expect(events).toContainEqual(expect.objectContaining({ type: "item", page: 1 }));
     expect(events).toContainEqual(expect.objectContaining({ type: "error", page: 2, code: "provider_timeout" }));
     expect(events.at(-1)).toMatchObject({ type: "done", total: 1, partial: true });
+  });
+
+  it("keeps a sanitized provider status and message for diagnostics", async () => {
+    const adapter: LabProviderAdapter = {
+      id: "gemini",
+      async *streamPage() {
+        throw new Error(
+          'provider_http_403:{"error":{"message":"This model is not available in your region.","key":"sk-never-show"}}',
+        );
+      },
+    };
+
+    const events = await collect(streamLabRun(request(1), runtimeMeta, adapter));
+    const error = events.find((event) => event.type === "error");
+
+    expect(error).toMatchObject({
+      type: "error",
+      code: "provider_rejected",
+      message: "HTTP 403: This model is not available in your region.",
+    });
+    expect(JSON.stringify(events)).not.toContain("sk-never-show");
   });
 });

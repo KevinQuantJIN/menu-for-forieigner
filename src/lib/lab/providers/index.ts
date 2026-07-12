@@ -1,7 +1,6 @@
 import type { LabProviderEvent, LabProviderId, LabRequest } from "../types";
 import { geminiAdapter } from "./gemini";
 import { createOpenAICompatibleAdapter } from "./openai-compatible";
-import { openaiAdapter } from "./openai";
 
 export interface LabProviderAdapter {
   id: LabProviderId;
@@ -13,11 +12,20 @@ export interface LabProviderAdapter {
   }): AsyncIterable<LabProviderEvent>;
 }
 
-export function getProviderAdapter(provider: LabProviderId): LabProviderAdapter {
-  if (provider === "gemini") return geminiAdapter;
-  if (provider === "openai") return openaiAdapter;
-  if (provider === "qwen" || provider === "doubao") {
-    return createOpenAICompatibleAdapter(provider);
+export function getProviderAdapter(
+  request: Pick<LabRequest, "provider" | "transport">,
+): LabProviderAdapter {
+  const { provider, transport } = request;
+  if (provider === "gemini" && transport === "gemini") return geminiAdapter;
+  if (
+    provider === "openai" ||
+    provider === "qwen" ||
+    provider === "doubao" ||
+    provider === "minimax" ||
+    provider === "stepfun" ||
+    provider === "glm"
+  ) {
+    return createOpenAICompatibleAdapter(provider, transport);
   }
   throw new Error("invalid_provider");
 }

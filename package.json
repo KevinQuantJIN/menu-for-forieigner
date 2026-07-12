@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "bash scripts/cloudflare-build.sh preview",
+    "deploy": "bash scripts/cloudflare-build.sh deploy",
+    "configure:lab-access": "node scripts/configure-lab-access.mjs",
     "start": "next start",
     "test": "vitest run --passWithNoTests"
   },

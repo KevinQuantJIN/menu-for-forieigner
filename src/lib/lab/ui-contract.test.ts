@@ -12,6 +12,7 @@ describe("Lab UI contract", () => {
       "mode",
       "goldInput",
       "repeatCount",
+      "accessToken",
       "runBtn",
       "benchmarkBtn",
       "exportJsonBtn",
@@ -54,5 +55,28 @@ describe("Lab UI contract", () => {
   it("keeps the latest cumulative usage per page instead of double-counting chunks", () => {
     expect(html).toContain("usageByPage");
     expect(html).not.toContain("run.usage.input+=ev.inputTokens");
+  });
+
+  it("explains provider readiness and text-only capability limits", () => {
+    expect(html).toContain("missingEnvironment");
+    expect(html).toContain("text-only · requires shared OCR");
+    expect(html).toContain("image-ready");
+  });
+
+  it("preserves transport in runs, benchmark grouping, and CSV exports", () => {
+    expect(html).toContain("config.transport");
+    expect(html).toContain("provider::transport::model");
+    expect(html).toContain("provider,transport,model,mode");
+  });
+
+  it("keeps a selected transport when model entries share the same model id", () => {
+    expect(html).toContain("function refreshModelState()");
+    expect(html).toContain("els.model.onchange=refreshModelState");
+    expect(html).not.toContain("els.model.onchange=refreshModels");
+  });
+
+  it("sends the session-scoped Lab access token on paid provider requests", () => {
+    expect(html).toContain('sessionStorage.getItem("labAccessToken")');
+    expect(html).toContain('headers.Authorization=`Bearer ${els.accessToken.value.trim()}`');
   });
 });
