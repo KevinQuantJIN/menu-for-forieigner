@@ -79,13 +79,15 @@
 
   /* ---------- shared ---------- */
   .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  /* 返回键：轻量纯 chevron，无框（7.13 全局统一，Julia 定）；触控热区用伪元素撑到 44pt */
   .back {
-    width: 40px; height: 40px; border-radius: var(--r-md); border: 1.5px solid var(--ink);
-    background: none;
-    font-size: 17px; cursor: pointer; flex: none;
+    position: relative; width: 32px; height: 32px; border: none; border-radius: 999px;
+    background: none; padding: 0; color: var(--ink);
+    font-size: 22px; font-weight: 600; line-height: 1; cursor: pointer; flex: none;
     transition: transform var(--dur-fast) var(--ease);
   }
-  .back:active { transform: scale(.92); }
+  .back::after { content: ""; position: absolute; inset: -8px; }
+  .back:active { transform: scale(.88); }
   .topbar h2 { font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; flex: 1; }
   .btn {
     border: none; border-radius: var(--r-md); min-height: 52px; padding: 0 26px;

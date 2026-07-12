@@ -19,8 +19,7 @@
 
 /* ---------- S1 list ---------- */
 #s-list { background: linear-gradient(178deg, var(--sh-paper), var(--sh-paper-2)); color: var(--sh-ink); }
-/* 返回键轻量化（7.13）：去大框，纯 chevron */
-#s-list .back { width: 32px; height: 32px; border: none; background: none; font-size: 22px; font-weight: 600; color: var(--sh-ink); padding: 0; }
+/* 返回键样式已全局统一在 tokens.css（7.13） */
 .resto-bar {
   display: flex; align-items: center; gap: 10px; background: var(--sh-card);
   border: 2px solid var(--sh-ink); border-radius: 12px; box-shadow: 3px 3px 0 rgba(28,26,23,.18);
