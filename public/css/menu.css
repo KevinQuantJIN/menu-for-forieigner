@@ -28,27 +28,33 @@
   .sechead span::after { content: "】"; color: var(--accent); }
   .sechead::after { content: ""; flex: 1; height: 1px; background: var(--hair); align-self: center; }
 
-  /* 菜品行：发丝线分隔，全平面 */
+  /* 菜品卡：描边单元（方案C 线条框 × 纸墨朱）——UI.md：横线太多看不清，改成分明的卡片单元 */
   .pcard {
     position: relative;
-    background: none; border-bottom: 1px solid var(--hair); border-radius: 0;
-    padding: 13px 2px 12px; margin-bottom: 0; cursor: pointer;
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 12px;
+    box-shadow: 3px 3px 0 rgba(178,58,47,.16);
+    padding: 14px 14px 12px; margin: 14px 0 18px; cursor: pointer;
     animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
     transition: transform var(--dur-fast) var(--ease);
   }
   .pcard:active { transform: scale(.985); }
   @keyframes pop { from { opacity: 0; transform: translateY(12px); } }
   .pcard-top { display: flex; align-items: flex-start; gap: 10px; }
-  .pcard .name { font-size: 15.5px; font-weight: 800; line-height: 1.3; letter-spacing: -.1px; }
+  .pcard .name { font-size: 15.5px; font-weight: 800; line-height: 1.3; letter-spacing: -.1px; padding-right: 66px; }
   .pcard .cn { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
   .pcard .cn .speak { border: none; background: none; cursor: pointer; font-size: 13px; padding: 6px; margin: -6px 0; }
-  .pcard .right { margin-left: auto; margin-right: 42px; text-align: right; flex: none; }
-  .pcard .chili { font-size: 12px; margin-top: 4px; }
-  .pcard .chili .ns { color: var(--muted); font-size: 11px; }
-  .pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding-right: 42px; }
+  /* 价签：赭黄底斜贴卡片右上角（方案C 蛋黄价签的纸墨朱版） */
+  .pcard .right {
+    position: absolute; top: -11px; right: 12px; text-align: center; z-index: 2;
+    background: var(--warn-bg); border: 1.5px solid var(--ink); border-radius: 7px;
+    padding: 3px 9px 4px; transform: rotate(1.5deg); line-height: 1.25;
+  }
+  .pcard .chili { font-size: 11px; margin-top: 1px; }
+  .pcard .chili .ns { color: var(--muted); font-size: 10px; }
+  .pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 9px; padding-right: 42px; min-height: 8px; }
   /* ＋号：墨框小方章 */
   .addbtn {
-    position: absolute; right: 4px; bottom: 14px;
+    position: absolute; right: 11px; bottom: 11px;
     width: 30px; height: 30px; border-radius: var(--r-sm); border: 1.5px solid var(--ink);
     background: none; color: var(--ink); font-size: 16px; font-weight: 800; cursor: pointer;
     transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
@@ -56,16 +62,15 @@
   .addbtn::after { content: ""; position: absolute; inset: -8px; } /* 44pt+ touch target */
   .addbtn:active { transform: scale(.9); }
   .addbtn.in { background: var(--accent); border-color: var(--accent); color: #f7f0df; transform: rotate(2.5deg); }
-  .qty-badge { position: absolute; right: 42px; bottom: 20px; font-size: 12px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
+  .qty-badge { position: absolute; right: 49px; bottom: 17px; font-size: 12px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
 
-  /* 折叠条：上朱线下发丝线 */
+  /* 折叠条：朱色虚线描边卡 */
   .fold {
-    border: none; border-top: 2.5px solid var(--accent); border-bottom: 1px solid var(--hair);
-    background: none; border-radius: 0;
-    padding: 12px 2px; margin: 16px 0 6px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--accent);
+    border: 2px dashed var(--accent); background: none; border-radius: 12px;
+    padding: 12px 14px; margin: 18px 0 6px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--accent);
   }
   .fold .why { display: block; font-weight: 500; color: var(--muted); font-size: 12px; margin-top: 3px; line-height: 1.45; }
-  .folded-wrap .pcard { background: none; }
+  .folded-wrap .pcard { background: none; box-shadow: none; border-style: dashed; border-width: 1.5px; }
 
   /* 点单条：页底重界线（印刷账本的合计行） */
   .cart-bar {

@@ -53,6 +53,15 @@
 
   /* ---------- 中：手机 ---------- */
   .phone-wrap { position: relative; flex: none; }
+  /* 快速跳屏条（右栏，印章下方） */
+  .jumpbar { margin-top: 26px; display: flex; gap: 7px; flex-wrap: wrap; }
+  .jumpbar button {
+    font: inherit; font-size: 11.5px; font-weight: 700; letter-spacing: .05em;
+    background: none; border: 1.5px solid var(--ink); border-radius: 6px; color: var(--ink);
+    padding: 7px 11px; cursor: pointer; transition: transform .14s;
+  }
+  .jumpbar button:hover { background: var(--ink); color: #f2e9d5; }
+  .jumpbar button:active { transform: scale(.95); }
   /* 落影：接触影 + 环境大影 */
   .phone-wrap::before {
     content: ""; position: absolute; left: 6%; right: 6%; bottom: -34px; height: 50px; border-radius: 50%;
@@ -186,7 +195,7 @@
       <span class="btn-side b-power"></span>
       <div class="screen-hole">
         <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo<br><small style="font-size:10px">npm run dev → localhost:3000</small></div>
-        <iframe src="app.html" title="Chopstory demo"></iframe>
+        <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
         <span class="island"></span>
         <span class="glass"></span>
       </div>
@@ -212,6 +221,16 @@
         <span class="stamp-note">已钤二印 · 尝八味</span>
       </div>
     </div>
+    <!-- 快速跳屏：评审/调 UI 时直达任意界面（UI.md） -->
+    <nav class="jumpbar">
+      <button onclick="jump('home')">S0 首页</button>
+      <button onclick="jump('camera')">相机</button>
+      <button onclick="jump('analyzing')">识别中</button>
+      <button onclick="jump('list')">S1 菜单</button>
+      <button onclick="jump('detail')">S2 详情</button>
+      <button onclick="jump('order')">S3 点单</button>
+      <button onclick="jump('map')">S4 食迹</button>
+    </nav>
   </aside>
 
   <!-- 底部菜账 -->
@@ -225,5 +244,28 @@
     <span class="item"><span class="nm">红糖糍粑</span><span class="dots"></span><span class="pr">¥16</span></span>
   </div>
 </div>
+<script>
+/* 快速跳屏：直接调用 iframe 内的全局函数（同源） */
+function jump(s) {
+  const w = document.getElementById("appframe").contentWindow;
+  if (!w || !w.go) return;
+  try { w.closeDetail && w.closeDetail(); } catch (e) {}
+  try { w.closeSheet && w.closeSheet(false); } catch (e) {}
+  const ensureMenu = () => {
+    if (!w.streamed || !w.streamed.length) { w.scanSource = "camera"; w.beginStream(); }
+    else w.go("list");
+  };
+  const acts = {
+    home: () => w.go("home"),
+    camera: () => { w.scanSource = "camera"; w.go("camera"); },
+    analyzing: () => { w.scanSource = "camera"; w.startAnalyze(); },
+    list: ensureMenu,
+    detail: () => { ensureMenu(); w.openDetail(8); },
+    order: () => { ensureMenu(); if (!w.order.size) { w.addToOrder(3, 1); w.addToOrder(8, 1); } w.openOrder(); },
+    map: () => { w.go("history"); w.histView("map"); },
+  };
+  acts[s] && acts[s]();
+}
+</script>
 </body>
 </html>

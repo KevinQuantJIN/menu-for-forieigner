@@ -131,6 +131,18 @@
   .sheet-actions { display: flex; gap: 10px; margin-top: 22px; }
   .sheet-actions .btn { flex: 1; }
 
+  /* 描边卡片单元（方案C 大排档线条框 × 纸墨朱）：菜品卡/点单区块等一切"UI 单元" */
+  .unit {
+    background: var(--paper);
+    border: 2px solid var(--ink); border-radius: 12px;
+    box-shadow: 3px 3px 0 rgba(178,58,47,.16);   /* 朱调套色错位硬阴影 */
+  }
+
+  /* 手机质感：隐藏滚动条 */
+  .screen { scrollbar-width: none; }
+  .screen::-webkit-scrollbar, #sheet::-webkit-scrollbar, #detail-sheet::-webkit-scrollbar { display: none; }
+  #sheet, #detail-sheet { scrollbar-width: none; }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
   }

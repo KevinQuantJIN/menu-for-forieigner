@@ -24,11 +24,9 @@ function pcardHTML(d, i = 0, stagger = false) {
         <div class="name">${d.emoji} ${d.name}</div>
         <div class="cn">${d.nameCn} · ${d.pinyin} <button class="speak" onclick="speak('${d.nameCn}',event)">🔊</button></div>
       </div>
-      <div class="right price-dual"><b>≈ $${usdN(d.price)}</b><br><span>¥${d.price}</span>
-        <div class="chili">${d.spicy ? "🌶".repeat(d.spicy) : `<span class="ns">not spicy</span>`}</div>
-      </div>
+      <div class="right price-dual"><b>≈ $${usdN(d.price)}</b><br><span>¥${d.price}</span></div>
     </div>
-    <div class="tags">${previewTags(d)}</div>
+    <div class="tags">${d.spicy ? `<span class="tag tag-gray chili-tag">${"🌶".repeat(d.spicy)}</span>` : ""}${previewTags(d)}</div>
   </div>`;
 }
 let foldOpen = false;
@@ -62,10 +60,9 @@ function renderList(stagger = false) {
   renderCartBar();
 }
 
-/* ---------------- detail ---------------- */
-function flavorBarHTML(label, v) {
-  return `<div class="fbar"><span class="fl">${label}</span><span class="ft"><i style="width:${v * 10}%"></i></span><span class="fv">${v}</span></div>`;
-}
+/* ---------------- detail ----------------
+   Flavor bars 已移除（UI.md 7.12）：辣度 = 🌶 icon（价签/详情价格行），
+   麻 numbing≥5 = Heads-up 标签；Heads-up 标签清单维护在 data.js（GENERIC_TAG / HIDDEN_RISK_LABEL） */
 function openDetail(id) {
   const d = DISHES.find(x => x.id === id);
   const hits = personalHits(d);
@@ -80,22 +77,18 @@ function openDetail(id) {
     <div class="dname">${d.name}</div>
     <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak('${d.nameCn}',event)">🔊</button></div>
     ${d.cuisine ? `<div class="dcuisine">${d.cuisine}</div>` : ""}
-    <div class="dprice price-dual"><b>≈ $${usdN(d.price)}</b> <span>· ¥${d.price} on menu</span></div>
+    <div class="dprice price-dual"><b>≈ $${usdN(d.price)}</b> <span>· ¥${d.price} on menu</span> &nbsp;${d.spicy ? "🌶".repeat(d.spicy) : ""}</div>
     ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
     ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${hits.join(", ")}</div>` : ""}
     <div class="quote">${d.desc}</div>
-    ${d.flavorBars ? `<div class="dsec"><div class="gt">Flavor</div>
-      ${flavorBarHTML("🌶 Spicy", d.flavorBars.spicy)}
-      ${flavorBarHTML("⚡ Numbing 麻", d.flavorBars.numbing)}
-      ${flavorBarHTML("🛢 Richness", d.flavorBars.richness)}
-    </div>` : ""}
     <div class="dsec"><div class="gt">Main ingredients</div>
       <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${i}</span>`).join("")}</div></div>
     <div class="dsec"><div class="gt">Allergens</div>
       ${d.allergens.length ? d.allergens.map(a => `<div class="allergen-row">${ALLERGEN_LABEL[a.t]} ${LVL[a.l]}</div>`).join("") : `<div class="allergen-row" style="color:var(--muted)">None flagged for the typical recipe</div>`}
     </div>
-    ${d.textures.length || (d.hiddenRisks||[]).length ? `<div class="dsec"><div class="gt">Heads-up</div>
-      <div class="ing-chips">${d.textures.map(t => `<span class="ing">${GENERIC_TAG[t]}</span>`).join("")}
+    ${d.textures.length || (d.hiddenRisks||[]).length || (d.flavorBars && d.flavorBars.numbing >= 5) ? `<div class="dsec"><div class="gt">Heads-up</div>
+      <div class="ing-chips">${(d.flavorBars && d.flavorBars.numbing >= 5) ? `<span class="ing">⚡ tingling 麻 — Sichuan pepper buzz</span>` : ""}
+      ${d.textures.map(t => `<span class="ing">${GENERIC_TAG[t]}</span>`).join("")}
       ${(d.hiddenRisks||[]).map(h => `<span class="ing">${HIDDEN_RISK_LABEL[h] || h}</span>`).join("")}</div></div>` : ""}
     ${d.story || d.howToEat ? `<div class="dsec"><div class="gt">The story</div>
       ${d.story ? `<p class="story">${d.story}</p>` : ""}

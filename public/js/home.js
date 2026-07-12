@@ -2,6 +2,7 @@
 /* ---------------- profile sheet ---------------- */
 function renderProfileStrip() {
   const el = document.getElementById("profileStrip");
+  if (!el) return; // 首页画像条已移除（UI.md 7.12）；画像入口 = 首跑面板 + 点单页 Edit
   const parts = [
     ...profile.allergens.map(a => "🚫 " + ALLERGEN_LABEL[a]),
     ...profile.avoid.map(a => "🙅 " + AVOID_LABEL[a]),
@@ -40,17 +41,16 @@ function closeSheet(save) {
   if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
 }
 
-/* ---------------- analyze flow (mock streaming) ---------------- */
+/* ---------------- analyze flow：极简等待屏（一行状态轮换 + 进度条） ---------------- */
 function startAnalyze() {
-  const thumb = document.getElementById("anaThumb");
-  if (scanSource === "album") thumb.innerHTML = `<img src="real-menu-mawangzi.jpg" alt="Menu photo">`;
-  else thumb.textContent = "川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……";
   go("analyzing");
-  const set = (id, cls, txt) => { const s = document.getElementById(id); s.className = "step " + cls; s.querySelector(".st").textContent = txt; };
-  set("st1","doing","reading…"); set("st2","","waiting"); set("st3","","waiting");
-  setTimeout(() => { set("st1","done","done ✓"); set("st2","doing","translating…"); }, 900);
-  setTimeout(() => { set("st2","done","done ✓"); set("st3","doing","checking…"); }, 1800);
-  setTimeout(() => { set("st3","done","done ✓"); beginStream(); }, 2400);
+  const status = document.getElementById("anaStatus");
+  const bar = document.getElementById("anaBar");
+  const phase = (txt, pct) => { status.textContent = txt; bar.style.width = pct + "%"; };
+  phase("Looking at the photo", 18);
+  setTimeout(() => phase("Translating 14 dishes", 55), 900);
+  setTimeout(() => phase("Checking your allergies", 85), 1800);
+  setTimeout(() => { phase("Done", 100); beginStream(); }, 2400);
 }
 function beginStream() {
   /* whole-menu reveal: analysis done → present the entire decoded menu at once

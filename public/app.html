@@ -22,9 +22,7 @@
       <h1 class="slogan">Read it. Order it.<br><i>Eat the story.</i></h1>
       <div class="scan-row">
         <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
-        <button class="album-link" onclick="startScan('album')">🖼️ Album</button>
       </div>
-      <div class="profile-strip" id="profileStrip"></div>
     </div>
 
     <div class="home-sec">
@@ -134,20 +132,18 @@
     <div class="cam-bottom">
       <p class="cam-tip">Keep the menu flat · good lighting works best</p>
       <button class="shutter" onclick="startAnalyze()" aria-label="Shutter"></button>
+      <button class="cam-album" onclick="startScan('album')">🖼️<span>Album</span></button>
     </div>
   </section>
 
-  <!-- ============ ANALYZING ============ -->
+  <!-- ============ ANALYZING（极简：印章呼吸 + 单行状态） ============ -->
   <section class="screen hidden" id="s-analyzing">
-    <div class="thumb" id="anaThumb">川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……</div>
-    <h2>Reading the menu…</h2>
-    <p class="sub">AI is identifying <b id="anaCount">14</b> dishes and checking them against your profile</p>
-    <div class="steps">
-      <div class="step" id="st1"><span>🔍 Reading text & layout</span><span class="st">…</span></div>
-      <div class="step" id="st2"><span>🧠 Translating & explaining each dish</span><span class="st">waiting</span></div>
-      <div class="step" id="st3"><span>🛡️ Checking your allergies & dislikes</span><span class="st">waiting</span></div>
+    <div class="ana-center">
+      <div class="ana-seal">食</div>
+      <h2>Reading your menu…</h2>
+      <p class="ana-status" id="anaStatus">Looking at the photo</p>
+      <div class="ana-track"><i id="anaBar"></i></div>
     </div>
-    <p class="anal-foot">usually under 10 seconds</p>
   </section>
 
   <!-- ============ S1 LIST ============ -->
@@ -265,7 +261,6 @@
 <script src="js/map.js"></script>
 <script>
 /* ---------------- boot ---------------- */
-renderProfileStrip();
 setTimeout(renderHomeMap, 500); // 首页迷你食迹地图，空闲时加载
 if (!localStorage.getItem("ml.profile")) setTimeout(openSheet, 600); // first run: quick prefs, skippable
 </script>

@@ -9,15 +9,6 @@
   .slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 var(--accent); }
   .scan-row { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
   .scan-cta { flex: 1; max-width: 230px; }
-  .album-link {
-    background: none; border: 1.5px solid var(--ink);
-    border-radius: var(--r-md); min-height: 52px; padding: 0 18px; font-size: 14px; font-weight: 700; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .album-link:active { transform: scale(.96); }
-  .profile-strip {
-    margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
-  }
   .seeall { border: none; background: none; color: var(--accent); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 6px 0; }
   /* 地图容器：文武边（外粗内细双线框） */
   #home-map {
@@ -36,7 +27,8 @@
   /* home · "My food story"：印刷行版式时间线 */
   .home-sec { margin-top: 26px; text-align: left; }
   .home-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .home-sec-head .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; }
+  /* 可读性优先：不再用拉字距的衬线小字（UI.md 反馈"字体不太好认"） */
+  .home-sec-head .gt { font-size: 14px; font-weight: 800; color: var(--ink); letter-spacing: 0; }
   .date-lab { display: flex; align-items: baseline; gap: 6px; margin: 16px 2px 12px; }
   .date-lab b { font-family: var(--font-disp); font-size: 18px; font-weight: 900; letter-spacing: .5px; }
   .date-lab span { font-size: 12px; color: var(--faint); font-weight: 700; }
@@ -80,32 +72,36 @@
   .menu-paper h4 { text-align: center; font-size: 17px; letter-spacing: 4px; border-bottom: 1.5px solid #b9a98f; padding-bottom: 8px; }
   .menu-paper .sec { margin-top: 10px; font-size: 11px; color: #8a7a5f; letter-spacing: 2px; }
   .menu-paper .row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
-  .cam-bottom { padding: 10px 18px calc(26px + env(safe-area-inset-bottom)); text-align: center; }
+  .cam-bottom { position: relative; padding: 10px 18px calc(26px + env(safe-area-inset-bottom)); text-align: center; }
   .cam-tip { font-size: 12px; color: #a99f94; margin-bottom: 14px; }
   .shutter {
     width: 72px; height: 72px; border-radius: 999px; background: #fff; border: 5px solid rgba(255,255,255,.35);
     cursor: pointer; transition: transform var(--dur-fast) var(--ease);
   }
   .shutter:active { transform: scale(.9); }
+  /* 相册入口：相机页右下角（UI.md：从首页移过来） */
+  .cam-album {
+    position: absolute; right: 22px; bottom: calc(34px + env(safe-area-inset-bottom));
+    width: 52px; height: 52px; border-radius: 12px;
+    background: rgba(255,255,255,.14); border: 1.5px solid rgba(255,255,255,.5);
+    color: #eee; font-size: 19px; cursor: pointer; display: grid; place-items: center; gap: 0;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .cam-album span { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: .05em; margin-top: -2px; }
+  .cam-album:active { transform: scale(.92); }
 
-  /* ---------- analyzing ---------- */
+  /* ---------- analyzing：极简（印章呼吸 + 单行状态 + 细进度条） ---------- */
   #s-analyzing { text-align: center; }
-  .thumb {
-    width: 62%; margin: 26px auto 0; border-radius: var(--r-sm); background: #fbf7ef; border: 1px solid var(--line);
-    padding: 14px 12px; font-family: "Songti SC", serif; font-size: 11px; color: #71614a; line-height: 1.6;
-    flex: none; overflow: hidden;
+  .ana-center { margin: auto; display: flex; flex-direction: column; align-items: center; padding-bottom: 12vh; }
+  .ana-seal {
+    width: 74px; height: 74px; border-radius: 10px; background: var(--accent); color: #f6efdc;
+    font-family: "Kaiti SC", "STKaiti", serif; font-size: 34px; display: grid; place-items: center;
+    box-shadow: inset 0 0 0 2.5px rgba(246,239,220,.4); transform: rotate(2.5deg);
+    animation: seal-breathe 1.6s var(--ease) infinite;
   }
-  .thumb img { width: 100%; max-height: 150px; object-fit: cover; object-position: top; border-radius: 6px; display: block; margin: -6px 0; }
-  #s-analyzing h2 { margin-top: 24px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
-  #s-analyzing .sub { color: var(--muted); font-size: var(--t-sub); margin-top: 6px; line-height: 1.5; }
-  .steps { margin: 24px auto 0; width: 100%; max-width: 320px; display: grid; gap: 0; text-align: left; border-top: 2.5px solid var(--ink); }
-  .step {
-    display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    background: none; border-bottom: 1px solid var(--hair);
-    padding: 14px 4px; font-size: 14px; font-weight: 650;
-  }
-  .step .st { font-size: 12.5px; font-weight: 800; color: var(--muted); white-space: nowrap; font-family: var(--font-num); }
-  .step.done .st { color: var(--green); }
-  .step.doing .st { color: var(--accent); }
-  .anal-foot { margin-top: 20px; font-size: 12px; color: var(--faint); }
+  @keyframes seal-breathe { 0%,100% { transform: rotate(2.5deg) scale(1); } 50% { transform: rotate(2.5deg) scale(1.06); } }
+  #s-analyzing h2 { margin-top: 22px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
+  .ana-status { margin-top: 8px; font-size: 13.5px; color: var(--muted); }
+  .ana-track { margin-top: 18px; width: 180px; height: 4px; background: #ece2c9; overflow: hidden; border-radius: 2px; }
+  .ana-track i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .5s var(--ease); }
 
