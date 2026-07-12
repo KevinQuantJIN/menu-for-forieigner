@@ -1,0 +1,73 @@
+/* Chopstory · S3 点单卡（For me / For waiter）*/
+  /* ---------- S3 order：点菜账页 ---------- */
+  .otabs { display: flex; border: 1.5px solid var(--ink); border-radius: var(--r-md); padding: 0; margin-bottom: 16px; overflow: hidden; }
+  .otab {
+    flex: 1; border: none; border-radius: 0; padding: 10px 6px; font-size: 13.5px; font-weight: 800;
+    background: none; cursor: pointer; color: var(--muted);
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .otab + .otab { border-left: 1.5px solid var(--ink); }
+  .otab .s { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; }
+  .otab.on { background: var(--ink); color: #f2e9d5; }
+  .guide-banner {
+    display: flex; align-items: center; gap: 10px;
+    background: none; color: var(--accent); border: 1.5px solid var(--accent);
+    border-radius: var(--r-md); padding: 12px 14px; margin-bottom: 14px;
+    font-size: 13px; font-weight: 700; line-height: 1.45; cursor: pointer;
+    animation: pop 380ms var(--ease);
+  }
+  .guide-banner .arr { margin-left: auto; font-size: 16px; flex: none; }
+  .onote b { display: block; margin-bottom: 3px; }
+  /* order page: back + tabs in ONE row; sections = 重线起头的账目区块 */
+  .topbar .otabs { flex: 1; margin-bottom: 0; }
+  .sec-card { background: none; border-top: 2.5px solid var(--ink); border-radius: 0; padding: 2px 2px 8px; margin-bottom: 16px; }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 2px; }
+  .sec-head .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; }
+  .edit-btn { border: 1.5px solid var(--accent); background: none; color: var(--accent); border-radius: var(--r-sm); padding: 5px 13px; font-size: 12px; font-weight: 800; cursor: pointer; }
+  .orow { display: flex; align-items: center; gap: 8px; padding: 13px 0; border-bottom: 1px solid var(--hair); font-size: 14.5px; font-variant-numeric: tabular-nums; }
+  .sec-card .orow:last-child { border-bottom: none; }
+  .orow b { flex: 1; letter-spacing: -.1px; }
+  .orow b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .orow .q { color: var(--accent); font-weight: 800; }
+  .total-sm { text-align: right; font-size: 12px; color: var(--muted); padding: 10px 0 12px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
+  .sec-empty { text-align: center; padding: 20px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .sec-empty .e { font-size: 30px; display: block; margin-bottom: 6px; }
+  .note-row { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: 13.5px; line-height: 1.5; align-items: baseline; }
+  .sec-card .note-row:last-child { border-bottom: none; }
+  .note-row .k { flex: none; font-weight: 800; }
+  .note-row .v { color: var(--ink-2); }
+  .note-row .v.none { color: var(--faint); font-weight: 500; }
+  .note-row.danger .k, .note-row.danger .v { color: var(--danger); font-weight: 700; }
+  .note-input { width: 100%; border: 1.5px solid var(--line); background: none; border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: 13.5px; margin-top: 8px; }
+  .sec-card .chip-group:last-child { padding-bottom: 14px; }
+  .waiter .orow { font-size: 19px; padding: 15px 0; }
+  .waiter .orow b small { font-size: 12px; }
+  .waiter .note-row { font-size: 16.5px; }
+  .waiter .note-row.danger { font-size: 17.5px; }
+  .bubble { background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 4px 2px 12px; font-family: var(--font-disp); font-size: 15.5px; font-weight: 700; letter-spacing: .3px; margin-bottom: 12px; }
+  .oitem { display: flex; align-items: center; gap: 8px; background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 13px 2px; margin-bottom: 0; font-size: 14.5px; font-variant-numeric: tabular-nums; }
+  .oitem b { flex: 1; letter-spacing: -.1px; }
+  .oitem b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .oitem .q { color: var(--accent); font-weight: 800; font-family: var(--font-num); }
+  .order-empty { text-align: center; margin-top: 24%; }
+  .order-empty .big { font-size: 54px; }
+  .order-empty p { font-size: 16px; font-weight: 800; margin-top: 14px; }
+  .order-empty .sub { font-size: 13px; font-weight: 500; color: var(--muted); line-height: 1.55; margin: 8px auto 22px; max-width: 260px; }
+  .allergy-box { margin: 14px 0; background: none; border: 1.5px solid var(--accent); border-radius: var(--r-md); padding: 14px 16px; }
+  .allergy-box .h { display: flex; align-items: center; gap: 7px; font-weight: 800; color: var(--accent); font-size: 14px; }
+  .allergy-box p { margin-top: 6px; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
+  .allergy-box p b { color: var(--danger); }
+  .req-box { background: none; border-top: 1px solid var(--hair); border-radius: 0; padding: 13px 2px; font-size: 13.5px; line-height: 1.6; }
+  .onote { margin-top: 14px; background: none; border: 1px solid var(--line); color: var(--ink-2); border-radius: var(--r-sm); padding: 10px 13px; font-size: 12px; line-height: 1.5; }
+  .ototal { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding: 0 4px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
+  .ototal .t { font-size: 17px; font-weight: 900; }
+  /* waiter view — bigger type, Chinese, HIG accessibility sizes */
+  .waiter .bubble { font-size: 19px; }
+  .waiter .oitem { font-size: 20px; padding: 16px; }
+  .waiter .oitem small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .waiter .allergy-box { background: var(--danger-bg); box-shadow: inset 0 0 0 1.5px #eaa; }
+  .waiter .allergy-box .h { color: var(--danger); font-size: 17px; }
+  .waiter .allergy-box p { font-size: 18px; font-weight: 700; line-height: 1.6; color: var(--ink); }
+  .waiter .req-box { font-size: 18px; font-weight: 650; }
+  .waiter .onote { font-size: 14px; line-height: 1.6; }
+

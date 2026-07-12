@@ -1,0 +1,111 @@
+/* Chopstory · S0 首页 + 相机 + 识别中（含食迹时间线）*/
+  /* ---------- S0 home：上 1/3 拍菜单引导，下 2/3 食迹（社交资产） ---------- */
+  #s-home { text-align: center; }
+  .home-top { flex: none; }
+  .brand { margin-top: 6px; font-family: var(--font-disp); font-size: 19px; font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 7px; }
+  .brand em { color: var(--accent); font-style: normal; }
+  .brand .mark { width: 36px; height: 36px; }
+  .slogan { font-family: var(--font-disp); font-size: 26px; font-weight: 900; letter-spacing: .3px; line-height: 1.25; margin-top: 14px; }
+  .slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 var(--accent); }
+  .scan-row { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
+  .scan-cta { flex: 1; max-width: 230px; }
+  .album-link {
+    background: none; border: 1.5px solid var(--ink);
+    border-radius: var(--r-md); min-height: 52px; padding: 0 18px; font-size: 14px; font-weight: 700; cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .album-link:active { transform: scale(.96); }
+  .profile-strip {
+    margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
+  }
+  .seeall { border: none; background: none; color: var(--accent); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 6px 0; }
+  /* 地图容器：文武边（外粗内细双线框） */
+  #home-map {
+    position: relative; height: 224px; overflow: hidden;
+    background: #f3ecdb; cursor: pointer; flex: none;
+    border: 2.5px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -6.5px;
+  }
+  #homechinamap { position: absolute; inset: 0; }
+  #home-map-fb { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-disp); font-size: 20px; color: #a8987a; }
+  .map-cap {
+    position: absolute; bottom: 0; left: 0; right: 0; z-index: 5; pointer-events: none;
+    padding: 18px 0 9px; text-align: center; font-family: var(--font-disp);
+    font-size: 11.5px; letter-spacing: .18em; color: var(--ink-2);
+    background: linear-gradient(transparent, rgba(243,236,219,.96) 55%);
+  }
+  /* home · "My food story"：印刷行版式时间线 */
+  .home-sec { margin-top: 26px; text-align: left; }
+  .home-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .home-sec-head .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; }
+  .date-lab { display: flex; align-items: baseline; gap: 6px; margin: 16px 2px 12px; }
+  .date-lab b { font-family: var(--font-disp); font-size: 18px; font-weight: 900; letter-spacing: .5px; }
+  .date-lab span { font-size: 12px; color: var(--faint); font-weight: 700; }
+  .eat-card {
+    position: relative; display: flex; gap: 14px; align-items: center;
+    background: none; border-bottom: 1px solid var(--hair);
+    padding: 6px 2px 14px; margin-bottom: 8px; cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .eat-card:active { transform: scale(.98); }
+  .eat-photo {
+    flex: none; width: 78px; height: 78px; margin-top: -4px;
+    background: linear-gradient(135deg, #eee2c8, #d9c49c);
+    border: 4px solid #fff; outline: 1px solid var(--hair); border-radius: 2px;
+    display: grid; place-items: center; font-size: 36px;
+    transform: rotate(var(--rot, -4deg));
+  }
+  .eat-info { min-width: 0; flex: 1; }
+  .eat-info .n { font-size: 15px; font-weight: 800; letter-spacing: -.2px; }
+  .eat-info .m { font-size: 12px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .eat-info .hl { font-size: 12.5px; color: var(--accent); margin-top: 7px; display: inline-block; font-weight: 700; }
+  .eat-info .t { position: absolute; top: 6px; right: 2px; font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
+  .home-foot { margin-top: auto; padding-top: 20px; font-size: 10.5px; color: var(--faint); line-height: 1.55; }
+
+  /* ---------- camera ---------- */
+  #s-camera { background: #14100d; color: #eee; padding: 0; }
+  .cam-top { display: flex; justify-content: space-between; align-items: center; padding: max(46px, env(safe-area-inset-top)) 18px 8px; }
+  .cam-top .hint { font-size: 13.5px; color: #d8d2cb; }
+  .cam-x { width: 40px; height: 40px; border-radius: 999px; border: none; background: rgba(255,255,255,.14); color: #fff; font-size: 16px; cursor: pointer; }
+  .viewfinder { position: relative; flex: 1; margin: 8px 22px; display: flex; align-items: center; justify-content: center; }
+  .corner { position: absolute; width: 34px; height: 34px; border: 3px solid #fff; opacity: .9; border-radius: 2px; }
+  .c1 { top: 0; left: 0; border-right: none; border-bottom: none; }
+  .c2 { top: 0; right: 0; border-left: none; border-bottom: none; }
+  .c3 { bottom: 0; left: 0; border-right: none; border-top: none; }
+  .c4 { bottom: 0; right: 0; border-left: none; border-top: none; }
+  .menu-paper {
+    width: 78%; background: #fbf7ef; color: #33291f; border-radius: 6px; padding: 18px 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5); transform: rotate(-1.5deg);
+    font-family: "Songti SC", "STSong", serif;
+  }
+  .menu-paper h4 { text-align: center; font-size: 17px; letter-spacing: 4px; border-bottom: 1.5px solid #b9a98f; padding-bottom: 8px; }
+  .menu-paper .sec { margin-top: 10px; font-size: 11px; color: #8a7a5f; letter-spacing: 2px; }
+  .menu-paper .row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
+  .cam-bottom { padding: 10px 18px calc(26px + env(safe-area-inset-bottom)); text-align: center; }
+  .cam-tip { font-size: 12px; color: #a99f94; margin-bottom: 14px; }
+  .shutter {
+    width: 72px; height: 72px; border-radius: 999px; background: #fff; border: 5px solid rgba(255,255,255,.35);
+    cursor: pointer; transition: transform var(--dur-fast) var(--ease);
+  }
+  .shutter:active { transform: scale(.9); }
+
+  /* ---------- analyzing ---------- */
+  #s-analyzing { text-align: center; }
+  .thumb {
+    width: 62%; margin: 26px auto 0; border-radius: var(--r-sm); background: #fbf7ef; border: 1px solid var(--line);
+    padding: 14px 12px; font-family: "Songti SC", serif; font-size: 11px; color: #71614a; line-height: 1.6;
+    flex: none; overflow: hidden;
+  }
+  .thumb img { width: 100%; max-height: 150px; object-fit: cover; object-position: top; border-radius: 6px; display: block; margin: -6px 0; }
+  #s-analyzing h2 { margin-top: 24px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
+  #s-analyzing .sub { color: var(--muted); font-size: var(--t-sub); margin-top: 6px; line-height: 1.5; }
+  .steps { margin: 24px auto 0; width: 100%; max-width: 320px; display: grid; gap: 0; text-align: left; border-top: 2.5px solid var(--ink); }
+  .step {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px;
+    background: none; border-bottom: 1px solid var(--hair);
+    padding: 14px 4px; font-size: 14px; font-weight: 650;
+  }
+  .step .st { font-size: 12.5px; font-weight: 800; color: var(--muted); white-space: nowrap; font-family: var(--font-num); }
+  .step.done .st { color: var(--green); }
+  .step.doing .st { color: var(--accent); }
+  .anal-foot { margin-top: 20px; font-size: 12px; color: var(--faint); }
+
