@@ -36,7 +36,7 @@ function renderOrder() {
   const dishesEN = items.length
     ? items.map(({d,q}) => `<div class="orow"><b>${d.emoji} ${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span class="price-dual"><span>≈ $${usdN(d.price*q)}</span></span></div>`).join("")
       + `<div class="total-sm">Total ≈ $${usdN(total)} · ¥${total}</div>`
-    : `<div class="sec-empty"><span class="e">🍽️</span>No dishes yet — browse the menu and tap ＋<br><button class="edit-btn" style="margin-top:10px" onclick="go('list')">Browse the menu</button></div>`;
+    : `<div class="sec-empty"><span class="e">🍽️</span>No dishes yet — browse the menu and tap ＋</div>`;
   const dishesCN = items.length
     ? items.map(({d,q}) => `<div class="orow"><b>${d.nameCn}<small>${d.name}</small></b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")
       + `<div class="total-sm">合计 ¥${total}</div>`
