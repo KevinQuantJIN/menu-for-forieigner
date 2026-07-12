@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chopstory · Demo Stage — 方案A 食旅横卷</title>
+<style>
+  /* =====================================================================
+     方案 A 「食旅横卷」
+     底部横向 user journey 时间轴（七站），像一幅摊开的手卷；
+     左侧中文定位区（logo 动画 + 一句话 + 三卖点）；冰裂纹浅灰基底。
+     ===================================================================== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #f5efe0; --paper-2: #efe7d2;
+    --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a; --ink-4: #b9ad97;
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #e9dfc6;
+    --tint: rgba(220,168,66,.04);
+  }
+  html, body { height: 100%; }
+  body {
+    color: var(--ink); overflow: hidden;
+    font-family: "Songti SC", "STSong", Georgia, serif;
+    background-color: var(--paper);
+    /* 冰裂纹 · 大块浅灰基底 */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><g fill='none' stroke='rgba(38,32,25,0.055)' stroke-width='1.3'><path d='M0 60 L105 82 L180 30 L270 68 L360 22 L420 60'/><path d='M105 82 L90 195 L0 225'/><path d='M180 30 L225 0'/><path d='M270 68 L300 165'/><path d='M90 195 L195 240 L300 165 L420 210'/><path d='M195 240 L165 360 L45 420'/><path d='M165 360 L285 375 L360 300 L420 330'/><path d='M285 375 L270 420'/><path d='M300 165 L360 300'/><path d='M0 330 L45 420'/></g></svg>");
+    background-size: 420px 420px;
+  }
+  /* 阶段色渍（点站时轻微变化） */
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 1; background: var(--tint); transition: background .8s; }
+  /* 纸纹颗粒 */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
+  }
+  /* 文武边（印刷版框）—— 保留 */
+  .stage {
+    position: fixed; inset: 18px; z-index: 2;
+    border: 3px solid var(--ink);
+    display: grid; grid-template-columns: minmax(320px, 400px) 1fr; grid-template-rows: 1fr auto;
+    column-gap: 3vw; padding: 30px 48px 0;
+  }
+  .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
+
+  /* ---------- logo 动画 ---------- */
+  .logo { display: block; }
+  .lg-bubble { animation: lg-bob 3.6s ease-in-out infinite; }
+  .lg-steam { animation: lg-steam 2.8s ease-out infinite; }
+  .lg-steam2 { animation-delay: 1.4s; }
+  .lg-stickA, .lg-stickB { transform-box: view-box; transform-origin: 100px 115px; }
+  .lg-stickA { animation: lg-pinchA 2.4s ease-in-out infinite; }
+  .lg-stickB { animation: lg-pinchB 2.4s ease-in-out infinite; }
+  .lg-dot1 { animation: lg-float 3s ease-in-out infinite; }
+  .lg-dot2 { animation: lg-float 3s ease-in-out 1s infinite; }
+  @keyframes lg-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes lg-steam { 0% { opacity: 0; transform: translateY(5px); } 25% { opacity: .95; } 70% { opacity: .5; } 100% { opacity: 0; transform: translateY(-8px); } }
+  @keyframes lg-pinchA { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+  @keyframes lg-pinchB { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(4.5deg); } }
+  @keyframes lg-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+  /* ---------- 左：中文定位区 ---------- */
+  .pitch { align-self: center; padding-bottom: 10px; }
+  .brandrow { display: flex; align-items: center; gap: 14px; }
+  .brandrow .logo { width: 92px; height: 92px; flex: none; }
+  .wordmark b { display: block; font-size: 34px; font-weight: 900; letter-spacing: .5px; }
+  .wordmark b em { font-style: normal; color: var(--zhu); }
+  .wordmark span { display: block; margin-top: 4px; font-size: 12px; letter-spacing: .38em; color: var(--ink-3); }
+  h1.headline { margin-top: 22px; font-size: clamp(24px, 2.3vw, 32px); font-weight: 900; line-height: 1.4; }
+  h1.headline em { font-style: normal; box-shadow: inset 0 -6px 0 rgba(178,58,47,.28); }
+  .sub { margin-top: 12px; font-size: 13.5px; color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+  .points { margin-top: 20px; }
+  .point { display: flex; align-items: baseline; padding: 9px 2px 8px; border-bottom: 1px solid rgba(38,32,25,.22); }
+  .point:first-child { border-top: 2.5px solid var(--ink); }
+  .point .cn { font-weight: 900; font-size: 15px; letter-spacing: .12em; flex: none; }
+  .point .lead { flex: none; width: 26px; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
+  .point .en { font-size: 12px; color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
+  .tryrow { margin-top: 22px; display: flex; align-items: center; gap: 14px; }
+  .qr { width: 72px; height: 72px; flex: none; position: relative; border: 2.5px solid var(--ink); display: grid; place-items: center; }
+  .qr::before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--ink); }
+  .qr b { font-size: 26px; opacity: .85; }
+  .trynote { font-size: 11.5px; color: var(--ink-3); letter-spacing: .1em; line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+
+  /* ---------- 中：手机 ---------- */
+  .phone-zone { display: grid; place-items: center; }
+  .phone-wrap { position: relative; flex: none; }
+  .phone-wrap::before {
+    content: ""; position: absolute; left: 6%; right: 6%; bottom: -30px; height: 44px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(38,32,25,.3), transparent 68%);
+  }
+  .iphone {
+    position: relative; height: min(62vh, 620px); width: auto; aspect-ratio: 392 / 800;
+    border-radius: 58px; background: #0d0b09; padding: 10px;
+    box-shadow: 0 0 0 4.5px #3d3833, 0 0 0 6px #6e675e, 0 0 0 7px #2b2723,
+      0 30px 60px rgba(38,32,25,.35), inset 0 0 0 3px #000;
+  }
+  .iphone::before {
+    content: ""; position: absolute; inset: -6px; border-radius: 62px; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,.5) 0%, transparent 12%, transparent 55%, rgba(255,255,255,.28) 68%, transparent 78%);
+    -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
+    -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px; opacity: .5;
+  }
+  .btn-side { position: absolute; background: linear-gradient(90deg, #55504a, #23201c); border-radius: 3px; }
+  .b-action { left: -8.5px; top: 16%; width: 4px; height: 28px; }
+  .b-vol1 { left: -8.5px; top: 25%; width: 4px; height: 48px; }
+  .b-vol2 { left: -8.5px; top: 33%; width: 4px; height: 48px; }
+  .b-power { right: -8.5px; top: 27%; width: 4px; height: 72px; background: linear-gradient(270deg, #55504a, #23201c); }
+  .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 48px; overflow: hidden; background: #000; }
+  .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: 100%; border: none; display: block; background: #f7f2e6; }
+  .island { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 27%; height: 24px; border-radius: 999px; background: #000; z-index: 5; }
+  .island::after { content: ""; position: absolute; right: 11px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
+  .glass { position: absolute; inset: 0; border-radius: 48px; pointer-events: none; z-index: 6;
+    background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
+  .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
+
+  /* ---------- 底：食旅时间轴（手卷） ---------- */
+  .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 14px; padding: 12px 6px 20px; position: relative; }
+  .jcap { text-align: center; height: 30px; font-size: 13.5px; color: var(--ink-2); font-family: "PingFang SC", sans-serif; }
+  .jcap b { font-family: "Songti SC", serif; font-size: 15px; color: var(--ink); margin-right: 10px; letter-spacing: .08em; }
+  .jcap b i { font-style: normal; color: var(--zhu); }
+  .jtrack { position: relative; margin-top: 8px; }
+  .jline { position: absolute; left: 3%; right: 3%; top: 15px; border-top: 1px solid rgba(38,32,25,.3); }
+  .jfill { position: absolute; left: 3%; top: 14px; height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
+  .jnodes { position: relative; display: flex; justify-content: space-between; padding: 0 3%; }
+  .jnode { background: none; border: none; cursor: pointer; font: inherit; text-align: center; width: 108px; }
+  .jnode .dot {
+    width: 30px; height: 30px; margin: 0 auto; border-radius: 50%;
+    border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink);
+    display: grid; place-items: center; font-size: 14px; font-weight: 900;
+    transition: background .2s, color .2s, border-color .2s, transform .2s; position: relative; z-index: 2;
+  }
+  .jnode .tt { margin-top: 7px; font-size: 12.5px; font-weight: 700; letter-spacing: .05em; }
+  .jnode .en { margin-top: 2px; font-size: 10px; color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
+  .jnode:hover .dot { background: var(--ink); color: var(--paper); }
+  .jnode.on .dot { background: var(--zhu); border-color: var(--zhu-deep); color: #f6efdc; transform: scale(1.12) rotate(-3deg); }
+  .jnode.on .tt { color: var(--zhu); }
+  .jhint { position: absolute; right: 10px; bottom: 6px; font-size: 10px; color: var(--ink-4); letter-spacing: .15em; font-family: "PingFang SC", sans-serif; }
+
+  .variant-tag { position: fixed; right: 8px; bottom: 3px; z-index: 70; font-size: 10px; color: var(--ink-4); letter-spacing: .1em; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  @media (max-width: 1080px) { .pitch .sub { display: none; } .jnode { width: 84px; } .jnode .en { display: none; } }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+<div class="stage">
+
+  <!-- 左：中文定位（讲给中国评委） -->
+  <aside class="pitch">
+    <div class="brandrow">
+      <svg class="logo" viewBox="0 0 200 200" aria-label="Chopstory logo">
+        <g class="lg-bubble">
+          <g transform="translate(125,45) scale(1) translate(-125,-45)">
+            <path class="lg-steam" d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
+            <path class="lg-steam lg-steam2" d="M 88 106 Q 97 96, 91 88" fill="none" stroke="#DCA842" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M 120 70 C 105 70, 100 55, 115 45 C 115 30, 135 25, 145 35 C 155 25, 175 35, 170 50 C 180 60, 165 75, 150 70 C 140 78, 125 75, 120 70 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="135" cy="50" r="4" fill="#FBF9F3"/>
+            <circle cx="150" cy="50" r="4" fill="#FBF9F3"/>
+            <path d="M 140 58 Q 142.5 61, 145 58" fill="none" stroke="#FBF9F3" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g transform="translate(100, 115) rotate(30) translate(-100, -115)">
+          <g class="lg-stickA"><path d="M 60 50 L 142 132 C 145 135, 140 140, 137 137 L 55 55 C 52 52, 57 47, 60 50 Z" fill="#1C1A17"/></g>
+          <g class="lg-stickB"><path d="M 72 42 L 154 124 C 157 127, 152 132, 149 129 L 67 47 C 64 44, 69 39, 72 42 Z" fill="#1C1A17"/></g>
+        </g>
+        <rect x="80" y="165" width="40" height="12" rx="6" fill="#1C1A17"/>
+        <path d="M 45 115 C 45 115, 40 165, 100 165 C 160 165, 155 115, 155 115 C 155 115, 130 120, 100 120 C 70 120, 45 115, 45 115 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M 55 115 C 55 102, 75 92, 100 92 C 125 92, 145 102, 145 115 Z" fill="#FBF9F3" stroke="#1C1A17" stroke-width="4"/>
+        <circle class="lg-dot1" cx="80" cy="80" r="3" fill="#DCA842"/>
+        <circle class="lg-dot2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
+      </svg>
+      <div class="wordmark">
+        <b>Chop<em>story</em></b>
+        <span>筷子故事 · 食单一册</span>
+      </div>
+    </div>
+    <h1 class="headline">拍一张中文菜单，<br>变成一份<em>点得动</em>的英文菜单</h1>
+    <p class="sub">给来中国旅行的外国人：不止翻译——讲清每道菜是什么、标出辣度与忌口，还能生成一张递给店家的中文点单卡。</p>
+    <div class="points">
+      <div class="point"><span class="cn">看懂</span><span class="lead"></span><span class="en">每道菜是什么、招牌是哪道</span></div>
+      <div class="point"><span class="cn">放心</span><span class="lead"></span><span class="en">辣度 · 过敏原自动标注</span></div>
+      <div class="point"><span class="cn">点单</span><span class="lead"></span><span class="en">双面点单卡，店家看中文</span></div>
+    </div>
+    <div class="tryrow">
+      <div class="qr"><b>▦</b></div>
+      <div class="trynote">扫码在自己手机上试<br>或直接点下方任意一站</div>
+    </div>
+  </aside>
+
+  <!-- 中：iPhone -->
+  <div class="phone-zone">
+    <div class="phone-wrap">
+      <div class="iphone">
+        <span class="btn-side b-action"></span>
+        <span class="btn-side b-vol1"></span>
+        <span class="btn-side b-vol2"></span>
+        <span class="btn-side b-power"></span>
+        <div class="screen-hole">
+          <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
+          <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
+          <span class="island"></span>
+          <span class="glass"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底：食旅时间轴（外国游客的一顿饭，七站） -->
+  <div class="journey">
+    <div class="jcap" id="jcap"></div>
+    <div class="jtrack">
+      <div class="jline"></div>
+      <div class="jfill" id="jfill"></div>
+      <div class="jnodes" id="jnodes"></div>
+    </div>
+    <span class="jhint">← → 切换</span>
+  </div>
+</div>
+<span class="variant-tag">方案A · 食旅横卷</span>
+
+<script>
+/* ---- user journey 七站：每站 = 游客的一个真实时刻，点击联动 iframe ---- */
+const STAGES = [
+  { k: "home",      num: "壹", t: "进店落座",     note: "外国游客坐下，面对一整页中文菜单", en: "Open Chopstory",          tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
+  { k: "camera",    num: "贰", t: "拍一张菜单",   note: "对着纸质菜单按下快门，全程只需这一步", en: "Snap the menu",       tint: "rgba(38,32,25,.04)",    act: w => w.startScan("camera") },
+  { k: "analyzing", num: "叁", t: "AI 读单",      note: "识别菜名，标注辣度与过敏原，约三秒出结果", en: "AI decoding",      tint: "rgba(178,58,47,.045)",  act: w => w.startAnalyze() },
+  { k: "list",      num: "肆", t: "读懂整份菜单", note: "14 道菜全部英文化：是什么、多少钱、招牌是哪道", en: "The whole menu, decoded", tint: "rgba(92,125,70,.05)", act: w => ensureMenu(w) },
+  { k: "detail",    num: "伍", t: "看懂一道菜",   note: "这道菜是什么、怎么吃、含不含忌口，一目了然", en: "One dish, explained", tint: "rgba(220,168,66,.05)", act: w => { ensureMenu(w); w.openDetail(8); } },
+  { k: "order",     num: "陆", t: "递单点菜",     note: "点单卡翻面即中文，服务员照单即可下厨", en: "Show the waiter",     tint: "rgba(178,58,47,.05)",   act: w => seedOrder(w) },
+  { k: "map",       num: "柒", t: "集印成册",     note: "吃过的味道盖章存档，攒成自己的中国食迹", en: "Your chopstory",     tint: "rgba(76,68,55,.06)",    act: w => { w.go("history"); w.histView("map"); } },
+];
+let cur = 0;
+
+function appWin() { const w = document.getElementById("appframe").contentWindow; return (w && w.go) ? w : null; }
+function ensureMenu(w) {
+  let ready = false;
+  try { ready = w.eval('typeof streamed !== "undefined" && streamed.length > 0'); } catch (e) {}
+  if (ready) w.go("list"); else w.beginStream();
+}
+function seedOrder(w) {
+  ensureMenu(w);
+  let empty = true;
+  try { empty = w.eval("order.size === 0"); } catch (e) {}
+  if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
+  w.openOrder();
+}
+function jumpTo(i) {
+  cur = i; const s = STAGES[i];
+  document.querySelectorAll(".jnode").forEach((n, j) => n.classList.toggle("on", j === i));
+  document.getElementById("jfill").style.width = (3 + (94 * i / (STAGES.length - 1))) + "%";
+  document.getElementById("jcap").innerHTML = `<b><i>${s.num}</i> · ${s.t}</b>${s.note}`;
+  document.documentElement.style.setProperty("--tint", s.tint);
+  const w = appWin(); if (!w) return;
+  try { w.closeDetail && w.closeDetail(); } catch (e) {}
+  try { w.closeSheet && w.closeSheet(false); } catch (e) {}
+  try { s.act(w); } catch (e) { console.warn("jump failed:", e); }
+  /* app 首跑会在 600ms 后自动弹偏好底屉（app.html:265）；非首页站补一次关闭 */
+  if (s.k !== "home") setTimeout(() => {
+    const w2 = appWin();
+    if (w2) try { w2.closeSheet && w2.closeSheet(false); } catch (e) {}
+  }, 900);
+}
+document.getElementById("jnodes").innerHTML = STAGES.map((s, i) =>
+  `<button class="jnode" onclick="jumpTo(${i})"><span class="dot">${s.num}</span><div class="tt">${s.t}</div><div class="en">${s.en}</div></button>`
+).join("");
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") jumpTo(Math.min(cur + 1, STAGES.length - 1));
+  if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
+});
+jumpTo(0);
+</script>
+</body>
+</html>
