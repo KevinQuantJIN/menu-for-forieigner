@@ -48,6 +48,55 @@ const ERROR_COPY = {
   invalid_json: "Something went wrong on our side. Please retry.",
   too_many_images: "Too many photos — please send up to 9.",
 };
+
+const HERO_EMOJI = ["🍜","🥢","🍲","🥘","🥟","🌶️","🥩","🍗","🐟","🥬","🍵","🍡","🥓","🥚","🌿","🔥"];
+function dishEmoji(d) {
+  if (d.emoji) return d.emoji;
+  return HERO_EMOJI[(Number(d.id) || 1) % HERO_EMOJI.length];
+}
+function normalizeDish(raw) {
+  const allergens = (raw.allergens || []).map((a) => {
+    if (a && a.type) {
+      let type = a.type;
+      if (type === "crustacean" || type === "mollusk") type = "shellfish";
+      const level = a.level === "may" || a.level === "may_contain" ? "may_contain" : "contains";
+      return { type, level };
+    }
+    if (a && a.t) {
+      let type = a.t;
+      if (type === "crustacean" || type === "mollusk") type = "shellfish";
+      const level = a.l === "may" || a.l === "may_contain" ? "may_contain" : "contains";
+      return { type, level };
+    }
+    return null;
+  }).filter(Boolean);
+  const category = raw.category ?? raw.cat ?? null;
+  const description = raw.description || raw.desc || "";
+  const vegetarian = !!(raw.vegetarian ?? raw.veg);
+  return {
+    id: raw.id,
+    category,
+    cat: category,
+    nameCn: raw.nameCn || "",
+    pinyin: raw.pinyin || "",
+    name: raw.name || raw.nameCn || "Dish",
+    description,
+    desc: description,
+    price: raw.price == null ? null : String(raw.price),
+    spicy: Math.max(0, Math.min(3, Number(raw.spicy) || 0)),
+    vegetarian,
+    veg: vegetarian,
+    allergens,
+    textures: Array.isArray(raw.textures) ? raw.textures.map(String) : [],
+    ingredients: Array.isArray(raw.ingredients) ? raw.ingredients.map(String) : [],
+    story: raw.story == null || raw.story === "" ? null : String(raw.story),
+    emoji: raw.emoji || null,
+    signature: raw.signature || undefined,
+    howToEat: raw.howToEat || undefined,
+    catOriginal: raw.catOriginal || undefined,
+  };
+}
+
 /* order-page requests — user picks in English, waiter view shows Chinese */
 const REQ_DEFS = [
   { k:"mild",        en:"🌶 Mild spice",  cn:"请做微辣" },
@@ -226,12 +275,14 @@ async function onAlbumSelected(ev) {
     if (!images.length) {
       lastImages = [];
       go("analyzing");
+      showAnalyzeError("invalid_images");
       return;
     }
     lastImages = images;
     await startAnalyze(images);
   } catch {
     go("analyzing");
+    showAnalyzeError("invalid_images");
   }
 }
 

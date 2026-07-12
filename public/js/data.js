@@ -93,5 +93,6 @@ const DISHES = [
     price:16, spicy:0, flavorBars:{spicy:0,numbing:0,richness:5}, veg:true,
     allergens:[], textures:[], ingredients:["🍡 Sticky rice","🟤 Brown sugar syrup","🌾 Soybean flour dusting"] },
 ];
+const DEMO_DISHES = DISHES;
 const CATS = ["All","⭐ Signature","Cold Starters","Mains","Vegetables","Rice & Noodles","Dessert"];
 
