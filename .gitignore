@@ -51,3 +51,8 @@ next-env.d.ts
 __pycache__/
 *.pyc
 .gstack/
+
+# agent worktrees / progress
+.claude/worktrees/
+.worktrees/
+.superpowers/
