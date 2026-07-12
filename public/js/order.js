@@ -3,7 +3,9 @@
 function addToOrder(id, delta) {
   const q = (order.get(id) || 0) + delta;
   if (q <= 0) order.delete(id); else order.set(id, q);
-  if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
+  /* 7.13 防抖动：数量变化只局部重绘该菜的加购控件（含折叠区副本），不再整列表 renderList */
+  const d = DISHES.find(x => x.id === id);
+  document.querySelectorAll(`.addwrap[data-id="${id}"]`).forEach(w => { w.innerHTML = addCtlHTML(d); });
   renderCartBar();
 }
 function orderTotal() { let t = 0; for (const [id,q] of order) t += DISHES.find(d => d.id === id).price * q; return t; }

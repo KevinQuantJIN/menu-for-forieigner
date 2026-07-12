@@ -109,10 +109,11 @@
 .fold .why { display: block; font-weight: 500; color: var(--sh-sub); font-size: 11.5px; margin-top: 3px; line-height: 1.45; font-family: "PingFang SC", -apple-system, sans-serif; }
 .folded-wrap .pcard { background: none; box-shadow: none; border-style: dashed; }
 
-/* My Order 条：墨底 + 金色硬影 + 柿红 go 钮 */
+/* Order card 条：墨底 + 金色硬影 + 柿红 go 钮
+   margin-top:auto（.screen 是 flex 列）：内容短时也钉在屏底，不往上浮（7.13） */
 .cart-bar {
   position: sticky; bottom: 8px; z-index: 10;
-  margin: 14px 2px 4px; padding: 9px 9px 9px 15px;
+  margin: 14px 2px 4px; margin-top: auto; padding: 9px 9px 9px 15px;
   background: var(--sh-ink); color: var(--sh-paper);
   border: 2px solid var(--sh-ink); border-radius: 12px; box-shadow: 3px 3px 0 rgba(220,168,66,.45);
   display: flex; align-items: center; gap: 10px; cursor: pointer;
