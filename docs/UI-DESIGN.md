@@ -27,9 +27,9 @@
 | `css/menu.css` + `js/menu.js` | S1 list + S2 详情弹层 + 购物车条 | 认领后自由改 |
 | `css/order.css` + `js/order.js` | S3 点单卡双面 | 认领后自由改 |
 | `css/map.css` + `js/map.js` | S4 历史 + 食迹地图 | 认领后自由改 |
-| `public/stage.html`（及 stage-*.html 探索稿） | 舞台壳：背景/展示文案/跳屏时间轴 | 已认领（舞台线，Claude 单独迭代） |
+| `public/stage.html`（定稿 7.12；stage-a/b/c.html 为历史探索稿） | 舞台壳：背景/展示文案/八站 journey 时间轴（含反向同步） | 已认领（舞台线，Claude 单独迭代） |
 
-**协作纪律**：① 只改自己认领的文件；② 改完当轮就 commit + push（冲突大多来自攒着不提交）；③ 动 ⚠️ 文件先协调；④ `stage.html` 舞台壳已被认领单独迭代；它跨 iframe 依赖 app 的全局函数 `go / startScan / startAnalyze / beginStream / openDetail / openOrder / addToOrder / histView / closeDetail / closeSheet`——改名或删除前先和舞台线同步。
+**协作纪律**：① 只改自己认领的文件；② 改完当轮就 commit + push（冲突大多来自攒着不提交）；③ 动 ⚠️ 文件先协调；④ `stage.html` 舞台壳已被认领单独迭代；它跨 iframe 依赖 app 的全局函数 `go / startScan / startAnalyze / beginStream / openDetail / openOrder / addToOrder / histView / closeDetail / closeSheet / openCurrency / closeCurrency`，并轮询 `#cur-mask / #detail-sheet / .screen` 的 id 与 hidden 状态做时间轴反向同步——改名或删除前先和舞台线同步。
 
 ## 设计立场：这是一册木刻印刷的食单
 
@@ -176,8 +176,9 @@
 - **第二行**：中文 · 拼音（**无 🔊**，语音入口只在详情页）
 - **tag（白名单制）**：只显命中 `data.js` GENERIC_TAG / 个人过敏 / 招牌；样式：过敏 = 柿红描边+朱字+#FBEEEA 底、雷点 = 灰墨描边、招牌 = 金描边+#FAF3DD 底；胶囊 999px
 - **加号**：24px 方钮 radius 8、柿红底墨框白 +；**加购态 = 墨底金字数量**（状态必须有视觉差）
-- **分区标题**：EN 15.5px/800 + 中文 10px 附注 + 「墨上朱下」双细线延展至行尾；**分区名与顶部 tab 完全同名，滑动 scrollspy 点亮对应 tab**
+- **分区标题**：EN 15.5px/800 + 中文 10px 附注，**无右侧延展线**（7.13 删）；**分区名与顶部 tab 完全同名，滑动 scrollspy 点亮对应 tab**
 - **tabs**：胶囊 1.5px 墨框；active = 墨底金字
+- **货币按钮（7.13 A 案）**：列表右上角鎏金币徽（34px 圆、显当前币符）→ 底部弹层选币：国旗+币名+代码+¥100 换算预览，当前项朱色勾选；副标题声明 convert for convenience + approximate/for reference only；¥ 原价永远保留，选择存 localStorage，价签/底栏/点单页联动
 - **Order card 条**（7.13 增高）：墨底 radius 14 · padding 13px + 金色硬影 + 柿红「Order card ›」钮（无 icon）；文案 `Total ¥X ≈ $Y`；margin-top:auto 钉屏底；忌口**不折叠**（折叠逻辑 7.13 移除，行内红 tag 警示）
 
 ### S2 详情弹层
