@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Chopstory — Taste China, order like a local.</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
 <style>
   /* =====================================================================
      Design tokens — 雕版食单 Woodblock Ledger（UI-DESIGN.md 定稿主题）
@@ -113,8 +114,9 @@
   /* ---------- S0 home：上 1/3 拍菜单引导，下 2/3 食迹（社交资产） ---------- */
   #s-home { text-align: center; }
   .home-top { flex: none; }
-  .brand { margin-top: 6px; font-family: var(--font-disp); font-size: 19px; font-weight: 900; letter-spacing: 1px; }
+  .brand { margin-top: 6px; font-family: var(--font-disp); font-size: 19px; font-weight: 900; letter-spacing: 1px; display: flex; align-items: center; justify-content: center; gap: 7px; }
   .brand em { color: var(--accent); font-style: normal; }
+  .brand .mark { width: 36px; height: 36px; }
   .slogan { font-family: var(--font-disp); font-size: 26px; font-weight: 900; letter-spacing: .3px; line-height: 1.25; margin-top: 14px; }
   .slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 var(--accent); }
   .scan-row { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
@@ -487,7 +489,7 @@
   <!-- ============ S0 HOME ============ -->
   <section class="screen" id="s-home">
     <div class="home-top">
-      <div class="brand">Chop<em>story</em></div>
+      <div class="brand"><img class="mark" src="logo.svg" alt="Chopstory logo"><span>Chop<em>story</em></span></div>
       <h1 class="slogan">Read it. Order it.<br><i>Eat the story.</i></h1>
       <div class="scan-row">
         <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
