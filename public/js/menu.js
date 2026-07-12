@@ -1,12 +1,22 @@
 /* ChopStory · S1/S2：菜单 list + 详情弹层 + 购物车条
    ★ 2026-07-13 柿漆金排档 v-final（规范：Hackathon/UI-DESIGN.md 末章；基准：ui-lab/style-lab-final.html） */
 /* ---------------- list rendering ---------------- */
+function categoryOrder(dishes) {
+  const seen = [];
+  for (const d of dishes) {
+    const c = d.category || "Other";
+    if (!seen.includes(c)) seen.push(c);
+  }
+  return seen;
+}
 function renderCats() {
+  const cats = ["All", ...categoryOrder(streamed)];
+  if (streamed.some(d => d.signature)) cats.splice(1, 0, "⭐ Signature");
   const count = c => c === "All" ? streamed.length
     : c === "⭐ Signature" ? streamed.filter(d => d.signature).length
-    : streamed.filter(d => d.cat === c).length;
-  document.getElementById("cats").innerHTML = CATS.filter(c => count(c) > 0).map(c =>
-    `<button class="cat ${c===currentCat?"on":""}" data-c="${c}" onclick="setCat('${c}')">${c}<i>${count(c)}</i></button>`).join("");
+    : streamed.filter(d => (d.category || "Other") === c).length;
+  document.getElementById("cats").innerHTML = cats.filter(c => count(c) > 0).map(c =>
+    `<button class="cat ${c===currentCat?"on":""}" data-c="${esc(c)}" onclick="setCat(${JSON.stringify(c)})">${esc(c)}<i>${count(c)}</i></button>`).join("");
 }
 function setCat(c) { currentCat = c; renderCats(); renderList(); }
 
@@ -29,26 +39,26 @@ function addCtlHTML(d) {
 }
 function pcardHTML(d, i = 0, stagger = false) {
   const sp = spiceLabel(d);
+  const p = parsePrice(d.price), pl = priceLabel(d.price);
   return `<div class="pcard" style="--d:${stagger ? Math.min(i, 14) * 40 : 0}ms" onclick="openDetail(${d.id})">
     <div class="addwrap" data-id="${d.id}">${addCtlHTML(d)}</div>
-    <div class="name">${d.name}${sp ? `<span class="sp">${sp}</span>` : ""}</div>
-    <div class="cn">${d.nameCn} · ${d.pinyin}</div>
-    <div class="right"><b>≈${curSym()}${fxN(d.price)}</b><small>¥${d.price}</small></div>
+    <div class="name">${esc(d.name)}${sp ? `<span class="sp">${sp}</span>` : ""}</div>
+    <div class="cn">${esc(d.nameCn)} · ${esc(d.pinyin)}</div>
+    <div class="right"><b>≈${curSym()}${fxN(p)}</b><small>¥${esc(pl)}</small></div>
     <div class="tags">${previewTags(d)}</div>
   </div>`;
 }
 /* 折叠逻辑已移除（7.13，Julia 定）：命中过敏/忌口的菜不再收到底部，
    行内保留红色 ⚠ tag（previewTags/personalHits）作为唯一警示 */
 function renderList(stagger = false) {
-  const pool = streamed.filter(d => currentCat === "All" || (currentCat === "⭐ Signature" ? d.signature : d.cat === currentCat));
+  const pool = streamed.filter(d => currentCat === "All" || (currentCat === "⭐ Signature" ? d.signature : (d.category || "Other") === currentCat));
   let idx = 0, html = "";
   if (currentCat === "All") {
     /* All = whole menu, grouped with section headers（分区名 = tab 名，scrollspy 联动） */
-    for (const c of CATS) {
-      if (c === "All" || c === "⭐ Signature") continue;
-      const grp = pool.filter(d => d.cat === c);
+    for (const c of categoryOrder(streamed)) {
+      const grp = pool.filter(d => (d.category || "Other") === c);
       if (!grp.length) continue;
-      html += `<div class="sechead" data-cat="${c}" style="--d:${stagger ? idx * 40 : 0}ms"><b>${c}</b><span>${grp[0].catOriginal || ""}</span></div>`;
+      html += `<div class="sechead" data-cat="${esc(c)}" style="--d:${stagger ? idx * 40 : 0}ms"><b>${esc(c)}</b><span>${esc(grp[0].catOriginal || "")}</span></div>`;
       html += grp.map(d => pcardHTML(d, ++idx, stagger)).join("");
     }
   } else {
@@ -77,36 +87,34 @@ document.getElementById("s-list").addEventListener("scroll",
    Flavor bars 已废弃（UI.md 7.12）：辣度文字化在列表菜名行；麻 numbing≥5 = Heads-up 标签；
    Heads-up 标签清单维护在 data.js（GENERIC_TAG / HIDDEN_RISK_LABEL） */
 function openDetail(id) {
-  const d = DISHES.find(x => x.id === id);
-  const hits = personalHits(d);
+  const d = streamed.find(x => x.id === id);
+  if (!d) return;
   const qty = order.get(id) || 0;
+  const p = parsePrice(d.price), pl = priceLabel(d.price);
   const sheet = document.getElementById("detail-sheet");
   const keepScroll = !sheet.classList.contains("hidden") ? sheet.scrollTop : 0;
   const storyBlock = (d.story || d.howToEat) ? `
-    <div class="story"><div class="lb2">THE STORY · 由来</div>${d.story || ""}
-      ${d.howToEat ? `<p class="how"><b>How to eat:</b> ${d.howToEat}</p>` : ""}</div>` : `<div style="height:14px"></div>`;
+    <div class="story"><div class="lb2">THE STORY · 由来</div>${esc(d.story || "")}
+      ${d.howToEat ? `<p class="how"><b>How to eat:</b> ${esc(d.howToEat)}</p>` : ""}</div>` : `<div style="height:14px"></div>`;
   sheet.innerHTML = `
     <div class="grabber"></div>
     <button class="dclose" onclick="closeDetail()" aria-label="Close">✕</button>
-    <div class="hero">${d.emoji}</div>
-    <div class="dname">${d.name}</div>
-    <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak('${d.nameCn}',event)">🔊</button></div>
-    ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
-    <div class="lede">${d.desc}</div>
+    <div class="hero">${dishEmoji(d)}</div>
+    <div class="dname">${esc(d.name)}</div>
+    <div class="dcn">${esc(d.nameCn)} · ${esc(d.pinyin)} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak(${JSON.stringify(d.nameCn)},event)">🔊</button></div>
+    <div class="lede">${esc(d.description || "")}</div>
     <div class="dsec"><div class="gt">Ingredients <span>食材</span></div>
-      <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${i}</span>`).join("")}</div></div>
+      <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${esc(i)}</span>`).join("")}</div></div>
     <div class="dsec"><div class="gt">Allergens <span>过敏原</span></div>
       <div class="alg-chips">${d.allergens.length
-        ? d.allergens.map(a => `<span class="alg ${a.l === "contains" ? "c" : "m"}">${ALLERGEN_LABEL[a.t].toLowerCase()} · ${a.l === "contains" ? "contains" : "may"}</span>`).join("")
+        ? d.allergens.map(a => `<span class="alg ${a.level === "contains" ? "c" : "m"}">${esc((ALLERGEN_LABEL[a.type] || a.type).toLowerCase())} · ${a.level === "contains" ? "contains" : "may"}</span>`).join("")
         : `<span class="alg none">none flagged for the typical recipe</span>`}</div></div>
-    ${d.textures.length || (d.hiddenRisks||[]).length || (d.flavorBars && d.flavorBars.numbing >= 5) ? `<div class="dsec"><div class="gt">Heads-up <span>请留意</span></div>
-      <div class="ing-chips">${(d.flavorBars && d.flavorBars.numbing >= 5) ? `<span class="ing">⚡ tingling 麻 — Sichuan pepper buzz</span>` : ""}
-      ${d.textures.map(t => `<span class="ing">${GENERIC_TAG[t]}</span>`).join("")}
-      ${(d.hiddenRisks||[]).map(h => `<span class="ing">${HIDDEN_RISK_LABEL[h] || h}</span>`).join("")}</div></div>` : ""}
+    ${d.textures.length ? `<div class="dsec"><div class="gt">Heads-up <span>请留意</span></div>
+      <div class="ing-chips">${d.textures.map(t => `<span class="ing">${esc(textureLabel(t))}</span>`).join("")}</div></div>` : ""}
     ${storyBlock}
     <div class="detail-cta">
       ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
-            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈${curSym()}${fxN(d.price)}&nbsp;&nbsp;<small>¥${d.price}</small></button>`}
+            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈${curSym()}${fxN(p)}&nbsp;&nbsp;<small>¥${esc(pl)}</small></button>`}
     </div>`;
   document.getElementById("detail-mask").classList.remove("hidden");
   sheet.classList.remove("hidden");
