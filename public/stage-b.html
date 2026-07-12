@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chopstory · Demo Stage — 方案B 案头竖轴</title>
+<title>ChopStory · Demo Stage — 方案B 案头竖轴</title>
 <style>
   /* =====================================================================
      方案 B 「案头竖轴」
@@ -147,7 +147,7 @@
   <!-- 左：品牌 + 七站竖轴（备注常驻） -->
   <aside class="left">
     <div class="brandrow">
-      <svg viewBox="0 0 200 200" aria-label="Chopstory logo">
+      <svg viewBox="0 0 200 200" aria-label="ChopStory logo">
         <g class="lg-bubble">
           <g transform="translate(125,45) scale(1) translate(-125,-45)">
             <path class="lg-steam" d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
@@ -169,7 +169,7 @@
         <circle class="lg-dot2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
       </svg>
       <div class="wordmark">
-        <b>Chop<em>story</em></b>
+        <b>Chop<em>Story</em></b>
         <span>筷子故事 · 食单一册</span>
       </div>
     </div>
@@ -190,7 +190,7 @@
         <span class="btn-side b-power"></span>
         <div class="screen-hole">
           <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
-          <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
+          <iframe id="appframe" src="app.html" title="ChopStory demo"></iframe>
           <span class="island"></span>
           <span class="glass"></span>
         </div>
@@ -221,7 +221,7 @@
 
 <script>
 const STAGES = [
-  { k: "home",      num: "壹", t: "进店落座",     note: "外国游客坐下，面对一整页中文菜单——这就是我们要解决的时刻。", en: "Open Chopstory",  tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
+  { k: "home",      num: "壹", t: "进店落座",     note: "外国游客坐下，面对一整页中文菜单——这就是我们要解决的时刻。", en: "Open ChopStory",  tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
   { k: "camera",    num: "贰", t: "拍一张菜单",   note: "对着纸质菜单按下快门，整个产品的入口只有这一个动作。", en: "Snap the menu",    tint: "rgba(38,32,25,.04)",    act: w => w.startScan("camera") },
   { k: "analyzing", num: "叁", t: "AI 读单",      note: "识别菜名、标注辣度与过敏原，约三秒后自动进入结果页。", en: "AI decoding",      tint: "rgba(178,58,47,.045)",  act: w => w.startAnalyze() },
   { k: "list",      num: "肆", t: "读懂整份菜单", note: "14 道菜全部英文化：是什么、多少钱、招牌是哪道，按类目可筛。", en: "The whole menu, decoded", tint: "rgba(92,125,70,.05)", act: w => ensureMenu(w) },

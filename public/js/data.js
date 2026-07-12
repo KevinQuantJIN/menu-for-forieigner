@@ -1,4 +1,4 @@
-/* Chopstory · 数据层：汇率/菜品/文案标签 —— 内容改这里 */
+/* ChopStory · 数据层：汇率/菜品/文案标签 —— 内容改这里 */
 const FX = 7.16; // static CNY→USD, labeled approximate
 const usd = (cny) => "≈ $" + (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1);
 const usdN = (cny) => (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1); // number only, $ first displays

@@ -1,4 +1,4 @@
-/* Chopstory · S0 首页：画像面板 + 扫描/识别流程 */
+/* ChopStory · S0 首页：画像面板 + 扫描/识别流程 */
 /* ---------------- profile sheet ---------------- */
 function renderProfileStrip() {
   const el = document.getElementById("profileStrip");
@@ -56,7 +56,7 @@ function beginStream() {
   /* whole-menu reveal: analysis done → present the entire decoded menu at once
      (cards cascade in within ~0.6s via per-card animation-delay — feels like
      "here is your whole menu", not dishes trickling in one by one) */
-  streamed = DISHES.slice(); currentCat = "All"; foldOpen = false;
+  streamed = DISHES.slice(); currentCat = "All";
   document.getElementById("restoName").textContent = scanSource === "album" ? "Ma Wang Zi 马旺子" : "Chuanla Kitchen 川辣小馆";
   document.getElementById("dishCount").textContent = DISHES.length;
   renderCats(); renderList(true);

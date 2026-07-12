@@ -1,4 +1,4 @@
-/* Chopstory · S4：历史 + ECharts 食迹地图 */
+/* ChopStory · S4：历史 + ECharts 食迹地图 */
 /* ---------------- history ---------------- */
 function histView(v) {
   document.getElementById("ht-list").classList.toggle("on", v === "list");

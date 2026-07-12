@@ -6,7 +6,7 @@
 > 给所有做 UI 的 AI / 人的唯一样式事实来源。改样式先改这里，再改代码。
 > 产品定义看 `PRD.md`；demo 菜品清单看 `demo-data/demo-menu-plan.md`；本文只管「长什么样、怎么动」。
 > 2026-07-12 定稿：**主题 = 方案一「雕版食单」**（见 `ui-lab/style-lab-v2.html`），备选 =「大排档招牌」（见文末）。
-> ✅ `public/app.html`（ui-prototype 分支，commit 01aa24f）**已完成主题迁移**（纯换肤，逻辑零改动），品牌已更为 Chopstory。后续改 UI 直接以 app.html 为现行基准。
+> ✅ `public/app.html`（ui-prototype 分支，commit 01aa24f）**已完成主题迁移**（纯换肤，逻辑零改动），品牌已更为 ChopStory。后续改 UI 直接以 app.html 为现行基准。
 
 ## 新 AI 开工包（给我这些就能开始干活）
 

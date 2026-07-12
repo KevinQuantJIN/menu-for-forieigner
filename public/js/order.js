@@ -1,4 +1,4 @@
-/* Chopstory · S3：点单状态 + 双面点菜卡 */
+/* ChopStory · S3：点单状态 + 双面点菜卡 */
 /* ---------------- order ---------------- */
 function addToOrder(id, delta) {
   const q = (order.get(id) || 0) + delta;

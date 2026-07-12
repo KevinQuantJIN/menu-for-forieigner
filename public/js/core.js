@@ -1,5 +1,5 @@
 /* =====================================================================
-   Chopstory — interactive UI prototype (mock data, no backend)
+   ChopStory — interactive UI prototype (mock data, no backend)
    Backend hookup later: replace streamDishes() with fetch('/api/analyze')
    reading NDJSON events {type:'dish',data}|{type:'done'} — same shapes.
    ===================================================================== */

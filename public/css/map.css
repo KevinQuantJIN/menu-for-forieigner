@@ -1,4 +1,4 @@
-/* Chopstory · S4 历史 + 食迹地图 */
+/* ChopStory · S4 历史 + 食迹地图 */
   /* ---------- S4 history + food map（集印册） ---------- */
   .htabs { display: flex; gap: 8px; margin-bottom: 14px; }
   .hentry { background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 12px 2px 14px; margin-bottom: 4px; cursor: default; /* 不可点击（7.13） */ }
@@ -7,6 +7,20 @@
   .hentry .m { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
   #foodmap { position: relative; flex: 1; min-height: 480px; margin: 0 -16px calc(-20px - env(safe-area-inset-bottom)); background: #f3ecdb; border-top: 2.5px solid var(--ink); overflow: hidden; }
   #chinamap { position: absolute; inset: 0; }
+  /* 拍立得小卡（map-card-lab 方案A，7.13 定稿）：HTML overlay，锚点=坐标点上方 */
+  #map-pins { position: absolute; inset: 0; pointer-events: none; z-index: 4; }
+  .map-pola {
+    position: absolute; width: 76px; background: #fff; border: 1.5px solid var(--ink); border-radius: 3px;
+    padding: 5px 5px 6px; box-shadow: 2.5px 2.5px 0 rgba(178,58,47,.2); text-align: center;
+    transform: translate(-50%, calc(-100% - 13px)) rotate(var(--rot, -3deg));
+  }
+  .map-pola::after {
+    content: ""; position: absolute; left: 50%; bottom: -7px; transform: translateX(-50%);
+    border: 6px solid transparent; border-top-color: var(--ink); border-bottom: none;
+  }
+  .map-pola .ph { height: 52px; border-radius: 2px; background: linear-gradient(135deg, #f6ecd4, #e8d5a8); display: grid; place-items: center; font-size: 26px; }
+  .map-pola .nm { margin-top: 5px; font-size: 9px; font-weight: 800; line-height: 1.25; }
+  .map-pola .dt { margin-top: 2px; font-size: 7.5px; color: var(--faint); font-family: var(--font-num); letter-spacing: .08em; }
   #foodmap .counts { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-family: var(--font-disp); font-size: 12px; letter-spacing: .22em; color: var(--ink-2); z-index: 5; pointer-events: none; }
   #map-fallback { position: absolute; inset: 0; background: #17140f; color: #ddd; }
   #map-fallback .grid {

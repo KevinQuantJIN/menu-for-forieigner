@@ -1,4 +1,4 @@
-/* Chopstory · S0 首页 + 相机 + 识别中（含食迹时间线）*/
+/* ChopStory · S0 首页 + 相机 + 识别中（含食迹时间线）*/
   /* ---------- S0 home：上 1/3 拍菜单引导，下 2/3 食迹（社交资产） ---------- */
   #s-home { text-align: center; }
   .home-top { flex: none; }
@@ -8,7 +8,19 @@
   .slogan { font-family: var(--font-disp); font-size: 26px; font-weight: 900; letter-spacing: .3px; line-height: 1.25; margin-top: 14px; }
   .slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 var(--accent); }
   .scan-row { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
-  .scan-cta { flex: 1; max-width: 230px; }
+  /* Scan CTA = 朱印章钮（scan-cta-lab 方案A，7.13 定稿）：厚底座，按下=盖章 */
+  .scan-cta {
+    position: relative; min-width: 232px; min-height: 58px; cursor: pointer;
+    background: var(--accent); color: #f7f0df; border: 2px solid var(--accent-press); border-radius: 10px;
+    box-shadow: 0 5px 0 var(--accent-press), 3px 8px 0 rgba(178,58,47,.2);
+    font-size: 16.5px; font-weight: 800; letter-spacing: .02em;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    transform: rotate(-.8deg);
+    transition: transform var(--dur-fast) var(--ease), box-shadow var(--dur-fast) var(--ease);
+  }
+  .scan-cta .cam { font-size: 19px; }
+  .scan-cta::after { content: ""; position: absolute; inset: 4px; border: 1.5px solid rgba(247,240,223,.45); border-radius: 6px; pointer-events: none; }
+  .scan-cta:active { transform: rotate(-.8deg) translateY(5px); box-shadow: 0 0 0 var(--accent-press), 1px 2px 0 rgba(178,58,47,.2); }
   .seeall { border: none; background: none; color: var(--accent); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 6px 0; }
   /* 地图容器：文武边（外粗内细双线框） */
   #home-map {

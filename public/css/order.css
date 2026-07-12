@@ -1,4 +1,4 @@
-/* Chopstory · S3 点菜卡（order-card-final 定稿 7.13：单行三件套 + 圆框金签 + 双面同构） */
+/* ChopStory · S3 点菜卡（order-card-final 定稿 7.13：单行三件套 + 圆框金签 + 双面同构） */
 
   /* 顶行：‹ + 双 tab 单行；tab 按面本地化（英文面英文名 / 中文面中文名） */
   .topbar .otabs { flex: 1; margin-bottom: 0; }

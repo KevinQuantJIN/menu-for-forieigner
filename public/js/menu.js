@@ -1,4 +1,4 @@
-/* Chopstory · S1/S2：菜单 list + 详情弹层 + 购物车条
+/* ChopStory · S1/S2：菜单 list + 详情弹层 + 购物车条
    ★ 2026-07-13 柿漆金排档 v-final（规范：Hackathon/UI-DESIGN.md 末章；基准：ui-lab/style-lab-final.html） */
 /* ---------------- list rendering ---------------- */
 function renderCats() {
@@ -39,34 +39,24 @@ function pcardHTML(d, i = 0, stagger = false) {
     <div class="tags">${previewTags(d)}</div>
   </div>`;
 }
-let foldOpen = false;
-function toggleFold() { foldOpen = !foldOpen; renderList(); }
+/* 折叠逻辑已移除（7.13，Julia 定）：命中过敏/忌口的菜不再收到底部，
+   行内保留红色 ⚠ tag（previewTags/personalHits）作为唯一警示 */
 function renderList(stagger = false) {
   const pool = streamed.filter(d => currentCat === "All" || (currentCat === "⭐ Signature" ? d.signature : d.cat === currentCat));
-  const shown = [], folded = [];
-  for (const d of pool) (personalHits(d).length ? folded : shown).push(d);
   let idx = 0, html = "";
   if (currentCat === "All") {
     /* All = whole menu, grouped with section headers（分区名 = tab 名，scrollspy 联动） */
     for (const c of CATS) {
       if (c === "All" || c === "⭐ Signature") continue;
-      const grp = shown.filter(d => d.cat === c);
+      const grp = pool.filter(d => d.cat === c);
       if (!grp.length) continue;
       html += `<div class="sechead" data-cat="${c}" style="--d:${stagger ? idx * 40 : 0}ms"><b>${c}</b><span>${grp[0].catOriginal || ""}</span></div>`;
       html += grp.map(d => pcardHTML(d, ++idx, stagger)).join("");
     }
   } else {
-    html = shown.map(d => pcardHTML(d, idx++, stagger)).join("");
+    html = pool.map(d => pcardHTML(d, idx++, stagger)).join("");
   }
   document.getElementById("cards").innerHTML = html;
-  const fb = document.getElementById("foldBar"), fw = document.getElementById("foldedCards");
-  if (folded.length) {
-    fb.classList.remove("hidden");
-    const reasons = [...new Set(folded.flatMap(personalHits))].join(" · ");
-    fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${reasons} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
-    fw.classList.toggle("hidden", !foldOpen);
-    fw.innerHTML = foldOpen ? folded.map(d => pcardHTML(d)).join("") : "";
-  } else { fb.classList.add("hidden"); fw.classList.add("hidden"); fw.innerHTML = ""; }
   renderCartBar();
 }
 

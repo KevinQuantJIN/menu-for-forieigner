@@ -1,4 +1,4 @@
-/* Chopstory · S1 菜单 list + S2 详情弹层 + 查看原图
+/* ChopStory · S1 菜单 list + S2 详情弹层 + 查看原图
    ★ 2026-07-13 柿漆金排档 v-final（规范：Hackathon/UI-DESIGN.md 末章；基准：ui-lab/style-lab-final.html）
    字体豁免决议（7.13）：Bricolage Grotesque + IBM Plex Mono 经 Google Fonts 引入，断网回退系统字体 */
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:wght@500;600&display=swap');
@@ -101,13 +101,7 @@
 }
 .qtyctl b { min-width: 22px; text-align: center; font-family: var(--sh-num); font-size: 11.5px; font-variant-numeric: tabular-nums; }
 
-/* 折叠条：柿红虚线 */
-.fold {
-  border: 2px dashed var(--sh-hot); background: none; border-radius: 12px;
-  padding: 12px 14px; margin: 18px 0 6px; cursor: pointer; font-size: 13px; font-weight: 750; color: var(--sh-hot); font-family: var(--sh-en);
-}
-.fold .why { display: block; font-weight: 500; color: var(--sh-sub); font-size: 11.5px; margin-top: 3px; line-height: 1.45; font-family: "PingFang SC", -apple-system, sans-serif; }
-.folded-wrap .pcard { background: none; box-shadow: none; border-style: dashed; }
+/* 折叠逻辑已移除（7.13）——命中忌口行内红 tag 警示，不再折叠 */
 
 /* Order card 条：墨底 + 金色硬影 + 柿红 go 钮
    margin-top:auto（.screen 是 flex 列）：内容短时也钉在屏底，不往上浮（7.13） */

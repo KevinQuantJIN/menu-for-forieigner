@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chopstory · Demo Stage — 方案C 剧场变景</title>
+<title>ChopStory · Demo Stage — 方案C 剧场变景</title>
 <style>
   /* =====================================================================
      方案 C 「剧场变景」
@@ -138,7 +138,7 @@
 <div class="stage">
   <!-- 顶：品牌一行讲清定位 -->
   <div class="topbar">
-    <svg viewBox="0 0 200 200" aria-label="Chopstory logo">
+    <svg viewBox="0 0 200 200" aria-label="ChopStory logo">
       <g class="lg-bubble">
         <g transform="translate(125,45) scale(1) translate(-125,-45)">
           <path class="lg-steam" d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
@@ -159,7 +159,7 @@
       <circle class="lg-dot1" cx="80" cy="80" r="3" fill="#DCA842"/>
       <circle class="lg-dot2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
     </svg>
-    <span class="wd">Chop<em>story</em></span>
+    <span class="wd">Chop<em>Story</em></span>
     <span class="sep"></span>
     <span class="oneliner">外国人拍一张中文菜单 → <b>一份点得动的英文菜单</b>，还会讲菜、标忌口、帮他递单</span>
   </div>
@@ -175,7 +175,7 @@
           <span class="btn-side b-power"></span>
           <div class="screen-hole">
             <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
-            <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
+            <iframe id="appframe" src="app.html" title="ChopStory demo"></iframe>
             <span class="island"></span>
             <span class="glass"></span>
           </div>
@@ -210,7 +210,7 @@ const PAT = {
 
 /* ---- 七幕 ---- */
 const STAGES = [
-  { k: "home",      actnum: "第 壹 幕", tab: "进店", t: "进店落座", note: "一位外国游客坐进了成都的小馆子，面前是一整页中文菜单。看不懂，不敢点——这就是 Chopstory 要解决的时刻。", en: "Open Chopstory", stamp: "痛 点", pat: "cloud",   tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
+  { k: "home",      actnum: "第 壹 幕", tab: "进店", t: "进店落座", note: "一位外国游客坐进了成都的小馆子，面前是一整页中文菜单。看不懂，不敢点——这就是 ChopStory 要解决的时刻。", en: "Open ChopStory", stamp: "痛 点", pat: "cloud",   tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
   { k: "camera",    actnum: "第 贰 幕", tab: "拍单", t: "拍一张菜单", note: "他掏出手机，对着菜单按下快门。整个产品的入口只有这一个动作，不需要注册、不需要学习。", en: "Snap the menu", stamp: "零 门 槛", pat: "crackle", tint: "rgba(38,32,25,.04)",    act: w => w.startScan("camera") },
   { k: "analyzing", actnum: "第 叁 幕", tab: "读单", t: "AI 读单", note: "AI 正在识别菜名、翻译菜品、比对他的过敏原档案。约三秒后自动进入结果页。", en: "AI decoding", stamp: "三 秒", pat: "wave",    tint: "rgba(178,58,47,.045)",  act: w => w.startAnalyze() },
   { k: "list",      actnum: "第 肆 幕", tab: "懂单", t: "读懂整份菜单", note: "14 道菜全部英文化：每道是什么、多少钱、招牌是哪道。他第一次真正「读懂」了一份中文菜单。", en: "The whole menu, decoded", stamp: "看 懂", pat: "meander", tint: "rgba(92,125,70,.05)",  act: w => ensureMenu(w) },

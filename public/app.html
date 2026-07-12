@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chopstory — Taste China, order like a local.</title>
+<title>ChopStory — Taste China, order like a local.</title>
 <link rel="icon" type="image/svg+xml" href="logo.svg">
 <link rel="stylesheet" href="css/tokens.css">
 <link rel="stylesheet" href="css/home.css">
@@ -18,10 +18,10 @@
   <!-- ============ S0 HOME ============ -->
   <section class="screen" id="s-home">
     <div class="home-top">
-      <div class="brand"><img class="mark" src="logo.svg" alt="Chopstory logo"><span>Chop<em>story</em></span></div>
+      <div class="brand"><img class="mark" src="logo.svg" alt="ChopStory logo"><span>Chop<em>Story</em></span></div>
       <h1 class="slogan"><i>Decode the Chinese menu,</i><br>order like a local.</h1>
       <div class="scan-row">
-        <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
+        <button class="scan-cta" onclick="startScan('camera')"><span class="cam">📷</span>Scan a menu</button>
       </div>
     </div>
 
@@ -177,8 +177,6 @@
     </div>
     <div class="cats" id="cats"></div>
     <div id="cards"></div>
-    <div class="fold hidden" id="foldBar" onclick="toggleFold()"></div>
-    <div class="folded-wrap hidden" id="foldedCards"></div>
     <p class="disclaimer">AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
     <div class="cart-bar" id="cartBar" onclick="openOrder()">
       <span class="sum" id="cartSum">Pick dishes to build your order</span>
@@ -218,6 +216,7 @@
     <div id="foodmap" class="hidden">
       <div class="counts">食迹 · 已钤二印 · 尝八味</div>
       <div id="chinamap"></div>
+      <div id="map-pins"></div>
       <div id="map-fallback" class="hidden">
         <div class="grid"></div>
         <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
