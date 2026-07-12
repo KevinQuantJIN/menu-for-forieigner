@@ -70,22 +70,19 @@ function normalizeDish(raw) {
     }
     return null;
   }).filter(Boolean);
-  const category = raw.category ?? raw.cat ?? null;
+  const category = raw.category != null ? raw.category : (raw.cat != null ? raw.cat : null);
   const description = raw.description || raw.desc || "";
-  const vegetarian = !!(raw.vegetarian ?? raw.veg);
+  const vegetarian = !!(raw.vegetarian != null ? raw.vegetarian : raw.veg);
   return {
     id: raw.id,
     category,
-    cat: category,
     nameCn: raw.nameCn || "",
     pinyin: raw.pinyin || "",
     name: raw.name || raw.nameCn || "Dish",
     description,
-    desc: description,
     price: raw.price == null ? null : String(raw.price),
     spicy: Math.max(0, Math.min(3, Number(raw.spicy) || 0)),
     vegetarian,
-    veg: vegetarian,
     allergens,
     textures: Array.isArray(raw.textures) ? raw.textures.map(String) : [],
     ingredients: Array.isArray(raw.ingredients) ? raw.ingredients.map(String) : [],
@@ -171,8 +168,6 @@ function personalHits(d) {
   }
   return hits;
 }
-const GENERIC_TAG = { offal:"🫀 organ meats", whole_head:"🐟 whole head", bone_in:"🦴 on the bone", fatty:"🥓 fatty cut", chicken_feet:"🐔 chicken feet", century_egg:"🥚 century egg", fishy_herb:"🌿 fishy herb — dare?" };
-const HIDDEN_RISK_LABEL = { meat_broth:"🍲 made with meat broth", minced_pork:"🍖 usually has minced pork & dried shrimp" };
 function previewTags(d) {
   const tags = [];
   const hits = personalHits(d);

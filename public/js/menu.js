@@ -84,8 +84,7 @@ document.getElementById("s-list").addEventListener("scroll",
   () => requestAnimationFrame(spyCats), { passive: true });
 
 /* ---------------- detail（v-final：标题两行 · What it is 主角 · 题跋 story · 价格只在 CTA） ----------------
-   Flavor bars 已废弃（UI.md 7.12）：辣度文字化在列表菜名行；麻 numbing≥5 = Heads-up 标签；
-   Heads-up 标签清单维护在 data.js（GENERIC_TAG / HIDDEN_RISK_LABEL） */
+   Flavor bars 已废弃（UI.md 7.12）：辣度文字化在列表菜名行；麻/风险信息由 textures[] + textureLabel 承载 */
 function openDetail(id) {
   const d = streamed.find(x => x.id === id);
   if (!d) return;

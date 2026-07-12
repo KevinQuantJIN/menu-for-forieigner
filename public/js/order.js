@@ -4,11 +4,18 @@ function addToOrder(id, delta) {
   const q = (order.get(id) || 0) + delta;
   if (q <= 0) order.delete(id); else order.set(id, q);
   /* 7.13 防抖动：数量变化只局部重绘该菜的加购控件（含折叠区副本），不再整列表 renderList */
-  const d = DISHES.find(x => x.id === id);
+  const d = streamed.find(x => x.id === id);
   document.querySelectorAll(`.addwrap[data-id="${id}"]`).forEach(w => { w.innerHTML = addCtlHTML(d); });
   renderCartBar();
 }
-function orderTotal() { let t = 0; for (const [id,q] of order) t += DISHES.find(d => d.id === id).price * q; return t; }
+function orderTotal() {
+  let t = 0;
+  for (const [id, q] of order) {
+    const d = streamed.find(x => x.id === id);
+    if (d) t += parsePrice(d.price) * q;
+  }
+  return t;
+}
 function renderCartBar() {
   /* persistent bar — always visible on the list so "My Order" is one tap away */
   const n = [...order.values()].reduce((a,b) => a+b, 0);
@@ -21,7 +28,7 @@ function renderOrder() {
   /* order-card-final 定稿（7.13）：单行三件套顶行 · 圆框金签单元 · 两面严格同构
      一面一种语言：英文面全英文（¥ 数字并存于 Total）；中文面全中文（连 tab 都本地化）
      底部 CTA 两面同一样式，语言徽标 = 金框 CN/EN 字母 */
-  const items = [...order.entries()].map(([id,q]) => ({ d: DISHES.find(x => x.id === id), q }));
+  const items = [...order.entries()].map(([id,q]) => ({ d: streamed.find(x => x.id === id), q })).filter(x => x.d);
   const el = document.getElementById("s-order");
   seedRequests();
   if (waiterMode) orderEditing = false;
@@ -35,11 +42,11 @@ function renderOrder() {
 
   /* MY PICKS / 已选菜品 —— 行内不带 icon；Total/合计 在单元内、重线顶隔 */
   const dishesEN = items.length
-    ? items.map(({d,q}) => `<div class="orow"><b>${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span>≈ ${curSym()}${fxN(d.price*q)}</span></div>`).join("")
+    ? items.map(({d,q}) => `<div class="orow"><b>${esc(d.name)}<small>${esc(d.nameCn)} · ${esc(d.pinyin)}</small></b><span class="q">×${q}</span><span>≈ ${curSym()}${fxN(parsePrice(d.price)*q)}</span></div>`).join("")
       + `<div class="total-line"><span>Total</span><span>≈ ${curSym()}${fxN(total)} · ¥${total}</span></div>`
     : `<div class="sec-empty"><span class="e">🍽️</span>Nothing here yet — tap ＋ on the menu</div>`;
   const dishesCN = items.length
-    ? items.map(({d,q}) => `<div class="orow"><b>${d.nameCn}</b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")
+    ? items.map(({d,q}) => `<div class="orow"><b>${esc(d.nameCn)}</b><span class="q">×${q}</span><span>¥${parsePrice(d.price)*q}</span></div>`).join("")
       + `<div class="total-line"><span>合计</span><span>¥${total}</span></div>`
     : `<div class="sec-empty"><span class="e">🍽️</span>还没有选菜</div>`;
 
@@ -47,23 +54,23 @@ function renderOrder() {
   const chipRow = (defs, group) => Object.entries(defs)
     .filter(([k]) => !["crustacean", "mollusk"].includes(k))
     .map(([k, l]) =>
-    `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${l}</button>`).join("");
+    `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${esc(l)}</button>`).join("");
   const notesEN = orderEditing ? `
       <div class="chip-group"><div class="gt">Allergies</div><div class="chips">${chipRow(ALLERGEN_LABEL, "allergens")}</div></div>
       <div class="chip-group"><div class="gt">I'd rather avoid</div><div class="chips">${chipRow(AVOID_LABEL, "avoid")}</div></div>
       <div class="chip-group"><div class="gt">Requests</div><div class="chips">${REQ_DEFS.map(r => `<button class="chip ${requests.has(r.k)?"on":""}" onclick="toggleReq('${r.k}')">${r.en}</button>`).join("")}</div></div>
-      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${customNote.replace(/"/g,"&quot;")}" onchange="customNote=this.value"></div>
+      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${esc(customNote)}" onchange="customNote=this.value"></div>
     ` : `
-      <div class="note-row danger"><span class="k">My allergies</span><span class="v ${allergenEN?"":"none"}">${allergenEN || "None set — tap Edit"}</span></div>
-      <div class="note-row"><span class="k">My dislikes</span><span class="v ${avoidEN?"":"none"}">${avoidEN || "Nothing marked"}</span></div>
-      <div class="note-row"><span class="k">My requests</span><span class="v ${reqSel.length?"":"none"}">${reqSel.map(r => r.en.replace(/^\S+ /, "")).join(" · ") || "None"}</span></div>
-      ${customNote ? `<div class="note-row"><span class="k">My note</span><span class="v">${customNote}</span></div>` : ""}
+      <div class="note-row danger"><span class="k">My allergies</span><span class="v ${allergenEN?"":"none"}">${esc(allergenEN) || "None set — tap Edit"}</span></div>
+      <div class="note-row"><span class="k">My dislikes</span><span class="v ${avoidEN?"":"none"}">${esc(avoidEN) || "Nothing marked"}</span></div>
+      <div class="note-row"><span class="k">My requests</span><span class="v ${reqSel.length?"":"none"}">${esc(reqSel.map(r => r.en.replace(/^\S+ /, "")).join(" · ")) || "None"}</span></div>
+      ${customNote ? `<div class="note-row"><span class="k">My note</span><span class="v">${esc(customNote)}</span></div>` : ""}
     `;
   /* 请注意（中文面：整句、无空行——服务员只看有内容的行）*/
   const cnRows = [
-    allergenCN ? `<div class="note-row danger"><span class="v">我对${allergenCN}严重过敏，请勿使用相关食材及烹饪油</span></div>` : "",
-    avoidCN ? `<div class="note-row"><span class="v">我不太能接受${avoidCN}，请尽量不要放</span></div>` : "",
-    (reqSel.length || customNote) ? `<div class="note-row"><span class="v">${[reqSel.map(r => r.cn).join("；"), customNote].filter(Boolean).join("；另外：")}</span></div>` : "",
+    allergenCN ? `<div class="note-row danger"><span class="v">我对${esc(allergenCN)}严重过敏，请勿使用相关食材及烹饪油</span></div>` : "",
+    avoidCN ? `<div class="note-row"><span class="v">我不太能接受${esc(avoidCN)}，请尽量不要放</span></div>` : "",
+    (reqSel.length || customNote) ? `<div class="note-row"><span class="v">${esc([reqSel.map(r => r.cn).join("；"), customNote].filter(Boolean).join("；另外："))}</span></div>` : "",
   ].filter(Boolean).join("") || `<div class="note-row"><span class="v none">无特别要求</span></div>`;
 
   el.className = "screen" + (waiterMode ? " waiter" : "");
@@ -95,4 +102,3 @@ function renderOrder() {
     `}`;
   el.scrollTop = keepScroll;
 }
-
