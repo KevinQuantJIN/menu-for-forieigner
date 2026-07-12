@@ -136,10 +136,29 @@
     </div>
   </section>
 
-  <!-- ============ ANALYZING（极简：印章呼吸 + 单行状态） ============ -->
+  <!-- ============ ANALYZING（极简：logo 动效 + 单行状态）
+       动效三层：气泡说话弹跳 / 筷子夹菜摆动 / 碗口蒸汽泡上浮 ============ -->
   <section class="screen hidden" id="s-analyzing">
     <div class="ana-center">
-      <div class="ana-seal">食</div>
+      <svg class="ana-logo" viewBox="0 0 200 200" aria-hidden="true">
+        <g class="lg-bubble"><g transform="translate(125, 45) scale(1) translate(-125, -45)">
+          <path d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
+          <path d="M 120 70 C 105 70, 100 55, 115 45 C 115 30, 135 25, 145 35 C 155 25, 175 35, 170 50 C 180 60, 165 75, 150 70 C 140 78, 125 75, 120 70 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="135" cy="50" r="4" fill="#FBF9F3"/>
+          <circle cx="150" cy="50" r="4" fill="#FBF9F3"/>
+          <path d="M 140 58 Q 142.5 61, 145 58" fill="none" stroke="#FBF9F3" stroke-width="2.5" stroke-linecap="round"/>
+        </g></g>
+        <g class="lg-sticks"><g transform="translate(100, 115) rotate(30) translate(-100, -115)">
+          <path d="M 60 50 L 142 132 C 145 135, 140 140, 137 137 L 55 55 C 52 52, 57 47, 60 50 Z" fill="#1C1A17"/>
+          <path d="M 72 42 L 154 124 C 157 127, 152 132, 149 129 L 67 47 C 64 44, 69 39, 72 42 Z" fill="#1C1A17"/>
+        </g></g>
+        <rect x="80" y="165" width="40" height="12" rx="6" fill="#1C1A17"/>
+        <path d="M 45 115 C 45 115, 40 165, 100 165 C 160 165, 155 115, 155 115 C 155 115, 130 120, 100 120 C 70 120, 45 115, 45 115 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M 55 115 C 55 102, 75 92, 100 92 C 125 92, 145 102, 145 115 Z" fill="#FBF9F3" stroke="#1C1A17" stroke-width="4"/>
+        <circle class="lg-bub b1" cx="80" cy="80" r="3" fill="#DCA842"/>
+        <circle class="lg-bub b2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
+        <circle class="lg-bub b3" cx="97" cy="84" r="2.5" fill="#DCA842"/>
+      </svg>
       <h2>Reading your menu…</h2>
       <p class="ana-status" id="anaStatus">Looking at the photo</p>
       <div class="ana-track"><i id="anaBar"></i></div>

@@ -90,16 +90,35 @@
   .cam-album span { display: block; font-size: 8.5px; font-weight: 700; letter-spacing: .05em; margin-top: -2px; }
   .cam-album:active { transform: scale(.92); }
 
-  /* ---------- analyzing：极简（印章呼吸 + 单行状态 + 细进度条） ---------- */
+  /* ---------- analyzing：logo 动效 + 单行状态 + 细进度条 ----------
+     筷子夹菜摆动 · 气泡说话弹跳 · 蒸汽泡上浮（reduced-motion 时全局关闭） */
   #s-analyzing { text-align: center; }
   .ana-center { margin: auto; display: flex; flex-direction: column; align-items: center; padding-bottom: 12vh; }
-  .ana-seal {
-    width: 74px; height: 74px; border-radius: 10px; background: var(--accent); color: #f6efdc;
-    font-family: "Kaiti SC", "STKaiti", serif; font-size: 34px; display: grid; place-items: center;
-    box-shadow: inset 0 0 0 2.5px rgba(246,239,220,.4); transform: rotate(2.5deg);
-    animation: seal-breathe 1.6s var(--ease) infinite;
+  .ana-logo { width: 128px; height: 128px; overflow: visible; }
+  .ana-logo .lg-bubble {
+    transform-box: fill-box; transform-origin: 15% 95%;
+    animation: lg-talk 1.6s var(--ease) infinite;
   }
-  @keyframes seal-breathe { 0%,100% { transform: rotate(2.5deg) scale(1); } 50% { transform: rotate(2.5deg) scale(1.06); } }
+  @keyframes lg-talk {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    50% { transform: scale(1.08) rotate(3deg); }
+  }
+  .ana-logo .lg-sticks {
+    transform-box: fill-box; transform-origin: 88% 88%;
+    animation: lg-pick 1.4s ease-in-out infinite;
+  }
+  @keyframes lg-pick {
+    0%, 100% { transform: rotate(0deg) translate(0, 0); }
+    50% { transform: rotate(-8deg) translate(-2px, -5px); }
+  }
+  .ana-logo .lg-bub { transform-box: fill-box; animation: lg-rise 2s ease-in infinite; }
+  .ana-logo .lg-bub.b2 { animation-delay: .65s; }
+  .ana-logo .lg-bub.b3 { animation-delay: 1.2s; }
+  @keyframes lg-rise {
+    0% { transform: translateY(0); opacity: 0; }
+    25% { opacity: 1; }
+    100% { transform: translateY(-16px); opacity: 0; }
+  }
   #s-analyzing h2 { margin-top: 22px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
   .ana-status { margin-top: 8px; font-size: 13.5px; color: var(--muted); }
   .ana-track { margin-top: 18px; width: 180px; height: 4px; background: #ece2c9; overflow: hidden; border-radius: 2px; }
