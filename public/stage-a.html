@@ -36,7 +36,7 @@
     position: fixed; inset: 18px; z-index: 2;
     border: 3px solid var(--ink);
     /* 1fr 空列在两侧吸收多余宽度：文字列+手机作为一组居中，间距恒定 */
-    display: grid; grid-template-columns: 1fr clamp(340px, 29vw, 580px) max-content 1fr; grid-template-rows: 1fr auto;
+    display: grid; grid-template-columns: 1fr clamp(400px, 32vw, 640px) max-content 1fr; grid-template-rows: 1fr auto;
     padding: 2vh 3vw 0;
   }
   .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
@@ -66,14 +66,14 @@
   .wordmark span { display: block; margin-top: 4px; font-size: clamp(12px, .95vw, 16px); letter-spacing: .42em; color: var(--ink-3); }
   h1.headline { margin-top: clamp(18px, 2.2vh, 30px); font-size: clamp(25px, 2.35vw, 42px); font-weight: 900; line-height: 1.5; }
   h1.headline em { font-style: normal; white-space: nowrap; box-shadow: inset 0 -.18em 0 rgba(178,58,47,.28); }
-  .sub { margin-top: 12px; font-size: clamp(13px, 1vw, 17px); color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+  .sub { margin-top: 12px; font-size: clamp(13px, 1vw, 17px); color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; text-wrap: balance; }
   .points { margin-top: clamp(16px, 2vh, 26px); }
   .point { display: flex; align-items: baseline; padding: .6em 2px .55em; border-bottom: 1px solid rgba(38,32,25,.22); }
   .point:first-child { border-top: 2.5px solid var(--ink); }
   .point .cn { font-weight: 900; font-size: clamp(14px, 1.05vw, 19px); letter-spacing: .12em; flex: none; }
   .point .lead { flex: none; width: clamp(22px, 2vw, 38px); border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
   .point .en { font-size: clamp(12px, .92vw, 16px); color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
-  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: clamp(12px, .88vw, 15px); color: var(--ink-3); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: clamp(12px, .88vw, 15px); color: var(--ink-3); line-height: 1.9; font-family: "PingFang SC", sans-serif; text-wrap: balance; }
   .tryline b { color: var(--zhu); font-weight: 700; }
 
   /* ---------- 中：手机（屏内恒为 393x852 调试尺寸，整体 scale 适配） ---------- */
@@ -85,8 +85,8 @@
     background: radial-gradient(ellipse at center, rgba(38,32,25,.3), transparent 68%);
   }
   .iphone {
-    /* 屏内 = 44px 刘海安全区 + 393x852 完整 app 视口（app 未做安全区适配，故垫出来） */
-    position: relative; width: 415px; height: 918px;
+    /* 屏内 = 36px 刘海安全区 + 393x852 完整 app 视口（app 未做安全区适配，故垫出来） */
+    position: relative; width: 415px; height: 910px;
     border-radius: 58px; background: #0d0b09; padding: 11px;
     box-shadow: 0 0 0 4.5px #3d3833, 0 0 0 6px #6e675e, 0 0 0 7px #2b2723,
       0 30px 60px rgba(38,32,25,.35), inset 0 0 0 3px #000;
@@ -103,8 +103,8 @@
   .b-vol2 { left: -8.5px; top: 34%; width: 4px; height: 52px; }
   .b-power { right: -8.5px; top: 28%; width: 4px; height: 78px; background: linear-gradient(270deg, #55504a, #23201c); }
   .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #f7f2e6; }
-  .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: calc(100% - 44px); margin-top: 44px; border: none; display: block; background: #f7f2e6; }
-  .island { position: absolute; top: 8px; left: 50%; transform: translateX(-50%); width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5; box-shadow: inset 0 0 2px rgba(255,255,255,.06); }
+  .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: calc(100% - 36px); margin-top: 36px; border: none; display: block; background: #f7f2e6; }
+  .island { position: absolute; top: 5px; left: 50%; transform: translateX(-50%); width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5; box-shadow: inset 0 0 2px rgba(255,255,255,.06); }
   .island::after { content: ""; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
   .glass { position: absolute; inset: 0; border-radius: 50px; pointer-events: none; z-index: 6;
     background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
@@ -140,6 +140,12 @@
 </style>
 </head>
 <body>
+<script>
+/* 演示环境预置画像（Jake：花生过敏、微辣）——跳过 app 首跑弹窗，且保留过敏折叠演示剧情 */
+if (!localStorage.getItem("ml.profile")) {
+  localStorage.setItem("ml.profile", JSON.stringify({ allergens: ["peanut"], avoid: [], spice: 1 }));
+}
+</script>
 <div class="grain"></div>
 <div class="stage">
 
@@ -176,9 +182,9 @@
     <h1 class="headline" id="slogan">外国人的点餐伙伴<br>读得懂、点得对、<em>吃得明白</em></h1>
     <p class="sub" id="sloganSub">拍一张中文菜单，讲懂每道菜、标出过敏雷点、帮他和服务员沟通。</p>
     <div class="points">
-      <div class="point"><span class="cn">看懂</span><span class="lead"></span><span class="en">每道菜是什么、招牌是哪道</span></div>
-      <div class="point"><span class="cn">放心</span><span class="lead"></span><span class="en">辣度、过敏原自动标出来</span></div>
-      <div class="point"><span class="cn">点单</span><span class="lead"></span><span class="en">点单卡翻面是中文，递给服务员就能下单</span></div>
+      <div class="point"><span class="cn">看懂</span><span class="lead"></span><span class="en">不是直译菜名，是讲明白每道菜</span></div>
+      <div class="point"><span class="cn">放心</span><span class="lead"></span><span class="en">辣度、过敏原、忌口雷点提前标出</span></div>
+      <div class="point"><span class="cn">点单</span><span class="lead"></span><span class="en">中文点单卡递给服务员，不用比划</span></div>
     </div>
     <p class="tryline"><b>右边这台手机可以直接点着玩</b>，或点下方时间轴任意一站，直达对应界面。</p>
   </aside>
@@ -258,11 +264,15 @@ function seedOrder(w) {
   if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
   w.openOrder();
 }
-function jumpTo(i) {
+/* 只更新舞台侧 UI（时间轴/说明），不触发 app 跳转 */
+function setUI(i) {
   cur = i; const s = STAGES[i];
   document.querySelectorAll(".jnode").forEach((n, j) => n.classList.toggle("on", j === i));
   document.getElementById("jfill").style.width = (3 + (94 * i / (STAGES.length - 1))) + "%";
   document.getElementById("jcap").innerHTML = `<b><i>${s.n}</i> · ${s.t}</b>${s.note}`;
+}
+function jumpTo(i) {
+  setUI(i); const s = STAGES[i];
   const w = appWin(); if (!w) return;
   try { w.closeDetail && w.closeDetail(); } catch (e) {}
   try { w.closeSheet && w.closeSheet(false); } catch (e) {}
@@ -280,6 +290,24 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowRight") jumpTo(Math.min(cur + 1, STAGES.length - 1));
   if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
 });
+
+/* 反向同步：评委直接在手机里点导航时，时间轴跟着走 */
+const SCREEN_TO_STAGE = { "s-home": 0, "s-camera": 1, "s-analyzing": 2, "s-list": 3, "s-order": 5, "s-history": 6 };
+function detectStage(w) {
+  try {
+    const d = w.document; if (!d) return -1;
+    const ds = d.getElementById("detail-sheet");
+    if (ds && !ds.classList.contains("hidden")) return 4; /* 详情弹层开着 = 第5站 */
+    const vis = d.querySelector(".screen:not(.hidden)");
+    return vis ? (SCREEN_TO_STAGE[vis.id] ?? -1) : -1;
+  } catch (e) { return -1; }
+}
+setInterval(() => {
+  const w = appWin(); if (!w) return;
+  const i = detectStage(w);
+  if (i >= 0 && i !== cur) setUI(i);
+}, 600);
+
 jumpTo(0);
 fitPhone();
 </script>
