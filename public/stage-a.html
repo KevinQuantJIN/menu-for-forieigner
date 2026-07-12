@@ -113,11 +113,8 @@
   .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
 
   /* ---------- 底：用户动线时间轴（手卷，宽度流式缩放） ---------- */
-  .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 10px; padding: 10px 6px 1.6vh; position: relative; }
-  .jcap { text-align: center; height: 2.2em; font-size: clamp(13px, .95vw, 17px); color: var(--ink-2); letter-spacing: .05em; }
-  .jcap b { font-family: "Songti SC", serif; font-size: 1.12em; color: var(--ink); margin-right: 10px; letter-spacing: .08em; }
-  .jcap b i { font-style: normal; color: var(--zhu); font-family: ui-monospace, monospace; }
-  .jtrack { position: relative; margin-top: 8px; }
+  .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 10px; padding: 16px 6px 1.6vh; position: relative; }
+  .jtrack { position: relative; }
   /* 点线引导（菜账 leader dots 质感），朱线进度覆盖其上 */
   .jline { position: absolute; left: 3%; right: 3%; top: calc(var(--dot) / 2); border-top: 2px dotted rgba(38,32,25,.35); }
   .jfill { position: absolute; left: 3%; top: calc(var(--dot) / 2 - 1px); height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
@@ -211,9 +208,8 @@ if (!localStorage.getItem("ml.profile")) {
     </div>
   </div>
 
-  <!-- 底：用户动线时间轴（一个外国游客的一顿饭，七站） -->
+  <!-- 底：用户动线时间轴（一个外国游客的一顿饭，八站） -->
   <div class="journey">
-    <div class="jcap" id="jcap"></div>
     <div class="jtrack">
       <div class="jline"></div>
       <div class="jfill" id="jfill"></div>
@@ -241,15 +237,16 @@ function fitPhone() {
 }
 window.addEventListener("resize", fitPhone);
 
-/* ---- user journey 七站 ---- */
+/* ---- user journey 八站 ---- */
 const STAGES = [
-  { k: "home",      n: 1, t: "到店",       zh: "看不懂中文菜单", note: "外国游客坐下，面对一整页看不懂的中文菜单", act: w => w.go("home") },
-  { k: "camera",    n: 2, t: "拍菜单",     zh: "对着菜单拍一张", note: "对着纸质菜单拍一张照片，入口只有这一个动作", act: w => w.startScan("camera") },
-  { k: "analyzing", n: 3, t: "AI 识别",    zh: "自动读懂菜名",   note: "AI 识别菜名，自动标出辣度和过敏原，约三秒出结果", act: w => w.startAnalyze() },
-  { k: "list",      n: 4, t: "英文菜单",   zh: "每道菜都看得懂", note: "整份菜单变成英文：每道是什么、多少钱、招牌是哪道", act: w => ensureMenu(w) },
-  { k: "detail",    n: 5, t: "菜品详情",   zh: "讲清这道菜",     note: "一道菜讲明白：是什么做的、怎么吃、含不含他的忌口", act: w => { ensureMenu(w); w.openDetail(8); } },
-  { k: "order",     n: 6, t: "中文点单卡", zh: "翻面递给服务员", note: "选好的菜生成点单卡，翻面是中文，直接递给服务员照单", act: w => seedOrder(w) },
-  { k: "map",       n: 7, t: "美食地图",   zh: "记录吃过的美食", note: "吃过的每道菜记在地图上，攒成他自己的中国美食地图", act: w => { w.go("history"); w.histView("map"); } },
+  { k: "home",      n: 1, t: "到店",       zh: "看不懂中文菜单", act: w => w.go("home") },
+  { k: "camera",    n: 2, t: "拍菜单",     zh: "对着菜单拍一张", act: w => w.startScan("camera") },
+  { k: "analyzing", n: 3, t: "AI 识别",    zh: "自动读懂菜名",   act: w => w.startAnalyze() },
+  { k: "list",      n: 4, t: "英文菜单",   zh: "每道菜都看得懂", act: w => ensureMenu(w) },
+  { k: "detail",    n: 5, t: "菜品详情",   zh: "讲清这道菜",     act: w => { ensureMenu(w); w.openDetail(8); } },
+  { k: "fx",        n: 6, t: "汇率换算",   zh: "换成熟悉的货币", act: w => { ensureMenu(w); w.openCurrency(); } },
+  { k: "order",     n: 7, t: "中文点单卡", zh: "翻面递给服务员", act: w => seedOrder(w) },
+  { k: "map",       n: 8, t: "美食地图",   zh: "记录吃过的美食", act: w => { w.go("history"); w.histView("map"); } },
 ];
 let cur = 0;
 
@@ -266,18 +263,18 @@ function seedOrder(w) {
   if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
   w.openOrder();
 }
-/* 只更新舞台侧 UI（时间轴/说明），不触发 app 跳转 */
+/* 只更新舞台侧 UI（时间轴），不触发 app 跳转 */
 function setUI(i) {
-  cur = i; const s = STAGES[i];
+  cur = i;
   document.querySelectorAll(".jnode").forEach((n, j) => n.classList.toggle("on", j === i));
   document.getElementById("jfill").style.width = (3 + (94 * i / (STAGES.length - 1))) + "%";
-  document.getElementById("jcap").innerHTML = `<b><i>${s.n}</i> · ${s.t}</b>${s.note}`;
 }
 function jumpTo(i) {
   setUI(i); const s = STAGES[i];
   const w = appWin(); if (!w) return;
   try { w.closeDetail && w.closeDetail(); } catch (e) {}
   try { w.closeSheet && w.closeSheet(false); } catch (e) {}
+  try { w.closeCurrency && w.closeCurrency(); } catch (e) {}
   try { s.act(w); } catch (e) { console.warn("jump failed:", e); }
   /* app 首跑会在 600ms 后自动弹偏好底屉（app.html:265）；非首页站补一次关闭 */
   if (s.k !== "home") setTimeout(() => {
@@ -293,13 +290,15 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
 });
 
-/* 反向同步：评委直接在手机里点导航时，时间轴跟着走 */
-const SCREEN_TO_STAGE = { "s-home": 0, "s-camera": 1, "s-analyzing": 2, "s-list": 3, "s-order": 5, "s-history": 6 };
+/* 反向同步：评委直接在手机里点导航时，时间轴跟着走；没玩到的站（如汇率）不亮、直接跳过 */
+const SCREEN_TO_STAGE = { "s-home": 0, "s-camera": 1, "s-analyzing": 2, "s-list": 3, "s-order": 6, "s-history": 7 };
 function detectStage(w) {
   try {
     const d = w.document; if (!d) return -1;
+    const cm = d.getElementById("cur-mask");
+    if (cm && !cm.classList.contains("hidden")) return 5; /* 货币选择器开着 = 汇率换算站 */
     const ds = d.getElementById("detail-sheet");
-    if (ds && !ds.classList.contains("hidden")) return 4; /* 详情弹层开着 = 第5站 */
+    if (ds && !ds.classList.contains("hidden")) return 4; /* 详情弹层开着 = 菜品详情站 */
     const vis = d.querySelector(".screen:not(.hidden)");
     return vis ? (SCREEN_TO_STAGE[vis.id] ?? -1) : -1;
   } catch (e) { return -1; }
