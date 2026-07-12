@@ -1,7 +1,6 @@
-# Chopstory — PRD
+# ChopStory — PRD
 
-> ⚠️ 同步副本（2026-07-12），源文件在 Julia 的 Hackathon 工作区，以源为准；文内相对路径（materials/ 等）指向源工作区。
-
+> ⚠️ 同步副本（2026-07-14），源文件在 Julia 的 Hackathon 工作区，以源为准；文内相对路径（materials/ 等）指向源工作区。
 
 > 2026-07-12 · Julia / Kevin / Doreen · 一个项目投两个比赛（Trae AI + Google Vibe-a-thon，DDL 7.15）
 > 参考截图在 `materials/`，每屏标了参考文件和要抄的细节  
@@ -12,7 +11,7 @@
 
 ## 一句话需求
 
-Chopstory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜单，它变成一份「读得懂、点得对、吃得明白」的菜单。
+ChopStory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜单，它变成一份「读得懂、点得对、吃得明白」的菜单。
 
 我们优化的是**外国人到店就餐的整体文化饮食体验**，两个价值点：一是对菜品有更深的理解——吃懂每道菜，而不只是翻译菜名；二是一套顺畅的点餐下单流程——看懂菜单 → 放心下单 → 与服务员交互 → 吃懂文化 → 留下可分享的美食足迹。场景只有一个：**线下到店点单**。
 
@@ -69,18 +68,24 @@ Chopstory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜�
 
 | 屏                         | 干什么                                 | 页面分布                                                                                             | UI 图 |
 | ------------------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------ | ---- |
-| **S0 首页** Home            | 拍菜单入口 + 「My food story」收藏区（社交资产）    | 上 1/3：品牌 + slogan + Scan/Album 双 CTA + 画像 chips；下 2/3：迷你食迹地图 + Recent 时间线                        | 待补   |
+| **S0 首页** Home            | 拍菜单入口 + 「My food story」收藏区（社交资产）    | 上 1/3：品牌 + slogan + **单个 Scan CTA**（相册入口在相机页右下角，画像 chips 已删——入口=首跑面板+点单页 Edit）；下 2/3：迷你食迹地图 + Recent 时间线 | ✅ 7.12 |
 | **S0-a 相机取景** Camera      | 引导拍出可识别的菜单照片                        | 顶部提示条 + 取景四角框（对准 mock 菜单纸）+ 底部拍摄提示 + 快门                                                          | 待补   |
 | **S0-b 识别中** Analyzing    | 等待页——消除「拍完没反应」的焦虑                   | 菜单缩略图 + 「AI 正在识别 N 道菜」+ 三步进度清单                                                                   | 待补   |
-| **S1 菜单列表** Menu, decoded | 整单一次性呈现，preview 卡做初筛，命中忌口折叠         | 顶部餐厅信息条（查看原图）→ 分类 chips（sticky）→ 分区卡片流 → 忌口折叠区 → 底部常驻 My Order 条                                 | 待补   |
+| **S1 菜单列表** Your Decoded Menu | 整单一次性呈现，preview 卡做初筛，命中忌口行内红 tag 警示（7.13 移除折叠） | 顶部餐厅信息条（查看原图）→ 分类 chips（sticky）→ 分区卡片流 → 底部常驻 Order card 条                                 | 待补   |
 | **S2 菜品详情** Dish detail   | 决定「点不点」+ 吃懂文化（先决策，后文化）              | 底部弹层浮于 list：hero emoji → 译名/拼音/菜系 → 价格/警示 banner → 描述 → 口味 bars → 成分/过敏/雷点 → The story → Add CTA | 待补   |
 | **S3 点单卡** Order card     | 双视图点单：For me 核对与编辑，For waiter 递手机下单 | 顶栏返回 + 双 tab（唯一切换）→ 一次性引导条 → 开场白气泡 → 菜品卡（含空态）→ 注意事项卡（✎ Edit）→ 底部双语说明                             | 待补   |
+
+> **7.13 UI 定稿（order-card-final，✅ 已落地 commit a631126）**：顶行=‹+双 tab 单行；tab 按面本地化（英文面 My view·IN ENGLISH / Waiter view·IN CHINESE；中文面 顾客视图·英文 / 服务员视图·中文，宋体）——**一面只有一种语言**。区块=圆框金签单元（🍽 MY PICKS=已选菜品 / ⚠️ MY NOTES=请注意），行内无 icon，两面模板 1:1；Total/合计在 picks 单元内。底部 CTA 两面同一样式（墨底+金框字母徽标）：Show to waiter → [CN] / ‹ Back to my view [EN]，无副标题；中文面 CTA 上方一行「🙏 顾客不会中文·请照单下单」。已移除：问候气泡、引导横幅、双语底注、空态 Browse 按钮。设计过程稿：ui-lab/order-card-final.html（含实现规格）。
+
+> **7.14 增补（✅ 已落地）**：两面 picks 上方各加一句开场白（EN「Hello! I'd like to order the following dishes:」/ CN「你好！我想点以下这些菜品：」，中文面宋体放大）——替代此前删掉的问候气泡，作为「递卡时说的第一句话」。中文注意事项改第一人称：「**我**对花生严重过敏…」「**我**不太能接受内脏、香菜，请尽量不要放」。演示默认值填满（仅展示用，js/core.js）：过敏=花生，忌口=香菜+内脏，请求=微辣+不要香菜+少油，备注=双语「Not too salty, please（口味清淡一点）」，让服务员视图开箱即丰富。
 | **S4 食迹收藏** Food story    | 留痕收藏：历史列表（P1）+ 中国地图点亮（✅）            | History/Map 双 tab：按时间地点分组的列表；ECharts 中国地图 + 城市涟漪点亮 + 拍立得弹卡 + 顶部计数条                               | 待补   |
 
 
-### S0 首页：上 1/3 拍菜单引导，下 2/3 社交资产（✅ 已在原型落地，本轮重构）
+### S0 首页：上 1/3 拍菜单引导，下 2/3 社交资产（✅ 已落地；7.12 晚按 UI.md 二次简化）
 
-- **上 1/3**：品牌 + slogan「Taste China, order like a local.」（2026-07-12 定稿，见「品牌定名」节）+ 一个主 CTA「📷 Scan a menu」+ 次按钮「🖼️ Album」+ 画像 chips 条。砍掉了旧版大相机圆钮与重复的双入口（占屏挤压社交资产）
+> 7.12 晚 UI.md 落地记录：首页只留一个 Scan CTA；相册入口移到相机页右下角；画像 chips 条删除；识别中屏极简化（呼吸朱印 + 单行状态 + 细进度条）；S1 菜品卡混入方案C 描边单元（赭黄价签斜贴）；S2 Flavor bars 移除（辣度=🌶 icon，麻≥5 入 Heads-up 标签）；S3 区块模块卡化；stage.html 加 S0–S4 快速跳屏条；全局隐藏滚动条。
+
+- **上 1/3**：品牌 + 首页 slogan「**Decode the Chinese menu, / order like a local.**」（7.13 定稿，首行朱线下划）+ 一个主 CTA「📷 Scan a menu」= **朱印章钮**（7.14 定稿：厚底座、按下=盖章下沉；规格见 UI-DESIGN.md）（相册入口在相机页右下角；画像 chips 已删）
 - **下 2/3「MY FOOD STORY」**（参考 `bellybook-home-recent-eats.png` 胃之书）：
   - **迷你食迹地图直接上首页**（中国风宣纸底，吃过的省整块点亮，样式规范见 UI-DESIGN.md），点击进全屏地图
   - 下接 Recent 时间线：日期分组（Today · Chengdu）→ 斜贴拍立得 + 店名 + 「N dishes scanned · M ordered · ¥合计≈$」+ 一句高光记录 + 时间。点卡回到当次菜单
@@ -93,7 +98,7 @@ Chopstory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜�
 
 ### S1 菜单 list
 
-识别完成后整单一次性呈现。每道菜一张 preview 卡，命中忌口的折叠到底部并标注原因；**底部常驻「My Order」条**（未选菜时也在，文案引导去选菜；已选时显示 N dishes + 双币合计）（✅ 已落地）
+标题「Your Decoded Menu」（7.13）。识别完成后整单一次性呈现。每道菜一张 preview 卡；**忌口折叠逻辑已移除（7.13）**——命中过敏/忌口行内红 tag 警示，不再收到底部；辣度 = 🌶 icon 三档缀菜名旁（麻只在详情 Heads-up）；**底部常驻「Order card」条**（增高版，未选菜时文案引导；已选显示 Total ¥X ≈ $Y）（✅ 已落地）
 
 - 顶部菜单信息条（餐厅名 · N 道菜 · 查看原图），参考 `menux-list-detail-aichat.jpg` 左一
 - **分类 tab（顶部横滑 chips，sticky）**：不照搬原菜单分类直译，而是映射到老外熟悉的标准分类坐标系（= 核心价值第 2 条）：`Cold Starters / Mains / Vegetables / Soups / Rice & Noodles / Dessert / Drinks`。模型输出 `catStd`（标准枚举）+ `catOriginal`（原菜单分类中文，如「经典凉菜」）。菜单上没有的分类不显示 chip；chip 带数量（Mains 12）
@@ -105,14 +110,16 @@ Chopstory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜�
 
 决定「点不点」+ 交付「吃懂文化」的主阵地。**呈现为底部弹层（bottom sheet）浮在 list 之上**，不是全屏跳转——点卡上滑弹出，蒙层点击 / ✕ 关闭，list 停留在原位（✅ 已落地）。**信息层级原则：先决策，后文化**——桌边停留几十秒，决策字段在前；文化故事放最后，是等菜时慢慢读的加分体验。字段自上而下：
 
+（2026-07-13 视觉定稿「柿漆金排档 v-final」：规范见 UI-DESIGN.md 末章，视觉基准 `ui-lab/style-lab-final.html`）
+
 1. hero emoji（刻意不用 AI 生成菜品图：生成图误导实物预期，是红线的延伸）
-2. 译名 / 中文名 + 拼音 + 🔊 / **菜系·地区副标题**（"Sichuan · Chengdu classic"，参考 MenuX 的「法国·普罗旺斯」）
-3. 价格双显 + 置信度 banner + 个人警示 banner（✅ 已落地）
-4. 一段话描述（quote 块）：是什么、怎么做、什么口感，消除恐惧优先（✅ 已落地）
-5. **口味 bars（P0，MenuX 样式）**：Spicy 🌶 / **Numbing ⚡ 麻**（独立维度，我们独有——麻婆豆腐「轻微电流」的可视化落点）/ Richness 油腻，0–10
-6. Ingredients emoji chips + Allergens（contains 红 / may 黄）+ Heads-up 质地雷点（✅ 已落地）
-7. **The story（新小节）**：菜名由来 / 文化背景，Gemini grounding 查证——查得到才有这一节，查不到整节消失，不编（红线）。有吃法讲究的菜（钵钵鸡冷串串、小笼包先开窗）加一行 **How to eat**
-8. CTA：Add to order / 数量 stepper（✅ 已落地）
+2. **标题区两行封顶**：译名（大字居中）/ 中文名 + 拼音 + 🔊。~~菜系副标题~~ 与 ~~价格行~~ 已删（7.13）——价格只出现在底部 CTA
+3. 置信度 banner（✅）；~~个人警示 banner「Flagged for you」~~ 已移除（7.13）
+4. **What it is 解释块 = 页面主角**：墨线单框 + 朱底标签（标签无中文），是什么、怎么做、什么口感，消除恐惧优先，关键词柿红加粗
+5. ~~口味 bars~~ 已废弃（UI.md 7.12）：辣度 = 🌶 icon 三档缀在列表菜名旁（7.13 定，替代曾试过的文字标）；麻 = 详情 Heads-up 标签
+6. Ingredients chips（发丝线框）+ Allergens（contains 朱底白字 / may 金描边）+ Heads-up 白名单标签（✅ 已落地）
+7. **The story = 页脚题跋**（7.13 定稿）：出血茶笺色带 + 金细线上缘 + 「THE STORY · 由来」小标，零间距衔接 CTA——「决策区/文化区」靠背景切换分层，不加框。内容：菜名由来 / 文化背景，Gemini grounding 查证——查得到才有这一节，查不到整节消失，不编（红线）。有吃法讲究的菜加一行 **How to eat**
+8. CTA：Add to order · ≈$X（¥Y 小字）/ 数量 stepper（价格唯一出现处）
 
 - P1：「给服务员看这道菜」单菜全屏中文卡；Can I customize 提示（微辣可调 / 香菜可免——填补老外「默认可定制」的心智落差）
 - P2：AI 追问 chips（见后续功能）
@@ -138,9 +145,9 @@ list 底部常驻「My Order」条 → 点单页（✅ 已落地，「双 tab �
 
 - 实用层，参考 `menushot-history.jpg`：历史按「时间 + 地点」分组（列表：2026年7月15日 下午3:44 · 中国, 北京），点进单条 = 地点地图缩略图 + 订单历史（菜名双语 + 价格 + 数量）+ 「查看完整菜单」，左滑删除
 - **美食足迹地图（✅ 已在原型落地）**，参考 Pocket Earth 三张图 + 胃之书：**真·中国地图**（技术选型：Apache ECharts + 阿里 DataV 免费 GeoJSON，CDN 懒加载、无 key 无构建；断网回退 CSS 假地图）
-  - 浅暖灰省份底图 + 主要城市小灰点（未访问）；**吃过的城市用陶土橙涟漪点亮** + 城市名标签
-  - 点击点亮的城市 → 弹出拍立得卡片：那顿饭的照片（emoji 占位）+ 店名 + 「N dishes · ¥消费 ≈ $」+ 日期
-  - 顶部计数「MY FOOD MAP · DISHES: 8 · CITIES: 2 / 34」；支持拖拽/缩放
+  - 宣纸省份底图 + 主要城市小灰点（未访问）；**吃过的省整块朱印点亮**
+  - **常显小卡片（7.14 定稿）**：去过的点上方固定浮现**迷你拍立得**（白框 + emoji 照片区 + 店名双行 + 日期 + 底部三角指向坐标点，微旋转交替；与首页 history 卡同语言）；支持拖拽/缩放，卡片跟随坐标点
+  - 首页 preview = 纯地图无文字；Food Map tab 无 icon；首页与历史页餐厅卡暂不可点击（点击进详情的逻辑未设计）
   - 定位用浏览器 geolocation，拿不到就手动选城市。**demo 和小红书传播的记忆点**
 
 ## 菜品卡（两级）
@@ -204,11 +211,15 @@ list 底部常驻「My Order」条 → 点单页（✅ 已落地，「双 tab �
 
 ## 品牌名 讨论
 
-**Title：Chopstory** = chopstick + story。logo 方向：一双筷子夹起一张拍立得/菜单卡
+**Title：ChopStory** = chopstick + story。
+
+**Logo 已定稿（2026-07-12）：「会说话的碗」The Talking Bowl**——一只朱砂碗 + 交叉筷，热气升成一个对话气泡（这碗饭会讲故事 / 帮你和服务员说话）。源文件 `menu-for-foreigner/public/logo.svg`（矢量，已接入 app.html 首页品牌区 + favicon）。配色：朱砂 #D24B33 · 墨 #1C1A17 · 米纸 #FBF9F3 · 金 #DCA842，与雕版食单主题同系
 
 **主 slogan：Taste China, order like a local.** 
 
 **副定位语：Not just translated. Understood.** 
+
+**中文演示 slogan（2026-07-12 定稿，用于评委演示舞台壳 stage-a.html）：「外国人的点餐伙伴——读得懂、点得对、吃得明白」**，配小字「拍一张中文菜单，讲懂每道菜、标出过敏雷点、帮他和服务员沟通。」
 
 **功能级文案**（decode / story 词根下沉到功能屏，三层都押 story：品牌名 → slogan → 模块名）：
 

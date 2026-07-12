@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ChopStory · Demo Stage — 方案C 剧场变景</title>
+<style>
+  /* =====================================================================
+     方案 C 「剧场变景」
+     七站 = 七幕：点击任意一幕，整页背景纹样 + 色渍随之换景，
+     右侧大字幕交叉淡入讲解本幕；底部章回标签 + 自动巡演模式。
+     ===================================================================== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #f5efe0; --paper-2: #efe7d2;
+    --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a; --ink-4: #b9ad97;
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #e9dfc6;
+    --tint: rgba(220,168,66,.04);
+  }
+  html, body { height: 100%; }
+  body { color: var(--ink); overflow: hidden; font-family: "Songti SC", "STSong", Georgia, serif; background: var(--paper); }
+  /* 双层背景交叉淡入换景 */
+  .bglayer { position: fixed; inset: 0; z-index: 0; opacity: 0; transition: opacity .9s ease; }
+  .bglayer.show { opacity: 1; }
+  .tintlayer { position: fixed; inset: 0; z-index: 1; pointer-events: none; background: var(--tint); transition: background .9s; }
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
+  }
+  .stage {
+    position: fixed; inset: 18px; z-index: 2;
+    border: 3px solid var(--ink);
+    display: grid; grid-template-rows: auto 1fr auto;
+    padding: 18px 44px 16px;
+  }
+  .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
+
+  /* ---------- logo 动画 ---------- */
+  .lg-bubble { animation: lg-bob 3.6s ease-in-out infinite; }
+  .lg-steam { animation: lg-steam 2.8s ease-out infinite; }
+  .lg-steam2 { animation-delay: 1.4s; }
+  .lg-stickA, .lg-stickB { transform-box: view-box; transform-origin: 100px 115px; }
+  .lg-stickA { animation: lg-pinchA 2.4s ease-in-out infinite; }
+  .lg-stickB { animation: lg-pinchB 2.4s ease-in-out infinite; }
+  .lg-dot1 { animation: lg-float 3s ease-in-out infinite; }
+  .lg-dot2 { animation: lg-float 3s ease-in-out 1s infinite; }
+  @keyframes lg-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes lg-steam { 0% { opacity: 0; transform: translateY(5px); } 25% { opacity: .95; } 70% { opacity: .5; } 100% { opacity: 0; transform: translateY(-8px); } }
+  @keyframes lg-pinchA { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+  @keyframes lg-pinchB { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(4.5deg); } }
+  @keyframes lg-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+  /* ---------- 顶：品牌一行 ---------- */
+  .topbar { display: flex; align-items: center; justify-content: center; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid rgba(38,32,25,.3); }
+  .topbar svg { width: 52px; height: 52px; }
+  .topbar .wd { font-size: 24px; font-weight: 900; }
+  .topbar .wd em { font-style: normal; color: var(--zhu); }
+  .topbar .sep { width: 5px; height: 5px; background: var(--zhu); border-radius: 50%; }
+  .topbar .oneliner { font-size: 15px; color: var(--ink-2); letter-spacing: .04em; }
+  .topbar .oneliner b { color: var(--ink); }
+
+  /* ---------- 中：手机 + 大字幕 ---------- */
+  .mid { display: grid; grid-template-columns: 1fr 400px; align-items: center; column-gap: 3vw; padding: 6px 2vw 0; min-height: 0; }
+  .phone-zone { display: grid; place-items: center; }
+  .phone-wrap { position: relative; }
+  .phone-wrap::before {
+    content: ""; position: absolute; left: 6%; right: 6%; bottom: -28px; height: 42px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(38,32,25,.3), transparent 68%);
+  }
+  .iphone {
+    position: relative; height: min(60vh, 600px); width: auto; aspect-ratio: 392 / 800;
+    border-radius: 56px; background: #0d0b09; padding: 10px;
+    box-shadow: 0 0 0 4.5px #3d3833, 0 0 0 6px #6e675e, 0 0 0 7px #2b2723,
+      0 30px 60px rgba(38,32,25,.35), inset 0 0 0 3px #000;
+  }
+  .iphone::before {
+    content: ""; position: absolute; inset: -6px; border-radius: 60px; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,.5) 0%, transparent 12%, transparent 55%, rgba(255,255,255,.28) 68%, transparent 78%);
+    -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
+    -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px; opacity: .5;
+  }
+  .btn-side { position: absolute; background: linear-gradient(90deg, #55504a, #23201c); border-radius: 3px; }
+  .b-action { left: -8.5px; top: 16%; width: 4px; height: 28px; }
+  .b-vol1 { left: -8.5px; top: 25%; width: 4px; height: 48px; }
+  .b-vol2 { left: -8.5px; top: 33%; width: 4px; height: 48px; }
+  .b-power { right: -8.5px; top: 27%; width: 4px; height: 72px; background: linear-gradient(270deg, #55504a, #23201c); }
+  .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 46px; overflow: hidden; background: #000; }
+  .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: 100%; border: none; display: block; background: #f7f2e6; }
+  .island { position: absolute; top: 15px; left: 50%; transform: translateX(-50%); width: 27%; height: 23px; border-radius: 999px; background: #000; z-index: 5; }
+  .island::after { content: ""; position: absolute; right: 11px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
+  .glass { position: absolute; inset: 0; border-radius: 46px; pointer-events: none; z-index: 6;
+    background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
+  .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
+
+  .act { max-width: 400px; }
+  .act .actnum { font-size: 15px; letter-spacing: .42em; color: var(--zhu); font-weight: 900; }
+  .act h2 { margin-top: 10px; font-size: clamp(34px, 3.4vw, 48px); font-weight: 900; letter-spacing: .06em; line-height: 1.2; }
+  .act p { margin-top: 14px; font-size: 15px; line-height: 2; color: var(--ink-2); font-family: "PingFang SC", sans-serif; }
+  .act .en { margin-top: 8px; display: block; font-size: 12.5px; font-style: italic; color: var(--ink-3); }
+  .act .stamp {
+    margin-top: 18px; display: inline-block; padding: 6px 12px; border: 2px solid var(--zhu); color: var(--zhu);
+    font-size: 13px; font-weight: 900; letter-spacing: .3em; transform: rotate(-2deg); border-radius: 4px;
+  }
+  .act.swap .inner { animation: actin .45s cubic-bezier(.25,1,.5,1); }
+  @keyframes actin { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+
+  /* ---------- 底：章回标签 + 巡演 ---------- */
+  .tabs { display: flex; align-items: center; justify-content: center; gap: 8px; border-top: 2.5px solid var(--ink); padding-top: 13px; }
+  .tab {
+    font: inherit; font-size: 13px; font-weight: 800; letter-spacing: .08em; cursor: pointer;
+    background: none; border: 1.5px solid var(--ink); border-radius: 5px; color: var(--ink);
+    padding: 8px 14px; transition: all .18s;
+  }
+  .tab i { font-style: normal; color: var(--zhu); margin-right: 5px; }
+  .tab:hover { background: var(--ink); color: var(--paper); }
+  .tab:hover i { color: var(--paper); }
+  .tab.on { background: var(--zhu); border-color: var(--zhu-deep); color: #f6efdc; transform: rotate(-1.5deg); }
+  .tab.on i { color: #f6efdc; }
+  .tour {
+    margin-left: 18px; font: inherit; font-size: 12px; font-weight: 800; letter-spacing: .14em; cursor: pointer;
+    background: none; border: 2px dotted rgba(38,32,25,.45); border-radius: 5px; color: var(--ink-3); padding: 8px 13px;
+  }
+  .tour.on { border: 2px solid var(--zhu); color: var(--zhu); }
+  .jhint { position: absolute; right: 12px; bottom: 8px; font-size: 10px; color: var(--ink-4); letter-spacing: .15em; font-family: "PingFang SC", sans-serif; }
+
+  .variant-tag { position: fixed; right: 8px; bottom: 3px; z-index: 70; font-size: 10px; color: var(--ink-4); letter-spacing: .1em; }
+
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  @media (max-width: 1120px) { .mid { grid-template-columns: 1fr; } .act { display: none; } }
+</style>
+</head>
+<body>
+<div class="bglayer" id="bgA"></div>
+<div class="bglayer" id="bgB"></div>
+<div class="tintlayer"></div>
+<div class="grain"></div>
+
+<div class="stage">
+  <!-- 顶：品牌一行讲清定位 -->
+  <div class="topbar">
+    <svg viewBox="0 0 200 200" aria-label="ChopStory logo">
+      <g class="lg-bubble">
+        <g transform="translate(125,45) scale(1) translate(-125,-45)">
+          <path class="lg-steam" d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
+          <path class="lg-steam lg-steam2" d="M 88 106 Q 97 96, 91 88" fill="none" stroke="#DCA842" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M 120 70 C 105 70, 100 55, 115 45 C 115 30, 135 25, 145 35 C 155 25, 175 35, 170 50 C 180 60, 165 75, 150 70 C 140 78, 125 75, 120 70 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="135" cy="50" r="4" fill="#FBF9F3"/>
+          <circle cx="150" cy="50" r="4" fill="#FBF9F3"/>
+          <path d="M 140 58 Q 142.5 61, 145 58" fill="none" stroke="#FBF9F3" stroke-width="2.5" stroke-linecap="round"/>
+        </g>
+      </g>
+      <g transform="translate(100, 115) rotate(30) translate(-100, -115)">
+        <g class="lg-stickA"><path d="M 60 50 L 142 132 C 145 135, 140 140, 137 137 L 55 55 C 52 52, 57 47, 60 50 Z" fill="#1C1A17"/></g>
+        <g class="lg-stickB"><path d="M 72 42 L 154 124 C 157 127, 152 132, 149 129 L 67 47 C 64 44, 69 39, 72 42 Z" fill="#1C1A17"/></g>
+      </g>
+      <rect x="80" y="165" width="40" height="12" rx="6" fill="#1C1A17"/>
+      <path d="M 45 115 C 45 115, 40 165, 100 165 C 160 165, 155 115, 155 115 C 155 115, 130 120, 100 120 C 70 120, 45 115, 45 115 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="5" stroke-linejoin="round"/>
+      <path d="M 55 115 C 55 102, 75 92, 100 92 C 125 92, 145 102, 145 115 Z" fill="#FBF9F3" stroke="#1C1A17" stroke-width="4"/>
+      <circle class="lg-dot1" cx="80" cy="80" r="3" fill="#DCA842"/>
+      <circle class="lg-dot2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
+    </svg>
+    <span class="wd">Chop<em>Story</em></span>
+    <span class="sep"></span>
+    <span class="oneliner">外国人拍一张中文菜单 → <b>一份点得动的英文菜单</b>，还会讲菜、标忌口、帮他递单</span>
+  </div>
+
+  <!-- 中：手机 + 本幕大字幕 -->
+  <div class="mid">
+    <div class="phone-zone">
+      <div class="phone-wrap">
+        <div class="iphone">
+          <span class="btn-side b-action"></span>
+          <span class="btn-side b-vol1"></span>
+          <span class="btn-side b-vol2"></span>
+          <span class="btn-side b-power"></span>
+          <div class="screen-hole">
+            <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
+            <iframe id="appframe" src="app.html" title="ChopStory demo"></iframe>
+            <span class="island"></span>
+            <span class="glass"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="act" id="act">
+      <div class="inner">
+        <div class="actnum" id="actNum"></div>
+        <h2 id="actTitle"></h2>
+        <p id="actNote"></p>
+        <em class="en" id="actEn"></em><br>
+        <span class="stamp" id="actStamp"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底：章回标签 + 自动巡演 -->
+  <div class="tabs" id="tabs"></div>
+  <span class="jhint">← → 切换 · 空格暂停巡演</span>
+</div>
+<span class="variant-tag">方案C · 剧场变景</span>
+
+<script>
+/* ---- 纹样库：每幕换一种浅灰基底 ---- */
+const PAT = {
+  cloud: { size: "260px 160px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='160'><g fill='none' stroke='rgba(38,32,25,0.06)' stroke-width='1.4'><path d='M40 110 a26 26 0 1 1 52 0 a16 16 0 1 0 -32 0 a8 8 0 1 1 16 0'/><path d='M92 110 q44 16 92 0'/><path d='M170 48 a18 18 0 1 1 36 0 a11 11 0 1 0 -22 0 a5 5 0 1 1 10 0'/><path d='M206 48 q26 10 54 0'/></g></svg>\")" },
+  crackle: { size: "420px 420px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><g fill='none' stroke='rgba(38,32,25,0.055)' stroke-width='1.3'><path d='M0 60 L105 82 L180 30 L270 68 L360 22 L420 60'/><path d='M105 82 L90 195 L0 225'/><path d='M180 30 L225 0'/><path d='M270 68 L300 165'/><path d='M90 195 L195 240 L300 165 L420 210'/><path d='M195 240 L165 360 L45 420'/><path d='M165 360 L285 375 L360 300 L420 330'/><path d='M285 375 L270 420'/><path d='M300 165 L360 300'/><path d='M0 330 L45 420'/></g></svg>\")" },
+  wave: { size: "280px 140px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='70'><g fill='none' stroke='rgba(38,32,25,0.062)' stroke-width='1.4'><path d='M-35 35 a35 35 0 0 1 70 0'/><path d='M-24 35 a24 24 0 0 1 48 0'/><path d='M-13 35 a13 13 0 0 1 26 0'/><path d='M35 35 a35 35 0 0 1 70 0'/><path d='M46 35 a24 24 0 0 1 48 0'/><path d='M57 35 a13 13 0 0 1 26 0'/><path d='M105 35 a35 35 0 0 1 70 0'/><path d='M116 35 a24 24 0 0 1 48 0'/><path d='M127 35 a13 13 0 0 1 26 0'/><path d='M0 70 a35 35 0 0 1 70 0'/><path d='M11 70 a24 24 0 0 1 48 0'/><path d='M22 70 a13 13 0 0 1 26 0'/><path d='M70 70 a35 35 0 0 1 70 0'/><path d='M81 70 a24 24 0 0 1 48 0'/><path d='M92 70 a13 13 0 0 1 26 0'/></g></svg>\")" },
+  meander: { size: "144px 144px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><path d='M12 60 V12 H60 V44 H28 V28 H44' fill='none' stroke='rgba(38,32,25,0.05)' stroke-width='1.6'/></svg>\")" },
+};
+
+/* ---- 七幕 ---- */
+const STAGES = [
+  { k: "home",      actnum: "第 壹 幕", tab: "进店", t: "进店落座", note: "一位外国游客坐进了成都的小馆子，面前是一整页中文菜单。看不懂，不敢点——这就是 ChopStory 要解决的时刻。", en: "Open ChopStory", stamp: "痛 点", pat: "cloud",   tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
+  { k: "camera",    actnum: "第 贰 幕", tab: "拍单", t: "拍一张菜单", note: "他掏出手机，对着菜单按下快门。整个产品的入口只有这一个动作，不需要注册、不需要学习。", en: "Snap the menu", stamp: "零 门 槛", pat: "crackle", tint: "rgba(38,32,25,.04)",    act: w => w.startScan("camera") },
+  { k: "analyzing", actnum: "第 叁 幕", tab: "读单", t: "AI 读单", note: "AI 正在识别菜名、翻译菜品、比对他的过敏原档案。约三秒后自动进入结果页。", en: "AI decoding", stamp: "三 秒", pat: "wave",    tint: "rgba(178,58,47,.045)",  act: w => w.startAnalyze() },
+  { k: "list",      actnum: "第 肆 幕", tab: "懂单", t: "读懂整份菜单", note: "14 道菜全部英文化：每道是什么、多少钱、招牌是哪道。他第一次真正「读懂」了一份中文菜单。", en: "The whole menu, decoded", stamp: "看 懂", pat: "meander", tint: "rgba(92,125,70,.05)",  act: w => ensureMenu(w) },
+  { k: "detail",    actnum: "第 伍 幕", tab: "识菜", t: "看懂一道菜", note: "点开一道菜：这是什么、怎么吃、辣不辣、含不含他的忌口。不是翻译，是讲解。", en: "One dish, explained", stamp: "讲 人 话", pat: "cloud",   tint: "rgba(220,168,66,.05)", act: w => { ensureMenu(w); w.openDetail(8); } },
+  { k: "order",     actnum: "第 陆 幕", tab: "点菜", t: "递单点菜", note: "选好的菜生成一张双面点单卡：他看英文确认，翻面递给服务员看中文。语言不通也能准确下单。", en: "Show the waiter", stamp: "递 单", pat: "wave",    tint: "rgba(178,58,47,.05)",   act: w => seedOrder(w) },
+  { k: "map",       actnum: "第 柒 幕", tab: "集印", t: "集印成册", note: "吃过的每道菜盖章存档，落在中国地图上，攒成一册属于他的食迹——下一顿，还会打开。", en: "Your chopstory", stamp: "留 客", pat: "crackle", tint: "rgba(76,68,55,.06)",    act: w => { w.go("history"); w.histView("map"); } },
+];
+let cur = 0, bgFlip = false, tourTimer = null;
+
+function appWin() { const w = document.getElementById("appframe").contentWindow; return (w && w.go) ? w : null; }
+function ensureMenu(w) {
+  let ready = false;
+  try { ready = w.eval('typeof streamed !== "undefined" && streamed.length > 0'); } catch (e) {}
+  if (ready) w.go("list"); else w.beginStream();
+}
+function seedOrder(w) {
+  ensureMenu(w);
+  let empty = true;
+  try { empty = w.eval("order.size === 0"); } catch (e) {}
+  if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
+  w.openOrder();
+}
+function setScenery(patKey, tint) {
+  const showEl = document.getElementById(bgFlip ? "bgA" : "bgB");
+  const hideEl = document.getElementById(bgFlip ? "bgB" : "bgA");
+  showEl.style.backgroundImage = PAT[patKey].url;
+  showEl.style.backgroundSize = PAT[patKey].size;
+  showEl.classList.add("show"); hideEl.classList.remove("show");
+  bgFlip = !bgFlip;
+  document.documentElement.style.setProperty("--tint", tint);
+}
+function jumpTo(i, fromTour) {
+  if (!fromTour) stopTour();
+  cur = i; const s = STAGES[i];
+  document.querySelectorAll(".tab").forEach((n, j) => n.classList.toggle("on", j === i));
+  setScenery(s.pat, s.tint);
+  const act = document.getElementById("act");
+  act.classList.remove("swap"); void act.offsetWidth; act.classList.add("swap");
+  document.getElementById("actNum").textContent = s.actnum;
+  document.getElementById("actTitle").textContent = s.t;
+  document.getElementById("actNote").textContent = s.note;
+  document.getElementById("actEn").textContent = s.en;
+  document.getElementById("actStamp").textContent = s.stamp;
+  const w = appWin(); if (!w) return;
+  try { w.closeDetail && w.closeDetail(); } catch (e) {}
+  try { w.closeSheet && w.closeSheet(false); } catch (e) {}
+  try { s.act(w); } catch (e) { console.warn("jump failed:", e); }
+  /* app 首跑会在 600ms 后自动弹偏好底屉（app.html:265）；非首页站补一次关闭 */
+  if (s.k !== "home") setTimeout(() => {
+    const w2 = appWin();
+    if (w2) try { w2.closeSheet && w2.closeSheet(false); } catch (e) {}
+  }, 900);
+}
+/* 自动巡演：8 秒一幕，讲解/展台无人值守时用 */
+function startTour() {
+  document.getElementById("tourBtn").classList.add("on");
+  document.getElementById("tourBtn").textContent = "◼ 巡演中";
+  tourTimer = setInterval(() => jumpTo((cur + 1) % STAGES.length, true), 8000);
+}
+function stopTour() {
+  if (!tourTimer) return;
+  clearInterval(tourTimer); tourTimer = null;
+  document.getElementById("tourBtn").classList.remove("on");
+  document.getElementById("tourBtn").textContent = "▶ 自动巡演";
+}
+function toggleTour() { tourTimer ? stopTour() : startTour(); }
+
+document.getElementById("tabs").innerHTML = STAGES.map((s, i) =>
+  `<button class="tab" onclick="jumpTo(${i})"><i>${"壹贰叁肆伍陆柒"[i]}</i>${s.tab}</button>`
+).join("") + `<button class="tour" id="tourBtn" onclick="toggleTour()">▶ 自动巡演</button>`;
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") jumpTo(Math.min(cur + 1, STAGES.length - 1));
+  if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
+  if (e.key === " ") { e.preventDefault(); toggleTour(); }
+});
+jumpTo(0);
+</script>
+</body>
+</html>

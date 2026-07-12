@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChopStory · Demo Stage</title>
+<title>ChopStory · Demo Stage — 方案A 食旅横卷</title>
 <style>
   /* =====================================================================
-     ChopStory Demo Stage（定稿 2026-07-12，源自方案A「食旅横卷」）
+     方案 A 「食旅横卷」· 迭代3
      香槟淡白底 + 固定云纹；手机内 app 恒为 392px 调试尺寸（整体缩放适配）；
      左栏与时间轴按视口宽度流式缩放。
      ===================================================================== */
@@ -134,6 +134,8 @@
   .jnode.on .tt { color: var(--zhu); }
   .jhint { position: absolute; right: 10px; bottom: 5px; font-size: 10px; color: var(--ink-4); letter-spacing: .15em; font-family: "PingFang SC", sans-serif; }
 
+  .variant-tag { position: fixed; right: 8px; bottom: 3px; z-index: 70; font-size: 10px; color: var(--ink-4); letter-spacing: .1em; }
+
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
   @media (max-width: 1080px) { .pitch .sub { display: none; } .jnode .zh { display: none; } }
 </style>
@@ -217,6 +219,7 @@ if (!localStorage.getItem("ml.profile")) {
     <span class="jhint">键盘 ← → 切换</span>
   </div>
 </div>
+<span class="variant-tag">方案A · 迭代3</span>
 
 <script>
 /* ---- 手机适配：屏内恒为 393x852 调试尺寸，按可用高度整体缩放 ---- */

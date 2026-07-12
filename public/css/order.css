@@ -1,0 +1,87 @@
+/* ChopStory · S3 点菜卡（order-card-final 定稿 7.13：单行三件套 + 圆框金签 + 双面同构） */
+
+  /* 顶行：‹ + 双 tab 单行；tab 按面本地化（英文面英文名 / 中文面中文名） */
+  .topbar .otabs { flex: 1; margin-bottom: 0; }
+  .otabs { display: flex; gap: 7px; }
+  .otab {
+    flex: 1; border-radius: 12px; padding: 10px 4px 11px; font-size: 14px; font-weight: 900;
+    cursor: pointer; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+  }
+  .otab .s { font-size: 9.5px; font-weight: 700; opacity: .75; margin-top: 3px; font-family: var(--font-num); letter-spacing: .08em; }
+  .otab.on-en { background: var(--ink); color: var(--gold); border: 2px solid var(--ink); box-shadow: 2px 2px 0 rgba(178,58,47,.2); }
+  .otab.on-cn { background: var(--accent); color: #f7f0df; border: 2px solid var(--accent-press); box-shadow: 2px 2px 0 rgba(178,58,47,.2); }
+  .otab.off { background: var(--paper); color: var(--muted); border: 2px dashed var(--line); }
+  .waiter .otab { font-family: var(--font-disp); }
+  .waiter .otab .s { font-family: "PingFang SC", sans-serif; letter-spacing: .2em; }
+
+  /* 开场白：像递卡时说的第一句话（两面同构；中文面放大给服务员看） */
+  .greet { margin: 16px 2px 0; font-size: 14.5px; line-height: 1.5; color: var(--ink-2); }
+  .waiter .greet { font-size: 18.5px; font-weight: 700; color: var(--ink); font-family: var(--font-disp); }
+
+  /* 区块单元：圆框 + 浮动金签/朱签（两面同构，标题带 icon，行内无 icon） */
+  .sec-card {
+    background: var(--paper); border: 2px solid var(--ink); border-radius: 16px;
+    box-shadow: 3px 3px 0 rgba(178,58,47,.16); position: relative;
+    padding: 22px 17px 6px; margin: 24px 0 32px;
+  }
+  .sec-lab {
+    position: absolute; top: -14px; left: 12px; background: var(--gold);
+    border: 2px solid var(--ink); border-radius: 9px; padding: 3px 13px 4px;
+    font-size: 12.5px; font-weight: 900; transform: rotate(-1deg);
+  }
+  .sec-lab.zhu { background: var(--accent); color: #f7f0df; transform: rotate(1deg); }
+  .waiter .sec-lab { font-family: var(--font-disp); letter-spacing: 1px; }
+  .edit-btn {
+    position: absolute; top: -14px; right: 10px;
+    border: 2px solid var(--accent); background: var(--paper); color: var(--accent);
+    border-radius: 9px; padding: 3px 12px 4px; font-size: 12.5px; font-weight: 800;
+    cursor: pointer; transform: rotate(1deg);
+  }
+
+  .orow { display: flex; align-items: center; gap: 8px; padding: 15px 0; border-bottom: 1px solid var(--hair); font-size: 15px; font-variant-numeric: tabular-nums; }
+  .sec-card .orow:last-child { border-bottom: none; }
+  .orow b { flex: 1; letter-spacing: -.1px; font-weight: 800; }
+  .orow b small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 3px; }
+  .orow .q { color: var(--accent); font-weight: 800; font-family: var(--font-num); }
+  .total-line {
+    display: flex; justify-content: space-between; font-family: var(--font-num); font-variant-numeric: tabular-nums;
+    font-weight: 800; font-size: 14.5px; padding: 13px 2px; border-top: 2px solid var(--ink);
+  }
+  .sec-empty { text-align: center; padding: 24px 0 28px; color: var(--muted); font-size: 14px; line-height: 1.6; }
+  .sec-empty .e { font-size: 32px; display: block; margin-bottom: 8px; }
+  .note-row { display: flex; gap: 10px; padding: 15px 0; border-bottom: 1px solid var(--hair); font-size: 14.5px; line-height: 1.55; align-items: baseline; }
+  .sec-card .note-row:last-child { border-bottom: none; }
+  .note-row .k { flex: none; font-weight: 800; }
+  .note-row .v { color: var(--ink-2); }
+  .note-row .v.none { color: var(--faint); font-weight: 500; }
+  .note-row.danger .k, .note-row.danger .v { color: var(--danger); font-weight: 700; }
+  .note-input { width: 100%; border: 1.5px solid var(--line); background: none; border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: 13.5px; margin-top: 8px; }
+  .sec-card .chip-group:last-child { padding-bottom: 14px; }
+
+  /* 中文面：服务员字号放大 */
+  .waiter .orow { font-size: 18.5px; padding: 16px 0; }
+  .waiter .orow b small { font-size: 12px; }
+  .waiter .total-line { font-size: 16px; }
+  .waiter .note-row { font-size: 17.5px; }
+  .waiter .note-row.danger { font-size: 18px; }
+
+  /* 底部 CTA：两面完全同一样式（墨底 + 金字语言徽标），无副标题 */
+  .order-cta {
+    position: sticky; bottom: 0; margin: auto -16px calc(-20px - env(safe-area-inset-bottom));
+    padding: 14px 16px calc(16px + env(safe-area-inset-bottom));
+    background: linear-gradient(transparent, var(--bg) 35%);
+  }
+  .cta-main {
+    background: var(--ink); color: var(--bg); border: none; border-radius: 14px; min-height: 62px; width: 100%;
+    cursor: pointer; box-shadow: 3px 3px 0 rgba(178,58,47,.2);
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-size: 16.5px; font-weight: 800;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .cta-main:active { transform: scale(.97); }
+  .lang-badge {
+    color: var(--gold); border: 2px solid var(--gold); border-radius: 8px;
+    font-family: var(--font-num); font-size: 13px; font-weight: 900; padding: 4px 8px; letter-spacing: .05em;
+  }
+  .cn-note { text-align: center; font-size: 12px; color: var(--muted); margin-bottom: 10px; }

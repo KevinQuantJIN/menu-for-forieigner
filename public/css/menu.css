@@ -1,0 +1,224 @@
+/* ChopStory · S1 菜单 list + S2 详情弹层 + 查看原图
+   ★ 2026-07-13 柿漆金排档 v-final（规范：Hackathon/UI-DESIGN.md 末章；基准：ui-lab/style-lab-final.html）
+   字体豁免决议（7.13）：Bricolage Grotesque + IBM Plex Mono 经 Google Fonts 引入，断网回退系统字体 */
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,300..800&family=IBM+Plex+Mono:wght@500;600&display=swap');
+
+:root {
+  --sh-paper: #fbf6ea;      /* 屏底 */
+  --sh-paper-2: #f6efdd;    /* 屏底渐变端 */
+  --sh-card: #fffdf6;       /* 卡底 */
+  --sh-ink: #1c1a17;        /* 漆墨 */
+  --sh-sub: #857a64;        /* 次要字 */
+  --sh-hot: #d24b33;        /* 柿红：警示/CTA/加购态/辣度文字 */
+  --sh-gold: #dca842;       /* 鎏金：价签/招牌/文化区 */
+  --sh-gold-line: #c89a2e;  /* 金细线 */
+  --sh-hairline: #cfc3a5;   /* 发丝线 */
+  --sh-en: "Bricolage Grotesque", -apple-system, sans-serif;
+  --sh-num: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+/* ---------- S1 list ---------- */
+#s-list { background: linear-gradient(178deg, var(--sh-paper), var(--sh-paper-2)); color: var(--sh-ink); }
+/* 返回键样式已全局统一在 tokens.css（7.13） */
+.resto-bar {
+  display: flex; align-items: center; gap: 10px; background: var(--sh-card);
+  border: 2px solid var(--sh-ink); border-radius: 12px; box-shadow: 3px 3px 0 rgba(28,26,23,.18);
+  padding: 10px 13px; margin-bottom: 12px;
+}
+.resto-bar .emoji { font-size: 20px; }
+.resto-bar .n { font-family: var(--sh-en); font-size: 14px; font-weight: 750; letter-spacing: -.2px; }
+.resto-bar .m { font-size: 11.5px; color: var(--sh-sub); margin-top: 1px; }
+.resto-bar .orig { margin-left: auto; font-size: 12px; color: var(--sh-hot); font-weight: 800; background: none; border: none; cursor: pointer; padding: 10px 2px; font-family: var(--sh-en); }
+.cats { display: flex; flex: none; gap: 6px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 4px; scrollbar-width: none; }
+.cats::-webkit-scrollbar { display: none; }
+.cat {
+  flex: none; min-height: 36px; border-radius: 999px; padding: 7px 13px;
+  font-family: var(--sh-en); font-size: 11.5px; font-weight: 800;
+  border: 1.5px solid var(--sh-ink); background: var(--sh-card); color: var(--sh-ink); cursor: pointer;
+  transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.cat.on { background: var(--sh-ink); color: var(--sh-gold); }
+.cat i { font-style: normal; opacity: .6; margin-left: 5px; font-size: 10.5px; font-variant-numeric: tabular-nums; font-family: var(--sh-num); }
+/* 分区标题：EN 大字 + 中文附注 + 墨上朱下双细线（v-final，替代鱼尾【】） */
+.sechead {
+  display: flex; align-items: center; gap: 8px; margin: 19px 2px 3px;
+  animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
+}
+.sechead b { font-family: var(--sh-en); font-size: 15.5px; font-weight: 800; letter-spacing: -.3px; }
+.sechead span { font-size: 10px; color: #9c8f77; }
+/* 7.13：右侧延展双细线已移除（Julia 定）——分区标题裸排，层级靠字号字重 */
+
+/* 菜品卡：V2 排档框（2px 墨框 + radius 14 + 硬墨影） */
+.pcard {
+  position: relative;
+  background: var(--sh-card); border: 2px solid var(--sh-ink); border-radius: 14px;
+  box-shadow: 3px 3px 0 rgba(28,26,23,.22);
+  padding: 12px 14px 11px; margin: 14px 0 16px; cursor: pointer;
+  animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.pcard:active { transform: scale(.985); }
+@keyframes pop { from { opacity: 0; transform: translateY(12px); } }
+.pcard .name { font-family: var(--sh-en); font-size: 14.5px; font-weight: 750; line-height: 1.3; letter-spacing: -.2px; padding-right: 48px; }
+.pcard .name .sp { font-size: 10px; margin-left: 6px; letter-spacing: -1.5px; }
+.pcard .cn { margin-top: 4px; font-size: 10.5px; color: var(--sh-sub); }
+/* 价签：鎏金实底 + 墨框，骑卡右上出血，微旋转 */
+.pcard .right {
+  position: absolute; top: -10px; right: 11px; text-align: center; z-index: 2;
+  background: var(--sh-gold); border: 2px solid var(--sh-ink); color: var(--sh-ink); border-radius: 8px;
+  padding: 2.5px 8px; transform: rotate(2deg); line-height: 1.2;
+}
+.pcard .right b { font-family: var(--sh-num); font-size: 10.5px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.pcard .right small { display: block; font-family: var(--sh-num); font-size: 7.5px; opacity: .75; font-variant-numeric: tabular-nums; }
+.pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding-right: 78px; min-height: 4px; }
+/* tag 三态（覆盖 tokens 的 .tag-*，仅 pcard 作用域）：过敏=柿红描边 / 雷点=灰墨描边 / 招牌=金 */
+.pcard .tag { font-family: var(--sh-en); font-size: 8.5px; font-weight: 800; border-radius: 999px; padding: 2.5px 8px; letter-spacing: .04em; border: 1.5px solid; background: var(--sh-card); }
+.pcard .tag-red { color: var(--sh-hot); border-color: var(--sh-hot); background: #fbeeea; }
+.pcard .tag-gray { color: #4c4438; border-color: #9c917e; background: #f4efe2; }
+.pcard .tag-amber { color: #8a6413; border-color: var(--sh-gold); background: #faf3dd; }
+.pcard .tag-green { color: #5c7d46; border-color: #8aa46e; background: #eef2e2; }
+/* ＋号：柿红方钮；加购态 = 墨底金字数量（状态被设计） */
+.addbtn {
+  position: absolute; right: 10px; bottom: 9px;
+  width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--sh-ink);
+  background: var(--sh-hot); color: #fdf8ec; font-size: 14px; font-weight: 800; cursor: pointer;
+  box-shadow: 2px 2px 0 rgba(28,26,23,.22);
+  transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
+}
+.addbtn::after { content: ""; position: absolute; inset: -9px; } /* 44pt touch target */
+.addbtn:active { transform: scale(.9); }
+.qty-badge { display: none; }
+/* 加购态迷你 stepper：[− n ＋]（7.13 修正） */
+.qtyctl {
+  position: absolute; right: 10px; bottom: 9px; z-index: 2;
+  display: flex; align-items: center;
+  border: 2px solid var(--sh-ink); border-radius: 8px; background: var(--sh-card);
+  overflow: hidden; box-shadow: 2px 2px 0 rgba(28,26,23,.22);
+}
+.qtyctl button {
+  border: none; background: var(--sh-hot); color: #fdf8ec;
+  width: 24px; height: 24px; font-size: 14px; font-weight: 800; cursor: pointer; line-height: 1;
+}
+.qtyctl b { min-width: 22px; text-align: center; font-family: var(--sh-num); font-size: 11.5px; font-variant-numeric: tabular-nums; }
+
+/* 折叠逻辑已移除（7.13）——命中忌口行内红 tag 警示，不再折叠 */
+
+/* Order card 条：墨底 + 金色硬影 + 柿红 go 钮
+   margin-top:auto（.screen 是 flex 列）：内容短时也钉在屏底，不往上浮（7.13） */
+.cart-bar {
+  position: sticky; bottom: 8px; z-index: 10;
+  margin: 14px 2px 4px; margin-top: auto; padding: 13px 12px 13px 17px;
+  background: var(--sh-ink); color: var(--sh-paper);
+  border: 2px solid var(--sh-ink); border-radius: 14px; box-shadow: 3px 3px 0 rgba(220,168,66,.45);
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
+  animation: pop 320ms var(--ease);
+}
+.cart-bar .sum { font-size: 13.5px; font-weight: 800; flex: 1; font-variant-numeric: tabular-nums; font-family: var(--sh-en); }
+.cart-bar .go { background: var(--sh-hot); border: 1.5px solid var(--sh-paper); color: #fdf8ec; border-radius: 9px; padding: 11px 17px; font-weight: 800; font-size: 12.5px; cursor: pointer; font-family: var(--sh-en); }
+.disclaimer { font-size: 10.5px; color: var(--faint); line-height: 1.55; margin: 16px 0 8px; }
+
+/* ---------- S2 detail：无包边弹层 ---------- */
+#detail-mask { position: absolute; inset: 0; background: rgba(36,32,26,.42); z-index: 44; animation: screen-in var(--dur) var(--ease); }
+#detail-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 45;
+  background: var(--sh-card); color: var(--sh-ink);
+  border-radius: 22px 22px 0 0; box-shadow: 0 -14px 34px rgba(40,30,15,.22);
+  max-height: 90%; overflow-y: auto; padding: 8px 18px 0; scrollbar-width: none;
+  animation: sheet-in 320ms var(--ease);
+}
+#detail-sheet::-webkit-scrollbar { display: none; }
+#detail-sheet .dclose {
+  position: absolute; top: 14px; right: 14px; z-index: 5;
+  width: 32px; height: 32px; border-radius: 999px; border: none;
+  background: #f0e8d5; color: #6d6353; font-size: 14px; cursor: pointer;
+}
+#detail-sheet .hero { text-align: center; padding: 12px 0 0; font-size: 48px; }
+#detail-sheet .dname { text-align: center; font-family: var(--sh-en); font-size: 24px; font-weight: 800; letter-spacing: -.5px; margin-top: 6px; padding: 0 30px; }
+#detail-sheet .dcn { text-align: center; margin-top: 6px; color: var(--sh-sub); font-size: 12px; }
+.uncertain-banner {
+  margin-top: 14px; background: #faf3dd; color: #8a6413; border-radius: 8px;
+  padding: 10px 13px; font-size: 12px; font-weight: 700; line-height: 1.45;
+}
+/* What it is 解释块 = 页面主角：墨线单框 + 朱底标签（无中文） */
+.lede {
+  margin-top: 18px; padding: 13px 14px; font-size: 14px; line-height: 1.62;
+  background: #faf5e9; border: 1.25px solid var(--sh-ink); border-radius: 10px; position: relative;
+}
+.lede::before {
+  content: "What it is"; position: absolute; top: -9px; left: 12px;
+  background: var(--sh-hot); color: #fdf8ec; font-size: 8.5px; font-weight: 800;
+  border-radius: 5px; padding: 2px 8px; letter-spacing: .04em; font-family: var(--sh-en);
+}
+/* 常规字段：句首大写标签 + 中文小注（禁全大写） */
+.dsec { margin-top: 16px; }
+.dsec .gt { font-family: var(--sh-en); font-size: 12px; font-weight: 800; color: var(--sh-ink); letter-spacing: -.1px; text-transform: none; margin-bottom: 8px; }
+.dsec .gt span { color: #9c8f77; font-weight: 500; font-size: 10px; margin-left: 6px; font-family: "PingFang SC", -apple-system, sans-serif; }
+.ing-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.ing { background: #faf5e9; box-shadow: inset 0 0 0 1px var(--sh-hairline); border: none; border-radius: 6px; padding: 5px 10px; font-size: 11px; font-weight: 550; }
+.alg-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.alg { font-family: var(--sh-en); font-size: 10.5px; font-weight: 750; border-radius: 6px; padding: 5px 10px; }
+.alg.c { color: #fffdf5; background: var(--sh-hot); }
+.alg.m { color: #8a6413; box-shadow: inset 0 0 0 1.25px var(--sh-gold); }
+.alg.none { color: var(--sh-sub); box-shadow: inset 0 0 0 1px var(--sh-hairline); font-weight: 550; }
+/* The story = 页脚题跋：出血茶笺色带 + 金细线上缘，零间距衔接 CTA */
+.story {
+  margin: 18px -18px 0; background: #f4ecd7; padding: 14px 18px 15px; position: relative;
+  font-size: 11.5px; line-height: 1.7; color: #55503f; border: none;
+}
+.story::before { content: ""; position: absolute; top: 0; left: 18px; right: 18px; border-top: 1px solid var(--sh-gold-line); }
+.story .lb2 {
+  font-family: var(--sh-en); font-size: 10px; font-weight: 800; color: #8a6413; letter-spacing: .06em;
+  display: flex; align-items: center; gap: 6px; margin-bottom: 7px;
+}
+.story .lb2::after { content: ""; flex: 1; height: 1px; background: linear-gradient(90deg, rgba(200,154,46,.45), transparent); }
+.story .how { margin-top: 7px; }
+.story .how b { color: #8a6413; }
+/* CTA：柿红满宽，价格唯一出现处 */
+.detail-cta { position: sticky; bottom: 0; margin: 0 -18px calc(-20px - env(safe-area-inset-bottom)); padding: 0; display: flex; }
+.detail-cta .btn {
+  flex: 1; background: var(--sh-hot); color: #fdf8ec; border: none; border-radius: 0;
+  padding: 15px 16px calc(17px + env(safe-area-inset-bottom)); font-family: var(--sh-en); font-size: 14px; font-weight: 800; cursor: pointer;
+}
+.detail-cta .btn small { font-family: var(--sh-num); font-size: 11px; opacity: .7; font-weight: 600; }
+.stepper { display: flex; align-items: center; gap: 14px; justify-content: center; flex: 1; background: var(--sh-hot); }
+.stepper button { border: none; background: none; color: #fdf8ec; font-size: 21px; font-weight: 800; cursor: pointer; padding: 14px 22px calc(16px + env(safe-area-inset-bottom)); }
+.stepper b { font-size: 16px; color: #fdf8ec; font-variant-numeric: tabular-nums; font-family: var(--sh-num); }
+
+/* ---------- 货币按钮 + 选择弹层（7.13 A 案：币徽 + 底部弹层） ---------- */
+.coinbtn {
+  width: 34px; height: 34px; border-radius: 999px; flex: none;
+  background: var(--sh-gold); border: 2px solid var(--sh-ink); color: var(--sh-ink);
+  font-family: var(--sh-num); font-size: 13.5px; font-weight: 700; cursor: pointer;
+  box-shadow: inset 0 0 0 2px rgba(255,253,246,.55), 2px 2px 0 rgba(28,26,23,.2);
+  transition: transform var(--dur-fast) var(--ease);
+}
+.coinbtn:active { transform: scale(.9) rotate(8deg); }
+#cur-mask { position: absolute; inset: 0; background: rgba(36,32,26,.42); z-index: 46; animation: screen-in var(--dur) var(--ease); }
+#cur-sheet {
+  position: absolute; left: 0; right: 0; bottom: 0; z-index: 47;
+  background: #fffdf5; color: var(--sh-ink); border-radius: 22px 22px 0 0;
+  box-shadow: 0 -14px 34px rgba(40,30,15,.25);
+  padding: 8px 18px calc(16px + env(safe-area-inset-bottom));
+  animation: sheet-in 320ms var(--ease);
+}
+.cur-title { font-family: var(--sh-en); font-size: 16px; font-weight: 800; margin-top: 6px; }
+.cur-sub { font-size: 10.5px; color: var(--sh-sub); margin-top: 5px; line-height: 1.6; }
+.cur-row {
+  display: flex; align-items: center; gap: 10px; padding: 13px 10px;
+  border-bottom: 1px solid rgba(28,26,23,.08); font-size: 13.5px; font-weight: 650; cursor: pointer;
+  border-radius: 10px;
+}
+.cur-row:last-child { border-bottom: none; }
+.cur-row .fl { font-size: 17px; }
+.cur-row .cd { font-family: var(--sh-num); font-size: 10.5px; color: var(--sh-sub); }
+/* 换算预览：用户货币 1 单位 ≈ ¥X。两段固定宽 → 「≈」全列对齐，右缘也对齐 */
+.cur-row .pv { margin-left: auto; display: flex; gap: 5px; font-family: var(--sh-num); font-size: 11px; font-variant-numeric: tabular-nums; }
+.cur-row .pv i { font-style: normal; }
+.cur-row .pv .u { min-width: 56px; text-align: right; font-weight: 700; color: var(--sh-ink); }
+.cur-row .pv .r { min-width: 62px; text-align: left; color: var(--sh-sub); }
+/* 选中态 = 整行朱红描边 + 微染底（不用尾部对号，保住右侧对齐） */
+.cur-row.on { box-shadow: inset 0 0 0 2px #d24b33; background: #fbeeea; color: #b23a26; font-weight: 800; border-bottom-color: transparent; }
+.cur-row.on .pv .u, .cur-row.on .pv .r, .cur-row.on .cd { color: #b23a26; }
+
+/* original menu overlay */
+#orig-mask { position: absolute; inset: 0; background: rgba(20,15,10,.72); z-index: 50; display: grid; place-items: center; padding: 30px; animation: screen-in var(--dur) var(--ease); }

@@ -3,509 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Chopstory — Taste China, order like a local.</title>
-<style>
-  /* =====================================================================
-     Design tokens — 雕版食单 Woodblock Ledger（UI-DESIGN.md 定稿主题）
-     纸墨朱三色 · 线条分层（零阴影，层级靠线宽） · 数字等宽 · quart-out
-     ===================================================================== */
-  :root {
-    --bg: #f7f2e6;         /* 纸白 · 页面底 */
-    --paper: #fbf7ea;      /* 笺面 · 弹层/嵌面 */
-    --ink: #262019;        /* 苍墨（禁纯黑） */
-    --ink-2: #4c4437;
-    --muted: #75695a;
-    --faint: #8f8270;
-    --line: #ddd0b8;
-    --hair: rgba(38,32,25,.22);   /* 发丝线 */
-    --accent: #b23a2f;     /* 朱印 · 全局唯一彩色 */
-    --accent-press: #7e241c;
-    --accent-soft: #f5e3da;
-    --danger: #b23a2f; --danger-bg: #f7e3de;
-    --warn: #8f6e1f;  --warn-bg: #f3e9c9;
-    --green: #5c7d46; --green-bg: #e9edd8;
+<title>ChopStory — Taste China, order like a local.</title>
+<link rel="icon" type="image/svg+xml" href="logo.svg">
+<link rel="stylesheet" href="css/tokens.css">
+<link rel="stylesheet" href="css/home.css">
+<link rel="stylesheet" href="css/menu.css">
+<link rel="stylesheet" href="css/order.css">
+<link rel="stylesheet" href="css/map.css">
 
-    --t-large: 30px; --t-title: 21px; --t-body: 15px; --t-sub: 13px; --t-cap: 11.5px;
-    --r-lg: 8px; --r-md: 6px; --r-sm: 4px;   /* 印刷体系：小切角，禁大圆角 */
-
-    --font-disp: "Songti SC", "STSong", Georgia, serif;
-    --font-num: ui-monospace, "SF Mono", Menlo, monospace;
-
-    --ease: cubic-bezier(0.25, 1, 0.5, 1);   /* quart-out */
-    --dur-fast: 140ms; --dur: 260ms;
-    --shadow-1: none;    /* 零阴影：原卡片投影全部取消 */
-    --shadow-2: none;
-    --shadow-3: 0 -2.5px 0 var(--ink);   /* 弹层顶部重墨线（替代投影） */
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-  html, body { height: 100%; }
-  body {
-    background: #e9e2d8;
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", sans-serif;
-    color: var(--ink);
-    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
-    display: flex; align-items: center; justify-content: center;
-  }
-  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
-  button { font: inherit; color: inherit; }
-
-  /* ---------- phone frame (desktop bezel; real mobile is fullscreen) ---------- */
-  #phone {
-    position: relative; width: 100%; height: 100dvh;
-    background: var(--bg); overflow: hidden;
-  }
-  @media (min-width: 520px) {
-    body { padding: 24px; }
-    #phone {
-      width: 393px; height: min(852px, calc(100dvh - 48px));
-      border-radius: 44px; border: 10px solid #1a1614;
-      box-shadow: 0 24px 60px rgba(40,25,15,.35);
-    }
-    #phone::before {
-      content: ""; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-      width: 110px; height: 24px; border-radius: 999px; background: #1a1614; z-index: 99;
-    }
-  }
-  /* 纸纹颗粒（墙感/纸感来源，覆盖全部界面含弹层） */
-  #phone::after {
-    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 200; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.045'/></svg>");
-  }
-  .screen {
-    position: absolute; inset: 0;
-    display: flex; flex-direction: column;
-    background: var(--bg);
-    overflow-y: auto; overflow-x: hidden;
-    padding: max(44px, env(safe-area-inset-top)) 16px calc(20px + env(safe-area-inset-bottom));
-    animation: screen-in var(--dur) var(--ease);
-  }
-  @keyframes screen-in { from { opacity: 0; } }
-  .hidden { display: none !important; }
-
-  /* ---------- shared ---------- */
-  .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
-  .back {
-    width: 40px; height: 40px; border-radius: var(--r-md); border: 1.5px solid var(--ink);
-    background: none;
-    font-size: 17px; cursor: pointer; flex: none;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .back:active { transform: scale(.92); }
-  .topbar h2 { font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; flex: 1; }
-  .btn {
-    border: none; border-radius: var(--r-md); min-height: 52px; padding: 0 26px;
-    background: var(--ink); color: #f2e9d5; font-size: 15px; font-weight: 800; cursor: pointer; letter-spacing: .3px;
-    transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease);
-  }
-  .btn:active { transform: scale(.97); }
-  .btn-zhu { background: var(--accent); color: #f7f0df; }
-  .btn-zhu:active { background: var(--accent-press); }
-  .btn-ghost { background: none; color: var(--ink); border: 1.5px solid var(--ink); }
-  .tag { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 4px 10px; font-size: var(--t-cap); font-weight: 700; }
-  .tag-red { background: var(--danger-bg); color: var(--danger); }
-  .tag-amber { background: var(--warn-bg); color: var(--warn); }
-  .tag-gray { background: #efe6d0; color: var(--ink-2); }
-  .tag-green { background: var(--green-bg); color: var(--green); }
-  .price-dual { font-variant-numeric: tabular-nums; }
-  .price-dual b { font-size: 15px; font-family: var(--font-num); font-weight: 700; }
-  .price-dual span { color: var(--muted); font-size: 12px; }
-
-  /* ---------- S0 home：上 1/3 拍菜单引导，下 2/3 食迹（社交资产） ---------- */
-  #s-home { text-align: center; }
-  .home-top { flex: none; }
-  .brand { margin-top: 6px; font-family: var(--font-disp); font-size: 19px; font-weight: 900; letter-spacing: 1px; }
-  .brand em { color: var(--accent); font-style: normal; }
-  .slogan { font-family: var(--font-disp); font-size: 26px; font-weight: 900; letter-spacing: .3px; line-height: 1.25; margin-top: 14px; }
-  .slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 var(--accent); }
-  .scan-row { display: flex; gap: 10px; justify-content: center; margin-top: 18px; }
-  .scan-cta { flex: 1; max-width: 230px; }
-  .album-link {
-    background: none; border: 1.5px solid var(--ink);
-    border-radius: var(--r-md); min-height: 52px; padding: 0 18px; font-size: 14px; font-weight: 700; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .album-link:active { transform: scale(.96); }
-  .profile-strip {
-    margin-top: 14px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
-  }
-  .seeall { border: none; background: none; color: var(--accent); font-weight: 700; font-size: 12.5px; cursor: pointer; padding: 6px 0; }
-  /* 地图容器：文武边（外粗内细双线框） */
-  #home-map {
-    position: relative; height: 224px; overflow: hidden;
-    background: #f3ecdb; cursor: pointer; flex: none;
-    border: 2.5px solid var(--ink); outline: 1px solid var(--ink); outline-offset: -6.5px;
-  }
-  #homechinamap { position: absolute; inset: 0; }
-  #home-map-fb { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-disp); font-size: 20px; color: #a8987a; }
-  .map-cap {
-    position: absolute; bottom: 0; left: 0; right: 0; z-index: 5; pointer-events: none;
-    padding: 18px 0 9px; text-align: center; font-family: var(--font-disp);
-    font-size: 11.5px; letter-spacing: .18em; color: var(--ink-2);
-    background: linear-gradient(transparent, rgba(243,236,219,.96) 55%);
-  }
-  /* home · "My food story"：印刷行版式时间线 */
-  .home-sec { margin-top: 26px; text-align: left; }
-  .home-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
-  .home-sec-head .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; }
-  .date-lab { display: flex; align-items: baseline; gap: 6px; margin: 16px 2px 12px; }
-  .date-lab b { font-family: var(--font-disp); font-size: 18px; font-weight: 900; letter-spacing: .5px; }
-  .date-lab span { font-size: 12px; color: var(--faint); font-weight: 700; }
-  .eat-card {
-    position: relative; display: flex; gap: 14px; align-items: center;
-    background: none; border-bottom: 1px solid var(--hair);
-    padding: 6px 2px 14px; margin-bottom: 8px; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .eat-card:active { transform: scale(.98); }
-  .eat-photo {
-    flex: none; width: 78px; height: 78px; margin-top: -4px;
-    background: linear-gradient(135deg, #eee2c8, #d9c49c);
-    border: 4px solid #fff; outline: 1px solid var(--hair); border-radius: 2px;
-    display: grid; place-items: center; font-size: 36px;
-    transform: rotate(var(--rot, -4deg));
-  }
-  .eat-info { min-width: 0; flex: 1; }
-  .eat-info .n { font-size: 15px; font-weight: 800; letter-spacing: -.2px; }
-  .eat-info .m { font-size: 12px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
-  .eat-info .hl { font-size: 12.5px; color: var(--accent); margin-top: 7px; display: inline-block; font-weight: 700; }
-  .eat-info .t { position: absolute; top: 6px; right: 2px; font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-  .home-foot { margin-top: auto; padding-top: 20px; font-size: 10.5px; color: var(--faint); line-height: 1.55; }
-
-  /* ---------- prefs sheet ---------- */
-  #sheet-mask { position: absolute; inset: 0; background: rgba(30,20,12,.45); z-index: 40; animation: screen-in var(--dur) var(--ease); }
-  #sheet {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 41;
-    background: var(--paper); border-radius: 12px 12px 0 0; box-shadow: var(--shadow-3);
-    padding: 10px 18px calc(18px + env(safe-area-inset-bottom));
-    max-height: 86%; overflow-y: auto;
-    animation: sheet-in 320ms var(--ease);
-  }
-  @keyframes sheet-in { from { transform: translateY(40px); opacity: 0; } }
-  .grabber { width: 36px; height: 4px; border-radius: 999px; background: var(--line); margin: 6px auto 16px; }
-  #sheet h3 { font-family: var(--font-disp); font-size: 19px; font-weight: 900; letter-spacing: .5px; }
-  #sheet .sub { color: var(--muted); font-size: var(--t-sub); margin: 5px 0 4px; line-height: 1.45; }
-  .chip-group { margin-top: 16px; }
-  .chip-group .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; margin-bottom: 8px; }
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .chip {
-    min-height: 40px;
-    border: 1.5px solid var(--line); background: none; border-radius: 999px;
-    padding: 8px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
-  }
-  .chip:active { transform: scale(.95); }
-  .chip.on { border-color: var(--ink); background: var(--ink); color: #f2e9d5; }
-  .sheet-actions { display: flex; gap: 10px; margin-top: 22px; }
-  .sheet-actions .btn { flex: 1; }
-
-  /* ---------- camera ---------- */
-  #s-camera { background: #14100d; color: #eee; padding: 0; }
-  .cam-top { display: flex; justify-content: space-between; align-items: center; padding: max(46px, env(safe-area-inset-top)) 18px 8px; }
-  .cam-top .hint { font-size: 13.5px; color: #d8d2cb; }
-  .cam-x { width: 40px; height: 40px; border-radius: 999px; border: none; background: rgba(255,255,255,.14); color: #fff; font-size: 16px; cursor: pointer; }
-  .viewfinder { position: relative; flex: 1; margin: 8px 22px; display: flex; align-items: center; justify-content: center; }
-  .corner { position: absolute; width: 34px; height: 34px; border: 3px solid #fff; opacity: .9; border-radius: 2px; }
-  .c1 { top: 0; left: 0; border-right: none; border-bottom: none; }
-  .c2 { top: 0; right: 0; border-left: none; border-bottom: none; }
-  .c3 { bottom: 0; left: 0; border-right: none; border-top: none; }
-  .c4 { bottom: 0; right: 0; border-left: none; border-top: none; }
-  .menu-paper {
-    width: 78%; background: #fbf7ef; color: #33291f; border-radius: 6px; padding: 18px 16px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.5); transform: rotate(-1.5deg);
-    font-family: "Songti SC", "STSong", serif;
-  }
-  .menu-paper h4 { text-align: center; font-size: 17px; letter-spacing: 4px; border-bottom: 1.5px solid #b9a98f; padding-bottom: 8px; }
-  .menu-paper .sec { margin-top: 10px; font-size: 11px; color: #8a7a5f; letter-spacing: 2px; }
-  .menu-paper .row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
-  .cam-bottom { padding: 10px 18px calc(26px + env(safe-area-inset-bottom)); text-align: center; }
-  .cam-tip { font-size: 12px; color: #a99f94; margin-bottom: 14px; }
-  .shutter {
-    width: 72px; height: 72px; border-radius: 999px; background: #fff; border: 5px solid rgba(255,255,255,.35);
-    cursor: pointer; transition: transform var(--dur-fast) var(--ease);
-  }
-  .shutter:active { transform: scale(.9); }
-
-  /* ---------- analyzing ---------- */
-  #s-analyzing { text-align: center; }
-  .thumb {
-    width: 72%; margin: 26px auto 0; border-radius: var(--r-sm); background: #fbf7ef; border: 1px solid var(--line);
-    padding: 10px; font-family: "Songti SC", serif; font-size: 11px; color: #71614a; line-height: 1.6;
-    flex: none; overflow: hidden;
-  }
-  .thumb img { width: 100%; max-height: 150px; object-fit: cover; object-position: top; border-radius: 6px; display: block; margin: -6px 0; }
-  .thumb-strip { display: flex; gap: 8px; overflow-x: auto; padding: 2px; scrollbar-width: none; }
-  .thumb-strip::-webkit-scrollbar { display: none; }
-  .thumb-strip .tpage {
-    flex: 0 0 auto; width: 86px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); background: #fff;
-    position: relative;
-  }
-  .thumb-strip .tpage img { width: 86px; height: 110px; object-fit: cover; object-position: top; display: block; margin: 0; }
-  .thumb-strip .tpage .pg {
-    position: absolute; left: 4px; bottom: 4px; background: rgba(38,32,25,.78); color: #fff;
-    font-size: 10px; font-weight: 800; border-radius: 999px; padding: 1px 6px; font-family: var(--font-num);
-  }
-  .thumb-meta { margin-top: 8px; font-size: 11.5px; color: var(--muted); font-weight: 700; font-family: var(--font-num); }
-  #orig-mask {
-    position: absolute; inset: 0; z-index: 50; background: rgba(20,16,13,.78);
-    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px;
-  }
-  #orig-mask.hidden { display: none !important; }
-  #orig-gallery {
-    display: flex; gap: 10px; overflow-x: auto; max-width: 100%; max-height: 78%;
-    padding: 4px; scrollbar-width: thin;
-  }
-  #orig-gallery img {
-    max-height: 72vh; width: auto; max-width: min(82vw, 320px); border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0,0,0,.5); background: #fff; object-fit: contain;
-  }
-  #orig-gallery .hidden { display: none !important; }
-  #s-analyzing h2 { margin-top: 24px; font-family: var(--font-disp); font-size: var(--t-title); font-weight: 900; letter-spacing: .5px; }
-  #s-analyzing .sub { color: var(--muted); font-size: var(--t-sub); margin-top: 6px; line-height: 1.5; }
-  .steps { margin: 24px auto 0; width: 100%; max-width: 320px; display: grid; gap: 0; text-align: left; border-top: 2.5px solid var(--ink); }
-  .step {
-    display: flex; justify-content: space-between; align-items: center; gap: 8px;
-    background: none; border-bottom: 1px solid var(--hair);
-    padding: 14px 4px; font-size: 14px; font-weight: 650;
-  }
-  .step .st { font-size: 12.5px; font-weight: 800; color: var(--muted); white-space: nowrap; font-family: var(--font-num); }
-  .step.done .st { color: var(--green); }
-  .step.doing .st { color: var(--accent); }
-  .anal-foot { margin-top: 20px; font-size: 12px; color: var(--faint); }
-
-  /* ---------- S1 list：印刷账本版式（无卡片，线条分层） ---------- */
-  .resto-bar {
-    display: flex; align-items: center; gap: 10px; background: none;
-    border-bottom: 2.5px solid var(--ink); padding: 4px 2px 12px; margin-bottom: 12px;
-  }
-  .resto-bar .emoji { font-size: 22px; }
-  .resto-bar .n { font-family: var(--font-disp); font-size: 15px; font-weight: 900; letter-spacing: .5px; }
-  .resto-bar .m { font-size: 12px; color: var(--muted); margin-top: 1px; }
-  .resto-bar .orig { margin-left: auto; font-size: 12.5px; color: var(--accent); font-weight: 700; background: none; border: none; cursor: pointer; padding: 10px 2px; }
-  .cats { display: flex; flex: none; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 6px; scrollbar-width: none; }
-  .cats::-webkit-scrollbar { display: none; }
-  .cat {
-    flex: none; min-height: 38px; border-radius: 999px; padding: 8px 15px; font-size: 13px; font-weight: 700;
-    border: 1.5px solid var(--line); background: none; cursor: pointer;
-    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease), border-color var(--dur-fast) var(--ease);
-  }
-  .cat.on { background: var(--ink); color: #f2e9d5; border-color: var(--ink); }
-  .cat i { font-style: normal; font-weight: 800; opacity: .55; margin-left: 5px; font-size: 11.5px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-  /* 鱼尾节标：【凉菜 COLD STARTERS】 */
-  .sechead {
-    display: flex; align-items: baseline; gap: 6px; margin: 20px 2px 4px;
-    animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
-  }
-  .sechead b { font-family: var(--font-disp); font-size: 14px; font-weight: 900; letter-spacing: .2em; }
-  .sechead b::before { content: "【"; color: var(--accent); }
-  .sechead span { font-family: var(--font-disp); font-size: 11.5px; color: var(--muted); font-weight: 600; letter-spacing: .15em; }
-  .sechead span::after { content: "】"; color: var(--accent); }
-  .sechead::after { content: ""; flex: 1; height: 1px; background: var(--hair); align-self: center; }
-
-  /* 菜品行：发丝线分隔，全平面 */
-  .pcard {
-    position: relative;
-    background: none; border-bottom: 1px solid var(--hair); border-radius: 0;
-    padding: 13px 2px 12px; margin-bottom: 0; cursor: pointer;
-    animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .pcard:active { transform: scale(.985); }
-  @keyframes pop { from { opacity: 0; transform: translateY(12px); } }
-  .pcard-top { display: flex; align-items: flex-start; gap: 10px; }
-  .pcard .name { font-size: 15.5px; font-weight: 800; line-height: 1.3; letter-spacing: -.1px; }
-  .pcard .cn { margin-top: 4px; font-size: 12.5px; color: var(--muted); }
-  .pcard .cn .speak { border: none; background: none; cursor: pointer; font-size: 13px; padding: 6px; margin: -6px 0; }
-  .pcard .right { margin-left: auto; margin-right: 42px; text-align: right; flex: none; }
-  .pcard .chili { font-size: 12px; margin-top: 4px; }
-  .pcard .chili .ns { color: var(--muted); font-size: 11px; }
-  .pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; padding-right: 42px; }
-  /* ＋号：墨框小方章 */
-  .addbtn {
-    position: absolute; right: 4px; bottom: 14px;
-    width: 30px; height: 30px; border-radius: var(--r-sm); border: 1.5px solid var(--ink);
-    background: none; color: var(--ink); font-size: 16px; font-weight: 800; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease), background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
-  }
-  .addbtn::after { content: ""; position: absolute; inset: -8px; } /* 44pt+ touch target */
-  .addbtn:active { transform: scale(.9); }
-  .addbtn.in { background: var(--accent); border-color: var(--accent); color: #f7f0df; transform: rotate(2.5deg); }
-  .qty-badge { position: absolute; right: 42px; bottom: 20px; font-size: 12px; font-weight: 800; color: var(--accent); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-
-  /* 折叠条：上朱线下发丝线 */
-  .fold {
-    border: none; border-top: 2.5px solid var(--accent); border-bottom: 1px solid var(--hair);
-    background: none; border-radius: 0;
-    padding: 12px 2px; margin: 16px 0 6px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--accent);
-  }
-  .fold .why { display: block; font-weight: 500; color: var(--muted); font-size: 12px; margin-top: 3px; line-height: 1.45; }
-  .folded-wrap .pcard { background: none; }
-
-  /* 点单条：页底重界线（印刷账本的合计行） */
-  .cart-bar {
-    position: sticky; bottom: 0; z-index: 10;
-    margin: 14px -16px calc(-20px - env(safe-area-inset-bottom));
-    padding: 12px 16px calc(14px + env(safe-area-inset-bottom));
-    background: var(--bg); border-top: 2.5px solid var(--ink);
-    color: var(--ink);
-    display: flex; align-items: center; gap: 10px; cursor: pointer;
-    animation: pop 320ms var(--ease);
-  }
-  .cart-bar .sum { font-size: 13.5px; font-weight: 700; flex: 1; font-variant-numeric: tabular-nums; }
-  .cart-bar .go { background: var(--accent); border: none; color: #f7f0df; border-radius: var(--r-sm); padding: 10px 16px; font-weight: 800; font-size: 13px; cursor: pointer; }
-  .disclaimer { font-size: 10.5px; color: var(--faint); line-height: 1.55; margin: 16px 0 8px; }
-
-  /* ---------- S2 detail: bottom sheet floating over the list ---------- */
-  #detail-mask { position: absolute; inset: 0; background: rgba(30,20,12,.45); z-index: 44; animation: screen-in var(--dur) var(--ease); }
-  #detail-sheet {
-    position: absolute; left: 0; right: 0; bottom: 0; z-index: 45;
-    background: var(--paper); border-radius: 12px 12px 0 0; box-shadow: var(--shadow-3);
-    max-height: 90%; overflow-y: auto; padding: 8px 16px 0;
-    animation: sheet-in 320ms var(--ease);
-  }
-  #detail-sheet .dclose {
-    position: absolute; top: 14px; right: 14px; z-index: 5;
-    width: 34px; height: 34px; border-radius: var(--r-sm); border: 1.5px solid var(--ink);
-    background: none; color: var(--ink); font-size: 14px; cursor: pointer;
-  }
-  #detail-sheet .detail-cta { margin: 18px -16px 0; }
-  #detail-sheet .hero { text-align: center; padding: 10px 0 0; font-size: 52px; }
-  #detail-sheet .dname { text-align: center; font-family: var(--font-disp); font-size: 22px; font-weight: 900; letter-spacing: .3px; margin-top: 6px; padding: 0 30px; }
-  #detail-sheet .dcn { text-align: center; margin-top: 6px; color: var(--muted); font-size: 14px; }
-  #detail-sheet .dprice { text-align: center; margin-top: 8px; }
-  .uncertain-banner {
-    margin-top: 14px; background: var(--warn-bg); color: var(--warn); border-radius: var(--r-sm);
-    padding: 10px 13px; font-size: 12.5px; font-weight: 700; line-height: 1.45;
-  }
-  .quote {
-    margin-top: 16px; border-left: 3px solid var(--accent); background: none;
-    padding: 4px 4px 4px 14px; font-size: 14.5px; line-height: 1.65; color: var(--ink-2);
-  }
-  #detail-sheet .dcuisine { text-align: center; margin-top: 6px; font-family: var(--font-disp); font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .1em; }
-  .fbar { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 12.5px; }
-  .fbar .fl { flex: none; width: 108px; font-weight: 700; color: var(--ink-2); }
-  .fbar .ft { flex: 1; height: 5px; background: #ece2c9; overflow: hidden; }
-  .fbar .ft i { display: block; height: 100%; background: var(--accent); }
-  .fbar .fv { flex: none; width: 18px; text-align: right; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-  .story { border-top: 1px solid var(--hair); padding: 11px 2px 4px; font-size: 13.5px; line-height: 1.65; color: var(--ink-2); margin-bottom: 6px; }
-  .dsec { margin-top: 18px; }
-  .dsec .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; margin-bottom: 8px; }
-  .ing-chips { display: flex; flex-wrap: wrap; gap: 7px; }
-  .ing { background: none; border: 1px solid var(--line); border-radius: 999px; padding: 7px 13px; font-size: 13px; }
-  .allergen-row { display: flex; align-items: center; gap: 8px; background: none; border-bottom: 1px solid var(--hair); padding: 11px 2px; font-size: 13.5px; }
-  .lvl { margin-left: auto; }
-  .detail-cta { position: sticky; bottom: 0; margin: 20px -16px calc(-20px - env(safe-area-inset-bottom)); padding: 14px 16px calc(16px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--paper) 35%); display: flex; gap: 10px; }
-  .detail-cta .btn { flex: 1; }
-  .stepper { display: flex; align-items: center; gap: 14px; justify-content: center; flex: 1; background: none; border: 1.5px solid var(--accent); border-radius: var(--r-md); }
-  .stepper button { border: none; background: none; color: var(--accent); font-size: 21px; font-weight: 800; cursor: pointer; padding: 12px 16px; }
-  .stepper b { font-size: 16px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-
-  /* ---------- S3 order：点菜账页 ---------- */
-  .otabs { display: flex; border: 1.5px solid var(--ink); border-radius: var(--r-md); padding: 0; margin-bottom: 16px; overflow: hidden; }
-  .otab {
-    flex: 1; border: none; border-radius: 0; padding: 10px 6px; font-size: 13.5px; font-weight: 800;
-    background: none; cursor: pointer; color: var(--muted);
-    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
-  }
-  .otab + .otab { border-left: 1.5px solid var(--ink); }
-  .otab .s { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; }
-  .otab.on { background: var(--ink); color: #f2e9d5; }
-  .guide-banner {
-    display: flex; align-items: center; gap: 10px;
-    background: none; color: var(--accent); border: 1.5px solid var(--accent);
-    border-radius: var(--r-md); padding: 12px 14px; margin-bottom: 14px;
-    font-size: 13px; font-weight: 700; line-height: 1.45; cursor: pointer;
-    animation: pop 380ms var(--ease);
-  }
-  .guide-banner .arr { margin-left: auto; font-size: 16px; flex: none; }
-  .onote b { display: block; margin-bottom: 3px; }
-  /* order page: back + tabs in ONE row; sections = 重线起头的账目区块 */
-  .topbar .otabs { flex: 1; margin-bottom: 0; }
-  .sec-card { background: none; border-top: 2.5px solid var(--ink); border-radius: 0; padding: 2px 2px 8px; margin-bottom: 16px; }
-  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 2px; }
-  .sec-head .gt { font-family: var(--font-disp); font-size: var(--t-cap); font-weight: 800; color: var(--muted); text-transform: uppercase; letter-spacing: .2em; }
-  .edit-btn { border: 1.5px solid var(--accent); background: none; color: var(--accent); border-radius: var(--r-sm); padding: 5px 13px; font-size: 12px; font-weight: 800; cursor: pointer; }
-  .orow { display: flex; align-items: center; gap: 8px; padding: 13px 0; border-bottom: 1px solid var(--hair); font-size: 14.5px; font-variant-numeric: tabular-nums; }
-  .sec-card .orow:last-child { border-bottom: none; }
-  .orow b { flex: 1; letter-spacing: -.1px; }
-  .orow b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
-  .orow .q { color: var(--accent); font-weight: 800; }
-  .total-sm { text-align: right; font-size: 12px; color: var(--muted); padding: 10px 0 12px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-  .sec-empty { text-align: center; padding: 20px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
-  .sec-empty .e { font-size: 30px; display: block; margin-bottom: 6px; }
-  .note-row { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--hair); font-size: 13.5px; line-height: 1.5; align-items: baseline; }
-  .sec-card .note-row:last-child { border-bottom: none; }
-  .note-row .k { flex: none; font-weight: 800; }
-  .note-row .v { color: var(--ink-2); }
-  .note-row .v.none { color: var(--faint); font-weight: 500; }
-  .note-row.danger .k, .note-row.danger .v { color: var(--danger); font-weight: 700; }
-  .note-input { width: 100%; border: 1.5px solid var(--line); background: none; border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: 13.5px; margin-top: 8px; }
-  .sec-card .chip-group:last-child { padding-bottom: 14px; }
-  .waiter .orow { font-size: 19px; padding: 15px 0; }
-  .waiter .orow b small { font-size: 12px; }
-  .waiter .note-row { font-size: 16.5px; }
-  .waiter .note-row.danger { font-size: 17.5px; }
-  .bubble { background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 4px 2px 12px; font-family: var(--font-disp); font-size: 15.5px; font-weight: 700; letter-spacing: .3px; margin-bottom: 12px; }
-  .oitem { display: flex; align-items: center; gap: 8px; background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 13px 2px; margin-bottom: 0; font-size: 14.5px; font-variant-numeric: tabular-nums; }
-  .oitem b { flex: 1; letter-spacing: -.1px; }
-  .oitem b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
-  .oitem .q { color: var(--accent); font-weight: 800; font-family: var(--font-num); }
-  .order-empty { text-align: center; margin-top: 24%; }
-  .order-empty .big { font-size: 54px; }
-  .order-empty p { font-size: 16px; font-weight: 800; margin-top: 14px; }
-  .order-empty .sub { font-size: 13px; font-weight: 500; color: var(--muted); line-height: 1.55; margin: 8px auto 22px; max-width: 260px; }
-  .allergy-box { margin: 14px 0; background: none; border: 1.5px solid var(--accent); border-radius: var(--r-md); padding: 14px 16px; }
-  .allergy-box .h { display: flex; align-items: center; gap: 7px; font-weight: 800; color: var(--accent); font-size: 14px; }
-  .allergy-box p { margin-top: 6px; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
-  .allergy-box p b { color: var(--danger); }
-  .req-box { background: none; border-top: 1px solid var(--hair); border-radius: 0; padding: 13px 2px; font-size: 13.5px; line-height: 1.6; }
-  .onote { margin-top: 14px; background: none; border: 1px solid var(--line); color: var(--ink-2); border-radius: var(--r-sm); padding: 10px 13px; font-size: 12px; line-height: 1.5; }
-  .ototal { display: flex; justify-content: space-between; align-items: baseline; margin-top: 16px; padding: 0 4px; font-variant-numeric: tabular-nums; font-family: var(--font-num); }
-  .ototal .t { font-size: 17px; font-weight: 900; }
-  /* waiter view — bigger type, Chinese, HIG accessibility sizes */
-  .waiter .bubble { font-size: 19px; }
-  .waiter .oitem { font-size: 20px; padding: 16px; }
-  .waiter .oitem small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-top: 2px; }
-  .waiter .allergy-box { background: var(--danger-bg); box-shadow: inset 0 0 0 1.5px #eaa; }
-  .waiter .allergy-box .h { color: var(--danger); font-size: 17px; }
-  .waiter .allergy-box p { font-size: 18px; font-weight: 700; line-height: 1.6; color: var(--ink); }
-  .waiter .req-box { font-size: 18px; font-weight: 650; }
-  .waiter .onote { font-size: 14px; line-height: 1.6; }
-
-  /* ---------- S4 history + food map（集印册） ---------- */
-  .htabs { display: flex; gap: 8px; margin-bottom: 14px; }
-  .hentry { background: none; border-bottom: 1px solid var(--hair); border-radius: 0; padding: 12px 2px 14px; margin-bottom: 4px; cursor: pointer; }
-  .hentry .d { font-size: 12px; color: var(--muted); font-family: var(--font-num); }
-  .hentry .n { font-size: 15px; font-weight: 800; margin-top: 4px; letter-spacing: -.2px; }
-  .hentry .m { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
-  #foodmap { position: relative; flex: 1; min-height: 480px; margin: 0 -16px calc(-20px - env(safe-area-inset-bottom)); background: #f3ecdb; border-top: 2.5px solid var(--ink); overflow: hidden; }
-  #chinamap { position: absolute; inset: 0; }
-  #foodmap .counts { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-family: var(--font-disp); font-size: 12px; letter-spacing: .22em; color: var(--ink-2); z-index: 5; pointer-events: none; }
-  #map-fallback { position: absolute; inset: 0; background: #17140f; color: #ddd; }
-  #map-fallback .grid {
-    position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(120,220,160,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,220,160,.07) 1px, transparent 1px);
-    background-size: 34px 34px;
-  }
-  #map-fallback .counts { color: #86efac; top: 14px; }
-  .pin { position: absolute; width: 12px; height: 12px; border-radius: 999px; background: #e879f9; border: 2px solid #fff; cursor: pointer; box-shadow: 0 0 12px rgba(232,121,249,.8); }
-  .polaroid {
-    position: absolute; width: 118px; background: #fdfdf8; color: var(--ink); border-radius: 2px; padding: 7px 7px 8px;
-    border: 1.5px solid var(--ink); font-size: 10px; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease);
-  }
-  .polaroid:active { transform: scale(1.04) !important; }
-  .polaroid .ph { height: 74px; border-radius: 2px; background: linear-gradient(135deg, #f3d9c3, #e7b590); display: grid; place-items: center; font-size: 34px; }
-  .polaroid .cap { margin-top: 5px; font-weight: 700; font-size: 10.5px; }
-  .polaroid .sub2 { color: var(--faint); margin-top: 1px; font-family: ui-monospace, monospace; font-size: 9px; }
-  .citytag { position: absolute; background: #052e16; color: #86efac; font-family: ui-monospace, monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; }
-
-  /* original menu overlay (base; multi-page gallery styles earlier) */
-  #orig-mask { animation: screen-in var(--dur) var(--ease); }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
-  }
-</style>
 </head>
 <body>
 <div id="phone">
@@ -513,14 +18,11 @@
   <!-- ============ S0 HOME ============ -->
   <section class="screen" id="s-home">
     <div class="home-top">
-      <div class="brand">Chop<em>story</em></div>
-      <h1 class="slogan">Read it. Order it.<br><i>Eat the story.</i></h1>
+      <div class="brand"><img class="mark" src="logo.svg" alt="ChopStory logo"><span>Chop<em>Story</em></span></div>
+      <h1 class="slogan"><i>Decode the Chinese menu,</i><br>order like a local.</h1>
       <div class="scan-row">
-        <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
-        <button type="button" class="album-link" onclick="pickAlbum()">🖼️ Album</button>
-        <input id="albumInput" type="file" accept="image/*" multiple hidden />
+        <button class="scan-cta" onclick="startScan('camera')"><span class="cam">📷</span>Scan a menu</button>
       </div>
-      <div class="profile-strip" id="profileStrip"></div>
     </div>
 
     <div class="home-sec">
@@ -530,11 +32,10 @@
       </div>
       <div id="home-map" onclick="go('history');histView('map')">
         <div id="homechinamap"></div>
-        <div id="home-map-fb"><span>🗺️ 食迹</span></div>
-        <div class="map-cap"><b>食迹 · YOUR CHOPSTORY</b> · 已钤二印 · 尝八味</div>
+        <div id="home-map-fb"><span>🗺️</span></div>
       </div>
       <div class="date-lab"><b>Today</b><span>Chengdu</span></div>
-      <div class="eat-card" onclick="go('list')">
+      <div class="eat-card">
         <div class="eat-photo" style="--rot:-4deg">🍜</div>
         <div class="eat-info">
           <div class="n">Ma Wang Zi 马旺子</div>
@@ -544,7 +45,7 @@
         </div>
       </div>
       <div class="date-lab"><b>Jul 9</b><span>Beijing</span></div>
-      <div class="eat-card" onclick="go('history')">
+      <div class="eat-card">
         <div class="eat-photo" style="--rot:3deg">🦆</div>
         <div class="eat-info">
           <div class="n">Siji Minfu 四季民福</div>
@@ -567,7 +68,8 @@
       <div class="chips" data-group="allergens">
         <button class="chip" data-v="peanut">🥜 Peanut</button>
         <button class="chip" data-v="tree_nut">🌰 Tree nut</button>
-        <button class="chip" data-v="shellfish">🦐 Shellfish</button>
+        <button class="chip" data-v="crustacean">🦐 Shrimp/Crab</button>
+        <button class="chip" data-v="mollusk">🦪 Shellfish (mollusk)</button>
         <button class="chip" data-v="gluten">🌾 Gluten</button>
         <button class="chip" data-v="soy">🫘 Soy</button>
         <button class="chip" data-v="egg">🥚 Egg</button>
@@ -629,30 +131,45 @@
     <div class="cam-bottom">
       <p class="cam-tip">Keep the menu flat · good lighting works best</p>
       <button class="shutter" onclick="startAnalyze()" aria-label="Shutter"></button>
+      <button class="cam-album" onclick="startScan('album')">🖼️<span>Album</span></button>
     </div>
   </section>
 
-  <!-- ============ ANALYZING ============ -->
+  <!-- ============ ANALYZING（极简：logo 动效 + 单行状态）
+       动效三层：气泡说话弹跳 / 筷子夹菜摆动 / 碗口蒸汽泡上浮 ============ -->
   <section class="screen hidden" id="s-analyzing">
-    <div class="thumb" id="anaThumb">川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……</div>
-    <h2>Reading the menu…</h2>
-    <p class="sub">AI is identifying <b id="anaCount">0</b> dishes and checking them against your profile</p>
-    <div class="steps">
-      <div class="step" id="st1"><span>🔍 Reading text & layout</span><span class="st">…</span></div>
-      <div class="step" id="st2"><span>🧠 Translating & explaining each dish</span><span class="st">waiting</span></div>
-      <div class="step" id="st3"><span>🛡️ Checking your allergies & dislikes</span><span class="st">waiting</span></div>
+    <div class="ana-center">
+      <svg class="ana-logo" viewBox="0 0 200 200" aria-hidden="true">
+        <g class="lg-bubble"><g transform="translate(125, 45) scale(1) translate(-125, -45)">
+          <path d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
+          <path d="M 120 70 C 105 70, 100 55, 115 45 C 115 30, 135 25, 145 35 C 155 25, 175 35, 170 50 C 180 60, 165 75, 150 70 C 140 78, 125 75, 120 70 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="4" stroke-linejoin="round"/>
+          <circle cx="135" cy="50" r="4" fill="#FBF9F3"/>
+          <circle cx="150" cy="50" r="4" fill="#FBF9F3"/>
+          <path d="M 140 58 Q 142.5 61, 145 58" fill="none" stroke="#FBF9F3" stroke-width="2.5" stroke-linecap="round"/>
+        </g></g>
+        <g class="lg-sticks"><g transform="translate(100, 115) rotate(30) translate(-100, -115)">
+          <path d="M 60 50 L 142 132 C 145 135, 140 140, 137 137 L 55 55 C 52 52, 57 47, 60 50 Z" fill="#1C1A17"/>
+          <path d="M 72 42 L 154 124 C 157 127, 152 132, 149 129 L 67 47 C 64 44, 69 39, 72 42 Z" fill="#1C1A17"/>
+        </g></g>
+        <rect x="80" y="165" width="40" height="12" rx="6" fill="#1C1A17"/>
+        <path d="M 45 115 C 45 115, 40 165, 100 165 C 160 165, 155 115, 155 115 C 155 115, 130 120, 100 120 C 70 120, 45 115, 45 115 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M 55 115 C 55 102, 75 92, 100 92 C 125 92, 145 102, 145 115 Z" fill="#FBF9F3" stroke="#1C1A17" stroke-width="4"/>
+        <circle class="lg-bub b1" cx="80" cy="80" r="3" fill="#DCA842"/>
+        <circle class="lg-bub b2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
+        <circle class="lg-bub b3" cx="97" cy="84" r="2.5" fill="#DCA842"/>
+      </svg>
+      <h2>Reading your menu…</h2>
+      <p class="ana-status" id="anaStatus">Looking at the photo</p>
+      <div class="ana-track"><i id="anaBar"></i></div>
     </div>
-    <p class="anal-foot" id="analFoot">usually under 10 seconds</p>
-    <p class="anal-foot hidden" id="analErr" style="color:var(--accent);font-weight:700"></p>
-    <button class="btn btn-ghost hidden" id="analRetry" style="margin:14px auto 0;display:none" onclick="startAnalyze()">Try again</button>
   </section>
 
   <!-- ============ S1 LIST ============ -->
   <section class="screen hidden" id="s-list">
     <div class="topbar">
       <button class="back" onclick="go('home')">‹</button>
-      <h2>Your menu, decoded</h2>
-      <button class="back" title="History" onclick="go('history')">🗂</button>
+      <h2>Your Decoded Menu</h2>
+      <button class="coinbtn" id="curBtn" onclick="openCurrency()" title="Currency">$</button>
     </div>
     <div class="resto-bar">
       <span class="emoji">🍜</span>
@@ -661,18 +178,20 @@
     </div>
     <div class="cats" id="cats"></div>
     <div id="cards"></div>
-    <div class="fold hidden" id="foldBar" onclick="toggleFold()"></div>
-    <div class="folded-wrap hidden" id="foldedCards"></div>
     <p class="disclaimer">AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
     <div class="cart-bar" id="cartBar" onclick="openOrder()">
       <span class="sum" id="cartSum">Pick dishes to build your order</span>
-      <button class="go">🧾 My Order ›</button>
+      <button class="go">Order card ›</button>
     </div>
   </section>
 
   <!-- ============ S2 DETAIL (bottom sheet over the list) ============ -->
   <div id="detail-mask" class="hidden" onclick="closeDetail()"></div>
   <div id="detail-sheet" class="hidden"></div>
+
+  <!-- 货币选择弹层（7.13 A 案） -->
+  <div id="cur-mask" class="hidden" onclick="closeCurrency()"></div>
+  <div id="cur-sheet" class="hidden"></div>
 
   <!-- ============ S3 ORDER ============ -->
   <section class="screen hidden" id="s-order"></section>
@@ -685,10 +204,10 @@
     </div>
     <div class="htabs">
       <button class="cat on" id="ht-list" onclick="histView('list')">History</button>
-      <button class="cat" id="ht-map" onclick="histView('map')">🗺 Food Map</button>
+      <button class="cat" id="ht-map" onclick="histView('map')">Food Map</button>
     </div>
     <div id="hist-list">
-      <div class="hentry" onclick="go('list')">
+      <div class="hentry">
         <div class="d">Today · 12:40 · Chengdu, China</div>
         <div class="n">🍜 Ma Wang Zi 马旺子 · Sichuan</div>
         <div class="m">16 dishes scanned · 3 ordered · $30 ≈ ¥216</div>
@@ -702,6 +221,7 @@
     <div id="foodmap" class="hidden">
       <div class="counts">食迹 · 已钤二印 · 尝八味</div>
       <div id="chinamap"></div>
+      <div id="map-pins"></div>
       <div id="map-fallback" class="hidden">
         <div class="grid"></div>
         <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
@@ -729,8 +249,8 @@
   </section>
 
   <!-- original menu photo overlay -->
-  <div id="orig-mask" class="hidden" onclick="closeOrig(event)">
-    <div id="orig-paper" class="menu-paper" style="transform:none;width:min(100%,320px)">
+  <div id="orig-mask" class="hidden" onclick="this.classList.add('hidden')">
+    <div id="orig-paper" class="menu-paper" style="transform:none;width:100%">
       <h4>川辣小馆·川菜</h4>
       <div class="sec">经典凉菜</div>
       <div class="row"><span>夫妻肺片</span><span>25</span></div>
@@ -750,921 +270,19 @@
       <div class="row"><span>龙抄手</span><span>18</span></div>
       <div class="row"><span>红糖糍粑</span><span>16</span></div>
     </div>
-    <div id="orig-gallery" class="hidden"></div>
-    <button type="button" class="btn btn-ghost" style="color:#fff;border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.08)" onclick="closeOrig()">Close</button>
+    <img id="orig-photo" class="hidden" src="real-menu-mawangzi.jpg" alt="Menu photo" style="max-width:100%;max-height:82%;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)">
   </div>
 </div>
 
+<script src="js/data.js"></script>
+<script src="js/core.js"></script>
+<script src="js/home.js"></script>
+<script src="js/menu.js"></script>
+<script src="js/order.js"></script>
+<script src="js/map.js"></script>
 <script>
-/* =====================================================================
-   Chopstory — UI wired to analyze contract v1
-   POST /api/analyze { images: dataURL[] } → NDJSON dish | done | error
-   Progress page counts stream events; list cascade after done.
-   Camera path keeps offline 14-dish demo; Album path hits real API.
-   ===================================================================== */
-
-const FX = 7.16;
-const usdN = (cny) => {
-  const n = Number(cny) || 0;
-  return (n / FX).toFixed(n / FX >= 10 ? 0 : 1);
-};
-const parsePrice = (p) => {
-  if (p == null || p === "") return 0;
-  if (typeof p === "number") return p;
-  const m = String(p).replace(/,/g, "").match(/(\d+(?:\.\d+)?)/);
-  return m ? Number(m[1]) : 0;
-};
-const priceLabel = (p) => {
-  if (p == null || p === "") return "—";
-  if (typeof p === "number") return String(p);
-  return String(p).replace(/^¥\s*/, "");
-};
-const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
-
-/* ---------------- profile (Jake defaults: peanut allergy, mild spice) ---------------- */
-let profile = JSON.parse(localStorage.getItem("ml.profile") || "null") || {
-  allergens: ["peanut"], avoid: [], spice: 1,
-};
-if (profile.allergens) {
-  profile.allergens = [...new Set(profile.allergens.map((a) =>
-    (a === "crustacean" || a === "mollusk") ? "shellfish" : a
-  ))];
-}
-const ALLERGEN_LABEL = {
-  peanut:"Peanut", tree_nut:"Tree nut", shellfish:"Shellfish", gluten:"Gluten",
-  soy:"Soy", egg:"Egg", dairy:"Dairy", sesame:"Sesame", fish:"Fish",
-  crustacean:"Shellfish", mollusk:"Shellfish",
-};
-const AVOID_LABEL = { offal:"Organ meats", cilantro:"Cilantro", bone_in:"On the bone", fatty:"Fatty pork", whole_head:"Whole fish head", chicken_feet:"Chicken feet" };
-const ALLERGEN_CN = {
-  peanut:"花生", tree_nut:"坚果", shellfish:"虾蟹贝类", gluten:"麸质（面筋）",
-  soy:"大豆", egg:"鸡蛋", dairy:"奶制品", sesame:"芝麻", fish:"鱼类",
-  crustacean:"虾蟹类", mollusk:"贝类",
-};
-const AVOID_CN = { offal:"内脏", cilantro:"香菜", bone_in:"带骨的肉", fatty:"肥肉", whole_head:"整鱼", chicken_feet:"鸡爪" };
-const ERROR_COPY = {
-  not_a_menu: "That doesn't look like a menu photo. Try again with a clearer shot of the menu.",
-  unreadable: "We couldn't read that photo clearly. Better light and a flatter page help.",
-  upstream_error: "Something went wrong on our side. Please retry.",
-  invalid_images: "That image couldn't be used. Try another photo.",
-  invalid_json: "Something went wrong on our side. Please retry.",
-  too_many_images: "Too many photos — please send up to 9.",
-};
-/* order-page requests — user picks in English, waiter view shows Chinese */
-const REQ_DEFS = [
-  { k:"mild",        en:"🌶 Mild spice",  cn:"请做微辣" },
-  { k:"no_spice",    en:"🚫 No spice",    cn:"完全不要辣" },
-  { k:"no_cilantro", en:"🌿 No cilantro", cn:"不要香菜" },
-  { k:"less_oil",    en:"🫗 Less oil",    cn:"请少油" },
-  { k:"no_msg",      en:"🧂 No MSG",      cn:"不要味精" },
-];
-let requests = null; // lazily seeded from profile on first order view
-function seedRequests() {
-  if (requests) return;
-  requests = new Set();
-  if (profile.spice <= 1) requests.add("mild");
-  if (profile.avoid.includes("cilantro")) requests.add("no_cilantro");
-}
-function toggleReq(k) { requests.has(k) ? requests.delete(k) : requests.add(k); renderOrder(); }
-/* Heads-up section edit mode (order page §3) */
-let orderEditing = false;
-let customNote = "";
-function toggleProfileItem(group, v) {
-  const arr = profile[group];
-  const i = arr.indexOf(v);
-  i >= 0 ? arr.splice(i, 1) : arr.push(v);
-  renderOrder();
-}
-function orderEdit(on) {
-  orderEditing = on;
-  if (!on) {
-    localStorage.setItem("ml.profile", JSON.stringify(profile));
-    renderProfileStrip();
-    if (menuDishes.length) renderList();
-  }
-  renderOrder();
-}
-
-/* ---------------- demo dishes (offline camera path · 14 道演示点)
-   Aligned to contract v1: category, nameCn, pinyin, name, description,
-   price, spicy, vegetarian, allergens[{type,level}], textures[], ingredients[], story|null
-   Client-only: emoji for hero. No flavorBars / signature / howToEat / cuisine. */
-const DEMO_DISHES = [
-  { id:1, category:"Cold Starters", nameCn:"夫妻肺片", pinyin:"fū qī fèi piàn", name:"'Couple's Lung Slices' — No Lungs, Promise", emoji:"🥩",
-    description:"Despite the terrifying translation, there are no lungs: thin-sliced beef, tripe and tongue in fragrant chili oil. One of Sichuan's most beloved cold starters.",
-    story:"Named after a husband-and-wife street vendor duo in 1930s Chengdu whose offal salad became legendary — 'lung' stuck from an old word mix-up.",
-    price:"25", spicy:2, vegetarian:false,
-    allergens:[{type:"peanut",level:"may_contain"},{type:"sesame",level:"may_contain"}], textures:["offal"], ingredients:["Beef & tripe","Chili oil","Celery","Peanut crumbs"] },
-  { id:2, category:"Cold Starters", nameCn:"口水鸡", pinyin:"kǒu shuǐ jī", name:"Mouthwatering Chicken (Served Cold)", emoji:"🍗",
-    description:"Poached chicken served cool under a glossy chili-sesame sauce. 'Saliva chicken' just means it makes your mouth water — and yes, cold chicken is intentional here.",
-    story:null, price:"24", spicy:2, vegetarian:false,
-    allergens:[{type:"sesame",level:"contains"},{type:"peanut",level:"may_contain"}], textures:["bone_in"], ingredients:["Poached chicken","Chili oil","Sesame","Garlic"] },
-  { id:3, category:"Cold Starters", nameCn:"钵钵鸡", pinyin:"bō bō jī", name:"Bobo Chicken — Cold Skewers in Chili Broth", emoji:"🍢",
-    description:"Skewers of chicken and vegetables soaking in a cold, fragrant chili-sesame broth. Not 'Bowl Bowl Chicken' — bō is the clay pot it's served in.",
-    story:"From Leshan near Chengdu: vendors carried clay pots (钵) of skewers through the streets; the name is literally the sound of the pot.",
-    price:"28", spicy:2, vegetarian:false,
-    allergens:[{type:"sesame",level:"contains"},{type:"peanut",level:"may_contain"}], textures:[], ingredients:["Chicken skewers","Veggie skewers","Cold chili broth","Sesame"] },
-  { id:4, category:"Cold Starters", nameCn:"蒜泥白肉", pinyin:"suàn ní bái ròu", name:"Sliced Pork Belly in Garlic Sauce", emoji:"🥓",
-    description:"Paper-thin pork belly, briefly poached, draped in a punchy garlic-soy dressing. Silky and rich — the soft fat is the point here.",
-    story:null, price:"25", spicy:1, vegetarian:false,
-    allergens:[{type:"soy",level:"contains"},{type:"gluten",level:"may_contain"}], textures:["fatty"], ingredients:["Pork belly","Garlic","Soy dressing","Cucumber"] },
-  { id:5, category:"Cold Starters", nameCn:"凉拌皮蛋", pinyin:"liáng bàn pí dàn", name:"Century Egg with Chili Dressing", emoji:"🥚",
-    description:"Preserved duck egg — translucent amber white, creamy dark yolk — under a bright chili-garlic dressing. The look surprises first-timers; the taste is mellow and savory.",
-    story:null, price:"18", spicy:1, vegetarian:true,
-    allergens:[{type:"egg",level:"contains"}], textures:["century egg"], ingredients:["Century egg","Chili dressing","Garlic"] },
-  { id:6, category:"Cold Starters", nameCn:"凉拌折耳根", pinyin:"liáng bàn zhé ěr gēn", name:"Houttuynia Root Salad — The 'Fishy Herb'", emoji:"🌿",
-    description:"Crunchy roots of the houttuynia plant with chili and vinegar. Locals adore it; most visitors find the flavor intensely herbal-fishy. Order it to eat like a local — you've been warned.",
-    story:null, price:"15", spicy:1, vegetarian:true,
-    allergens:[], textures:["fishy herb"], ingredients:["Houttuynia root","Chili","Vinegar"] },
-  { id:7, category:"Mains", nameCn:"宫保鸡丁", pinyin:"gōng bǎo jī dīng", name:"Kung Pao Chicken", emoji:"🥜",
-    description:"The dish you know from home — diced chicken in a sweet-tangy glaze. But heads up: those crunchy bits are real roasted peanuts, and there are a lot of them.",
-    story:"Named after Ding Baozhen, a Qing-dynasty governor of Sichuan whose court title was 'Gongbao' (palace guardian) — his kitchen made this dish famous.",
-    price:"42", spicy:1, vegetarian:false,
-    allergens:[{type:"peanut",level:"contains"}], textures:[], ingredients:["Diced chicken","Roasted peanuts","Dried chili","Scallion"] },
-  { id:8, category:"Mains", nameCn:"麻婆豆腐", pinyin:"má pó dòu fu", name:"Mapo Tofu", emoji:"🌶️",
-    description:"Soft tofu in a bubbling chili-bean sauce with minced beef. The Sichuan pepper makes your lips tingle — like a faint electric buzz. That's 'má' (numbing), not more heat, and it's worth experiencing once.",
-    story:"Traced to a pockmarked ('ma') grandma ('po') who ran a tofu eatery by a Chengdu bridge in 1862 — her name is on the dish worldwide.",
-    price:"32", spicy:2, vegetarian:false,
-    allergens:[{type:"soy",level:"contains"},{type:"gluten",level:"may_contain"}], textures:[], ingredients:["Soft tofu","Minced beef","Chili bean paste","Sichuan pepper"] },
-  { id:9, category:"Mains", nameCn:"水煮鱼", pinyin:"shuǐ zhǔ yú", name:"Fish Fillets in Fiery Chili Oil", emoji:"🔥",
-    description:"'Water-boiled fish' sounds gentle. It is not: silky fish fillets arrive under a bubbling layer of chili oil, dried chilies and Sichuan pepper. For western palates this is a 3-alarm dish.",
-    story:null, price:"58", spicy:3, vegetarian:false,
-    allergens:[{type:"fish",level:"contains"}], textures:[], ingredients:["Fish fillets","Chili oil","Sichuan pepper","Bean sprouts"] },
-  { id:10, category:"Mains", nameCn:"鱼香肉丝", pinyin:"yú xiāng ròu sī", name:"'Fish-Fragrant' Pork — No Fish Involved", emoji:"🥢",
-    description:"Shredded pork in a glossy sweet-sour-garlicky sauce. 'Fish-fragrant' names the seasoning style once used for fish — there is no fish or seafood in it. Safe for seafood allergies.",
-    story:null, price:"36", spicy:1, vegetarian:false,
-    allergens:[{type:"soy",level:"contains"}], textures:[], ingredients:["Shredded pork","Bamboo shoots","Wood ear","Pickled chili & garlic"] },
-  { id:11, category:"Mains", nameCn:"蚂蚁上树", pinyin:"mǎ yǐ shàng shù", name:"'Ants Climbing a Tree' — Glass Noodles & Pork", emoji:"🍝",
-    description:"No ants! Glass noodles tossed with minced pork in a savory bean sauce — the pork specks clinging to the noodles look like ants on branches. Comforting, mildly spicy.",
-    story:null, price:"30", spicy:1, vegetarian:false,
-    allergens:[{type:"soy",level:"contains"}], textures:[], ingredients:["Glass noodles","Minced pork","Bean sauce"] },
-  { id:12, category:"Vegetables", nameCn:"干煸四季豆", pinyin:"gān biān sì jì dòu", name:"Dry-Fried Green Beans (Usually Not Vegetarian!)", emoji:"🫛",
-    description:"Blistered green beans, wrinkled and smoky. Looks like a vegetable dish — but the classic recipe stir-fries them with minced pork and tiny dried shrimp. Vegetarians: ask first.",
-    story:null, price:"28", spicy:1, vegetarian:false,
-    allergens:[{type:"shellfish",level:"may_contain"}], textures:["usually has minced pork"], ingredients:["Green beans","Minced pork","Dried shrimp","Dried chili"] },
-  { id:13, category:"Rice & Noodles", nameCn:"龙抄手", pinyin:"lóng chāo shǒu", name:"Long Chao Shou — Silky Pork Wontons", emoji:"🥟",
-    description:"Delicate pork wontons in a mellow broth — not 'Copying Hands', whatever the machine translation says. Thin silky wrappers, gentle flavor, a safe and beloved order.",
-    story:"'Chāo shǒu' means 'crossed hands': the wrapper folds like arms tucked into sleeves against the cold. Chengdu's Long Chao Shou shop has served them since 1941.",
-    price:"18", spicy:0, vegetarian:false,
-    allergens:[{type:"gluten",level:"contains"},{type:"egg",level:"may_contain"}], textures:[], ingredients:["Pork wontons","Clear broth","Scallion"] },
-  { id:14, category:"Dessert", nameCn:"红糖糍粑", pinyin:"hóng táng cí bā", name:"Brown-Sugar Sticky Rice Cakes", emoji:"🍡",
-    description:"Warm sticky-rice cakes, fried until lightly crisp, drenched in dark brown-sugar syrup. Sweet, chewy, zero spice — the perfect way to land after a fiery meal.",
-    story:null, price:"16", spicy:0, vegetarian:true,
-    allergens:[], textures:[], ingredients:["Sticky rice","Brown sugar syrup","Soybean flour dusting"] },
-];
-
-const HERO_EMOJI = ["🍜","🥢","🍲","🥘","🥟","🌶️","🥩","🍗","🐟","🥬","🍵","🍡","🥓","🥚","🌿","🔥"];
-function dishEmoji(d) {
-  if (d.emoji) return d.emoji;
-  return HERO_EMOJI[(Number(d.id) || 1) % HERO_EMOJI.length];
-}
-function normalizeDish(raw) {
-  const allergens = (raw.allergens || []).map((a) => {
-    if (a && a.type) {
-      let type = a.type;
-      if (type === "crustacean" || type === "mollusk") type = "shellfish";
-      const level = a.level === "may" || a.level === "may_contain" ? "may_contain" : "contains";
-      return { type, level };
-    }
-    if (a && a.t) {
-      let type = a.t;
-      if (type === "crustacean" || type === "mollusk") type = "shellfish";
-      const level = a.l === "may" || a.l === "may_contain" ? "may_contain" : "contains";
-      return { type, level };
-    }
-    return null;
-  }).filter(Boolean);
-  return {
-    id: raw.id,
-    category: raw.category ?? raw.cat ?? null,
-    nameCn: raw.nameCn || "",
-    pinyin: raw.pinyin || "",
-    name: raw.name || raw.nameCn || "Dish",
-    description: raw.description || raw.desc || "",
-    price: raw.price == null ? null : String(raw.price),
-    spicy: Math.max(0, Math.min(3, Number(raw.spicy) || 0)),
-    vegetarian: !!(raw.vegetarian ?? raw.veg),
-    allergens,
-    textures: Array.isArray(raw.textures) ? raw.textures.map(String) : [],
-    ingredients: Array.isArray(raw.ingredients) ? raw.ingredients.map(String) : [],
-    story: raw.story == null || raw.story === "" ? null : String(raw.story),
-    emoji: raw.emoji || null,
-  };
-}
-
-/* ---------------- personalization ---------------- */
-function textureKey(t) {
-  const s = String(t).toLowerCase();
-  if (/offal|organ|tripe|lung|肚|内脏/.test(s)) return "offal";
-  if (/bone|带骨/.test(s)) return "bone_in";
-  if (/fatty|肥|wobbly/.test(s)) return "fatty";
-  if (/whole.?head|whole fish|整鱼/.test(s)) return "whole_head";
-  if (/chicken.?feet|鸡爪|凤爪/.test(s)) return "chicken_feet";
-  if (/cilantro|香菜/.test(s)) return "cilantro";
-  return null;
-}
-function textureLabel(t) {
-  const k = textureKey(t);
-  if (k && AVOID_LABEL[k]) return AVOID_LABEL[k];
-  const known = {
-    offal:"🫀 organ meats", "organ meats":"🫀 organ meats",
-    bone_in:"🦴 on the bone", "on the bone":"🦴 on the bone",
-    fatty:"🥓 fatty cut", "fatty pork":"🥓 fatty cut",
-    whole_head:"🐟 whole head", "chicken feet":"🐔 chicken feet",
-    "century egg":"🥚 century egg", "fishy herb":"🌿 fishy herb — dare?",
-    "usually has minced pork":"🍖 usually has minced pork",
-  };
-  const low = String(t).toLowerCase();
-  return known[low] || known[t] || ("· " + t);
-}
-function personalHits(d) {
-  const hits = [];
-  for (const a of d.allergens) {
-    if (a.level === "contains" && profile.allergens.includes(a.type)) {
-      hits.push("contains " + (ALLERGEN_LABEL[a.type] || a.type).toLowerCase());
-    }
-  }
-  for (const t of d.textures) {
-    const k = textureKey(t);
-    if (k && profile.avoid.includes(k)) hits.push((AVOID_LABEL[k] || t).toLowerCase());
-  }
-  return hits;
-}
-function previewTags(d) {
-  const tags = [];
-  const hits = personalHits(d);
-  if (hits.length) tags.push(`<span class="tag tag-red">⚠ ${esc(hits[0])}</span>`);
-  for (const t of d.textures) {
-    if (tags.length >= 2) break;
-    const k = textureKey(t);
-    if (k && profile.avoid.includes(k)) continue;
-    tags.push(`<span class="tag tag-gray">${esc(textureLabel(t))}</span>`);
-  }
-  if (tags.length < 2 && d.vegetarian) tags.push(`<span class="tag tag-green">🌱 vegetarian</span>`);
-  return tags.join("");
-}
-
-/* ---------------- state ---------------- */
-const order = new Map();
-let currentCat = "All";
-let menuDishes = [];
-let waiterMode = false;
-let waiterSeen = false;
-let scanSource = "camera";
-let lastImages = [];
-let lastPreviewUrls = [];
-let analyzing = false;
-
-/* ---------------- navigation ---------------- */
-function go(name) {
-  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
-  document.getElementById("s-" + name).classList.remove("hidden");
-  document.getElementById("s-" + name).scrollTop = 0;
-}
-function startScan(src) {
-  scanSource = src;
-  if (src === "album") pickAlbum();
-  else go("camera");
-}
-function pickAlbum() {
-  const input = document.getElementById("albumInput");
-  if (!input) return;
-  input.value = "";
-  input.click();
-}
-function clearPreviewUrls() {
-  for (const u of lastPreviewUrls) {
-    try { URL.revokeObjectURL(u); } catch {}
-  }
-  lastPreviewUrls = [];
-}
-function renderThumbPreview(urls) {
-  const thumb = document.getElementById("anaThumb");
-  if (!urls?.length) {
-    thumb.textContent = "川辣小馆·川菜 —— 夫妻肺片 25 · 宫保鸡丁 42 · 麻婆豆腐 32 · 水煮鱼 58 · 龙抄手 18 ……";
-    return;
-  }
-  if (urls.length === 1) {
-    thumb.innerHTML = `<img src="${urls[0]}" alt="Menu photo">`;
-    return;
-  }
-  thumb.innerHTML =
-    `<div class="thumb-strip">${urls.map((u, i) =>
-      `<div class="tpage"><img src="${u}" alt="Page ${i + 1}"><span class="pg">${i + 1}/${urls.length}</span></div>`
-    ).join("")}</div>` +
-    `<div class="thumb-meta">${urls.length} pages selected</div>`;
-}
-function showOrig() {
-  const paper = document.getElementById("orig-paper");
-  const gallery = document.getElementById("orig-gallery");
-  const urls = lastPreviewUrls.length ? lastPreviewUrls : lastImages;
-  const hasAlbum = scanSource === "album" && urls.length > 0;
-  paper.classList.toggle("hidden", hasAlbum);
-  gallery.classList.toggle("hidden", !hasAlbum);
-  if (hasAlbum) {
-    gallery.innerHTML = urls.map((u, i) =>
-      `<img src="${u}" alt="Menu page ${i + 1}">`
-    ).join("");
-  } else {
-    gallery.innerHTML = "";
-  }
-  document.getElementById("orig-mask").classList.remove("hidden");
-}
-function closeOrig(ev) {
-  if (ev && ev.target !== document.getElementById("orig-mask") && ev.target?.tagName !== "BUTTON") return;
-  document.getElementById("orig-mask").classList.add("hidden");
-}
-
-/* ---------------- profile sheet ---------------- */
-function renderProfileStrip() {
-  const el = document.getElementById("profileStrip");
-  const parts = [
-    ...profile.allergens.map(a => "🚫 " + ALLERGEN_LABEL[a]),
-    ...profile.avoid.map(a => "🙅 " + AVOID_LABEL[a]),
-    "🌶 " + ["No spice","Mild","Medium","Hot ok"][profile.spice],
-  ];
-  el.innerHTML = parts.map(p => `<span class="tag tag-gray">${p}</span>`).join("") +
-    ` <button class="tag" style="border:1.5px solid var(--accent);background:none;color:var(--accent);cursor:pointer;min-height:28px" onclick="openSheet()">✎ edit</button>`;
-}
-function openSheet() {
-  document.getElementById("sheet-mask").classList.remove("hidden");
-  document.getElementById("sheet").classList.remove("hidden");
-  document.querySelectorAll("#sheet .chips").forEach(g => {
-    const group = g.dataset.group;
-    g.querySelectorAll(".chip").forEach(c => {
-      const v = c.dataset.v;
-      const on = group === "spice" ? String(profile.spice) === v : profile[group].includes(v);
-      c.classList.toggle("on", on);
-      c.onclick = () => {
-        if (group === "spice") { g.querySelectorAll(".chip").forEach(x => x.classList.remove("on")); c.classList.add("on"); }
-        else c.classList.toggle("on");
-      };
-    });
-  });
-}
-function closeSheet(save) {
-  if (save) {
-    profile.allergens = [...document.querySelectorAll('[data-group="allergens"] .chip.on')].map(c => c.dataset.v);
-    profile.avoid = [...document.querySelectorAll('[data-group="avoid"] .chip.on')].map(c => c.dataset.v);
-    const sp = document.querySelector('[data-group="spice"] .chip.on');
-    profile.spice = sp ? Number(sp.dataset.v) : 1;
-    localStorage.setItem("ml.profile", JSON.stringify(profile));
-  }
-  document.getElementById("sheet-mask").classList.add("hidden");
-  document.getElementById("sheet").classList.add("hidden");
-  renderProfileStrip();
-  if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
-}
-
-/* ---------------- analyze flow ---------------- */
-function setStep(id, cls, txt) {
-  const s = document.getElementById(id);
-  s.className = "step " + cls;
-  s.querySelector(".st").textContent = txt;
-}
-function setAnaCount(n) {
-  document.getElementById("anaCount").textContent = String(n);
-}
-function showAnalyzeError(code) {
-  analyzing = false;
-  document.getElementById("analFoot")?.classList.add("hidden");
-  const err = document.getElementById("analErr");
-  if (err) {
-    err.classList.remove("hidden");
-    err.textContent = ERROR_COPY[code] || ERROR_COPY.upstream_error;
-  }
-  const retry = document.getElementById("analRetry");
-  if (retry) {
-    retry.classList.remove("hidden");
-    retry.style.display = "block";
-  }
-  setStep("st1", "done", "done ✓");
-  setStep("st2", "", "failed");
-  setStep("st3", "", "—");
-}
-function clearAnalyzeError() {
-  document.getElementById("analFoot")?.classList.remove("hidden");
-  const err = document.getElementById("analErr");
-  if (err) {
-    err.classList.add("hidden");
-    err.textContent = "";
-  }
-  const retry = document.getElementById("analRetry");
-  if (retry) {
-    retry.classList.add("hidden");
-    retry.style.display = "none";
-  }
-}
-
-async function compressBlob(blob) {
-  const bitmap = await createImageBitmap(blob);
-  const scale = Math.min(1, 1568 / Math.max(bitmap.width, bitmap.height));
-  const canvas = document.createElement("canvas");
-  canvas.width = Math.max(1, Math.round(bitmap.width * scale));
-  canvas.height = Math.max(1, Math.round(bitmap.height * scale));
-  canvas.getContext("2d").drawImage(bitmap, 0, 0, canvas.width, canvas.height);
-  bitmap.close?.();
-  return canvas.toDataURL("image/jpeg", 0.8);
-}
-async function compressImageFromUrl(url) {
-  const res = await fetch(url);
-  return compressBlob(await res.blob());
-}
-async function compressFiles(files) {
-  const list = [...files].slice(0, 9);
-  const out = [];
-  for (const file of list) {
-    if (!file || !String(file.type || "").startsWith("image/")) continue;
-    out.push(await compressBlob(file));
-  }
-  return out;
-}
-
-async function startAnalyze(images) {
-  if (analyzing) return;
-  clearAnalyzeError();
-  if (scanSource === "album") {
-    renderThumbPreview(lastPreviewUrls.length ? lastPreviewUrls : (images || lastImages));
-  } else {
-    renderThumbPreview([]);
-  }
-  setAnaCount(0);
-  setStep("st1", "doing", "reading…");
-  setStep("st2", "", "waiting");
-  setStep("st3", "", "waiting");
-  go("analyzing");
-  analyzing = true;
-  order.clear();
-  menuDishes = [];
-
-  if (scanSource === "camera" && !images?.length) {
-    await runDemoAnalyze();
-    return;
-  }
-  try {
-    lastImages = images?.length ? images : lastImages;
-    if (!lastImages.length) {
-      showAnalyzeError("invalid_images");
-      return;
-    }
-    await streamDishes(lastImages);
-  } catch {
-    showAnalyzeError("upstream_error");
-  }
-}
-
-async function onAlbumSelected(ev) {
-  const files = ev.target?.files;
-  if (!files || !files.length) return;
-  scanSource = "album";
-  clearPreviewUrls();
-  lastPreviewUrls = [...files].slice(0, 9).map((f) => URL.createObjectURL(f));
-  try {
-    const images = await compressFiles(files);
-    if (!images.length) {
-      go("analyzing");
-      showAnalyzeError("invalid_images");
-      return;
-    }
-    await startAnalyze(images);
-  } catch {
-    go("analyzing");
-    showAnalyzeError("invalid_images");
-  }
-}
-
-function sleep(ms) { return new Promise((r) => setTimeout(r, ms)); }
-
-async function runDemoAnalyze() {
-  setStep("st1", "doing", "reading…");
-  await sleep(700);
-  setStep("st1", "done", "done ✓");
-  setStep("st2", "doing", "translating…");
-  let n = 0;
-  for (const raw of DEMO_DISHES) {
-    await sleep(90);
-    n += 1;
-    setAnaCount(n);
-    if (n === 4) {
-      setStep("st2", "done", "done ✓");
-      setStep("st3", "doing", "checking…");
-    }
-  }
-  setStep("st3", "done", "done ✓");
-  await sleep(280);
-  presentMenu(DEMO_DISHES.map(normalizeDish), "Chuanla Kitchen 川辣小馆");
-}
-
-async function streamDishes(images) {
-  setStep("st1", "doing", "reading…");
-  const res = await fetch("/api/analyze", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ images }),
-  });
-  if (res.status === 400) {
-    let code = "invalid_images";
-    try { const j = await res.json(); if (j && j.code) code = j.code; } catch {}
-    showAnalyzeError(code);
-    return;
-  }
-  if (!res.ok || !res.body) {
-    showAnalyzeError("upstream_error");
-    return;
-  }
-
-  setStep("st1", "done", "done ✓");
-  setStep("st2", "doing", "translating…");
-
-  const collected = [];
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buf = "";
-  let sawDone = false;
-  let failed = false;
-
-  while (true) {
-    const { done, value } = await reader.read();
-    if (done) break;
-    buf += decoder.decode(value, { stream: true });
-    const lines = buf.split("\n");
-    buf = lines.pop() || "";
-    for (const line of lines) {
-      if (!line.trim()) continue;
-      let ev;
-      try { ev = JSON.parse(line); } catch { continue; }
-      if (ev.type === "dish" && ev.data) {
-        collected.push(normalizeDish(ev.data));
-        setAnaCount(collected.length);
-        if (collected.length === 1) {
-          setStep("st2", "done", "done ✓");
-          setStep("st3", "doing", "checking…");
-        }
-      } else if (ev.type === "error") {
-        failed = true;
-        showAnalyzeError(ev.code || "upstream_error");
-        try { reader.cancel(); } catch {}
-        return;
-      } else if (ev.type === "done") {
-        sawDone = true;
-      }
-    }
-  }
-  if (buf.trim() && !failed) {
-    try {
-      const ev = JSON.parse(buf);
-      if (ev.type === "dish" && ev.data) collected.push(normalizeDish(ev.data));
-      if (ev.type === "error") { showAnalyzeError(ev.code || "upstream_error"); return; }
-      if (ev.type === "done") sawDone = true;
-    } catch {}
-  }
-  if (failed) return;
-  if (!collected.length && !sawDone) {
-    showAnalyzeError("upstream_error");
-    return;
-  }
-  setAnaCount(collected.length);
-  setStep("st2", "done", "done ✓");
-  setStep("st3", "done", "done ✓");
-  await sleep(220);
-  presentMenu(collected, scanSource === "album" ? "Your menu" : "Ma Wang Zi 马旺子");
-}
-
-function presentMenu(dishes, restoName) {
-  analyzing = false;
-  menuDishes = dishes.slice();
-  currentCat = "All";
-  foldOpen = false;
-  document.getElementById("restoName").textContent = restoName;
-  const meta = document.querySelector(".resto-bar .m");
-  if (meta) {
-    const pages = lastImages.length > 1 ? `${lastImages.length} pages · ` : "";
-    meta.innerHTML = `${pages}<span id="dishCount">${menuDishes.length}</span> dishes`;
-  } else {
-    document.getElementById("dishCount").textContent = menuDishes.length;
-  }
-  renderCats();
-  renderList(true);
-  go("list");
-}
-
-/* ---------------- list rendering ---------------- */
-function categoryOrder(dishes) {
-  const seen = [];
-  for (const d of dishes) {
-    const c = d.category || "Other";
-    if (!seen.includes(c)) seen.push(c);
-  }
-  return seen;
-}
-function renderCats() {
-  const cats = ["All", ...categoryOrder(menuDishes)];
-  const count = (c) => c === "All" ? menuDishes.length : menuDishes.filter((d) => (d.category || "Other") === c).length;
-  document.getElementById("cats").innerHTML = cats.filter((c) => count(c) > 0).map((c) =>
-    `<button class="cat ${c === currentCat ? "on" : ""}" onclick="setCat(${JSON.stringify(c)})">${esc(c)}<i>${count(c)}</i></button>`
-  ).join("");
-}
-function setCat(c) { currentCat = c; renderCats(); renderList(); }
-
-function speak(cn, ev) {
-  ev.stopPropagation();
-  const u = new SpeechSynthesisUtterance(cn); u.lang = "zh-CN"; u.rate = .85;
-  speechSynthesis.cancel(); speechSynthesis.speak(u);
-}
-function pcardHTML(d, i = 0, stagger = false) {
-  const inOrder = order.get(d.id) || 0;
-  const p = parsePrice(d.price);
-  const pl = priceLabel(d.price);
-  return `<div class="pcard" style="--d:${stagger ? Math.min(i, 14) * 40 : 0}ms" onclick="openDetail(${d.id})">
-    ${inOrder ? `<span class="qty-badge">×${inOrder}</span>` : ""}
-    <button class="addbtn ${inOrder ? "in" : ""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>
-    <div class="pcard-top">
-      <div>
-        <div class="name">${dishEmoji(d)} ${esc(d.name)}</div>
-        <div class="cn">${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""} <button class="speak" onclick="speak(${JSON.stringify(d.nameCn)},event)">🔊</button></div>
-      </div>
-      <div class="right price-dual"><b>≈ $${usdN(p)}</b><br><span>¥${esc(pl)}</span>
-        <div class="chili">${d.spicy ? "🌶".repeat(d.spicy) : `<span class="ns">not spicy</span>`}</div>
-      </div>
-    </div>
-    <div class="tags">${previewTags(d)}</div>
-  </div>`;
-}
-let foldOpen = false;
-function toggleFold() { foldOpen = !foldOpen; renderList(); }
-function renderList(stagger = false) {
-  const pool = menuDishes.filter((d) => currentCat === "All" || (d.category || "Other") === currentCat);
-  const shown = [], folded = [];
-  for (const d of pool) (personalHits(d).length ? folded : shown).push(d);
-  let idx = 0, html = "";
-  if (currentCat === "All") {
-    for (const c of categoryOrder(menuDishes)) {
-      const grp = shown.filter((d) => (d.category || "Other") === c);
-      if (!grp.length) continue;
-      html += `<div class="sechead" style="--d:${stagger ? idx * 40 : 0}ms"><b>${esc(c)}</b><span></span></div>`;
-      html += grp.map((d) => pcardHTML(d, ++idx, stagger)).join("");
-    }
-  } else {
-    html = shown.map((d) => pcardHTML(d, idx++, stagger)).join("");
-  }
-  document.getElementById("cards").innerHTML = html;
-  const fb = document.getElementById("foldBar"), fw = document.getElementById("foldedCards");
-  if (folded.length) {
-    fb.classList.remove("hidden");
-    const reasons = [...new Set(folded.flatMap(personalHits))].join(" · ");
-    fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${esc(reasons)} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
-    fw.classList.toggle("hidden", !foldOpen);
-    fw.innerHTML = foldOpen ? folded.map((d) => pcardHTML(d)).join("") : "";
-  } else { fb.classList.add("hidden"); fw.classList.add("hidden"); fw.innerHTML = ""; }
-  renderCartBar();
-}
-
-/* ---------------- detail ---------------- */
-function openDetail(id) {
-  const d = menuDishes.find((x) => x.id === id);
-  if (!d) return;
-  const hits = personalHits(d);
-  const qty = order.get(id) || 0;
-  const p = parsePrice(d.price);
-  const pl = priceLabel(d.price);
-  const LVL = {
-    contains: `<span class="tag tag-red lvl">contains</span>`,
-    may_contain: `<span class="tag tag-amber lvl">may contain</span>`,
-  };
-  const sheet = document.getElementById("detail-sheet");
-  const keepScroll = !sheet.classList.contains("hidden") ? sheet.scrollTop : 0;
-  sheet.innerHTML = `
-    <div class="grabber"></div>
-    <button class="dclose" onclick="closeDetail()" aria-label="Close">✕</button>
-    <div class="hero">${dishEmoji(d)}</div>
-    <div class="dname">${esc(d.name)}</div>
-    <div class="dcn">${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak(${JSON.stringify(d.nameCn)},event)">🔊</button></div>
-    <div class="dprice price-dual"><b>≈ $${usdN(p)}</b> <span>· ¥${esc(pl)} on menu</span></div>
-    ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${esc(hits.join(", "))}</div>` : ""}
-    ${d.description ? `<div class="quote">${esc(d.description)}</div>` : ""}
-    ${d.spicy ? `<div class="dsec"><div class="gt">Heat</div><div class="ing-chips"><span class="ing">${"🌶".repeat(d.spicy)} ${["","Mild","Medium","Hot"][d.spicy]}</span></div></div>` : ""}
-    <div class="dsec"><div class="gt">Main ingredients</div>
-      <div class="ing-chips">${d.ingredients.length ? d.ingredients.map((i) => `<span class="ing">${esc(i)}</span>`).join("") : `<span class="ing" style="color:var(--muted)">Not listed</span>`}</div></div>
-    <div class="dsec"><div class="gt">Allergens</div>
-      ${d.allergens.length ? d.allergens.map((a) => `<div class="allergen-row">${esc(ALLERGEN_LABEL[a.type] || a.type)} ${LVL[a.level] || LVL.contains}</div>`).join("") : `<div class="allergen-row" style="color:var(--muted)">None flagged for the typical recipe</div>`}
-    </div>
-    ${d.textures.length ? `<div class="dsec"><div class="gt">Heads-up</div>
-      <div class="ing-chips">${d.textures.map((t) => `<span class="ing">${esc(textureLabel(t))}</span>`).join("")}</div></div>` : ""}
-    ${d.story ? `<div class="dsec"><div class="gt">The story</div><p class="story">${esc(d.story)}</p></div>` : ""}
-    <div class="detail-cta">
-      ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
-            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈ $${usdN(p)}</button>`}
-    </div>`;
-  document.getElementById("detail-mask").classList.remove("hidden");
-  sheet.classList.remove("hidden");
-  sheet.scrollTop = keepScroll;
-}
-function closeDetail() {
-  document.getElementById("detail-mask").classList.add("hidden");
-  document.getElementById("detail-sheet").classList.add("hidden");
-}
-
-/* ---------------- order ---------------- */
-function addToOrder(id, delta) {
-  const q = (order.get(id) || 0) + delta;
-  if (q <= 0) order.delete(id); else order.set(id, q);
-  if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
-  renderCartBar();
-}
-function findDish(id) { return menuDishes.find((d) => d.id === id); }
-function orderTotal() {
-  let t = 0;
-  for (const [id, q] of order) {
-    const d = findDish(id);
-    if (d) t += parsePrice(d.price) * q;
-  }
-  return t;
-}
-function renderCartBar() {
-  const n = [...order.values()].reduce((a, b) => a + b, 0);
-  const sum = document.getElementById("cartSum");
-  if (!n) sum.innerHTML = `<span style="opacity:.72">Pick dishes to build your order</span>`;
-  else sum.textContent = `🧾 ${n} dish${n > 1 ? "es" : ""} · ≈ $${usdN(orderTotal())} · ¥${orderTotal()}`;
-}
-function openOrder() { waiterMode = false; renderOrder(); go("order"); }
-function renderOrder() {
-  const items = [...order.entries()].map(([id, q]) => ({ d: findDish(id), q })).filter((x) => x.d);
-  const el = document.getElementById("s-order");
-  seedRequests();
-  if (waiterMode) { waiterSeen = true; orderEditing = false; }
-  const n = items.reduce((a, x) => a + x.q, 0);
-  const total = orderTotal();
-  const reqSel = REQ_DEFS.filter((r) => requests.has(r.k));
-  const allergenEN = profile.allergens.map((a) => ALLERGEN_LABEL[a] || a).join(", ");
-  const allergenCN = profile.allergens.map((a) => ALLERGEN_CN[a] || a).join("、");
-  const avoidEN = profile.avoid.map((a) => AVOID_LABEL[a] || a).join(", ");
-  const avoidCN = profile.avoid.map((a) => AVOID_CN[a] || a).join("、");
-  const keepScroll = el.scrollTop;
-  const NOTE = `<div class="onote">🧾 <b>This is an order card — the guest's picks, translated into Chinese.</b>这是一张点菜卡：顾客已选好以上菜品，请您确认后下单，谢谢！</div>`;
-
-  const dishesEN = items.length
-    ? items.map(({ d, q }) => `<div class="orow"><b>${dishEmoji(d)} ${esc(d.name)}<small>${esc(d.nameCn)}${d.pinyin ? " · " + esc(d.pinyin) : ""}</small></b><span class="q">×${q}</span><span class="price-dual"><span>≈ $${usdN(parsePrice(d.price) * q)}</span></span></div>`).join("")
-      + `<div class="total-sm">Total ≈ $${usdN(total)} · ¥${total}</div>`
-    : `<div class="sec-empty"><span class="e">🍽️</span>No dishes yet — browse the menu and tap ＋<br><button class="edit-btn" style="margin-top:10px" onclick="go('list')">Browse the menu</button></div>`;
-  const dishesCN = items.length
-    ? items.map(({ d, q }) => `<div class="orow"><b>${esc(d.nameCn)}<small>${esc(d.name)}</small></b><span class="q">×${q}</span><span>¥${parsePrice(d.price) * q}</span></div>`).join("")
-      + `<div class="total-sm">合计 ¥${total}</div>`
-    : `<div class="sec-empty"><span class="e">🍽️</span>还没有选菜</div>`;
-
-  const chipRow = (defs, group) => Object.entries(defs)
-    .filter(([k]) => !["crustacean", "mollusk"].includes(k))
-    .map(([k, l]) =>
-      `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${esc(l)}</button>`
-    ).join("");
-  const headsUpEN = orderEditing ? `
-      <div class="chip-group"><div class="gt">Allergies</div><div class="chips">${chipRow(ALLERGEN_LABEL, "allergens")}</div></div>
-      <div class="chip-group"><div class="gt">I'd rather avoid</div><div class="chips">${chipRow(AVOID_LABEL, "avoid")}</div></div>
-      <div class="chip-group"><div class="gt">Requests</div><div class="chips">${REQ_DEFS.map((r) => `<button class="chip ${requests.has(r.k) ? "on" : ""}" onclick="toggleReq('${r.k}')">${r.en}</button>`).join("")}</div></div>
-      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${esc(customNote)}" onchange="customNote=this.value"></div>
-    ` : `
-      <div class="note-row danger"><span class="k">⚠️ Allergies</span><span class="v ${allergenEN ? "" : "none"}">${esc(allergenEN) || "None set — tap Edit"}</span></div>
-      <div class="note-row"><span class="k">🙅 Avoid</span><span class="v ${avoidEN ? "" : "none"}">${esc(avoidEN) || "Nothing marked"}</span></div>
-      <div class="note-row"><span class="k">📝 Requests</span><span class="v ${reqSel.length ? "" : "none"}">${esc(reqSel.map((r) => r.en.replace(/^\S+ /, "")).join(" · ")) || "No requests"}</span></div>
-      ${customNote ? `<div class="note-row"><span class="k">💬 Note</span><span class="v">${esc(customNote)}</span></div>` : ""}
-    `;
-  const headsUpCN = `
-      <div class="note-row danger"><span class="k">⚠️ 过敏</span><span class="v ${allergenCN ? "" : "none"}">${allergenCN ? `我对<b>${esc(allergenCN)}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分` : "无"}</span></div>
-      <div class="note-row"><span class="k">🙅 忌口</span><span class="v ${avoidCN ? "" : "none"}">${avoidCN ? `尽量不要${esc(avoidCN)}` : "无"}</span></div>
-      <div class="note-row"><span class="k">📝 备注</span><span class="v ${(reqSel.length || customNote) ? "" : "none"}">${esc([reqSel.map((r) => r.cn).join("；"), customNote].filter(Boolean).join("；另外：")) || "无"}</span></div>
-    `;
-
-  el.className = "screen" + (waiterMode ? " waiter" : "");
-  el.innerHTML = `
-    <div class="topbar">
-      <button class="back" onclick="go('list')">‹</button>
-      <div class="otabs">
-        <button class="otab ${!waiterMode ? "on" : ""}" onclick="waiterMode=false;renderOrder()">For me<span class="s">English · $</span></button>
-        <button class="otab ${waiterMode ? "on" : ""}" onclick="waiterMode=true;renderOrder()">For waiter<span class="s">中文 · ¥</span></button>
-      </div>
-    </div>
-    ${!waiterMode && !waiterSeen ? `<div class="guide-banner" onclick="waiterMode=true;renderOrder()"><span>Done choosing? Switch to <b>For waiter</b> and hand your phone over</span><span class="arr">→</span></div>` : ""}
-    ${waiterMode ? `
-      <div class="bubble">您好！我想点以下这些菜 🙏</div>
-      <div class="sec-card"><div class="sec-head"><span class="gt">已选菜品</span><span class="gt">${n ? n + " 道" : ""}</span></div>${dishesCN}</div>
-      <div class="sec-card"><div class="sec-head"><span class="gt">请注意</span></div>${headsUpCN}</div>
-      ${NOTE}
-    ` : `
-      <div class="bubble">Hello! I'd like to order the following, please.</div>
-      <div class="sec-card"><div class="sec-head"><span class="gt">My picks</span><span class="gt">${n ? n + " items" : ""}</span></div>${dishesEN}</div>
-      <div class="sec-card"><div class="sec-head"><span class="gt">Heads-up for the kitchen</span><button class="edit-btn" onclick="orderEdit(${!orderEditing})">${orderEditing ? "Done ✓" : "✎ Edit"}</button></div>${headsUpEN}</div>
-      ${NOTE}
-    `}`;
-  el.scrollTop = keepScroll;
-}
-
-/* ---------------- history ---------------- */
-function histView(v) {
-  document.getElementById("ht-list").classList.toggle("on", v === "list");
-  document.getElementById("ht-map").classList.toggle("on", v === "map");
-  document.getElementById("hist-list").classList.toggle("hidden", v !== "list");
-  document.getElementById("foodmap").classList.toggle("hidden", v !== "map");
-  if (v === "map") renderChinaMap();
-}
-
-/* ---------------- Food Map: ECharts China map, 中国风 (lazy-loaded) ----------------
-   Lib: Apache ECharts via CDN · Map data: Aliyun DataV GeoJSON (free, no key)
-   风格：宣纸底 + 墨线省界 + 吃过的省份整块点亮（朱砂赭色）+ 城市涟漪点
-   Offline / CDN failure → falls back to the CSS pixel map (#map-fallback). */
-const VISITS = [
-  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", resto:"Ma Wang Zi 马旺子", meta:"3 dishes · $13 ≈ ¥90", date:"TODAY" },
-  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", resto:"Siji Minfu 四季民福", meta:"5 dishes · $64 ≈ ¥458", date:"JUL 09" },
-];
-const LIT_PROVINCES = ["四川省", "北京市"]; // 按省点亮（与 VISITS 城市对应）
-const OTHER_CITIES = [
-  ["Shanghai",121.47,31.23],["Guangzhou",113.26,23.13],["Shenzhen",114.06,22.54],["Xi'an",108.94,34.34],
-  ["Chongqing",106.55,29.56],["Hangzhou",120.15,30.27],["Kunming",102.83,24.88],["Guilin",110.29,25.27],
-  ["Harbin",126.53,45.80],["Lhasa",91.11,29.97],["Urumqi",87.62,43.83],["Qingdao",120.38,36.07],
-  ["Xiamen",118.09,24.48],["Dali",100.27,25.61],["Wuhan",114.31,30.59],["Changsha",112.94,28.23],
-];
-function visitCardHTML(v) {
-  return `<div style="width:172px;padding:10px;font-family:inherit">
-    <div style="height:72px;border-radius:2px;background:linear-gradient(135deg,#eee2c8,#d9c49c);display:grid;place-items:center;font-size:34px">${v.emoji}</div>
-    <div style="font-weight:800;font-size:13px;margin-top:8px;color:#262019">${v.resto}</div>
-    <div style="font-size:11.5px;color:#75695a;margin-top:2px">${v.meta}</div>
-    <div style="font-size:9.5px;color:#8f8270;margin-top:5px;font-family:'Songti SC',serif">${v.date} · ${v.cn} 已钤印</div>
-  </div>`;
-}
-function chinaGeoOption(interactive) {
-  return {
-    map: "china", roam: interactive, zoom: interactive ? 1.6 : 2.4, center: interactive ? [105, 33] : [105, 32],
-    itemStyle: { areaColor: "#ece3cc", borderColor: "rgba(38,32,25,.35)", borderWidth: .6 },
-    emphasis: { disabled: true }, select: { disabled: true }, label: { show: false },
-    regions: LIT_PROVINCES.map(n => ({ name: n, itemStyle: { areaColor: "#b23a2f", borderColor: "#7e241c", borderWidth: 1 } })),
-  };
-}
-let chinaAssets = null; // Promise<bool>
-function ensureChinaAssets() {
-  if (chinaAssets) return chinaAssets;
-  chinaAssets = (async () => {
-    try {
-      if (!window.echarts) await new Promise((res, rej) => {
-        const s = document.createElement("script");
-        s.src = "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js";
-        s.onload = res; s.onerror = rej; document.head.appendChild(s);
-      });
-      const geo = await (await fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")).json();
-      echarts.registerMap("china", geo);
-      return true;
-    } catch { return false; }
-  })();
-  return chinaAssets;
-}
-let fullMapInit = false, homeMapInit = false;
-async function renderChinaMap() { // 全屏地图（可拖拽缩放，点省会城市出卡）
-  if (fullMapInit) return;
-  const ok = await ensureChinaAssets();
-  if (!ok) {
-    document.getElementById("chinamap").classList.add("hidden");
-    document.getElementById("map-fallback").classList.remove("hidden");
-    return;
-  }
-  fullMapInit = true;
-  echarts.init(document.getElementById("chinamap")).setOption({
-    backgroundColor: "transparent",
-    geo: chinaGeoOption(true),
-    tooltip: {
-      trigger: "item", triggerOn: "click", confine: true,
-      backgroundColor: "#fbf7ea", borderColor: "#262019", borderWidth: 1.5, padding: 0,
-      extraCssText: "border-radius:2px;box-shadow:none;",
-      formatter: (p) => p.data && p.data.card ? p.data.card : "",
-    },
-    series: [
-      { type: "scatter", coordinateSystem: "geo", symbolSize: 4, silent: true,
-        itemStyle: { color: "#b9ad97" },
-        data: OTHER_CITIES.map(c => ({ name: c[0], value: [c[1], c[2]] })) },
-      { type: "effectScatter", coordinateSystem: "geo", symbolSize: 9, zlevel: 2,
-        rippleEffect: { brushType: "stroke", scale: 3.4, period: 4 },
-        itemStyle: { color: "#7e241c" },
-        label: { show: true, position: "bottom", formatter: "{b}", fontSize: 10.5, fontWeight: 700, color: "#4c4437", distance: 6, fontFamily: "'Songti SC', serif" },
-        data: VISITS.map(v => ({ name: v.city, value: v.coord, card: visitCardHTML(v) })) },
-    ],
-  });
-}
-async function renderHomeMap() { // 首页迷你预览（静态，点击进全屏）
-  if (homeMapInit) return;
-  const ok = await ensureChinaAssets();
-  if (!ok) return; // 保留 #home-map-fb 的文字兜底
-  homeMapInit = true;
-  document.getElementById("home-map-fb").classList.add("hidden");
-  echarts.init(document.getElementById("homechinamap")).setOption({
-    backgroundColor: "transparent",
-    geo: chinaGeoOption(false),
-    series: [{ type: "effectScatter", coordinateSystem: "geo", symbolSize: 6, silent: true, zlevel: 2,
-      rippleEffect: { brushType: "stroke", scale: 3, period: 4 },
-      itemStyle: { color: "#7e241c" },
-      data: VISITS.map(v => ({ name: v.city, value: v.coord })) }],
-  });
-}
-
 /* ---------------- boot ---------------- */
-renderProfileStrip();
-setTimeout(renderHomeMap, 500); // 首页迷你食迹地图，空闲时加载renderProfileStrip();
-document.getElementById("albumInput")?.addEventListener("change", onAlbumSelected);
+setTimeout(renderHomeMap, 500); // 首页迷你食迹地图，空闲时加载
 if (!localStorage.getItem("ml.profile")) setTimeout(openSheet, 600); // first run: quick prefs, skippable
 </script>
 </body>
