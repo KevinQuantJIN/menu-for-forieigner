@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>MenuLens — Scan. Understand. Order.</title>
+<style>
+  /* ---------- design tokens (MenuX-inspired: warm cream + terracotta) ---------- */
+  :root {
+    --bg: #faf6f0;
+    --paper: #ffffff;
+    --ink: #2b2320;
+    --muted: #8a7f76;
+    --line: #ece4da;
+    --accent: #c4572e;
+    --accent-soft: #f7e8df;
+    --danger: #b91c1c;
+    --danger-bg: #fee2e2;
+    --warn: #b45309;
+    --warn-bg: #fef3c7;
+    --green: #3f6212;
+    --green-bg: #ecfccb;
+    --radius: 14px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    background: #e9e2d8;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", sans-serif;
+    color: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+  }
+  /* ---------- phone frame (desktop shows a bezel; real mobile is fullscreen) ---------- */
+  #phone {
+    position: relative;
+    width: 100%; height: 100dvh;
+    background: var(--bg);
+    overflow: hidden;
+  }
+  @media (min-width: 520px) {
+    body { padding: 24px; }
+    #phone {
+      width: 393px; height: min(852px, calc(100dvh - 48px));
+      border-radius: 44px;
+      border: 10px solid #1a1614;
+      box-shadow: 0 24px 60px rgba(40,25,15,.35);
+    }
+    #phone::before { /* notch */
+      content: ""; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+      width: 110px; height: 24px; border-radius: 999px; background: #1a1614; z-index: 99;
+    }
+  }
+  .screen {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column;
+    background: var(--bg);
+    overflow-y: auto; overflow-x: hidden;
+    padding: max(40px, env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+  }
+  .hidden { display: none !important; }
+
+  /* ---------- shared bits ---------- */
+  .topbar { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .back {
+    width: 34px; height: 34px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--paper); font-size: 16px; cursor: pointer; flex: none;
+  }
+  .topbar h2 { font-size: 17px; font-weight: 800; flex: 1; }
+  button { font: inherit; color: inherit; }
+  .btn {
+    border: none; border-radius: 999px; min-height: 52px; padding: 0 26px;
+    background: var(--accent); color: #fff; font-size: 17px; font-weight: 800; cursor: pointer;
+  }
+  .btn:active { transform: scale(.97); }
+  .btn-ghost { background: var(--paper); color: var(--ink); border: 1px solid var(--line); }
+  .tag { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 3px 9px; font-size: 11.5px; font-weight: 700; }
+  .tag-red { background: var(--danger-bg); color: var(--danger); }
+  .tag-amber { background: var(--warn-bg); color: var(--warn); }
+  .tag-gray { background: #f1ece5; color: #6b6157; }
+  .tag-green { background: var(--green-bg); color: var(--green); }
+  .price-dual b { font-size: 15px; }
+  .price-dual span { color: var(--muted); font-size: 12px; }
+
+  /* ---------- S0 home ---------- */
+  #s-home { text-align: center; }
+  .brand { margin-top: 26px; font-size: 26px; font-weight: 900; letter-spacing: -.5px; }
+  .brand em { color: var(--accent); font-style: normal; }
+  .tagline { color: var(--muted); font-size: 14px; margin-top: 6px; }
+  .scan-hero {
+    margin: 30px auto 8px; width: 128px; height: 128px; border-radius: 999px;
+    background: radial-gradient(circle at 35% 30%, #d96a3e, var(--accent));
+    color: #fff; font-size: 52px; border: none; cursor: pointer;
+    box-shadow: 0 14px 30px rgba(196,87,46,.35);
+  }
+  .scan-label { font-size: 19px; font-weight: 800; margin-top: 12px; }
+  .scan-sub { color: var(--muted); font-size: 13px; margin-top: 4px; }
+  .or { display: flex; align-items: center; gap: 12px; color: #c9beb2; font-size: 12px; font-weight: 700; margin: 22px 0 12px; }
+  .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+  .entry-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .entry {
+    border: 1px solid var(--line); border-radius: var(--radius); background: var(--paper);
+    padding: 14px 10px; font-size: 14px; font-weight: 700; cursor: pointer;
+  }
+  .entry .big { font-size: 26px; display: block; margin-bottom: 6px; }
+  .profile-strip {
+    margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
+    font-size: 12px; color: var(--muted);
+  }
+  .recent {
+    margin-top: 20px; text-align: left; border: 1px dashed #d9cfc2; border-radius: var(--radius);
+    padding: 13px 14px; background: #fffdf9; cursor: pointer;
+  }
+  .recent .t { font-size: 12px; font-weight: 800; color: #a4988b; letter-spacing: .05em; text-transform: uppercase; }
+  .recent .r { display: flex; justify-content: space-between; margin-top: 7px; font-size: 14px; }
+  .home-foot { margin-top: auto; padding-top: 18px; font-size: 11px; color: #b3a99d; line-height: 1.5; }
+
+  /* ---------- prefs sheet ---------- */
+  #sheet-mask { position: absolute; inset: 0; background: rgba(30,20,12,.45); z-index: 40; }
+  #sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 41;
+    background: var(--paper); border-radius: 22px 22px 0 0; padding: 20px 18px calc(18px + env(safe-area-inset-bottom));
+    max-height: 86%; overflow-y: auto;
+  }
+  #sheet h3 { font-size: 18px; font-weight: 900; }
+  #sheet .sub { color: var(--muted); font-size: 13px; margin: 4px 0 6px; }
+  .chip-group { margin-top: 14px; }
+  .chip-group .gt { font-size: 12px; font-weight: 800; color: #a4988b; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    border: 1.5px solid var(--line); background: var(--paper); border-radius: 999px;
+    padding: 8px 13px; font-size: 13.5px; font-weight: 600; cursor: pointer;
+  }
+  .chip.on { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .sheet-actions { display: flex; gap: 10px; margin-top: 20px; }
+  .sheet-actions .btn { flex: 1; }
+
+  /* ---------- camera ---------- */
+  #s-camera { background: #14100d; color: #eee; padding: 0; }
+  .cam-top { display: flex; justify-content: space-between; align-items: center; padding: max(46px, env(safe-area-inset-top)) 18px 8px; }
+  .cam-top .hint { font-size: 13.5px; color: #d8d2cb; }
+  .cam-x { width: 36px; height: 36px; border-radius: 999px; border: none; background: rgba(255,255,255,.14); color: #fff; font-size: 16px; cursor: pointer; }
+  .viewfinder { position: relative; flex: 1; margin: 8px 22px; display: flex; align-items: center; justify-content: center; }
+  .corner { position: absolute; width: 34px; height: 34px; border: 3px solid #fff; opacity: .9; }
+  .c1 { top: 0; left: 0; border-right: none; border-bottom: none; }
+  .c2 { top: 0; right: 0; border-left: none; border-bottom: none; }
+  .c3 { bottom: 0; left: 0; border-right: none; border-top: none; }
+  .c4 { bottom: 0; right: 0; border-left: none; border-top: none; }
+  .menu-paper {
+    width: 78%; background: #fbf7ef; color: #33291f; border-radius: 6px; padding: 18px 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.5); transform: rotate(-1.5deg);
+    font-family: "Songti SC", "STSong", serif;
+  }
+  .menu-paper h4 { text-align: center; font-size: 17px; letter-spacing: 4px; border-bottom: 1.5px solid #b9a98f; padding-bottom: 8px; }
+  .menu-paper .sec { margin-top: 10px; font-size: 11px; color: #8a7a5f; letter-spacing: 2px; }
+  .menu-paper .row { display: flex; justify-content: space-between; font-size: 13px; margin-top: 6px; }
+  .cam-bottom { padding: 10px 18px calc(26px + env(safe-area-inset-bottom)); text-align: center; }
+  .cam-tip { font-size: 12px; color: #a99f94; margin-bottom: 14px; }
+  .shutter {
+    width: 72px; height: 72px; border-radius: 999px; background: #fff; border: 5px solid rgba(255,255,255,.35);
+    cursor: pointer;
+  }
+
+  /* ---------- analyzing ---------- */
+  #s-analyzing { text-align: center; }
+  .thumb {
+    width: 62%; margin: 26px auto 0; border-radius: 12px; background: #fbf7ef; border: 1px solid var(--line);
+    padding: 14px 12px; filter: blur(0.4px); font-family: "Songti SC", serif; font-size: 11px; color: #71614a;
+  }
+  #s-analyzing h2 { margin-top: 22px; font-size: 21px; font-weight: 900; }
+  #s-analyzing .sub { color: var(--muted); font-size: 13.5px; margin-top: 6px; }
+  .steps { margin: 22px auto 0; width: 100%; max-width: 320px; display: grid; gap: 10px; text-align: left; }
+  .step {
+    display: flex; justify-content: space-between; align-items: center;
+    border: 1px solid var(--line); background: var(--paper); border-radius: 12px; padding: 13px 14px; font-size: 14px; font-weight: 650;
+  }
+  .step .st { font-size: 12.5px; font-weight: 800; color: var(--muted); }
+  .step.done .st { color: var(--green); }
+  .step.doing .st { color: var(--accent); }
+  .anal-foot { margin-top: 18px; font-size: 12px; color: #b3a99d; }
+
+  /* ---------- S1 list ---------- */
+  .resto-bar {
+    display: flex; align-items: center; gap: 10px; background: var(--paper); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 11px 13px; margin-bottom: 12px;
+  }
+  .resto-bar .emoji { font-size: 22px; }
+  .resto-bar .n { font-size: 15px; font-weight: 800; }
+  .resto-bar .m { font-size: 12px; color: var(--muted); }
+  .resto-bar .orig { margin-left: auto; font-size: 12px; color: var(--accent); font-weight: 700; background: none; border: none; cursor: pointer; }
+  .cats { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 8px; scrollbar-width: none; }
+  .cats::-webkit-scrollbar { display: none; }
+  .cat { flex: none; border-radius: 999px; padding: 7px 14px; font-size: 13px; font-weight: 700; border: 1px solid var(--line); background: var(--paper); cursor: pointer; }
+  .cat.on { background: var(--ink); color: #fff; border-color: var(--ink); }
+
+  .pcard {
+    position: relative;
+    background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 13px 14px; margin-bottom: 10px; cursor: pointer;
+    animation: pop .35s ease;
+  }
+  @keyframes pop { from { opacity: 0; transform: translateY(10px); } }
+  .pcard-top { display: flex; align-items: flex-start; gap: 10px; }
+  .pcard .name { font-size: 15.5px; font-weight: 800; line-height: 1.25; }
+  .pcard .cn { margin-top: 3px; font-size: 12.5px; color: var(--muted); }
+  .pcard .cn .speak { border: none; background: none; cursor: pointer; font-size: 13px; padding: 0 2px; }
+  .pcard .right { margin-left: auto; text-align: right; flex: none; }
+  .pcard .chili { font-size: 12px; margin-top: 3px; }
+  .pcard .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; }
+  .addbtn {
+    position: absolute; right: 12px; bottom: 12px;
+    width: 30px; height: 30px; border-radius: 999px; border: 1.5px solid var(--accent);
+    background: var(--paper); color: var(--accent); font-size: 17px; font-weight: 800; cursor: pointer;
+  }
+  .addbtn.in { background: var(--accent); color: #fff; }
+  .qty-badge { position: absolute; right: 48px; bottom: 17px; font-size: 12px; font-weight: 800; color: var(--accent); }
+  .pcard .right { margin-right: 40px; }
+  .pcard .tags { padding-right: 40px; }
+
+  .fold {
+    border: 1px dashed #e3b8b8; background: #fdf6f5; border-radius: var(--radius);
+    padding: 12px 14px; margin: 14px 0 10px; cursor: pointer; font-size: 13.5px; font-weight: 700; color: var(--danger);
+  }
+  .fold .why { display: block; font-weight: 500; color: #b08585; font-size: 12px; margin-top: 3px; }
+  .folded-wrap .pcard { border-color: #eed4d4; background: #fffafa; }
+
+  .cart-bar {
+    position: sticky; bottom: 0; margin: 14px -18px -20px; padding: 12px 18px calc(14px + env(safe-area-inset-bottom));
+    background: var(--ink); color: #fff; display: flex; align-items: center; gap: 10px; cursor: pointer;
+  }
+  .cart-bar .sum { font-size: 14px; font-weight: 700; flex: 1; }
+  .cart-bar .go { background: var(--accent); border: none; color: #fff; border-radius: 999px; padding: 9px 18px; font-weight: 800; font-size: 14px; cursor: pointer; }
+  .disclaimer { font-size: 10.5px; color: #b3a99d; line-height: 1.5; margin: 16px 0 8px; }
+
+  /* ---------- S2 detail ---------- */
+  #s-detail .hero { text-align: center; padding: 8px 0 2px; font-size: 54px; }
+  #s-detail .dname { text-align: center; font-size: 22px; font-weight: 900; }
+  #s-detail .dcn { text-align: center; margin-top: 5px; color: var(--muted); font-size: 14px; }
+  #s-detail .dprice { text-align: center; margin-top: 8px; }
+  .uncertain-banner {
+    margin-top: 12px; background: var(--warn-bg); color: var(--warn); border-radius: 10px;
+    padding: 9px 12px; font-size: 12.5px; font-weight: 700;
+  }
+  .quote {
+    margin-top: 16px; border-left: 3px solid var(--accent); background: var(--paper);
+    border-radius: 0 12px 12px 0; padding: 12px 14px; font-size: 14px; line-height: 1.55;
+  }
+  .dsec { margin-top: 16px; }
+  .dsec .gt { font-size: 12px; font-weight: 800; color: #a4988b; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 8px; }
+  .ing-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .ing { background: var(--paper); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; font-size: 13px; }
+  .allergen-row { display: flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 9px 12px; font-size: 13.5px; margin-bottom: 7px; }
+  .lvl { margin-left: auto; }
+  .detail-cta { position: sticky; bottom: 0; margin: 20px -18px -20px; padding: 12px 18px calc(14px + env(safe-area-inset-bottom)); background: linear-gradient(transparent, var(--bg) 30%); display: flex; gap: 10px; }
+  .detail-cta .btn { flex: 1; }
+  .stepper { display: flex; align-items: center; gap: 14px; justify-content: center; flex: 1; background: var(--paper); border: 1.5px solid var(--accent); border-radius: 999px; }
+  .stepper button { border: none; background: none; color: var(--accent); font-size: 21px; font-weight: 800; cursor: pointer; padding: 8px 14px; }
+  .stepper b { font-size: 16px; }
+
+  /* ---------- S3 order ---------- */
+  .otabs { display: flex; background: #efe8df; border-radius: 999px; padding: 4px; margin-bottom: 16px; }
+  .otab { flex: 1; border: none; border-radius: 999px; padding: 10px 6px; font-size: 13.5px; font-weight: 800; background: none; cursor: pointer; color: #7d7268; }
+  .otab .s { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; }
+  .otab.on { background: var(--paper); color: var(--ink); box-shadow: 0 1px 4px rgba(0,0,0,.08); }
+  .bubble { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 13px 15px; font-size: 15px; font-weight: 650; margin-bottom: 12px; }
+  .oitem { display: flex; align-items: center; gap: 8px; background: var(--paper); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; margin-bottom: 8px; font-size: 14.5px; }
+  .oitem b { flex: 1; }
+  .oitem .q { color: var(--accent); font-weight: 800; }
+  .allergy-box {
+    margin: 14px 0; background: #fff3ec; border: 1.5px solid #f0c8b2; border-radius: 14px; padding: 13px 15px;
+  }
+  .allergy-box .h { display: flex; align-items: center; gap: 7px; font-weight: 800; color: var(--accent); font-size: 14px; }
+  .allergy-box p { margin-top: 6px; font-size: 13.5px; line-height: 1.5; }
+  .allergy-box p b { color: var(--danger); }
+  .req-box { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 13px 15px; font-size: 13.5px; line-height: 1.6; }
+  .onote { margin-top: 14px; background: #f1ece5; color: #6b6157; border-radius: 10px; padding: 9px 12px; font-size: 12px; line-height: 1.5; }
+  .ototal { display: flex; justify-content: space-between; align-items: baseline; margin-top: 14px; padding: 0 4px; }
+  .ototal .t { font-size: 17px; font-weight: 900; }
+  /* waiter view = bigger type, Chinese */
+  .waiter .bubble { font-size: 18px; }
+  .waiter .oitem { font-size: 19px; padding: 15px 16px; }
+  .waiter .oitem small { display: block; font-size: 12px; color: var(--muted); font-weight: 500; }
+  .waiter .allergy-box { background: var(--danger-bg); border-color: #eaa; }
+  .waiter .allergy-box .h { color: var(--danger); font-size: 16px; }
+  .waiter .allergy-box p { font-size: 17px; font-weight: 700; }
+  .waiter .req-box { font-size: 17px; font-weight: 650; }
+
+  /* ---------- S4 history + food map ---------- */
+  .htabs { display: flex; gap: 8px; margin-bottom: 14px; }
+  .hentry { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 13px 14px; margin-bottom: 10px; cursor: pointer; }
+  .hentry .d { font-size: 12px; color: var(--muted); }
+  .hentry .n { font-size: 15px; font-weight: 800; margin-top: 3px; }
+  .hentry .m { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+  #foodmap { position: relative; flex: 1; min-height: 480px; margin: 0 -18px calc(-20px - env(safe-area-inset-bottom)); background: #17140f; border-radius: 18px 18px 0 0; overflow: hidden; color: #ddd; }
+  #foodmap .grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(120,220,160,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,220,160,.07) 1px, transparent 1px);
+    background-size: 34px 34px;
+  }
+  #foodmap .counts { position: absolute; top: 14px; left: 0; right: 0; text-align: center; font-family: ui-monospace, monospace; font-size: 12.5px; letter-spacing: .12em; color: #86efac; }
+  .pin { position: absolute; width: 12px; height: 12px; border-radius: 999px; background: #e879f9; border: 2px solid #fff; cursor: pointer; box-shadow: 0 0 12px rgba(232,121,249,.8); }
+  .polaroid {
+    position: absolute; width: 118px; background: #fdfdf8; color: #2b2320; border-radius: 4px; padding: 7px 7px 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0,.5); font-size: 10px; cursor: pointer;
+  }
+  .polaroid .ph { height: 74px; border-radius: 2px; background: linear-gradient(135deg, #f3d9c3, #e7b590); display: grid; place-items: center; font-size: 34px; }
+  .polaroid .cap { margin-top: 5px; font-weight: 700; font-size: 10.5px; }
+  .polaroid .sub2 { color: #8a7f76; margin-top: 1px; font-family: ui-monospace, monospace; font-size: 9px; }
+  .citytag { position: absolute; background: #052e16; color: #86efac; font-family: ui-monospace, monospace; font-size: 10px; padding: 2px 6px; border-radius: 3px; }
+
+  /* original menu overlay */
+  #orig-mask { position: absolute; inset: 0; background: rgba(20,15,10,.72); z-index: 50; display: grid; place-items: center; padding: 30px; }
+</style>
+</head>
+<body>
+<div id="phone">
+
+  <!-- ============ S0 HOME ============ -->
+  <section class="screen" id="s-home">
+    <div class="brand">Menu<em>Lens</em></div>
+    <p class="tagline">Point. Scan. Order with confidence.</p>
+    <button class="scan-hero" onclick="go('camera')">📷</button>
+    <div class="scan-label">Scan a menu, read it instantly</div>
+    <p class="scan-sub">Chinese menus → clear English cards</p>
+    <div class="or">OR</div>
+    <div class="entry-row">
+      <button class="entry" onclick="go('camera')"><span class="big">📷</span>Take a photo</button>
+      <button class="entry" onclick="go('camera')"><span class="big">🖼️</span>From album</button>
+    </div>
+    <div class="profile-strip" id="profileStrip"></div>
+    <div class="recent" onclick="go('history')">
+      <div class="t">Recent scans</div>
+      <div class="r"><span>🍜 Ma Wang Zi · Sichuan · Chengdu</span><span style="color:var(--muted)">today ›</span></div>
+      <div class="r"><span>🗺️ My Food Map — 3 dishes · 1 city</span><span style="color:var(--muted)">›</span></div>
+    </div>
+    <p class="home-foot">Dish info is AI-estimated from typical recipes, not actual kitchen ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
+  </section>
+
+  <!-- prefs bottom sheet -->
+  <div id="sheet-mask" class="hidden" onclick="closeSheet(false)"></div>
+  <div id="sheet" class="hidden">
+    <h3>What should we watch out for?</h3>
+    <p class="sub">10 seconds — we'll flag and fold dishes for you. You can change this anytime.</p>
+    <div class="chip-group"><div class="gt">Allergies</div>
+      <div class="chips" data-group="allergens">
+        <button class="chip" data-v="peanut">🥜 Peanut</button>
+        <button class="chip" data-v="tree_nut">🌰 Tree nut</button>
+        <button class="chip" data-v="crustacean">🦐 Shrimp/Crab</button>
+        <button class="chip" data-v="mollusk">🦪 Shellfish (mollusk)</button>
+        <button class="chip" data-v="gluten">🌾 Gluten</button>
+        <button class="chip" data-v="soy">🫘 Soy</button>
+        <button class="chip" data-v="egg">🥚 Egg</button>
+        <button class="chip" data-v="dairy">🥛 Dairy</button>
+        <button class="chip" data-v="sesame">⚪ Sesame</button>
+        <button class="chip" data-v="fish">🐟 Fish</button>
+      </div>
+    </div>
+    <div class="chip-group"><div class="gt">I'd rather avoid</div>
+      <div class="chips" data-group="avoid">
+        <button class="chip" data-v="offal">🫀 Organ meats</button>
+        <button class="chip" data-v="cilantro">🌿 Cilantro</button>
+        <button class="chip" data-v="bone_in">🦴 Meat on the bone</button>
+        <button class="chip" data-v="fatty">🥓 Fatty / wobbly pork</button>
+        <button class="chip" data-v="whole_head">🐟 Whole fish w/ head</button>
+        <button class="chip" data-v="chicken_feet">🐔 Chicken feet</button>
+      </div>
+    </div>
+    <div class="chip-group"><div class="gt">Spice I can handle</div>
+      <div class="chips" data-group="spice">
+        <button class="chip" data-v="0">No spice</button>
+        <button class="chip" data-v="1">Mild 🌶</button>
+        <button class="chip" data-v="2">Medium 🌶🌶</button>
+        <button class="chip" data-v="3">Bring it 🌶🌶🌶</button>
+      </div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn btn-ghost" onclick="closeSheet(false)">Skip</button>
+      <button class="btn" onclick="closeSheet(true)">Save</button>
+    </div>
+  </div>
+
+  <!-- ============ CAMERA ============ -->
+  <section class="screen hidden" id="s-camera">
+    <div class="cam-top">
+      <button class="cam-x" onclick="go('home')">✕</button>
+      <span class="hint">Fit the menu inside the frame</span>
+      <span style="width:36px"></span>
+    </div>
+    <div class="viewfinder">
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="menu-paper">
+        <h4>馬旺子·川菜</h4>
+        <div class="sec">经典凉菜</div>
+        <div class="row"><span>夫妻肺片</span><span>79</span></div>
+        <div class="row"><span>口水鸡</span><span>79</span></div>
+        <div class="row"><span>蒜泥白肉</span><span>59</span></div>
+        <div class="sec">招牌热菜</div>
+        <div class="row"><span>锅巴肉片</span><span>68</span></div>
+        <div class="row"><span>麻婆豆腐</span><span>49</span></div>
+        <div class="row"><span>水煮牛肉</span><span>98</span></div>
+        <div class="row"><span>毛血旺</span><span>118</span></div>
+      </div>
+    </div>
+    <div class="cam-bottom">
+      <p class="cam-tip">Keep the menu flat · good lighting works best</p>
+      <button class="shutter" onclick="startAnalyze()" aria-label="Shutter"></button>
+    </div>
+  </section>
+
+  <!-- ============ ANALYZING ============ -->
+  <section class="screen hidden" id="s-analyzing">
+    <div class="thumb">馬旺子·川菜 —— 夫妻肺片 79 · 口水鸡 79 · 锅巴肉片 68 · 麻婆豆腐 49 · 水煮牛肉 98 ……</div>
+    <h2>Reading the menu…</h2>
+    <p class="sub">AI is identifying <b id="anaCount">16</b> dishes and checking them against your profile</p>
+    <div class="steps">
+      <div class="step" id="st1"><span>🔍 Reading text & layout</span><span class="st">…</span></div>
+      <div class="step" id="st2"><span>🧠 Translating & explaining each dish</span><span class="st">waiting</span></div>
+      <div class="step" id="st3"><span>🛡️ Checking your allergies & dislikes</span><span class="st">waiting</span></div>
+    </div>
+    <p class="anal-foot">usually under 10 seconds</p>
+  </section>
+
+  <!-- ============ S1 LIST ============ -->
+  <section class="screen hidden" id="s-list">
+    <div class="topbar">
+      <button class="back" onclick="go('home')">‹</button>
+      <h2>Menu · decoded</h2>
+      <button class="back" title="History" onclick="go('history')">🗂</button>
+    </div>
+    <div class="resto-bar">
+      <span class="emoji">🍜</span>
+      <div><div class="n">Ma Wang Zi 马旺子</div><div class="m">Sichuan · <span id="dishCount">…</span> dishes</div></div>
+      <button class="orig" onclick="showOrig()">View original</button>
+    </div>
+    <div class="cats" id="cats"></div>
+    <div id="cards"></div>
+    <div class="fold hidden" id="foldBar" onclick="toggleFold()"></div>
+    <div class="folded-wrap hidden" id="foldedCards"></div>
+    <p class="disclaimer">AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
+    <div class="cart-bar hidden" id="cartBar" onclick="openOrder()">
+      <span class="sum" id="cartSum"></span>
+      <button class="go">View order ›</button>
+    </div>
+  </section>
+
+  <!-- ============ S2 DETAIL ============ -->
+  <section class="screen hidden" id="s-detail"></section>
+
+  <!-- ============ S3 ORDER ============ -->
+  <section class="screen hidden" id="s-order"></section>
+
+  <!-- ============ S4 HISTORY / MAP ============ -->
+  <section class="screen hidden" id="s-history">
+    <div class="topbar">
+      <button class="back" onclick="go('home')">‹</button>
+      <h2>My food story</h2>
+    </div>
+    <div class="htabs">
+      <button class="cat on" id="ht-list" onclick="histView('list')">History</button>
+      <button class="cat" id="ht-map" onclick="histView('map')">🗺 Food Map</button>
+    </div>
+    <div id="hist-list">
+      <div class="hentry" onclick="go('list')">
+        <div class="d">Today · 12:40 · Chengdu, China</div>
+        <div class="n">🍜 Ma Wang Zi 马旺子 · Sichuan</div>
+        <div class="m">16 dishes scanned · 3 ordered · ¥216 ≈ $30</div>
+      </div>
+      <div class="hentry" style="opacity:.55">
+        <div class="d">(demo) Jul 9 · Beijing, China</div>
+        <div class="n">🦆 Siji Minfu 四季民福 · Roast Duck</div>
+        <div class="m">22 dishes scanned · 5 ordered</div>
+      </div>
+    </div>
+    <div id="foodmap" class="hidden">
+      <div class="grid"></div>
+      <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
+      <span class="citytag" style="top:36%;left:14%">成都 CHENGDU</span>
+      <span class="pin" style="top:41%;left:22%"></span>
+      <div class="polaroid" style="top:16%;left:8%;transform:rotate(-5deg)" onclick="go('list')">
+        <div class="ph">🍜</div>
+        <div class="cap">Ma Wang Zi · 3 dishes</div>
+        <div class="sub2">TODAY · LOC_SYNC</div>
+      </div>
+      <div class="polaroid" style="top:44%;left:46%;transform:rotate(3.5deg)">
+        <div class="ph">🌶️</div>
+        <div class="cap">First numbing pepper!</div>
+        <div class="sub2">TODAY · 花椒 UNLOCKED</div>
+      </div>
+      <span class="citytag" style="top:66%;left:58%">北京 BEIJING</span>
+      <span class="pin" style="top:71%;left:66%"></span>
+      <div class="polaroid" style="top:72%;left:22%;transform:rotate(-2deg)">
+        <div class="ph">🦆</div>
+        <div class="cap">Siji Minfu · 5 dishes</div>
+        <div class="sub2">JUL 09 · LOC_SYNC</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- original menu photo overlay -->
+  <div id="orig-mask" class="hidden" onclick="this.classList.add('hidden')">
+    <div class="menu-paper" style="transform:none;width:100%">
+      <h4>馬旺子·川菜</h4>
+      <div class="sec">经典凉菜</div>
+      <div class="row"><span>夫妻肺片</span><span>79</span></div>
+      <div class="row"><span>口水鸡</span><span>79</span></div>
+      <div class="row"><span>蒜泥白肉</span><span>59</span></div>
+      <div class="sec">招牌热菜</div>
+      <div class="row"><span>锅巴肉片</span><span>68</span></div>
+      <div class="row"><span>麻婆豆腐</span><span>49</span></div>
+      <div class="row"><span>水煮牛肉</span><span>98</span></div>
+      <div class="row"><span>毛血旺</span><span>118</span></div>
+      <div class="row"><span>回锅肉</span><span>56</span></div>
+      <div class="sec">主食甜品</div>
+      <div class="row"><span>担担面</span><span>13</span></div>
+      <div class="row"><span>冰粉</span><span>12</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   MenuLens — interactive UI prototype (mock data, no backend)
+   Backend hookup later: replace streamDishes() with fetch('/api/analyze')
+   reading NDJSON events {type:'dish',data}|{type:'done'} — same shapes.
+   ===================================================================== */
+
+const FX = 7.16; // static CNY→USD, labeled approximate
+const usd = (cny) => "≈ $" + (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1);
+
+/* ---------------- profile (Jake defaults) ---------------- */
+let profile = JSON.parse(localStorage.getItem("ml.profile") || "null") || {
+  allergens: ["peanut"], avoid: ["offal"], spice: 1,
+};
+const ALLERGEN_LABEL = { peanut:"Peanut", tree_nut:"Tree nut", crustacean:"Shrimp/Crab", mollusk:"Shellfish", gluten:"Gluten", soy:"Soy", egg:"Egg", dairy:"Dairy", sesame:"Sesame", fish:"Fish" };
+const AVOID_LABEL = { offal:"Organ meats", cilantro:"Cilantro", bone_in:"On the bone", fatty:"Fatty pork", whole_head:"Whole fish head", chicken_feet:"Chicken feet" };
+const ALLERGEN_CN = { peanut:"花生", tree_nut:"坚果", crustacean:"虾蟹类", mollusk:"贝类", gluten:"麸质（面筋）", soy:"大豆", egg:"鸡蛋", dairy:"奶制品", sesame:"芝麻", fish:"鱼类" };
+const AVOID_CN = { offal:"内脏", cilantro:"香菜", bone_in:"带骨的肉", fatty:"肥肉", whole_head:"整鱼", chicken_feet:"鸡爪" };
+
+/* ---------------- mock dishes (马旺子 · Sichuan) ---------------- */
+const DISHES = [
+  { id:1, cat:"Cold Dishes", nameCn:"夫妻肺片", pinyin:"fū qī fèi piàn", name:"'Couple's' Sliced Beef & Offal in Chili Oil", emoji:"🥩",
+    desc:"Don't worry — no lungs, despite the name ('husband & wife lung slices'). Thin-sliced beef, tripe and tongue in fragrant chili oil, one of Sichuan's most beloved cold dishes. Named after a street-vendor couple in 1930s Chengdu.",
+    price:79, spicy:2, veg:false, signature:true,
+    allergens:[{t:"peanut",l:"may"},{t:"sesame",l:"may"}], textures:["offal"], ingredients:["🥩 Beef & tripe","🌶 Chili oil","🥜 Peanut crumbs","🌿 Celery"] },
+  { id:2, cat:"Cold Dishes", nameCn:"口水鸡", pinyin:"kǒu shuǐ jī", name:"Mouthwatering Chicken", emoji:"🍗",
+    desc:"Poached chicken served cool under a glossy chili-sesame sauce. 'Saliva chicken' just means it makes your mouth water. Tender, tangy, moderately hot.",
+    price:79, spicy:2, veg:false,
+    allergens:[{t:"sesame",l:"contains"},{t:"peanut",l:"may"}], textures:["bone_in"], ingredients:["🍗 Poached chicken","🌶 Chili oil","⚪ Sesame","🧄 Garlic"] },
+  { id:3, cat:"Cold Dishes", nameCn:"蒜泥白肉", pinyin:"suàn ní bái ròu", name:"Sliced Pork Belly in Garlic Sauce", emoji:"🥓",
+    desc:"Paper-thin pork belly, briefly poached, draped in a punchy garlic-soy dressing. Silky and rich — the fat is the point here.",
+    price:59, spicy:1, veg:false,
+    allergens:[{t:"soy",l:"contains"},{t:"gluten",l:"may"}], textures:["fatty"], ingredients:["🥓 Pork belly","🧄 Garlic","🫗 Soy dressing","🥒 Cucumber"] },
+  { id:4, cat:"Signature", nameCn:"锅巴肉片", pinyin:"guō bā ròu piàn", name:"Sizzling Crispy Rice with Pork", emoji:"🍘",
+    desc:"Golden crispy rice squares hit the table sizzling, then tender pork in a tangy-sweet sauce is poured over — it crackles out loud. Zero heat, all drama. A Sichuan classic that isn't spicy.",
+    price:68, spicy:0, veg:false, signature:true,
+    allergens:[{t:"gluten",l:"may"}], textures:[], ingredients:["🍘 Crispy rice","🥩 Pork slices","🍅 Tomato-tangy sauce","🍄 Wood ear"] },
+  { id:5, cat:"Signature", nameCn:"水煮牛肉", pinyin:"shuǐ zhǔ niú ròu", name:"Boiled Beef in Fiery Chili Broth", emoji:"🔥",
+    desc:"'Water-boiled' is Sichuan humor — silky beef slices under a layer of chili oil, dried chilies and Sichuan pepper. Seriously hot, seriously good.",
+    price:98, spicy:3, veg:false, signature:true,
+    allergens:[{t:"soy",l:"may"}], textures:[], ingredients:["🥩 Beef","🌶 Dried chili","🟤 Sichuan pepper","🥬 Bean sprouts"] },
+  { id:6, cat:"Signature", nameCn:"毛血旺", pinyin:"máo xuè wàng", name:"Duck Blood & Offal Chili Stew", emoji:"🫕",
+    desc:"A bubbling chili stew of duck blood curd, tripe and ham. Locals' favorite; the blood curd is silky like tofu. An adventurous order for most visitors.",
+    price:118, spicy:3, veg:false,
+    allergens:[{t:"soy",l:"may"}], textures:["offal"], ingredients:["🟥 Duck blood curd","🫀 Tripe","🌶 Chili broth","🥬 Vegetables"] },
+  { id:7, cat:"Hot Dishes", nameCn:"麻婆豆腐", pinyin:"má pó dòu fu", name:"Mapo Tofu", emoji:"🌶️",
+    desc:"Soft tofu in a bubbling chili-bean sauce with minced beef. The Sichuan pepper makes your lips tingle — like a faint electric buzz. That's 'má' (numbing), not more heat, and it's worth experiencing once.",
+    price:49, spicy:2, veg:false, signature:true,
+    allergens:[{t:"soy",l:"contains"},{t:"gluten",l:"may"}], textures:[], ingredients:["🧊 Soft tofu","🥩 Minced beef","🌶 Chili bean paste","🟤 Sichuan pepper"] },
+  { id:8, cat:"Hot Dishes", nameCn:"回锅肉", pinyin:"huí guō ròu", name:"Twice-Cooked Pork", emoji:"🥘",
+    desc:"Pork belly boiled, then wok-fried with leeks and chili bean paste until the edges curl. Smoky, garlicky, mildly hot — a top-3 Sichuan comfort food.",
+    price:56, spicy:1, veg:false,
+    allergens:[{t:"soy",l:"contains"}], textures:["fatty"], ingredients:["🥓 Pork belly","🥬 Leeks","🌶 Chili bean paste"] },
+  { id:9, cat:"Hot Dishes", nameCn:"宫保茄香虾球", pinyin:"gōng bǎo qié xiāng xiā qiú", name:"Kung Pao Shrimp with Eggplant", emoji:"🦐",
+    desc:"Plump shrimp and silky eggplant in the classic sweet-tangy Kung Pao glaze with roasted peanuts. Familiar flavor, upgraded ingredients.",
+    price:118, spicy:1, veg:false,
+    allergens:[{t:"peanut",l:"contains"},{t:"crustacean",l:"contains"}], textures:[], ingredients:["🦐 Shrimp","🍆 Eggplant","🥜 Peanuts","🌶 Dried chili"] },
+  { id:10, cat:"Hot Dishes", nameCn:"糖醋排骨", pinyin:"táng cù pái gǔ", name:"Sweet & Sour Pork Ribs", emoji:"🍖",
+    desc:"Lacquered rib chunks in a caramel-vinegar glaze. Sweet first, tangy after, no heat at all. Note: bite-size ribs come on the bone — that's how good pork is served here.",
+    price:89, spicy:0, veg:false,
+    allergens:[{t:"soy",l:"may"},{t:"gluten",l:"may"}], textures:["bone_in"], ingredients:["🍖 Pork ribs","🍯 Caramel","🍶 Black vinegar"] },
+  { id:11, cat:"Vegetables", nameCn:"清炒豌豆尖", pinyin:"qīng chǎo wān dòu jiān", name:"Stir-Fried Pea Shoots", emoji:"🥬",
+    desc:"The tender tips of pea vines, flash-fried with garlic. Sweet, grassy, gone in a minute — the green Chengdu tables order by default.",
+    price:59, spicy:0, veg:true,
+    allergens:[], textures:[], ingredients:["🥬 Pea shoots","🧄 Garlic"] },
+  { id:12, cat:"Vegetables", nameCn:"鸡豆花", pinyin:"jī dòu huā", name:"Chicken 'Tofu' in Clear Broth", emoji:"🍲",
+    desc:"Looks like silky tofu, but it's actually whipped chicken breast poached in a crystal-clear broth — an old banquet trick: 'the meat dish that looks vegetarian'. Delicate, soothing, zero spice.",
+    price:22, spicy:0, veg:false,
+    allergens:[{t:"egg",l:"contains"}], textures:[], hiddenRisks:["meat_broth"], ingredients:["🍗 Whipped chicken","🥚 Egg white","🍵 Clear broth"] },
+  { id:13, cat:"Staples", nameCn:"担担面", pinyin:"dàn dàn miàn", name:"Dan Dan Noodles", emoji:"🍜",
+    desc:"Springy noodles under minced pork and a sesame-chili sauce you stir through. Named after the shoulder poles street vendors once carried. Small bowl — it's a finisher, not a main.",
+    price:13, spicy:2, veg:false,
+    allergens:[{t:"peanut",l:"contains"},{t:"sesame",l:"contains"},{t:"gluten",l:"contains"}], textures:[], ingredients:["🍜 Wheat noodles","🥩 Minced pork","🥜 Peanut-sesame sauce","🌶 Chili oil"] },
+  { id:14, cat:"Staples", nameCn:"鲜肉软锅盔", pinyin:"xiān ròu ruǎn guō kuī", name:"Soft Pork-Stuffed Flatbread", emoji:"🥟",
+    desc:"A griddled flatbread with juicy pork filling — Sichuan's answer to a stuffed pita. Great safe order for cautious eaters.",
+    price:28, spicy:0, veg:false,
+    allergens:[{t:"gluten",l:"contains"}], textures:[], ingredients:["🌾 Wheat dough","🥩 Pork filling","🧅 Scallion"] },
+  { id:15, cat:"Dessert", nameCn:"冰粉", pinyin:"bīng fěn", name:"Iced Jelly with Brown Sugar", emoji:"🍧",
+    desc:"Wobbly ice jelly in brown-sugar syrup with hawthorn and sesame — Chengdu's favorite way to put out the fire after a spicy meal.",
+    price:12, spicy:0, veg:true,
+    allergens:[{t:"sesame",l:"may"}], textures:[], ingredients:["🍧 Ice jelly","🟤 Brown sugar","🍒 Hawthorn"] },
+  { id:16, cat:"Dessert", nameCn:"青汁豆泥", pinyin:"qīng zhī dòu ní", name:"Green Juice Bean Purée", emoji:"🍵",
+    desc:"A mashed-bean dessert with vegetable 'green juice'. We couldn't verify this one from public sources — likely mildly sweet and vegetarian, but ask the staff.",
+    price:39, spicy:0, veg:true, uncertain:true,
+    allergens:[], textures:[], ingredients:["🫘 Bean purée","🥬 Green juice"] },
+];
+const CATS = ["All","Signature","Cold Dishes","Hot Dishes","Vegetables","Staples","Dessert"];
+
+/* ---------------- personalization ---------------- */
+function personalHits(d) {
+  const hits = [];
+  for (const a of d.allergens) if (a.l === "contains" && profile.allergens.includes(a.t)) hits.push("contains " + ALLERGEN_LABEL[a.t].toLowerCase());
+  for (const t of d.textures) if (profile.avoid.includes(t)) hits.push(AVOID_LABEL[t].toLowerCase());
+  return hits;
+}
+const GENERIC_TAG = { offal:"🫀 organ meats", whole_head:"🐟 whole head", bone_in:"🦴 on the bone", fatty:"🥓 fatty cut", chicken_feet:"🐔 chicken feet" };
+function previewTags(d, folded) {
+  const tags = [];
+  const hits = personalHits(d);
+  if (hits.length) tags.push(`<span class="tag tag-red">⚠ ${hits[0]}</span>`);
+  for (const t of d.textures) { if (tags.length >= 2) break; if (!profile.avoid.includes(t)) tags.push(`<span class="tag tag-gray">${GENERIC_TAG[t]}</span>`); }
+  if (tags.length < 2 && d.veg) tags.push(`<span class="tag tag-green">🌱 vegetarian</span>`);
+  if (tags.length < 2 && d.signature) tags.push(`<span class="tag tag-amber">👑 signature</span>`);
+  if (tags.length < 2 && d.uncertain) tags.push(`<span class="tag tag-amber">🤔 not sure</span>`);
+  return tags.join("");
+}
+
+/* ---------------- state ---------------- */
+const order = new Map(); // id -> qty
+let currentCat = "All";
+let streamed = []; // dishes revealed so far
+let waiterMode = false;
+
+/* ---------------- navigation ---------------- */
+function go(name) {
+  document.querySelectorAll(".screen").forEach(s => s.classList.add("hidden"));
+  document.getElementById("s-" + name).classList.remove("hidden");
+  document.getElementById("s-" + name).scrollTop = 0;
+}
+function showOrig() { document.getElementById("orig-mask").classList.remove("hidden"); }
+
+/* ---------------- profile sheet ---------------- */
+function renderProfileStrip() {
+  const el = document.getElementById("profileStrip");
+  const parts = [
+    ...profile.allergens.map(a => "🚫 " + ALLERGEN_LABEL[a]),
+    ...profile.avoid.map(a => "🙅 " + AVOID_LABEL[a]),
+    "🌶 " + ["No spice","Mild","Medium","Hot ok"][profile.spice],
+  ];
+  el.innerHTML = parts.map(p => `<span class="tag tag-gray">${p}</span>`).join("") +
+    ` <button class="tag" style="border:1.5px solid var(--accent);background:none;color:var(--accent);cursor:pointer" onclick="openSheet()">✎ edit</button>`;
+}
+function openSheet() {
+  document.getElementById("sheet-mask").classList.remove("hidden");
+  document.getElementById("sheet").classList.remove("hidden");
+  document.querySelectorAll("#sheet .chips").forEach(g => {
+    const group = g.dataset.group;
+    g.querySelectorAll(".chip").forEach(c => {
+      const v = c.dataset.v;
+      const on = group === "spice" ? String(profile.spice) === v : profile[group].includes(v);
+      c.classList.toggle("on", on);
+      c.onclick = () => {
+        if (group === "spice") { g.querySelectorAll(".chip").forEach(x => x.classList.remove("on")); c.classList.add("on"); }
+        else c.classList.toggle("on");
+      };
+    });
+  });
+}
+function closeSheet(save) {
+  if (save) {
+    profile.allergens = [...document.querySelectorAll('[data-group="allergens"] .chip.on')].map(c => c.dataset.v);
+    profile.avoid = [...document.querySelectorAll('[data-group="avoid"] .chip.on')].map(c => c.dataset.v);
+    const sp = document.querySelector('[data-group="spice"] .chip.on');
+    profile.spice = sp ? Number(sp.dataset.v) : 1;
+    localStorage.setItem("ml.profile", JSON.stringify(profile));
+  }
+  document.getElementById("sheet-mask").classList.add("hidden");
+  document.getElementById("sheet").classList.add("hidden");
+  renderProfileStrip();
+  if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
+}
+
+/* ---------------- analyze flow (mock streaming) ---------------- */
+function startAnalyze() {
+  go("analyzing");
+  const set = (id, cls, txt) => { const s = document.getElementById(id); s.className = "step " + cls; s.querySelector(".st").textContent = txt; };
+  set("st1","doing","reading…"); set("st2","","waiting"); set("st3","","waiting");
+  setTimeout(() => { set("st1","done","done ✓"); set("st2","doing","translating…"); }, 900);
+  setTimeout(() => { set("st2","done","done ✓"); set("st3","doing","checking…"); }, 1800);
+  setTimeout(() => { set("st3","done","done ✓"); beginStream(); }, 2400);
+}
+function beginStream() {
+  streamed = []; currentCat = "All";
+  renderCats(); renderList();
+  go("list");
+  document.getElementById("dishCount").textContent = "…";
+  let i = 0;
+  const t = setInterval(() => {
+    if (i >= DISHES.length) { clearInterval(t); document.getElementById("dishCount").textContent = DISHES.length; return; }
+    streamed.push(DISHES[i]); i++;
+    document.getElementById("dishCount").textContent = i + "…";
+    renderList(true);
+  }, 240);
+}
+
+/* ---------------- list rendering ---------------- */
+function renderCats() {
+  document.getElementById("cats").innerHTML = CATS.map(c =>
+    `<button class="cat ${c===currentCat?"on":""}" onclick="setCat('${c}')">${c}</button>`).join("");
+}
+function setCat(c) { currentCat = c; renderCats(); renderList(); }
+
+function speak(cn, ev) {
+  ev.stopPropagation();
+  const u = new SpeechSynthesisUtterance(cn); u.lang = "zh-CN"; u.rate = .85;
+  speechSynthesis.cancel(); speechSynthesis.speak(u);
+}
+function pcardHTML(d) {
+  const inOrder = order.get(d.id) || 0;
+  return `<div class="pcard" onclick="openDetail(${d.id})">
+    ${inOrder ? `<span class="qty-badge">×${inOrder}</span>` : ""}
+    <button class="addbtn ${inOrder?"in":""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>
+    <div class="pcard-top">
+      <div>
+        <div class="name">${d.emoji} ${d.name}</div>
+        <div class="cn">${d.nameCn} · ${d.pinyin} <button class="speak" onclick="speak('${d.nameCn}',event)">🔊</button></div>
+      </div>
+      <div class="right price-dual"><b>¥${d.price}</b><br><span>${usd(d.price)}</span>
+        <div class="chili">${d.spicy ? "🌶".repeat(d.spicy) : `<span style="color:var(--muted);font-size:11px">not spicy</span>`}</div>
+      </div>
+    </div>
+    <div class="tags">${previewTags(d)}</div>
+  </div>`;
+}
+let foldOpen = false;
+function toggleFold() { foldOpen = !foldOpen; renderList(); }
+function renderList() {
+  const pool = streamed.filter(d => currentCat === "All" || d.cat === currentCat);
+  const shown = [], folded = [];
+  for (const d of pool) (personalHits(d).length ? folded : shown).push(d);
+  document.getElementById("cards").innerHTML = shown.map(pcardHTML).join("");
+  const fb = document.getElementById("foldBar"), fw = document.getElementById("foldedCards");
+  if (folded.length) {
+    fb.classList.remove("hidden");
+    const reasons = [...new Set(folded.flatMap(personalHits))].join(" · ");
+    fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${reasons} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
+    fw.classList.toggle("hidden", !foldOpen);
+    fw.innerHTML = foldOpen ? folded.map(pcardHTML).join("") : "";
+  } else { fb.classList.add("hidden"); fw.classList.add("hidden"); fw.innerHTML = ""; }
+  renderCartBar();
+}
+
+/* ---------------- detail ---------------- */
+function openDetail(id) {
+  const d = DISHES.find(x => x.id === id);
+  const hits = personalHits(d);
+  const qty = order.get(id) || 0;
+  const LVL = { contains: `<span class="tag tag-red lvl">contains</span>`, may: `<span class="tag tag-amber lvl">may contain</span>` };
+  document.getElementById("s-detail").innerHTML = `
+    <div class="topbar"><button class="back" onclick="go('list')">‹</button><h2></h2></div>
+    <div class="hero">${d.emoji}</div>
+    <div class="dname">${d.name}</div>
+    <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer" onclick="speak('${d.nameCn}',event)">🔊</button></div>
+    <div class="dprice price-dual"><b>¥${d.price}</b> <span>${usd(d.price)} approx.</span> &nbsp; ${d.spicy ? "🌶".repeat(d.spicy) : ""}</div>
+    ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
+    ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${hits.join(", ")}</div>` : ""}
+    <div class="quote">${d.desc}</div>
+    <div class="dsec"><div class="gt">Main ingredients</div>
+      <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${i}</span>`).join("")}</div></div>
+    <div class="dsec"><div class="gt">Allergens</div>
+      ${d.allergens.length ? d.allergens.map(a => `<div class="allergen-row">${ALLERGEN_LABEL[a.t]} ${LVL[a.l]}</div>`).join("") : `<div class="allergen-row" style="color:var(--muted)">None flagged for the typical recipe</div>`}
+    </div>
+    ${d.textures.length || (d.hiddenRisks||[]).length ? `<div class="dsec"><div class="gt">Heads-up</div>
+      <div class="ing-chips">${d.textures.map(t => `<span class="ing">${GENERIC_TAG[t]}</span>`).join("")}
+      ${(d.hiddenRisks||[]).map(() => `<span class="ing">🍲 made with meat broth</span>`).join("")}</div></div>` : ""}
+    <div class="detail-cta">
+      ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
+            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ¥${d.price}</button>`}
+    </div>`;
+  go("detail");
+}
+
+/* ---------------- order ---------------- */
+function addToOrder(id, delta) {
+  const q = (order.get(id) || 0) + delta;
+  if (q <= 0) order.delete(id); else order.set(id, q);
+  if (!document.getElementById("s-list").classList.contains("hidden")) renderList();
+  renderCartBar();
+}
+function orderTotal() { let t = 0; for (const [id,q] of order) t += DISHES.find(d => d.id === id).price * q; return t; }
+function renderCartBar() {
+  const bar = document.getElementById("cartBar");
+  if (!order.size) { bar.classList.add("hidden"); return; }
+  bar.classList.remove("hidden");
+  const n = [...order.values()].reduce((a,b) => a+b, 0);
+  document.getElementById("cartSum").textContent = `🧾 ${n} dish${n>1?"es":""} · ¥${orderTotal()} ${usd(orderTotal())}`;
+}
+function openOrder() { waiterMode = false; renderOrder(); go("order"); }
+function renderOrder() {
+  const items = [...order.entries()].map(([id,q]) => ({ d: DISHES.find(x => x.id === id), q }));
+  const total = orderTotal();
+  const reqEN = [profile.spice <= 1 ? "Mild spice, please" : null, profile.avoid.includes("cilantro") ? "No cilantro" : null].filter(Boolean);
+  const reqCN = [profile.spice <= 1 ? "请做微辣" : null, profile.avoid.includes("cilantro") ? "不要香菜" : null].filter(Boolean);
+  const allergenEN = profile.allergens.map(a => ALLERGEN_LABEL[a]).join(", ");
+  const allergenCN = profile.allergens.map(a => ALLERGEN_CN[a]).join("、");
+  const el = document.getElementById("s-order");
+  el.className = "screen" + (waiterMode ? " waiter" : "");
+  el.innerHTML = `
+    <div class="topbar"><button class="back" onclick="go('list')">‹</button><h2>${waiterMode ? "请出示给服务员" : "My order"}</h2></div>
+    <div class="otabs">
+      <button class="otab ${!waiterMode?"on":""}" onclick="waiterMode=false;renderOrder()">My Order<span class="s">English · $</span></button>
+      <button class="otab ${waiterMode?"on":""}" onclick="waiterMode=true;renderOrder()">服务员视图<span class="s">中文 · ¥</span></button>
+    </div>
+    ${waiterMode ? `
+      <div class="bubble">您好！我想点以下这些菜 🙏</div>
+      ${items.map(({d,q}) => `<div class="oitem"><b>${d.nameCn}<small>${d.name}</small></b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")}
+      ${allergenCN ? `<div class="allergy-box"><div class="h">⚠️ 过敏提醒</div><p>我对<b>${allergenCN}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分，谢谢！</p></div>` : ""}
+      ${reqCN.length ? `<div class="req-box">备注：${reqCN.join("；")}</div>` : ""}
+      <div class="ototal"><span class="t">合计</span><span class="t">¥${total}</span></div>
+      <div class="onote">ℹ️ 这是用中文显示的点单页，直接把手机递给服务员即可。This page is in Chinese — hand your phone to the waiter.</div>
+    ` : `
+      <div class="bubble">Hello! I'd like to order the following, please.</div>
+      ${items.map(({d,q}) => `<div class="oitem"><b>${d.emoji} ${d.name}</b><span class="q">×${q}</span><span class="price-dual"><b>¥${d.price*q}</b> <span>${usd(d.price*q)}</span></span></div>`).join("")}
+      ${allergenEN ? `<div class="allergy-box"><div class="h">⚠️ Allergy</div><p>I'm allergic to <b>${allergenEN}</b>. Please keep these out of my food — including cooking oil.</p></div>` : ""}
+      ${reqEN.length ? `<div class="req-box">Requests: ${reqEN.join(" · ")}</div>` : ""}
+      <div class="ototal"><span class="t">Total · ${items.reduce((a,x)=>a+x.q,0)} items</span><span class="t">¥${total} <span style="font-size:13px;color:var(--muted)">${usd(total)}</span></span></div>
+      <div class="onote">ℹ️ Switch to 服务员视图 (Waiter View) and show this page to the staff to order.</div>
+      <div class="detail-cta"><button class="btn" onclick="waiterMode=true;renderOrder()">Show to waiter 👋</button></div>
+    `}`;
+  el.scrollTop = 0;
+}
+
+/* ---------------- history ---------------- */
+function histView(v) {
+  document.getElementById("ht-list").classList.toggle("on", v === "list");
+  document.getElementById("ht-map").classList.toggle("on", v === "map");
+  document.getElementById("hist-list").classList.toggle("hidden", v !== "list");
+  document.getElementById("foodmap").classList.toggle("hidden", v !== "map");
+}
+
+/* ---------------- boot ---------------- */
+renderProfileStrip();
+if (!localStorage.getItem("ml.profile")) setTimeout(openSheet, 600); // first run: quick prefs, skippable
+</script>
+</body>
+</html>
