@@ -128,3 +128,11 @@
   .ana-track { margin-top: 18px; width: 180px; height: 4px; background: #ece2c9; overflow: hidden; border-radius: 2px; }
   .ana-track i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .5s var(--ease); }
 
+
+/* T7 · analyzing 屏功能性增补：错误行 / 缩略条（视觉跟随 v-final，勿改上方规则） */
+.ana-err { color: var(--accent); font-weight: 700; font-size: 13px; margin-top: 14px; text-align: center; }
+#anaRetry { margin: 12px auto 0; display: block; }
+.ana-thumbs { display: flex; gap: 8px; justify-content: center; margin-top: 16px; }
+.ana-thumbs > div { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.ana-thumbs img { width: 44px; height: 58px; object-fit: cover; border: 1.5px solid var(--ink); border-radius: 4px; }
+.ana-thumbs .pg { font-size: 10px; color: var(--muted); }
