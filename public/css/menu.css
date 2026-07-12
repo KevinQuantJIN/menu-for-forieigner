@@ -60,7 +60,7 @@
 .pcard:active { transform: scale(.985); }
 @keyframes pop { from { opacity: 0; transform: translateY(12px); } }
 .pcard .name { font-family: var(--sh-en); font-size: 14.5px; font-weight: 750; line-height: 1.3; letter-spacing: -.2px; padding-right: 48px; }
-.pcard .name .sp { color: var(--sh-hot); font-size: 9px; font-weight: 800; margin-left: 6px; letter-spacing: .08em; }
+.pcard .name .sp { font-size: 10px; margin-left: 6px; letter-spacing: -1.5px; }
 .pcard .cn { margin-top: 4px; font-size: 10.5px; color: var(--sh-sub); }
 /* 价签：鎏金实底 + 墨框，骑卡右上出血，微旋转 */
 .pcard .right {
@@ -107,14 +107,14 @@
    margin-top:auto（.screen 是 flex 列）：内容短时也钉在屏底，不往上浮（7.13） */
 .cart-bar {
   position: sticky; bottom: 8px; z-index: 10;
-  margin: 14px 2px 4px; margin-top: auto; padding: 9px 9px 9px 15px;
+  margin: 14px 2px 4px; margin-top: auto; padding: 13px 12px 13px 17px;
   background: var(--sh-ink); color: var(--sh-paper);
-  border: 2px solid var(--sh-ink); border-radius: 12px; box-shadow: 3px 3px 0 rgba(220,168,66,.45);
+  border: 2px solid var(--sh-ink); border-radius: 14px; box-shadow: 3px 3px 0 rgba(220,168,66,.45);
   display: flex; align-items: center; gap: 10px; cursor: pointer;
   animation: pop 320ms var(--ease);
 }
-.cart-bar .sum { font-size: 11.5px; font-weight: 800; flex: 1; font-variant-numeric: tabular-nums; font-family: var(--sh-en); }
-.cart-bar .go { background: var(--sh-hot); border: 1.5px solid var(--sh-paper); color: #fdf8ec; border-radius: 8px; padding: 8px 13px; font-weight: 800; font-size: 11px; cursor: pointer; font-family: var(--sh-en); }
+.cart-bar .sum { font-size: 13.5px; font-weight: 800; flex: 1; font-variant-numeric: tabular-nums; font-family: var(--sh-en); }
+.cart-bar .go { background: var(--sh-hot); border: 1.5px solid var(--sh-paper); color: #fdf8ec; border-radius: 9px; padding: 11px 17px; font-weight: 800; font-size: 12.5px; cursor: pointer; font-family: var(--sh-en); }
 .disclaimer { font-size: 10.5px; color: var(--faint); line-height: 1.55; margin: 16px 0 8px; }
 
 /* ---------- S2 detail：无包边弹层 ---------- */

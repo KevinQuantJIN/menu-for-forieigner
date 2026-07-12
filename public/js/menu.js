@@ -15,11 +15,9 @@ function speak(cn, ev) {
   const u = new SpeechSynthesisUtterance(cn); u.lang = "zh-CN"; u.rate = .85;
   speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
-/* 辣度文字化（v-final）：零 emoji。麻 numbing≥5 追加 ·MÁ */
+/* 辣度标注（7.13 统一）：🌶 icon 三档缀在菜名旁；麻不在列表标注（仅详情 Heads-up） */
 function spiceLabel(d) {
-  const s = ["", "MILD", "MED", "HOT"][d.spicy] || "";
-  const ma = d.flavorBars && d.flavorBars.numbing >= 5 ? (s ? " · MÁ" : "MÁ") : "";
-  return s + ma;
+  return d.spicy ? "🌶".repeat(Math.min(d.spicy, 3)) : "";
 }
 /* 加购前 = 柿红＋钮；加购后 = 就地 [− n ＋] 迷你 stepper（7.13 修正：不再变黑色数字钮）。
    独立成函数：加减号只局部重绘 .addwrap，不再触发整列表 renderList（7.13 防抖动） */
@@ -94,7 +92,6 @@ function openDetail(id) {
     <div class="dname">${d.name}</div>
     <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak('${d.nameCn}',event)">🔊</button></div>
     ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
-    ${hits.length ? `<div class="uncertain-banner" style="background:#fbeeea;color:#b23a26">⚠ Flagged for you: ${hits.join(", ")}</div>` : ""}
     <div class="lede">${d.desc}</div>
     <div class="dsec"><div class="gt">Ingredients <span>食材</span></div>
       <div class="ing-chips">${d.ingredients.map(i => `<span class="ing">${i}</span>`).join("")}</div></div>

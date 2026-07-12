@@ -14,7 +14,7 @@ function renderCartBar() {
   const n = [...order.values()].reduce((a,b) => a+b, 0);
   const sum = document.getElementById("cartSum");
   if (!n) sum.innerHTML = `<span style="opacity:.72">Pick dishes to build your order</span>`;
-  else sum.textContent = `${n} dish${n>1?"es":""} · ≈ $${usdN(orderTotal())} · ¥${orderTotal()}`;
+  else sum.textContent = `Total ¥${orderTotal()} ≈ $${usdN(orderTotal())}`;
 }
 function openOrder() { waiterMode = false; renderOrder(); go("order"); }
 function renderOrder() {
