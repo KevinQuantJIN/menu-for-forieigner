@@ -3,269 +3,312 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ChopStory · 食单一册 — Demo Stage</title>
+<title>ChopStory · Demo Stage</title>
 <style>
   /* =====================================================================
-     Demo 展示壳 · 雕版食单主题
-     舞台 = 一张摊开的木刻印刷食单：纸墨朱、文武边、竖排刊语、朱印、点线菜账
-     手机框 = 精致 iPhone（钛边/灵动岛/侧键/高光/落影），屏内 iframe 真实 app
+     ChopStory Demo Stage（定稿 2026-07-12，源自方案A「食旅横卷」）
+     香槟淡白底 + 固定云纹；手机内 app 恒为 392px 调试尺寸（整体缩放适配）；
+     左栏与时间轴按视口宽度流式缩放。
      ===================================================================== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --paper: #f5efe0; --paper-2: #efe7d2;
-    --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a;
-    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #e9dfc6;
+    /* 暖纸白：介于旧版纸色与香槟白之间，保留亮度、去掉灰绿感 */
+    --paper: #f8f4e9; --paper-2: #f3edde;
+    --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a; --ink-4: #b9ad97;
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #ece3cc;
+    --dot: clamp(28px, 2.2vw, 38px);
   }
   html, body { height: 100%; }
   body {
-    background: var(--paper); color: var(--ink); overflow: hidden;
+    color: var(--ink); overflow: hidden;
     font-family: "Songti SC", "STSong", Georgia, serif;
+    background-color: var(--paper);
+    /* 云纹 · 固定基底（不随站点变化） */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='160'><g fill='none' stroke='rgba(38,32,25,0.055)' stroke-width='1.4'><path d='M40 110 a26 26 0 1 1 52 0 a16 16 0 1 0 -32 0 a8 8 0 1 1 16 0'/><path d='M92 110 q44 16 92 0'/><path d='M170 48 a18 18 0 1 1 36 0 a11 11 0 1 0 -22 0 a5 5 0 1 1 10 0'/><path d='M206 48 q26 10 54 0'/></g></svg>");
+    background-size: 260px 160px;
   }
-  /* 纸纹 */
-  body::before {
-    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
+  /* 纸纹颗粒 */
+  .grain {
+    position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
   }
-  /* 全页文武边（印刷版框） */
+  /* 文武边（印刷版框） */
   .stage {
-    position: fixed; inset: 16px;
+    position: fixed; inset: 18px; z-index: 2;
     border: 3px solid var(--ink);
-    display: flex; align-items: center; justify-content: center; gap: 4vw;
-    padding: 0 4vw;
+    /* 1fr 空列在两侧吸收多余宽度：文字列+手机作为一组居中，间距恒定 */
+    display: grid; grid-template-columns: 1fr clamp(400px, 32vw, 640px) max-content 1fr; grid-template-rows: 1fr auto;
+    padding: 2vh 3vw 0;
   }
   .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
-  /* 大字水印「食」 */
-  .watermark {
-    position: absolute; right: -2%; bottom: -12%; font-size: 46vh; line-height: 1;
-    color: transparent; -webkit-text-stroke: 1.5px rgba(38,32,25,.10); pointer-events: none; user-select: none;
-    font-family: "Kaiti SC", serif;
-  }
 
-  /* ---------- 左：竖排刊语 ---------- */
-  .side-left {
-    writing-mode: vertical-rl; text-orientation: upright;
-    display: flex; gap: 26px; align-items: flex-start; height: 62vh;
-    letter-spacing: .35em; flex: none;
-  }
-  .side-left .big { font-size: clamp(22px, 3.2vh, 34px); font-weight: 900; }
-  .side-left .small { font-size: clamp(11px, 1.5vh, 14px); color: var(--ink-3); letter-spacing: .5em; padding-top: 10px; }
-  .side-left .zhu-rule { width: 3px; background: var(--zhu); height: 38vh; margin: 4px 6px 0; }
+  /* ---------- logo 动画 ---------- */
+  .logo { display: block; }
+  .lg-bubble { animation: lg-bob 3.6s ease-in-out infinite; }
+  .lg-steam { animation: lg-steam 2.8s ease-out infinite; }
+  .lg-steam2 { animation-delay: 1.4s; }
+  .lg-stickA, .lg-stickB { transform-box: view-box; transform-origin: 100px 115px; }
+  .lg-stickA { animation: lg-pinchA 2.4s ease-in-out infinite; }
+  .lg-stickB { animation: lg-pinchB 2.4s ease-in-out infinite; }
+  .lg-dot1 { animation: lg-float 3s ease-in-out infinite; }
+  .lg-dot2 { animation: lg-float 3s ease-in-out 1s infinite; }
+  @keyframes lg-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+  @keyframes lg-steam { 0% { opacity: 0; transform: translateY(5px); } 25% { opacity: .95; } 70% { opacity: .5; } 100% { opacity: 0; transform: translateY(-8px); } }
+  @keyframes lg-pinchA { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(-4deg); } }
+  @keyframes lg-pinchB { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(4.5deg); } }
+  @keyframes lg-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-  /* ---------- 中：手机 ---------- */
-  .phone-wrap { position: relative; flex: none; }
-  /* 快速跳屏条（右栏，印章下方） */
-  .jumpbar { margin-top: 26px; display: flex; gap: 7px; flex-wrap: wrap; }
-  .jumpbar button {
-    font: inherit; font-size: 11.5px; font-weight: 700; letter-spacing: .05em;
-    background: none; border: 1.5px solid var(--ink); border-radius: 6px; color: var(--ink);
-    padding: 7px 11px; cursor: pointer; transition: transform .14s;
-  }
-  .jumpbar button:hover { background: var(--ink); color: #f2e9d5; }
-  .jumpbar button:active { transform: scale(.95); }
-  /* 落影：接触影 + 环境大影 */
+  /* ---------- 左：品牌区（宽度流式缩放） ---------- */
+  .pitch { grid-column: 2; align-self: center; padding-bottom: 10px; container-type: inline-size; }
+  .brandrow { display: flex; align-items: center; gap: clamp(14px, 1.2vw, 22px); }
+  .brandrow .logo { width: clamp(92px, 7.5vw, 140px); height: auto; flex: none; }
+  .wordmark b { display: block; font-size: clamp(34px, 2.8vw, 54px); font-weight: 900; letter-spacing: .5px; }
+  .wordmark b em { font-style: normal; color: var(--zhu); }
+  .wordmark span { display: block; margin-top: 4px; font-size: clamp(12px, .95vw, 16px); letter-spacing: .42em; color: var(--ink-3); }
+  h1.headline { margin-top: clamp(18px, 2.2vh, 30px); font-size: clamp(25px, 2.35vw, 42px); font-weight: 900; line-height: 1.5; }
+  h1.headline em { font-style: normal; white-space: nowrap; box-shadow: inset 0 -.18em 0 rgba(178,58,47,.28); }
+  /* 单行排满列宽：字号跟随列宽（cqw），禁止折行 */
+  .sub { margin-top: 12px; font-size: min(17px, 3.05cqw); color: var(--ink-2); line-height: 2; letter-spacing: .05em; white-space: nowrap; }
+  .points { margin-top: clamp(16px, 2vh, 26px); }
+  .point { display: flex; align-items: baseline; padding: .6em 2px .55em; border-bottom: 1px solid rgba(38,32,25,.22); }
+  .point:first-child { border-top: 2.5px solid var(--ink); }
+  .point .cn { font-weight: 900; font-size: clamp(14px, 1.05vw, 19px); letter-spacing: .12em; flex: none; }
+  .point .lead { flex: none; width: clamp(22px, 2vw, 38px); border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
+  .point .en { font-size: clamp(12px, .92vw, 16px); color: var(--ink-3); letter-spacing: .04em; }
+  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: min(15px, 2.95cqw); color: var(--ink-3); line-height: 2; letter-spacing: .04em; white-space: nowrap; }
+  .tryline b { color: var(--zhu); font-weight: 700; }
+
+  /* ---------- 中：手机（屏内恒为 393x852 调试尺寸，整体 scale 适配） ---------- */
+  .phone-zone { grid-column: 3; display: grid; place-items: center; min-height: 0; margin-left: clamp(36px, 4.5vw, 100px); }
+  .phone-fit { position: relative; }
+  .phone-wrap { position: absolute; left: 0; top: 0; transform-origin: top left; width: 415px; }
   .phone-wrap::before {
-    content: ""; position: absolute; left: 6%; right: 6%; bottom: -34px; height: 50px; border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(38,32,25,.32), transparent 68%);
+    content: ""; position: absolute; left: 6%; right: 6%; bottom: -30px; height: 44px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(38,32,25,.3), transparent 68%);
   }
   .iphone {
-    position: relative; width: min(392px, 40vh + 160px); aspect-ratio: 392 / 800;
-    border-radius: 62px;
-    background: #0d0b09;
-    /* 钛金属边：多层描边模拟金属高光 */
-    box-shadow:
-      0 0 0 4.5px #3d3833,                        /* 钛外圈 */
-      0 0 0 6px #6e675e,                          /* 高光圈 */
-      0 0 0 7px #2b2723,                          /* 收边 */
-      0 34px 70px rgba(38,32,25,.38),             /* 环境影 */
-      inset 0 0 0 3px #000;                       /* 屏内黑缝 */
-    padding: 11px;
+    /* 屏内 = 393x852 满屏视口；app 各屏自带 max(44px, safe-area) 顶部留白（tokens.css），
+       灵动岛直接浮在这段留白里，与真机行为一致 */
+    position: relative; width: 415px; height: 874px;
+    border-radius: 58px; background: #0d0b09; padding: 11px;
+    box-shadow: 0 0 0 4.5px #3d3833, 0 0 0 6px #6e675e, 0 0 0 7px #2b2723,
+      0 30px 60px rgba(38,32,25,.35), inset 0 0 0 3px #000;
   }
-  /* 金属边光斑 */
   .iphone::before {
-    content: ""; position: absolute; inset: -6px; border-radius: 66px; pointer-events: none;
+    content: ""; position: absolute; inset: -6px; border-radius: 62px; pointer-events: none;
     background: linear-gradient(115deg, rgba(255,255,255,.5) 0%, transparent 12%, transparent 55%, rgba(255,255,255,.28) 68%, transparent 78%);
     -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
-    -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px;
-    opacity: .5;
+    -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px; opacity: .5;
   }
-  /* 侧键 */
   .btn-side { position: absolute; background: linear-gradient(90deg, #55504a, #23201c); border-radius: 3px; }
   .b-action { left: -8.5px; top: 16%; width: 4px; height: 30px; }
   .b-vol1 { left: -8.5px; top: 26%; width: 4px; height: 52px; }
   .b-vol2 { left: -8.5px; top: 34%; width: 4px; height: 52px; }
   .b-power { right: -8.5px; top: 28%; width: 4px; height: 78px; background: linear-gradient(270deg, #55504a, #23201c); }
-  .screen-hole {
-    position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #000;
-  }
+  .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #f7f2e6; }
   .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: 100%; border: none; display: block; background: #f7f2e6; }
-  /* 灵动岛 */
-  .island {
-    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
-    width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5;
-    box-shadow: inset 0 0 2px rgba(255,255,255,.06);
-  }
+  .island { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5; box-shadow: inset 0 0 2px rgba(255,255,255,.06); }
   .island::after { content: ""; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
-  /* 屏幕玻璃反光 */
   .glass { position: absolute; inset: 0; border-radius: 50px; pointer-events: none; z-index: 6;
     background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
   .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
 
-  /* ---------- 右：刊头 + 卖点 + 印章 + 扫码 ---------- */
-  .side-right { max-width: 380px; flex: none; }
-  .kicker { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .4em; color: var(--ink-3); }
-  .kicker::after { content: ""; flex: 1; height: 1px; background: var(--ink); opacity: .4; }
-  h1.brand { margin-top: 14px; font-size: clamp(34px, 4.6vw, 54px); font-weight: 900; letter-spacing: 1px; line-height: 1.08; }
-  h1.brand em { font-style: normal; color: var(--zhu); }
-  .slogan-en { margin-top: 12px; font-size: 17px; color: var(--ink-2); font-style: italic; }
-  .slogan-en i { font-style: normal; box-shadow: inset 0 -3px 0 var(--zhu); }
-  .slogan-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-3); letter-spacing: .06em; font-family: "PingFang SC", sans-serif; }
-  .points { margin-top: 26px; }
-  .point { display: flex; align-items: baseline; padding: 10px 2px 9px; border-bottom: 1px solid rgba(38,32,25,.22); font-family: "PingFang SC", sans-serif; }
-  .point:first-child { border-top: 2.5px solid var(--ink); }
-  .point .cn { font-family: "Songti SC", serif; font-weight: 900; font-size: 15px; letter-spacing: .1em; flex: none; }
-  .point .lead { flex: 1; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; min-width: 20px; }
-  .point .en { font-size: 12px; color: var(--ink-3); text-align: right; }
-  .bottom-row { margin-top: 26px; display: flex; align-items: center; gap: 18px; }
-  .qr {
-    width: 92px; height: 92px; flex: none; position: relative;
-    border: 2.5px solid var(--ink); display: grid; place-items: center;
+  /* ---------- 底：用户动线时间轴（手卷，宽度流式缩放） ---------- */
+  .journey { grid-column: 1 / -1; margin-top: 10px; padding: 16px 6px 1.6vh; position: relative; }
+  .jtrack { position: relative; }
+  /* 点线引导（菜账 leader dots 质感），朱线进度覆盖其上 */
+  .jline { position: absolute; left: 3%; right: 3%; top: calc(var(--dot) / 2); border-top: 2px dotted rgba(38,32,25,.35); }
+  .jfill { position: absolute; left: 3%; top: calc(var(--dot) / 2 - 1px); height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
+  .jnodes { position: relative; display: flex; justify-content: space-between; padding: 0 3%; }
+  .jnode { background: none; border: none; cursor: pointer; font: inherit; text-align: center; width: clamp(96px, 10vw, 170px); }
+  .jnode .dot {
+    width: var(--dot); height: var(--dot); margin: 0 auto; border-radius: 50%;
+    border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink);
+    display: grid; place-items: center; font-size: clamp(13px, 1vw, 17px); font-weight: 900; font-family: ui-monospace, monospace;
+    transition: background .2s, color .2s, border-color .2s, transform .2s; position: relative; z-index: 2;
   }
-  .qr::before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--ink); }
-  .qr span { font-size: 11px; letter-spacing: .2em; color: var(--ink-3); writing-mode: vertical-rl; }
-  .qr b { position: absolute; inset: 14px; display: grid; place-items: center; font-size: 30px; opacity: .85; }
-  .stamp-row { display: flex; flex-direction: column; gap: 8px; }
-  .seal {
-    width: 54px; height: 54px; background: var(--zhu); color: #f6efdc; border-radius: 7px;
-    font-family: "Kaiti SC", serif; font-size: 17px; line-height: 1.15; letter-spacing: 2px;
-    display: grid; place-items: center; text-align: center; transform: rotate(2.5deg);
-    box-shadow: inset 0 0 0 2px rgba(246,239,220,.4);
-  }
-  .stamp-note { font-size: 10.5px; color: var(--ink-3); letter-spacing: .18em; }
+  .jnode .tt { margin-top: 7px; font-size: clamp(12.5px, 1vw, 18px); font-weight: 800; letter-spacing: .05em; }
+  .jnode .zh { margin-top: 3px; font-size: clamp(10.5px, .82vw, 14px); color: var(--ink-3); letter-spacing: .08em; }
+  .jnode:hover .dot { background: var(--ink); color: var(--paper); }
+  .jnode.on .dot { background: var(--zhu); border-color: var(--zhu-deep); color: #f6efdc; transform: scale(1.12) rotate(-3deg); }
+  .jnode.on .tt { color: var(--zhu); }
+  .jhint { position: absolute; right: 10px; bottom: 5px; font-size: 10px; color: var(--ink-4); letter-spacing: .15em; font-family: "PingFang SC", sans-serif; }
 
-  /* ---------- 底部：菜账跑马 ---------- */
-  .ledger {
-    position: absolute; left: 26px; right: 26px; bottom: 14px;
-    display: flex; align-items: baseline; gap: 0; overflow: hidden; white-space: nowrap;
-    border-top: 1px solid rgba(38,32,25,.35); padding-top: 9px;
-    font-size: 12px; color: var(--ink-2);
-  }
-  .ledger .item { display: inline-flex; align-items: baseline; }
-  .ledger .nm { font-weight: 700; letter-spacing: .08em; }
-  .ledger .dots { display: inline-block; width: 34px; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 6px 3px; }
-  .ledger .pr { font-family: ui-monospace, monospace; font-size: 11px; }
-  .ledger .sep { margin: 0 16px; color: var(--zhu); }
-
-  /* 顶部刊眉 */
-  .masthead {
-    position: absolute; top: 14px; left: 26px; right: 26px;
-    display: flex; justify-content: space-between; align-items: baseline;
-    border-bottom: 1px solid rgba(38,32,25,.35); padding-bottom: 8px;
-    font-size: 11.5px; letter-spacing: .3em; color: var(--ink-3);
-  }
-  .masthead b { color: var(--zhu); }
-
-  @media (max-width: 1080px) {
-    .side-left { display: none; }
-    .watermark { font-size: 34vh; }
-  }
-  @media (max-width: 760px) {
-    .side-right { display: none; }
-    .stage { gap: 0; }
-  }
+  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+  @media (max-width: 1080px) { .pitch .sub { display: none; } .jnode .zh { display: none; } }
 </style>
 </head>
 <body>
+<script>
+/* 演示环境预置画像（Jake：花生过敏、微辣）——跳过 app 首跑弹窗，且保留过敏折叠演示剧情 */
+if (!localStorage.getItem("ml.profile")) {
+  localStorage.setItem("ml.profile", JSON.stringify({ allergens: ["peanut"], avoid: [], spice: 1 }));
+}
+</script>
+<div class="grain"></div>
 <div class="stage">
-  <div class="masthead"><span>筷 子 故 事 · 食 单 一 册</span><span>CHOPSTORY · VOL.01 · <b>成都</b> CHENGDU EDITION · MMXXVI</span></div>
-  <div class="watermark">食</div>
 
-  <!-- 左：竖排刊语 -->
-  <aside class="side-left">
-    <span class="big">读得懂 · 点得对 · 吃得明白</span>
-    <span class="zhu-rule"></span>
-    <span class="small">献给每一位在中国餐桌前犹豫的旅人</span>
+  <!-- 左：品牌区 -->
+  <aside class="pitch">
+    <div class="brandrow">
+      <svg class="logo" viewBox="0 0 200 200" aria-label="ChopStory logo">
+        <g class="lg-bubble">
+          <g transform="translate(125,45) scale(1) translate(-125,-45)">
+            <path class="lg-steam" d="M 100 110 Q 115 95, 105 85 T 120 70" fill="none" stroke="#DCA842" stroke-width="5" stroke-linecap="round"/>
+            <path class="lg-steam lg-steam2" d="M 88 106 Q 97 96, 91 88" fill="none" stroke="#DCA842" stroke-width="3.5" stroke-linecap="round"/>
+            <path d="M 120 70 C 105 70, 100 55, 115 45 C 115 30, 135 25, 145 35 C 155 25, 175 35, 170 50 C 180 60, 165 75, 150 70 C 140 78, 125 75, 120 70 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="4" stroke-linejoin="round"/>
+            <circle cx="135" cy="50" r="4" fill="#FBF9F3"/>
+            <circle cx="150" cy="50" r="4" fill="#FBF9F3"/>
+            <path d="M 140 58 Q 142.5 61, 145 58" fill="none" stroke="#FBF9F3" stroke-width="2.5" stroke-linecap="round"/>
+          </g>
+        </g>
+        <g transform="translate(100, 115) rotate(30) translate(-100, -115)">
+          <g class="lg-stickA"><path d="M 60 50 L 142 132 C 145 135, 140 140, 137 137 L 55 55 C 52 52, 57 47, 60 50 Z" fill="#1C1A17"/></g>
+          <g class="lg-stickB"><path d="M 72 42 L 154 124 C 157 127, 152 132, 149 129 L 67 47 C 64 44, 69 39, 72 42 Z" fill="#1C1A17"/></g>
+        </g>
+        <rect x="80" y="165" width="40" height="12" rx="6" fill="#1C1A17"/>
+        <path d="M 45 115 C 45 115, 40 165, 100 165 C 160 165, 155 115, 155 115 C 155 115, 130 120, 100 120 C 70 120, 45 115, 45 115 Z" fill="#D24B33" stroke="#1C1A17" stroke-width="5" stroke-linejoin="round"/>
+        <path d="M 55 115 C 55 102, 75 92, 100 92 C 125 92, 145 102, 145 115 Z" fill="#FBF9F3" stroke="#1C1A17" stroke-width="4"/>
+        <circle class="lg-dot1" cx="80" cy="80" r="3" fill="#DCA842"/>
+        <circle class="lg-dot2" cx="115" cy="78" r="4.5" fill="#DCA842"/>
+      </svg>
+      <div class="wordmark">
+        <b>Chop<em>Story</em></b>
+      </div>
+    </div>
+    <!-- slogan 大字（2026-07-12 Julia 定稿） -->
+    <h1 class="headline" id="slogan">外国人的点餐伙伴<br>读得懂、点得对、<em>吃得明白</em></h1>
+    <p class="sub" id="sloganSub">拍一张中文菜单，讲懂每道菜、标出过敏雷点、帮他和服务员沟通。</p>
+    <div class="points">
+      <div class="point"><span class="cn">看懂</span><span class="lead"></span><span class="en">不是直译菜名，是讲明白每道菜</span></div>
+      <div class="point"><span class="cn">放心</span><span class="lead"></span><span class="en">辣度、过敏原、忌口雷点提前标出</span></div>
+      <div class="point"><span class="cn">点单</span><span class="lead"></span><span class="en">中文点单卡递给服务员，不用比划</span></div>
+    </div>
+    <p class="tryline"><b>右边这台手机可以直接点着玩</b>，或点下方时间轴任意一站，直达对应界面。</p>
   </aside>
 
-  <!-- 中：iPhone -->
-  <div class="phone-wrap">
-    <div class="iphone">
-      <span class="btn-side b-action"></span>
-      <span class="btn-side b-vol1"></span>
-      <span class="btn-side b-vol2"></span>
-      <span class="btn-side b-power"></span>
-      <div class="screen-hole">
-        <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo<br><small style="font-size:10px">npm run dev → localhost:3000</small></div>
-        <iframe id="appframe" src="app.html" title="ChopStory demo"></iframe>
-        <span class="island"></span>
-        <span class="glass"></span>
+  <!-- 中：iPhone（内容恒为 392px 调试尺寸） -->
+  <div class="phone-zone">
+    <div class="phone-fit" id="phoneFit">
+      <div class="phone-wrap" id="phoneWrap">
+        <div class="iphone">
+          <span class="btn-side b-action"></span>
+          <span class="btn-side b-vol1"></span>
+          <span class="btn-side b-vol2"></span>
+          <span class="btn-side b-power"></span>
+          <div class="screen-hole">
+            <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
+            <iframe id="appframe" src="app.html" title="ChopStory demo"></iframe>
+            <span class="island"></span>
+            <span class="glass"></span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 右：刊头 -->
-  <aside class="side-right">
-    <div class="kicker">A WOODBLOCK MENU LEDGER</div>
-    <h1 class="brand">Chop<em>Story</em></h1>
-    <p class="slogan-en">Taste China, <i>order like a local.</i></p>
-    <p class="slogan-sub">Not just translated. Understood.</p>
-    <div class="points">
-      <div class="point"><span class="cn">看懂菜单</span><span class="lead"></span><span class="en">Your menu, decoded</span></div>
-      <div class="point"><span class="cn">放心下单</span><span class="lead"></span><span class="en">Allergies flagged &amp; folded for you</span></div>
-      <div class="point"><span class="cn">递给店家</span><span class="lead"></span><span class="en">Order like a local — waiter view</span></div>
-      <div class="point"><span class="cn">集印成册</span><span class="lead"></span><span class="en">Your chopstory so far</span></div>
+  <!-- 底：用户动线时间轴（一个外国游客的一顿饭，八站） -->
+  <div class="journey">
+    <div class="jtrack">
+      <div class="jline"></div>
+      <div class="jfill" id="jfill"></div>
+      <div class="jnodes" id="jnodes"></div>
     </div>
-    <div class="bottom-row">
-      <div class="qr"><b>▦</b><span>扫码试用</span></div>
-      <div class="stamp-row">
-        <span class="seal">食迹</span>
-        <span class="stamp-note">已钤二印 · 尝八味</span>
-      </div>
-    </div>
-    <!-- 快速跳屏：评审/调 UI 时直达任意界面（UI.md） -->
-    <nav class="jumpbar">
-      <button onclick="jump('home')">S0 首页</button>
-      <button onclick="jump('camera')">相机</button>
-      <button onclick="jump('analyzing')">识别中</button>
-      <button onclick="jump('list')">S1 菜单</button>
-      <button onclick="jump('detail')">S2 详情</button>
-      <button onclick="jump('order')">S3 点单</button>
-      <button onclick="jump('map')">S4 食迹</button>
-    </nav>
-  </aside>
-
-  <!-- 底部菜账 -->
-  <div class="ledger">
-    <span class="item"><span class="nm">夫妻肺片</span><span class="dots"></span><span class="pr">¥25</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">钵钵鸡</span><span class="dots"></span><span class="pr">¥28</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">宫保鸡丁</span><span class="dots"></span><span class="pr">¥42</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">麻婆豆腐</span><span class="dots"></span><span class="pr">¥32</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">水煮鱼</span><span class="dots"></span><span class="pr">¥58</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">龙抄手</span><span class="dots"></span><span class="pr">¥18</span></span><span class="sep">·</span>
-    <span class="item"><span class="nm">红糖糍粑</span><span class="dots"></span><span class="pr">¥16</span></span>
+    <span class="jhint">键盘 ← → 切换</span>
   </div>
 </div>
+
 <script>
-/* 快速跳屏：直接调用 iframe 内的全局函数（同源） */
-function jump(s) {
-  const w = document.getElementById("appframe").contentWindow;
-  if (!w || !w.go) return;
+/* ---- 手机适配：屏内恒为 393x852 调试尺寸，按可用高度整体缩放 ---- */
+const PHONE_W = 415, PHONE_H = 874, PHONE_MARGIN = 26; /* 阴影/金属圈留白 */
+function fitPhone() {
+  const zone = document.querySelector(".phone-zone");
+  const s = Math.min(
+    1.1,
+    (zone.clientHeight - PHONE_MARGIN) / PHONE_H,
+    (window.innerWidth * 0.44) / PHONE_W
+  );
+  const fit = document.getElementById("phoneFit");
+  fit.style.width = PHONE_W * s + "px";
+  fit.style.height = PHONE_H * s + "px";
+  document.getElementById("phoneWrap").style.transform = `scale(${s})`;
+}
+window.addEventListener("resize", fitPhone);
+
+/* ---- user journey 八站 ---- */
+const STAGES = [
+  { k: "home",      n: 1, t: "到店",       zh: "看不懂中文菜单", act: w => w.go("home") },
+  { k: "camera",    n: 2, t: "拍菜单",     zh: "对着菜单拍一张", act: w => w.startScan("camera") },
+  { k: "analyzing", n: 3, t: "AI 识别",    zh: "自动读懂菜名",   act: w => w.startAnalyze() },
+  { k: "list",      n: 4, t: "英文菜单",   zh: "每道菜都看得懂", act: w => ensureMenu(w) },
+  { k: "fx",        n: 5, t: "汇率换算",   zh: "换成熟悉的货币", act: w => { ensureMenu(w); w.openCurrency(); } },
+  { k: "detail",    n: 6, t: "菜品详情",   zh: "讲清这道菜",     act: w => { ensureMenu(w); w.openDetail(8); } },
+  { k: "order",     n: 7, t: "中文点单卡", zh: "翻面递给服务员", act: w => seedOrder(w) },
+  { k: "map",       n: 8, t: "美食地图",   zh: "记录吃过的美食", act: w => { w.go("history"); w.histView("map"); } },
+];
+let cur = 0;
+
+function appWin() { const w = document.getElementById("appframe").contentWindow; return (w && w.go) ? w : null; }
+function ensureMenu(w) {
+  let ready = false;
+  try { ready = w.eval('typeof streamed !== "undefined" && streamed.length > 0'); } catch (e) {}
+  if (ready) w.go("list"); else w.beginStream();
+}
+function seedOrder(w) {
+  ensureMenu(w);
+  let empty = true;
+  try { empty = w.eval("order.size === 0"); } catch (e) {}
+  if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
+  w.openOrder();
+}
+/* 只更新舞台侧 UI（时间轴），不触发 app 跳转 */
+function setUI(i) {
+  cur = i;
+  document.querySelectorAll(".jnode").forEach((n, j) => n.classList.toggle("on", j === i));
+  document.getElementById("jfill").style.width = (3 + (94 * i / (STAGES.length - 1))) + "%";
+}
+function jumpTo(i) {
+  setUI(i); const s = STAGES[i];
+  const w = appWin(); if (!w) return;
   try { w.closeDetail && w.closeDetail(); } catch (e) {}
   try { w.closeSheet && w.closeSheet(false); } catch (e) {}
-  const ensureMenu = () => {
-    if (!w.streamed || !w.streamed.length) { w.scanSource = "camera"; w.beginStream(); }
-    else w.go("list");
-  };
-  const acts = {
-    home: () => w.go("home"),
-    camera: () => { w.scanSource = "camera"; w.go("camera"); },
-    analyzing: () => { w.scanSource = "camera"; w.startAnalyze(); },
-    list: ensureMenu,
-    detail: () => { ensureMenu(); w.openDetail(8); },
-    order: () => { ensureMenu(); if (!w.order.size) { w.addToOrder(3, 1); w.addToOrder(8, 1); } w.openOrder(); },
-    map: () => { w.go("history"); w.histView("map"); },
-  };
-  acts[s] && acts[s]();
+  try { w.closeCurrency && w.closeCurrency(); } catch (e) {}
+  try { s.act(w); } catch (e) { console.warn("jump failed:", e); }
+  /* app 首跑会在 600ms 后自动弹偏好底屉（app.html:265）；非首页站补一次关闭 */
+  if (s.k !== "home") setTimeout(() => {
+    const w2 = appWin();
+    if (w2) try { w2.closeSheet && w2.closeSheet(false); } catch (e) {}
+  }, 900);
 }
+document.getElementById("jnodes").innerHTML = STAGES.map((s, i) =>
+  `<button class="jnode" onclick="jumpTo(${i})"><span class="dot">${s.n}</span><div class="tt">${s.t}</div><div class="zh">${s.zh}</div></button>`
+).join("");
+document.addEventListener("keydown", e => {
+  if (e.key === "ArrowRight") jumpTo(Math.min(cur + 1, STAGES.length - 1));
+  if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
+});
+
+/* 反向同步：评委直接在手机里点导航时，时间轴跟着走；没玩到的站（如汇率）不亮、直接跳过 */
+const SCREEN_TO_STAGE = { "s-home": 0, "s-camera": 1, "s-analyzing": 2, "s-list": 3, "s-order": 6, "s-history": 7 };
+function detectStage(w) {
+  try {
+    const d = w.document; if (!d) return -1;
+    const cm = d.getElementById("cur-mask");
+    if (cm && !cm.classList.contains("hidden")) return 4; /* 货币选择器开着 = 汇率换算站 */
+    const ds = d.getElementById("detail-sheet");
+    if (ds && !ds.classList.contains("hidden")) return 5; /* 详情弹层开着 = 菜品详情站 */
+    const vis = d.querySelector(".screen:not(.hidden)");
+    return vis ? (SCREEN_TO_STAGE[vis.id] ?? -1) : -1;
+  } catch (e) { return -1; }
+}
+setInterval(() => {
+  const w = appWin(); if (!w) return;
+  const i = detectStage(w);
+  if (i >= 0 && i !== cur) setUI(i);
+}, 600);
+
+jumpTo(0);
+fitPhone();
 </script>
 </body>
 </html>
