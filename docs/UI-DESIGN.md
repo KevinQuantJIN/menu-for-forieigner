@@ -1,11 +1,11 @@
-# MenuLens — UI 设计规范（One Page）· 雕版食单版
+# ChopStory — UI 设计规范（One Page）· 雕版食单版
 
-> ⚠️ 同步副本（2026-07-13），源文件在 Julia 的 Hackathon 工作区，以源为准。
-
+> ⚠️ 同步副本（2026-07-14），源文件在 Julia 的 Hackathon 工作区，以源为准。
 
 > 给所有做 UI 的 AI / 人的唯一样式事实来源。改样式先改这里，再改代码。
 > 产品定义看 `PRD.md`；demo 菜品清单看 `demo-data/demo-menu-plan.md`；本文只管「长什么样、怎么动」。
 > 2026-07-12 定稿：**主题 = 方案一「雕版食单」**（见 `ui-lab/style-lab-v2.html`），备选 =「大排档招牌」（见文末）。
+> ⚠️ **2026-07-13 更新（Julia 定稿）：S1 菜品列表 + S2 详情弹层改走「柿漆金排档 v-final」**，规范见文末新增章节，视觉基准 `ui-lab/style-lab-final.html`——该两屏以新章节为准，与上文冲突处新章节胜出。其他屏（S0/S3/S4）暂维持现规范。
 > ✅ `public/app.html`（ui-prototype 分支，commit 01aa24f）**已完成主题迁移**（纯换肤，逻辑零改动），品牌已更为 ChopStory。后续改 UI 直接以 app.html 为现行基准。
 
 ## 新 AI 开工包（给我这些就能开始干活）
@@ -104,6 +104,7 @@
 | `.pcard` 菜品卡 | **描边单元卡**（UI.md 7.12：线太多看不清，混入方案C）：2px 墨框 + 朱调错位影 + 赭黄价签斜贴右上角；辣度 🌶 tag 在标签行；＋号 = 墨框小方章 |
 | 分类 chips | 改为**鱼尾节标**分区（All 视图）；筛选 chips 保留但改墨线描边胶囊，选中 = 墨底纸字 |
 | `.btn` 主按钮 | 墨底纸字，radius 5px；**关键动作**（下单/服务员视图切换）= 朱底纸字 |
+| 首页 Scan CTA（7.14 定稿） | **朱印章钮**（ui-lab/scan-cta-lab.html 方案A）：朱底 + 深朱 2px 边 + 厚底座 `0 5px 0` + 印面内圈纸色细线 + 微倾 -0.8°；按下 = 盖章（下沉 5px 底座消失）；实现在 css/home.css `.scan-cta` |
 | `.cart-bar` | 不再悬浮胶囊 → 页底**重界线 + 左合计(等宽) + 右朱底小按钮** |
 | S3 点菜卡（7.13 定稿） | 单行三件套顶行（‹+双 tab，tab 按面本地化）；圆框金签单元（--gold 金签=内容区、朱签=警示区，标题带 icon 行内无 icon）；CTA 两面同款墨底+金框 CN/EN 徽标；规格见 ui-lab/order-card-final.html |
 | 弹层 sheet | 保留 grabber，纸色底 + 顶部重界线，圆角收到 10px |
@@ -117,8 +118,9 @@
 - 纸底 `--paper-2`，省块 = 茶笺色 + inset 墨线（`box-shadow: inset 0 0 0 1px rgba(38,32,25,.28)`）
 - **吃过的省 = 钤一方朱印**：省块变朱底 + 深朱边 + 中心楷体「食」字 + `rotate(-1~2deg)` 微旋转（每省角度不同，人手盖章感）
 - 计数条（宋体字距拉开）：「已 钤 二 印 · 尝 八 味」
-- 餐厅小卡片 = 墨线框纸卡 + 指向短线，**首页 preview 和全屏都常显**
-- ECharts 实现：省 regions itemStyle 朱底深朱边；「食」字用 label/自定义 marker；纸底 #f3ecdb；城市点用小墨点
+- 餐厅小卡片（7.14 定稿）= **迷你拍立得**（ui-lab/map-card-lab.html 方案A）：白框 + 上图下字（emoji 照片区/店名双行/日期）+ 微旋转交替 ±3° + 底部小三角指向坐标点，与首页 history 拍立得同语言；**只在全屏地图常显，首页 preview 不放卡**（7.13 决定）
+- 实现：ECharts label 画不出白框+三角 → **HTML overlay**（`#map-pins` 容器 + `convertToPixel` 定位，`georoam` 时跟随；注意涟漪动画常驻导致 `finished` 事件永不触发，初次定位必须在 setOption 后直接调用），见 js/map.js
+- ECharts 其余：省 regions itemStyle 朱底深朱边；纸底 #f3ecdb；城市点用小墨点
 - 禁：霓虹、终端字体、黑底网格、渐变发光
 
 ## 文案语气（印刷品的措辞）
@@ -140,4 +142,54 @@
 - Flavor bars 已废弃（UI.md 7.12）：辣度 = 🌶 icon；麻 numbing≥5 = Heads-up 标签；Heads-up 标签清单在 `js/data.js`（GENERIC_TAG/HIDDEN_RISK_LABEL）
 - 禁 Inter / 纯黑 / 荧光饱和色 / 渐变大字
 - 印章与价签的「微旋转」是设计资产，不要「修正」它
+
+---
+
+## 🔶 2026-07-13 定稿 · S1 列表 + S2 详情「柿漆金排档 v-final」（本章覆盖上文对这两屏的规定）
+
+> 视觉基准（唯一）：`ui-lab/style-lab-final.html`。过程稿 v4/v5/v6/story 仅存档。适用文件：`css/menu.css` + `js/menu.js`（tokens.css 增量新增变量，勿改旧变量语义）。
+
+### 色板（柿漆金，本两屏局部生效）
+
+```css
+--sh-paper: #FBF6EA;     /* 屏底，178deg 微渐变至 #F6EFDD */
+--sh-card:  #FFFDF6;     /* 卡底 */
+--sh-ink:   #1C1A17;     /* 漆墨 */
+--sh-sub:   #857A64;     /* 次要字 */
+--sh-hot:   #D24B33;     /* 柿红：警示 tag / CTA / 加购态 / 辣度文字（仅此四处填色） */
+--sh-gold:  #DCA842;     /* 鎏金：价签 / 招牌 tag / 文化题跋 */
+--sh-gold-line: #C89A2E; /* 金细线 */
+--sh-hairline: #CFC3A5;  /* 发丝线（chips 描边） */
+```
+
+### 字体（7.13 决议：豁免「无外部字体」约束，仅限以下两族，断网回退系统字体）
+
+- EN 展示/标签/菜名：**Bricolage Grotesque**（Google Fonts `<link>`；fallback `-apple-system`）
+- 数字/价格：**IBM Plex Mono** + `tabular-nums`（fallback `ui-monospace`）
+- 中文一律 PingFang SC；宋体/楷体不再用于这两屏
+
+### S1 菜品列表
+
+- **卡容器**：`background:--sh-card; border:2px solid --sh-ink; border-radius:14px; box-shadow:3px 3px 0 rgba(28,26,23,.22)`；卡间距 14px，卡间零横线
+- **价签**：鎏金实底 + 2px 墨框 + `rotate(2deg)`，骑卡右上出血（top:-10px）；`≈$` 主 + `¥` 小字两行
+- **菜名行**：EN 14.5px/750 + 辣度 **🌶 icon 三档**缀菜名旁（10px；7.13 定：麻不在列表标注，仅详情 Heads-up）——无菜名前图标、无文字辣度标
+- **第二行**：中文 · 拼音（**无 🔊**，语音入口只在详情页）
+- **tag（白名单制）**：只显命中 `data.js` GENERIC_TAG / 个人过敏 / 招牌；样式：过敏 = 柿红描边+朱字+#FBEEEA 底、雷点 = 灰墨描边、招牌 = 金描边+#FAF3DD 底；胶囊 999px
+- **加号**：24px 方钮 radius 8、柿红底墨框白 +；**加购态 = 墨底金字数量**（状态必须有视觉差）
+- **分区标题**：EN 15.5px/800 + 中文 10px 附注 + 「墨上朱下」双细线延展至行尾；**分区名与顶部 tab 完全同名，滑动 scrollspy 点亮对应 tab**
+- **tabs**：胶囊 1.5px 墨框；active = 墨底金字
+- **Order card 条**（7.13 增高）：墨底 radius 14 · padding 13px + 金色硬影 + 柿红「Order card ›」钮（无 icon）；文案 `Total ¥X ≈ $Y`；margin-top:auto 钉屏底；忌口**不折叠**（折叠逻辑 7.13 移除，行内红 tag 警示）
+
+### S2 详情弹层
+
+- **弹层无包边**：纸面 `--sh-card` 顶部 radius 22 + 柔和上抛影 `0 -14px 34px rgba(40,30,15,.22)`；grabber 保留
+- **标题区两行封顶**：EN 24px/800 居中；中文·拼音·🔊。**无菜系行、无价格行**（价格只在 CTA）
+- **What it is 块 = 页面主角**：`#FAF5E9` 底 + 1.25px 墨线单框 radius 10 + 朱底白字标签 `What it is`（**无中文**）骑框左上；关键词柿红加粗
+- **常规字段**：标签 = EN 12px/800 + 中文 10px 小注（正文标签禁全大写）；Ingredients / Heads-up chips = 发丝线描边 `inset 0 0 0 1px --sh-hairline` + `#FAF5E9` 底 radius 6；Allergens：contains = 朱底白字、may = 金描边金字
+- **The story = 页脚题跋（S2 方案定稿）**：出血茶笺色带 `#F4ECD7` 满宽，上缘 1px `--sh-gold-line` 金线（左右内缩 18px），小标 `THE STORY · 由来`（金字 10px/800 + 右延渐隐金线），正文 11.5px/1.7 `#55503F`；**底部零间距直接衔接 CTA**——「决策区（白）/文化区（茶）」用背景切换分层，不加框
+- **CTA**：柿红满宽，`Add to order · ≈$X`（¥Y 小字），15px padding
+
+### 纪律（继承全局）
+
+横线配给制（分区双细线与题跋金线之外零横线）· 填色只给过敏/CTA/加购态/辣度文字 · 数字等宽 · 44px 触控 · 微旋转仅价签一处
 - 不删过敏免责声明；数字永远等宽；地图永远是集印册范式
