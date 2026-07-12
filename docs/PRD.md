@@ -76,6 +76,8 @@ ChopStory 是外国人在中国餐厅的店内用餐伙伴：拍一张中文菜�
 | **S3 点单卡** Order card     | 双视图点单：For me 核对与编辑，For waiter 递手机下单 | 顶栏返回 + 双 tab（唯一切换）→ 一次性引导条 → 开场白气泡 → 菜品卡（含空态）→ 注意事项卡（✎ Edit）→ 底部双语说明                             | 待补   |
 
 > **7.13 UI 定稿（order-card-final，✅ 已落地 commit a631126）**：顶行=‹+双 tab 单行；tab 按面本地化（英文面 My view·IN ENGLISH / Waiter view·IN CHINESE；中文面 顾客视图·英文 / 服务员视图·中文，宋体）——**一面只有一种语言**。区块=圆框金签单元（🍽 MY PICKS=已选菜品 / ⚠️ MY NOTES=请注意），行内无 icon，两面模板 1:1；Total/合计在 picks 单元内。底部 CTA 两面同一样式（墨底+金框字母徽标）：Show to waiter → [CN] / ‹ Back to my view [EN]，无副标题；中文面 CTA 上方一行「🙏 顾客不会中文·请照单下单」。已移除：问候气泡、引导横幅、双语底注、空态 Browse 按钮。设计过程稿：ui-lab/order-card-final.html（含实现规格）。
+
+> **7.14 增补（✅ 已落地）**：两面 picks 上方各加一句开场白（EN「Hello! I'd like to order the following dishes:」/ CN「你好！我想点以下这些菜品：」，中文面宋体放大）——替代此前删掉的问候气泡，作为「递卡时说的第一句话」。中文注意事项改第一人称：「**我**对花生严重过敏…」「**我**不太能接受内脏、香菜，请尽量不要放」。演示默认值填满（仅展示用，js/core.js）：过敏=花生，忌口=香菜+内脏，请求=微辣+不要香菜+少油，备注=双语「Not too salty, please（口味清淡一点）」，让服务员视图开箱即丰富。
 | **S4 食迹收藏** Food story    | 留痕收藏：历史列表（P1）+ 中国地图点亮（✅）            | History/Map 双 tab：按时间地点分组的列表；ECharts 中国地图 + 城市涟漪点亮 + 拍立得弹卡 + 顶部计数条                               | 待补   |
 
 
