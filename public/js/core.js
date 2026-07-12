@@ -7,7 +7,8 @@
 /* 共享层：画像/个性化/全局状态/导航 —— 改动需协调 */
 /* ---------------- profile (Jake defaults: peanut allergy, mild spice) ---------------- */
 let profile = JSON.parse(localStorage.getItem("ml.profile") || "null") || {
-  allergens: ["peanut"], avoid: [], spice: 1,
+  /* demo defaults（7.14）：填满过敏/忌口，让服务员视图开箱即丰富——仅展示用 */
+  allergens: ["peanut"], avoid: ["cilantro", "offal"], spice: 1,
 };
 const ALLERGEN_LABEL = { peanut:"Peanut", tree_nut:"Tree nut", crustacean:"Shrimp/Crab", mollusk:"Shellfish", gluten:"Gluten", soy:"Soy", egg:"Egg", dairy:"Dairy", sesame:"Sesame", fish:"Fish" };
 const AVOID_LABEL = { offal:"Organ meats", cilantro:"Cilantro", bone_in:"On the bone", fatty:"Fatty pork", whole_head:"Whole fish head", chicken_feet:"Chicken feet" };
@@ -27,11 +28,12 @@ function seedRequests() {
   requests = new Set();
   if (profile.spice <= 1) requests.add("mild");
   if (profile.avoid.includes("cilantro")) requests.add("no_cilantro");
+  requests.add("less_oil"); // demo default（7.14，仅展示用）
 }
 function toggleReq(k) { requests.has(k) ? requests.delete(k) : requests.add(k); renderOrder(); }
 /* Heads-up section edit mode (order page §3) */
 let orderEditing = false;
-let customNote = "";
+let customNote = "Not too salty, please（口味清淡一点）"; // demo default（7.14，双语让两面都读得通）
 function toggleProfileItem(group, v) {
   const arr = profile[group];
   const i = arr.indexOf(v);

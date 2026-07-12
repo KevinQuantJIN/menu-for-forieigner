@@ -59,8 +59,8 @@ function renderOrder() {
     `;
   /* 请注意（中文面：整句、无空行——服务员只看有内容的行）*/
   const cnRows = [
-    allergenCN ? `<div class="note-row danger"><span class="v">对${allergenCN}严重过敏，请勿使用相关食材及烹饪油</span></div>` : "",
-    avoidCN ? `<div class="note-row"><span class="v">尽量不要${avoidCN}</span></div>` : "",
+    allergenCN ? `<div class="note-row danger"><span class="v">我对${allergenCN}严重过敏，请勿使用相关食材及烹饪油</span></div>` : "",
+    avoidCN ? `<div class="note-row"><span class="v">我不太能接受${avoidCN}，请尽量不要放</span></div>` : "",
     (reqSel.length || customNote) ? `<div class="note-row"><span class="v">${[reqSel.map(r => r.cn).join("；"), customNote].filter(Boolean).join("；另外：")}</span></div>` : "",
   ].filter(Boolean).join("") || `<div class="note-row"><span class="v none">无特别要求</span></div>`;
 
@@ -76,6 +76,7 @@ function renderOrder() {
       </div>
     </div>
     ${waiterMode ? `
+      <p class="greet">你好！我想点以下这些菜品：</p>
       <div class="sec-card"><span class="sec-lab">🍽 已选菜品</span>${dishesCN}</div>
       <div class="sec-card"><span class="sec-lab zhu">⚠️ 请注意</span>${cnRows}</div>
       <div class="order-cta">
@@ -83,6 +84,7 @@ function renderOrder() {
         <button class="cta-main" onclick="waiterMode=false;renderOrder()">‹ Back to my view <span class="lang-badge">EN</span></button>
       </div>
     ` : `
+      <p class="greet">Hello! I'd like to order the following dishes:</p>
       <div class="sec-card"><span class="sec-lab">🍽 MY PICKS</span>${dishesEN}</div>
       <div class="sec-card"><span class="sec-lab zhu">⚠️ MY NOTES</span><button class="edit-btn" onclick="orderEdit(${!orderEditing})">${orderEditing ? "Done ✓" : "✎ Edit"}</button>${notesEN}</div>
       <div class="order-cta">
