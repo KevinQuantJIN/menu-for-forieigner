@@ -251,12 +251,20 @@
     transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
   .cat.on { background: var(--ink); color: #fff; box-shadow: none; }
+  .cat i { font-style: normal; font-weight: 800; opacity: .5; margin-left: 5px; font-size: 11.5px; font-variant-numeric: tabular-nums; }
+  .sechead {
+    display: flex; align-items: baseline; gap: 8px; margin: 18px 2px 10px;
+    animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
+  }
+  .sechead b { font-size: 15px; font-weight: 900; letter-spacing: -.2px; }
+  .sechead span { font-size: 11.5px; color: var(--faint); font-weight: 600; }
+  .sechead::after { content: ""; flex: 1; height: 1px; background: var(--line); align-self: center; }
 
   .pcard {
     position: relative;
     background: var(--paper); border: none; box-shadow: var(--shadow-1); border-radius: var(--r-lg);
     padding: 14px 15px; margin-bottom: 10px; cursor: pointer;
-    animation: pop 320ms var(--ease);
+    animation: pop 380ms var(--ease) backwards; animation-delay: var(--d, 0ms);
     transition: transform var(--dur-fast) var(--ease);
   }
   .pcard:active { transform: scale(.98); }
@@ -299,11 +307,24 @@
   .cart-bar .go { background: var(--accent); border: none; color: #fff; border-radius: 999px; padding: 10px 18px; font-weight: 800; font-size: 13.5px; cursor: pointer; }
   .disclaimer { font-size: 10.5px; color: var(--faint); line-height: 1.55; margin: 16px 0 8px; }
 
-  /* ---------- S2 detail ---------- */
-  #s-detail .hero { text-align: center; padding: 6px 0 0; font-size: 56px; }
-  #s-detail .dname { text-align: center; font-size: 23px; font-weight: 900; letter-spacing: -.4px; margin-top: 6px; }
-  #s-detail .dcn { text-align: center; margin-top: 6px; color: var(--muted); font-size: 14px; }
-  #s-detail .dprice { text-align: center; margin-top: 8px; }
+  /* ---------- S2 detail: bottom sheet floating over the list ---------- */
+  #detail-mask { position: absolute; inset: 0; background: rgba(30,20,12,.45); z-index: 44; animation: screen-in var(--dur) var(--ease); }
+  #detail-sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 45;
+    background: var(--bg); border-radius: 26px 26px 0 0; box-shadow: var(--shadow-3);
+    max-height: 90%; overflow-y: auto; padding: 8px 16px 0;
+    animation: sheet-in 320ms var(--ease);
+  }
+  #detail-sheet .dclose {
+    position: absolute; top: 14px; right: 14px; z-index: 5;
+    width: 34px; height: 34px; border-radius: 999px; border: none;
+    background: #eee4d7; color: var(--ink-2); font-size: 15px; cursor: pointer;
+  }
+  #detail-sheet .detail-cta { margin: 18px -16px 0; }
+  #detail-sheet .hero { text-align: center; padding: 10px 0 0; font-size: 52px; }
+  #detail-sheet .dname { text-align: center; font-size: 22px; font-weight: 900; letter-spacing: -.4px; margin-top: 6px; padding: 0 30px; }
+  #detail-sheet .dcn { text-align: center; margin-top: 6px; color: var(--muted); font-size: 14px; }
+  #detail-sheet .dprice { text-align: center; margin-top: 8px; }
   .uncertain-banner {
     margin-top: 14px; background: var(--warn-bg); color: var(--warn); border-radius: var(--r-sm);
     padding: 10px 13px; font-size: 12.5px; font-weight: 700; line-height: 1.45;
@@ -312,7 +333,7 @@
     margin-top: 16px; border-left: 3px solid var(--accent); background: var(--paper); box-shadow: var(--shadow-1);
     border-radius: 0 var(--r-md) var(--r-md) 0; padding: 13px 15px; font-size: 14.5px; line-height: 1.6; color: var(--ink-2);
   }
-  #s-detail .dcuisine { text-align: center; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .02em; }
+  #detail-sheet .dcuisine { text-align: center; margin-top: 6px; font-size: 12px; font-weight: 700; color: var(--accent); letter-spacing: .02em; }
   .fbar { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; font-size: 12.5px; }
   .fbar .fl { flex: none; width: 108px; font-weight: 700; color: var(--ink-2); }
   .fbar .ft { flex: 1; height: 6px; border-radius: 999px; background: #efe6d8; overflow: hidden; }
@@ -340,10 +361,50 @@
   }
   .otab .s { display: block; font-size: 10.5px; font-weight: 600; margin-top: 2px; }
   .otab.on { background: var(--paper); color: var(--ink); box-shadow: var(--shadow-1); }
+  .guide-banner {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--accent-soft); color: var(--accent);
+    border-radius: var(--r-md); padding: 12px 14px; margin-bottom: 14px;
+    font-size: 13px; font-weight: 700; line-height: 1.45; cursor: pointer;
+    animation: pop 380ms var(--ease);
+  }
+  .guide-banner .arr { margin-left: auto; font-size: 16px; flex: none; }
+  .onote b { display: block; margin-bottom: 3px; }
+  /* order page: back + tabs in ONE row; content = 3 clean section cards */
+  .topbar .otabs { flex: 1; margin-bottom: 0; }
+  .sec-card { background: var(--paper); box-shadow: var(--shadow-1); border-radius: var(--r-lg); padding: 2px 15px; margin-bottom: 12px; }
+  .sec-head { display: flex; align-items: center; justify-content: space-between; padding: 12px 0 2px; }
+  .sec-head .gt { font-size: var(--t-cap); font-weight: 800; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+  .edit-btn { border: 1.5px solid var(--accent); background: none; color: var(--accent); border-radius: 999px; padding: 5px 13px; font-size: 12px; font-weight: 800; cursor: pointer; }
+  .orow { display: flex; align-items: center; gap: 8px; padding: 13px 0; border-bottom: 1px solid var(--line); font-size: 14.5px; font-variant-numeric: tabular-nums; }
+  .sec-card .orow:last-child { border-bottom: none; }
+  .orow b { flex: 1; letter-spacing: -.1px; }
+  .orow b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
+  .orow .q { color: var(--accent); font-weight: 800; }
+  .total-sm { text-align: right; font-size: 12px; color: var(--muted); padding: 10px 0 12px; font-variant-numeric: tabular-nums; }
+  .sec-empty { text-align: center; padding: 20px 0 24px; color: var(--muted); font-size: 13px; line-height: 1.6; }
+  .sec-empty .e { font-size: 30px; display: block; margin-bottom: 6px; }
+  .note-row { display: flex; gap: 10px; padding: 12px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; line-height: 1.5; align-items: baseline; }
+  .sec-card .note-row:last-child { border-bottom: none; }
+  .note-row .k { flex: none; font-weight: 800; }
+  .note-row .v { color: var(--ink-2); }
+  .note-row .v.none { color: var(--faint); font-weight: 500; }
+  .note-row.danger .k, .note-row.danger .v { color: var(--danger); font-weight: 700; }
+  .note-input { width: 100%; border: 1.5px solid var(--line); background: var(--bg); border-radius: var(--r-sm); padding: 10px 12px; font: inherit; font-size: 13.5px; margin-top: 8px; }
+  .sec-card .chip-group:last-child { padding-bottom: 14px; }
+  .waiter .orow { font-size: 19px; padding: 15px 0; }
+  .waiter .orow b small { font-size: 12px; }
+  .waiter .note-row { font-size: 16.5px; }
+  .waiter .note-row.danger { font-size: 17.5px; }
   .bubble { background: var(--paper); box-shadow: var(--shadow-1); border-radius: var(--r-md); padding: 14px 16px; font-size: 15px; font-weight: 650; margin-bottom: 12px; }
   .oitem { display: flex; align-items: center; gap: 8px; background: var(--paper); box-shadow: var(--shadow-1); border-radius: var(--r-sm); padding: 13px 15px; margin-bottom: 8px; font-size: 14.5px; font-variant-numeric: tabular-nums; }
   .oitem b { flex: 1; letter-spacing: -.1px; }
+  .oitem b small { display: block; font-size: 11.5px; color: var(--muted); font-weight: 500; margin-top: 2px; }
   .oitem .q { color: var(--accent); font-weight: 800; }
+  .order-empty { text-align: center; margin-top: 24%; }
+  .order-empty .big { font-size: 54px; }
+  .order-empty p { font-size: 16px; font-weight: 800; margin-top: 14px; }
+  .order-empty .sub { font-size: 13px; font-weight: 500; color: var(--muted); line-height: 1.55; margin: 8px auto 22px; max-width: 260px; }
   .allergy-box { margin: 14px 0; background: #fff3ec; box-shadow: inset 0 0 0 1.5px #f0c8b2; border-radius: var(--r-md); padding: 14px 16px; }
   .allergy-box .h { display: flex; align-items: center; gap: 7px; font-weight: 800; color: var(--accent); font-size: 14px; }
   .allergy-box p { margin-top: 6px; font-size: 13.5px; line-height: 1.55; color: var(--ink-2); }
@@ -360,6 +421,7 @@
   .waiter .allergy-box .h { color: var(--danger); font-size: 17px; }
   .waiter .allergy-box p { font-size: 18px; font-weight: 700; line-height: 1.6; color: var(--ink); }
   .waiter .req-box { font-size: 18px; font-weight: 650; }
+  .waiter .onote { font-size: 14px; line-height: 1.6; }
 
   /* ---------- S4 history + food map ---------- */
   .htabs { display: flex; gap: 8px; margin-bottom: 14px; }
@@ -427,7 +489,7 @@
         <div class="eat-photo" style="--rot:-4deg">🍜</div>
         <div class="eat-info">
           <div class="n">Ma Wang Zi 马旺子</div>
-          <div class="m">Sichuan · 14 dishes scanned · 3 ordered · ¥90 ≈ $13</div>
+          <div class="m">Sichuan · 14 dishes scanned · 3 ordered · $13 ≈ ¥90</div>
           <div class="hl">🌶️ First numbing pepper — 花椒 unlocked</div>
           <div class="t">12:40</div>
         </div>
@@ -552,14 +614,15 @@
     <div class="fold hidden" id="foldBar" onclick="toggleFold()"></div>
     <div class="folded-wrap hidden" id="foldedCards"></div>
     <p class="disclaimer">AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
-    <div class="cart-bar hidden" id="cartBar" onclick="openOrder()">
-      <span class="sum" id="cartSum"></span>
-      <button class="go">View order ›</button>
+    <div class="cart-bar" id="cartBar" onclick="openOrder()">
+      <span class="sum" id="cartSum">Pick dishes to build your order</span>
+      <button class="go">🧾 My Order ›</button>
     </div>
   </section>
 
-  <!-- ============ S2 DETAIL ============ -->
-  <section class="screen hidden" id="s-detail"></section>
+  <!-- ============ S2 DETAIL (bottom sheet over the list) ============ -->
+  <div id="detail-mask" class="hidden" onclick="closeDetail()"></div>
+  <div id="detail-sheet" class="hidden"></div>
 
   <!-- ============ S3 ORDER ============ -->
   <section class="screen hidden" id="s-order"></section>
@@ -578,7 +641,7 @@
       <div class="hentry" onclick="go('list')">
         <div class="d">Today · 12:40 · Chengdu, China</div>
         <div class="n">🍜 Ma Wang Zi 马旺子 · Sichuan</div>
-        <div class="m">16 dishes scanned · 3 ordered · ¥216 ≈ $30</div>
+        <div class="m">16 dishes scanned · 3 ordered · $30 ≈ ¥216</div>
       </div>
       <div class="hentry" style="opacity:.55">
         <div class="d">(demo) Jul 9 · Beijing, China</div>
@@ -650,6 +713,7 @@
 
 const FX = 7.16; // static CNY→USD, labeled approximate
 const usd = (cny) => "≈ $" + (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1);
+const usdN = (cny) => (cny / FX).toFixed(cny / FX >= 10 ? 0 : 1); // number only, $ first displays
 
 /* ---------------- profile (Jake defaults: peanut allergy, mild spice) ---------------- */
 let profile = JSON.parse(localStorage.getItem("ml.profile") || "null") || {
@@ -659,6 +723,40 @@ const ALLERGEN_LABEL = { peanut:"Peanut", tree_nut:"Tree nut", crustacean:"Shrim
 const AVOID_LABEL = { offal:"Organ meats", cilantro:"Cilantro", bone_in:"On the bone", fatty:"Fatty pork", whole_head:"Whole fish head", chicken_feet:"Chicken feet" };
 const ALLERGEN_CN = { peanut:"花生", tree_nut:"坚果", crustacean:"虾蟹类", mollusk:"贝类", gluten:"麸质（面筋）", soy:"大豆", egg:"鸡蛋", dairy:"奶制品", sesame:"芝麻", fish:"鱼类" };
 const AVOID_CN = { offal:"内脏", cilantro:"香菜", bone_in:"带骨的肉", fatty:"肥肉", whole_head:"整鱼", chicken_feet:"鸡爪" };
+/* order-page requests — user picks in English, waiter view shows Chinese */
+const REQ_DEFS = [
+  { k:"mild",        en:"🌶 Mild spice",  cn:"请做微辣" },
+  { k:"no_spice",    en:"🚫 No spice",    cn:"完全不要辣" },
+  { k:"no_cilantro", en:"🌿 No cilantro", cn:"不要香菜" },
+  { k:"less_oil",    en:"🫗 Less oil",    cn:"请少油" },
+  { k:"no_msg",      en:"🧂 No MSG",      cn:"不要味精" },
+];
+let requests = null; // lazily seeded from profile on first order view
+function seedRequests() {
+  if (requests) return;
+  requests = new Set();
+  if (profile.spice <= 1) requests.add("mild");
+  if (profile.avoid.includes("cilantro")) requests.add("no_cilantro");
+}
+function toggleReq(k) { requests.has(k) ? requests.delete(k) : requests.add(k); renderOrder(); }
+/* Heads-up section edit mode (order page §3) */
+let orderEditing = false;
+let customNote = "";
+function toggleProfileItem(group, v) {
+  const arr = profile[group];
+  const i = arr.indexOf(v);
+  i >= 0 ? arr.splice(i, 1) : arr.push(v);
+  renderOrder();
+}
+function orderEdit(on) {
+  orderEditing = on;
+  if (!on) { // Done: persist + refresh everything that depends on the profile
+    localStorage.setItem("ml.profile", JSON.stringify(profile));
+    renderProfileStrip();
+    if (streamed.length) renderList();
+  }
+  renderOrder();
+}
 
 /* ---------------- demo dishes (demo-data/demo-menu-plan.md · 14 道，每道一个演示点)
    字段与 PRD 契约对齐：catStd/catOriginal/cuisine/flavorBars{spicy,numbing,richness 0-10}/story/howToEat ---------------- */
@@ -762,6 +860,7 @@ const order = new Map(); // id -> qty
 let currentCat = "All";
 let streamed = []; // dishes revealed so far
 let waiterMode = false;
+let waiterSeen = false; // guide banner shows until the user has switched to For waiter once
 
 /* ---------------- navigation ---------------- */
 function go(name) {
@@ -835,24 +934,23 @@ function startAnalyze() {
   setTimeout(() => { set("st3","done","done ✓"); beginStream(); }, 2400);
 }
 function beginStream() {
-  streamed = []; currentCat = "All";
-  renderCats(); renderList();
-  go("list");
+  /* whole-menu reveal: analysis done → present the entire decoded menu at once
+     (cards cascade in within ~0.6s via per-card animation-delay — feels like
+     "here is your whole menu", not dishes trickling in one by one) */
+  streamed = DISHES.slice(); currentCat = "All"; foldOpen = false;
   document.getElementById("restoName").textContent = scanSource === "album" ? "Ma Wang Zi 马旺子" : "Chuanla Kitchen 川辣小馆";
-  document.getElementById("dishCount").textContent = "…";
-  let i = 0;
-  const t = setInterval(() => {
-    if (i >= DISHES.length) { clearInterval(t); document.getElementById("dishCount").textContent = DISHES.length; return; }
-    streamed.push(DISHES[i]); i++;
-    document.getElementById("dishCount").textContent = i + "…";
-    renderList(true);
-  }, 240);
+  document.getElementById("dishCount").textContent = DISHES.length;
+  renderCats(); renderList(true);
+  go("list");
 }
 
 /* ---------------- list rendering ---------------- */
 function renderCats() {
-  document.getElementById("cats").innerHTML = CATS.map(c =>
-    `<button class="cat ${c===currentCat?"on":""}" onclick="setCat('${c}')">${c}</button>`).join("");
+  const count = c => c === "All" ? streamed.length
+    : c === "⭐ Signature" ? streamed.filter(d => d.signature).length
+    : streamed.filter(d => d.cat === c).length;
+  document.getElementById("cats").innerHTML = CATS.filter(c => count(c) > 0).map(c =>
+    `<button class="cat ${c===currentCat?"on":""}" onclick="setCat('${c}')">${c}<i>${count(c)}</i></button>`).join("");
 }
 function setCat(c) { currentCat = c; renderCats(); renderList(); }
 
@@ -861,9 +959,9 @@ function speak(cn, ev) {
   const u = new SpeechSynthesisUtterance(cn); u.lang = "zh-CN"; u.rate = .85;
   speechSynthesis.cancel(); speechSynthesis.speak(u);
 }
-function pcardHTML(d) {
+function pcardHTML(d, i = 0, stagger = false) {
   const inOrder = order.get(d.id) || 0;
-  return `<div class="pcard" onclick="openDetail(${d.id})">
+  return `<div class="pcard" style="--d:${stagger ? Math.min(i, 14) * 40 : 0}ms" onclick="openDetail(${d.id})">
     ${inOrder ? `<span class="qty-badge">×${inOrder}</span>` : ""}
     <button class="addbtn ${inOrder?"in":""}" onclick="event.stopPropagation();addToOrder(${d.id},1)">＋</button>
     <div class="pcard-top">
@@ -871,7 +969,7 @@ function pcardHTML(d) {
         <div class="name">${d.emoji} ${d.name}</div>
         <div class="cn">${d.nameCn} · ${d.pinyin} <button class="speak" onclick="speak('${d.nameCn}',event)">🔊</button></div>
       </div>
-      <div class="right price-dual"><b>¥${d.price}</b><br><span>${usd(d.price)}</span>
+      <div class="right price-dual"><b>≈ $${usdN(d.price)}</b><br><span>¥${d.price}</span>
         <div class="chili">${d.spicy ? "🌶".repeat(d.spicy) : `<span class="ns">not spicy</span>`}</div>
       </div>
     </div>
@@ -880,18 +978,31 @@ function pcardHTML(d) {
 }
 let foldOpen = false;
 function toggleFold() { foldOpen = !foldOpen; renderList(); }
-function renderList() {
+function renderList(stagger = false) {
   const pool = streamed.filter(d => currentCat === "All" || (currentCat === "⭐ Signature" ? d.signature : d.cat === currentCat));
   const shown = [], folded = [];
   for (const d of pool) (personalHits(d).length ? folded : shown).push(d);
-  document.getElementById("cards").innerHTML = shown.map(pcardHTML).join("");
+  let idx = 0, html = "";
+  if (currentCat === "All") {
+    /* All = whole menu, grouped with section headers (standard categories + original CN label) */
+    for (const c of CATS) {
+      if (c === "All" || c === "⭐ Signature") continue;
+      const grp = shown.filter(d => d.cat === c);
+      if (!grp.length) continue;
+      html += `<div class="sechead" style="--d:${stagger ? idx * 40 : 0}ms"><b>${c}</b><span>${grp[0].catOriginal || ""}</span></div>`;
+      html += grp.map(d => pcardHTML(d, ++idx, stagger)).join("");
+    }
+  } else {
+    html = shown.map(d => pcardHTML(d, idx++, stagger)).join("");
+  }
+  document.getElementById("cards").innerHTML = html;
   const fb = document.getElementById("foldBar"), fw = document.getElementById("foldedCards");
   if (folded.length) {
     fb.classList.remove("hidden");
     const reasons = [...new Set(folded.flatMap(personalHits))].join(" · ");
     fb.innerHTML = `${foldOpen ? "▾" : "▸"} ${folded.length} dishes hidden for you<span class="why">${reasons} — tap to ${foldOpen ? "collapse" : "review"}</span>`;
     fw.classList.toggle("hidden", !foldOpen);
-    fw.innerHTML = foldOpen ? folded.map(pcardHTML).join("") : "";
+    fw.innerHTML = foldOpen ? folded.map(d => pcardHTML(d)).join("") : "";
   } else { fb.classList.add("hidden"); fw.classList.add("hidden"); fw.innerHTML = ""; }
   renderCartBar();
 }
@@ -905,13 +1016,16 @@ function openDetail(id) {
   const hits = personalHits(d);
   const qty = order.get(id) || 0;
   const LVL = { contains: `<span class="tag tag-red lvl">contains</span>`, may: `<span class="tag tag-amber lvl">may contain</span>` };
-  document.getElementById("s-detail").innerHTML = `
-    <div class="topbar"><button class="back" onclick="go('list')">‹</button><h2></h2></div>
+  const sheet = document.getElementById("detail-sheet");
+  const keepScroll = !sheet.classList.contains("hidden") ? sheet.scrollTop : 0;
+  sheet.innerHTML = `
+    <div class="grabber"></div>
+    <button class="dclose" onclick="closeDetail()" aria-label="Close">✕</button>
     <div class="hero">${d.emoji}</div>
     <div class="dname">${d.name}</div>
     <div class="dcn">${d.nameCn} · ${d.pinyin} <button class="speak" style="border:none;background:none;cursor:pointer;padding:6px" onclick="speak('${d.nameCn}',event)">🔊</button></div>
     ${d.cuisine ? `<div class="dcuisine">${d.cuisine}</div>` : ""}
-    <div class="dprice price-dual"><b>¥${d.price}</b> <span>${usd(d.price)} approx.</span></div>
+    <div class="dprice price-dual"><b>≈ $${usdN(d.price)}</b> <span>· ¥${d.price} on menu</span></div>
     ${d.uncertain ? `<div class="uncertain-banner">🤔 Not sure about this one — we couldn't fully verify this dish. Confirm with staff.</div>` : ""}
     ${hits.length ? `<div class="uncertain-banner" style="background:var(--danger-bg);color:var(--danger)">⚠ Flagged for you: ${hits.join(", ")}</div>` : ""}
     <div class="quote">${d.desc}</div>
@@ -933,9 +1047,15 @@ function openDetail(id) {
       ${d.howToEat ? `<p class="story"><b>How to eat:</b> ${d.howToEat}</p>` : ""}</div>` : ""}
     <div class="detail-cta">
       ${qty ? `<div class="stepper"><button onclick="addToOrder(${d.id},-1);openDetail(${d.id})">−</button><b>${qty}</b><button onclick="addToOrder(${d.id},1);openDetail(${d.id})">＋</button></div>`
-            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ¥${d.price}</button>`}
+            : `<button class="btn" onclick="addToOrder(${d.id},1);openDetail(${d.id})">Add to order · ≈ $${usdN(d.price)}</button>`}
     </div>`;
-  go("detail");
+  document.getElementById("detail-mask").classList.remove("hidden");
+  sheet.classList.remove("hidden");
+  sheet.scrollTop = keepScroll;
+}
+function closeDetail() {
+  document.getElementById("detail-mask").classList.add("hidden");
+  document.getElementById("detail-sheet").classList.add("hidden");
 }
 
 /* ---------------- order ---------------- */
@@ -947,45 +1067,84 @@ function addToOrder(id, delta) {
 }
 function orderTotal() { let t = 0; for (const [id,q] of order) t += DISHES.find(d => d.id === id).price * q; return t; }
 function renderCartBar() {
-  const bar = document.getElementById("cartBar");
-  if (!order.size) { bar.classList.add("hidden"); return; }
-  bar.classList.remove("hidden");
+  /* persistent bar — always visible on the list so "My Order" is one tap away */
   const n = [...order.values()].reduce((a,b) => a+b, 0);
-  document.getElementById("cartSum").textContent = `🧾 ${n} dish${n>1?"es":""} · ¥${orderTotal()} ${usd(orderTotal())}`;
+  const sum = document.getElementById("cartSum");
+  if (!n) sum.innerHTML = `<span style="opacity:.72">Pick dishes to build your order</span>`;
+  else sum.textContent = `🧾 ${n} dish${n>1?"es":""} · ≈ $${usdN(orderTotal())} · ¥${orderTotal()}`;
 }
 function openOrder() { waiterMode = false; renderOrder(); go("order"); }
 function renderOrder() {
   const items = [...order.entries()].map(([id,q]) => ({ d: DISHES.find(x => x.id === id), q }));
+  const el = document.getElementById("s-order");
+  seedRequests();
+  if (waiterMode) { waiterSeen = true; orderEditing = false; }
+  const n = items.reduce((a,x) => a + x.q, 0);
   const total = orderTotal();
-  const reqEN = [profile.spice <= 1 ? "Mild spice, please" : null, profile.avoid.includes("cilantro") ? "No cilantro" : null].filter(Boolean);
-  const reqCN = [profile.spice <= 1 ? "请做微辣" : null, profile.avoid.includes("cilantro") ? "不要香菜" : null].filter(Boolean);
+  const reqSel = REQ_DEFS.filter(r => requests.has(r.k));
   const allergenEN = profile.allergens.map(a => ALLERGEN_LABEL[a]).join(", ");
   const allergenCN = profile.allergens.map(a => ALLERGEN_CN[a]).join("、");
-  const el = document.getElementById("s-order");
+  const avoidEN = profile.avoid.map(a => AVOID_LABEL[a]).join(", ");
+  const avoidCN = profile.avoid.map(a => AVOID_CN[a]).join("、");
+  const keepScroll = el.scrollTop;
+  /* bilingual card note — same block on both faces (user AND waiter read it) */
+  const NOTE = `<div class="onote">🧾 <b>This is an order card — the guest's picks, translated into Chinese.</b>这是一张点菜卡：顾客已选好以上菜品，请您确认后下单，谢谢！</div>`;
+
+  /* §2 dishes — one container card with its own empty state; total is a small
+     footnote (it's for the guest, not the waiter — dish names are the point) */
+  const dishesEN = items.length
+    ? items.map(({d,q}) => `<div class="orow"><b>${d.emoji} ${d.name}<small>${d.nameCn} · ${d.pinyin}</small></b><span class="q">×${q}</span><span class="price-dual"><span>≈ $${usdN(d.price*q)}</span></span></div>`).join("")
+      + `<div class="total-sm">Total ≈ $${usdN(total)} · ¥${total}</div>`
+    : `<div class="sec-empty"><span class="e">🍽️</span>No dishes yet — browse the menu and tap ＋<br><button class="edit-btn" style="margin-top:10px" onclick="go('list')">Browse the menu</button></div>`;
+  const dishesCN = items.length
+    ? items.map(({d,q}) => `<div class="orow"><b>${d.nameCn}<small>${d.name}</small></b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")
+      + `<div class="total-sm">合计 ¥${total}</div>`
+    : `<div class="sec-empty"><span class="e">🍽️</span>还没有选菜</div>`;
+
+  /* §3 heads-up — allergy / avoid / requests / free note, each with its own
+     empty state; one Edit button governs the whole card */
+  const chipRow = (defs, group) => Object.entries(defs).map(([k, l]) =>
+    `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${l}</button>`).join("");
+  const headsUpEN = orderEditing ? `
+      <div class="chip-group"><div class="gt">Allergies</div><div class="chips">${chipRow(ALLERGEN_LABEL, "allergens")}</div></div>
+      <div class="chip-group"><div class="gt">I'd rather avoid</div><div class="chips">${chipRow(AVOID_LABEL, "avoid")}</div></div>
+      <div class="chip-group"><div class="gt">Requests</div><div class="chips">${REQ_DEFS.map(r => `<button class="chip ${requests.has(r.k)?"on":""}" onclick="toggleReq('${r.k}')">${r.en}</button>`).join("")}</div></div>
+      <div class="chip-group"><div class="gt">Anything else</div><input class="note-input" placeholder="e.g. no raw garlic please" value="${customNote.replace(/"/g,"&quot;")}" onchange="customNote=this.value"></div>
+    ` : `
+      <div class="note-row danger"><span class="k">⚠️ Allergies</span><span class="v ${allergenEN?"":"none"}">${allergenEN || "None set — tap Edit"}</span></div>
+      <div class="note-row"><span class="k">🙅 Avoid</span><span class="v ${avoidEN?"":"none"}">${avoidEN || "Nothing marked"}</span></div>
+      <div class="note-row"><span class="k">📝 Requests</span><span class="v ${reqSel.length?"":"none"}">${reqSel.map(r => r.en.replace(/^\S+ /, "")).join(" · ") || "No requests"}</span></div>
+      ${customNote ? `<div class="note-row"><span class="k">💬 Note</span><span class="v">${customNote}</span></div>` : ""}
+    `;
+  const headsUpCN = `
+      <div class="note-row danger"><span class="k">⚠️ 过敏</span><span class="v ${allergenCN?"":"none"}">${allergenCN ? `我对<b>${allergenCN}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分` : "无"}</span></div>
+      <div class="note-row"><span class="k">🙅 忌口</span><span class="v ${avoidCN?"":"none"}">${avoidCN ? `尽量不要${avoidCN}` : "无"}</span></div>
+      <div class="note-row"><span class="k">📝 备注</span><span class="v ${(reqSel.length||customNote)?"":"none"}">${[reqSel.map(r => r.cn).join("；"), customNote].filter(Boolean).join("；另外：") || "无"}</span></div>
+    `;
+
   el.className = "screen" + (waiterMode ? " waiter" : "");
+  /* both faces render the SAME section order: greeting → dishes card → heads-up card → note */
   el.innerHTML = `
-    <div class="topbar"><button class="back" onclick="go('list')">‹</button><h2>${waiterMode ? "请出示给服务员" : "My order"}</h2></div>
-    <div class="otabs">
-      <button class="otab ${!waiterMode?"on":""}" onclick="waiterMode=false;renderOrder()">My Order<span class="s">English · $</span></button>
-      <button class="otab ${waiterMode?"on":""}" onclick="waiterMode=true;renderOrder()">服务员视图<span class="s">中文 · ¥</span></button>
+    <div class="topbar">
+      <button class="back" onclick="go('list')">‹</button>
+      <div class="otabs">
+        <button class="otab ${!waiterMode?"on":""}" onclick="waiterMode=false;renderOrder()">For me<span class="s">English · $</span></button>
+        <button class="otab ${waiterMode?"on":""}" onclick="waiterMode=true;renderOrder()">For waiter<span class="s">中文 · ¥</span></button>
+      </div>
     </div>
+    ${!waiterMode && !waiterSeen ? `<div class="guide-banner" onclick="waiterMode=true;renderOrder()"><span>Done choosing? Switch to <b>For waiter</b> and hand your phone over</span><span class="arr">→</span></div>` : ""}
     ${waiterMode ? `
       <div class="bubble">您好！我想点以下这些菜 🙏</div>
-      ${items.map(({d,q}) => `<div class="oitem"><b>${d.nameCn}<small>${d.name}</small></b><span class="q">×${q}</span><span>¥${d.price*q}</span></div>`).join("")}
-      ${allergenCN ? `<div class="allergy-box"><div class="h">⚠️ 过敏提醒</div><p>我对<b>${allergenCN}</b>严重过敏，请确保菜品和烹饪用油中不含以上成分，谢谢！</p></div>` : ""}
-      ${reqCN.length ? `<div class="req-box">备注：${reqCN.join("；")}</div>` : ""}
-      <div class="ototal"><span class="t">合计</span><span class="t">¥${total}</span></div>
-      <div class="onote">ℹ️ 这是用中文显示的点单页，直接把手机递给服务员即可。This page is in Chinese — hand your phone to the waiter.</div>
+      <div class="sec-card"><div class="sec-head"><span class="gt">已选菜品</span><span class="gt">${n ? n + " 道" : ""}</span></div>${dishesCN}</div>
+      <div class="sec-card"><div class="sec-head"><span class="gt">请注意</span></div>${headsUpCN}</div>
+      ${NOTE}
     ` : `
       <div class="bubble">Hello! I'd like to order the following, please.</div>
-      ${items.map(({d,q}) => `<div class="oitem"><b>${d.emoji} ${d.name}</b><span class="q">×${q}</span><span class="price-dual"><b>¥${d.price*q}</b> <span>${usd(d.price*q)}</span></span></div>`).join("")}
-      ${allergenEN ? `<div class="allergy-box"><div class="h">⚠️ Allergy</div><p>I'm allergic to <b>${allergenEN}</b>. Please keep these out of my food — including cooking oil.</p></div>` : ""}
-      ${reqEN.length ? `<div class="req-box">Requests: ${reqEN.join(" · ")}</div>` : ""}
-      <div class="ototal"><span class="t">Total · ${items.reduce((a,x)=>a+x.q,0)} items</span><span class="t">¥${total} <span style="font-size:13px;color:var(--muted)">${usd(total)}</span></span></div>
-      <div class="onote">ℹ️ Switch to 服务员视图 (Waiter View) and show this page to the staff to order.</div>
-      <div class="detail-cta"><button class="btn" onclick="waiterMode=true;renderOrder()">Show to waiter 👋</button></div>
+      <div class="sec-card"><div class="sec-head"><span class="gt">My picks</span><span class="gt">${n ? n + " items" : ""}</span></div>${dishesEN}</div>
+      <div class="sec-card"><div class="sec-head"><span class="gt">Heads-up for the kitchen</span><button class="edit-btn" onclick="orderEdit(${!orderEditing})">${orderEditing ? "Done ✓" : "✎ Edit"}</button></div>${headsUpEN}</div>
+      ${NOTE}
     `}`;
-  el.scrollTop = 0;
+  el.scrollTop = keepScroll;
 }
 
 /* ---------------- history ---------------- */
@@ -1002,8 +1161,8 @@ function histView(v) {
    风格：宣纸底 + 墨线省界 + 吃过的省份整块点亮（朱砂赭色）+ 城市涟漪点
    Offline / CDN failure → falls back to the CSS pixel map (#map-fallback). */
 const VISITS = [
-  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", resto:"Ma Wang Zi 马旺子", meta:"3 dishes · ¥90 ≈ $13", date:"TODAY" },
-  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", resto:"Siji Minfu 四季民福", meta:"5 dishes · ¥458 ≈ $64", date:"JUL 09" },
+  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", resto:"Ma Wang Zi 马旺子", meta:"3 dishes · $13 ≈ ¥90", date:"TODAY" },
+  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", resto:"Siji Minfu 四季民福", meta:"5 dishes · $64 ≈ ¥458", date:"JUL 09" },
 ];
 const LIT_PROVINCES = ["四川省", "北京市"]; // 按省点亮（与 VISITS 城市对应）
 const OTHER_CITIES = [
