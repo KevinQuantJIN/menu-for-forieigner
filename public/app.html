@@ -375,13 +375,16 @@
   .hentry .d { font-size: 12px; color: var(--muted); }
   .hentry .n { font-size: 15px; font-weight: 800; margin-top: 4px; letter-spacing: -.2px; }
   .hentry .m { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
-  #foodmap { position: relative; flex: 1; min-height: 480px; margin: 0 -16px calc(-20px - env(safe-area-inset-bottom)); background: #17140f; border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; color: #ddd; }
-  #foodmap .grid {
+  #foodmap { position: relative; flex: 1; min-height: 480px; margin: 0 -16px calc(-20px - env(safe-area-inset-bottom)); background: #f5efe5; border-radius: var(--r-lg) var(--r-lg) 0 0; overflow: hidden; }
+  #chinamap { position: absolute; inset: 0; }
+  #foodmap .counts { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-family: ui-monospace, monospace; font-size: 11.5px; letter-spacing: .12em; color: var(--muted); z-index: 5; pointer-events: none; }
+  #map-fallback { position: absolute; inset: 0; background: #17140f; color: #ddd; }
+  #map-fallback .grid {
     position: absolute; inset: 0;
     background-image: linear-gradient(rgba(120,220,160,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,220,160,.07) 1px, transparent 1px);
     background-size: 34px 34px;
   }
-  #foodmap .counts { position: absolute; top: 14px; left: 0; right: 0; text-align: center; font-family: ui-monospace, monospace; font-size: 12.5px; letter-spacing: .12em; color: #86efac; }
+  #map-fallback .counts { color: #86efac; top: 14px; }
   .pin { position: absolute; width: 12px; height: 12px; border-radius: 999px; background: #e879f9; border: 2px solid #fff; cursor: pointer; box-shadow: 0 0 12px rgba(232,121,249,.8); }
   .polaroid {
     position: absolute; width: 118px; background: #fdfdf8; color: var(--ink); border-radius: 4px; padding: 7px 7px 8px;
@@ -604,26 +607,30 @@
       </div>
     </div>
     <div id="foodmap" class="hidden">
-      <div class="grid"></div>
-      <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
-      <span class="citytag" style="top:36%;left:14%">成都 CHENGDU</span>
-      <span class="pin" style="top:41%;left:22%"></span>
-      <div class="polaroid" style="top:16%;left:8%;transform:rotate(-5deg)" onclick="go('list')">
-        <div class="ph">🍜</div>
-        <div class="cap">Ma Wang Zi · 3 dishes</div>
-        <div class="sub2">TODAY · LOC_SYNC</div>
-      </div>
-      <div class="polaroid" style="top:44%;left:46%;transform:rotate(3.5deg)">
-        <div class="ph">🌶️</div>
-        <div class="cap">First numbing pepper!</div>
-        <div class="sub2">TODAY · 花椒 UNLOCKED</div>
-      </div>
-      <span class="citytag" style="top:66%;left:58%">北京 BEIJING</span>
-      <span class="pin" style="top:71%;left:66%"></span>
-      <div class="polaroid" style="top:72%;left:22%;transform:rotate(-2deg)">
-        <div class="ph">🦆</div>
-        <div class="cap">Siji Minfu · 5 dishes</div>
-        <div class="sub2">JUL 09 · LOC_SYNC</div>
+      <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2 / 34</div>
+      <div id="chinamap"></div>
+      <div id="map-fallback" class="hidden">
+        <div class="grid"></div>
+        <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
+        <span class="citytag" style="top:36%;left:14%">成都 CHENGDU</span>
+        <span class="pin" style="top:41%;left:22%"></span>
+        <div class="polaroid" style="top:16%;left:8%;transform:rotate(-5deg)" onclick="go('list')">
+          <div class="ph">🍜</div>
+          <div class="cap">Ma Wang Zi · 3 dishes</div>
+          <div class="sub2">TODAY · LOC_SYNC</div>
+        </div>
+        <div class="polaroid" style="top:44%;left:46%;transform:rotate(3.5deg)">
+          <div class="ph">🌶️</div>
+          <div class="cap">First numbing pepper!</div>
+          <div class="sub2">TODAY · 花椒 UNLOCKED</div>
+        </div>
+        <span class="citytag" style="top:66%;left:58%">北京 BEIJING</span>
+        <span class="pin" style="top:71%;left:66%"></span>
+        <div class="polaroid" style="top:72%;left:22%;transform:rotate(-2deg)">
+          <div class="ph">🦆</div>
+          <div class="cap">Siji Minfu · 5 dishes</div>
+          <div class="sub2">JUL 09 · LOC_SYNC</div>
+        </div>
       </div>
     </div>
   </section>
@@ -975,6 +982,74 @@ function histView(v) {
   document.getElementById("ht-map").classList.toggle("on", v === "map");
   document.getElementById("hist-list").classList.toggle("hidden", v !== "list");
   document.getElementById("foodmap").classList.toggle("hidden", v !== "map");
+  if (v === "map") renderChinaMap();
+}
+
+/* ---------------- Food Map: ECharts China map (lazy-loaded) ----------------
+   Lib: Apache ECharts via CDN · Map data: Aliyun DataV GeoJSON (free, no key)
+   Offline / CDN failure → falls back to the CSS pixel map (#map-fallback). */
+const VISITS = [
+  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", resto:"Ma Wang Zi 马旺子", meta:"3 dishes · ¥216 ≈ $30", date:"TODAY" },
+  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", resto:"Siji Minfu 四季民福", meta:"5 dishes · ¥458 ≈ $64", date:"JUL 09" },
+];
+const OTHER_CITIES = [
+  ["Shanghai",121.47,31.23],["Guangzhou",113.26,23.13],["Shenzhen",114.06,22.54],["Xi'an",108.94,34.34],
+  ["Chongqing",106.55,29.56],["Hangzhou",120.15,30.27],["Kunming",102.83,24.88],["Guilin",110.29,25.27],
+  ["Harbin",126.53,45.80],["Lhasa",91.11,29.97],["Urumqi",87.62,43.83],["Qingdao",120.38,36.07],
+  ["Xiamen",118.09,24.48],["Dali",100.27,25.61],["Wuhan",114.31,30.59],["Changsha",112.94,28.23],
+];
+function visitCardHTML(v) {
+  return `<div style="width:172px;padding:10px;font-family:inherit">
+    <div style="height:72px;border-radius:6px;background:linear-gradient(135deg,#f3d9c3,#e7b590);display:grid;place-items:center;font-size:34px">${v.emoji}</div>
+    <div style="font-weight:800;font-size:13px;margin-top:8px;color:#251d18">${v.resto}</div>
+    <div style="font-size:11.5px;color:#6e6156;margin-top:2px">${v.meta}</div>
+    <div style="font-size:9.5px;color:#9a8c7f;margin-top:5px;font-family:ui-monospace,monospace">${v.date} · ${v.cn} PINNED</div>
+  </div>`;
+}
+let chinaMapState = "idle"; // idle | loading | ready | failed
+async function renderChinaMap() {
+  const el = document.getElementById("chinamap");
+  if (chinaMapState === "ready" || chinaMapState === "loading") return;
+  chinaMapState = "loading";
+  try {
+    if (!window.echarts) await new Promise((res, rej) => {
+      const s = document.createElement("script");
+      s.src = "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js";
+      s.onload = res; s.onerror = rej; document.head.appendChild(s);
+    });
+    const geo = await (await fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")).json();
+    echarts.registerMap("china", geo);
+    const chart = echarts.init(el);
+    chart.setOption({
+      backgroundColor: "transparent",
+      geo: {
+        map: "china", roam: true, zoom: 1.6, center: [105, 33],
+        itemStyle: { areaColor: "#f0e7d8", borderColor: "#dccdb6", borderWidth: .6 },
+        emphasis: { disabled: true }, select: { disabled: true }, label: { show: false },
+      },
+      tooltip: {
+        trigger: "item", triggerOn: "click", confine: true,
+        backgroundColor: "#fffdf8", borderColor: "#eadfd3", borderWidth: 1, padding: 0,
+        extraCssText: "border-radius:12px;box-shadow:0 12px 32px rgba(62,39,25,.22);",
+        formatter: (p) => p.data && p.data.card ? p.data.card : "",
+      },
+      series: [
+        { type: "scatter", coordinateSystem: "geo", symbolSize: 4, silent: true,
+          itemStyle: { color: "#c9bca9" },
+          data: OTHER_CITIES.map(c => ({ name: c[0], value: [c[1], c[2]] })) },
+        { type: "effectScatter", coordinateSystem: "geo", symbolSize: 10, zlevel: 2,
+          rippleEffect: { brushType: "stroke", scale: 3.6, period: 4 },
+          itemStyle: { color: "#c4572e", shadowBlur: 10, shadowColor: "rgba(196,87,46,.55)" },
+          label: { show: true, position: "bottom", formatter: "{b}", fontSize: 10, fontWeight: 700, color: "#52463d", distance: 6 },
+          data: VISITS.map(v => ({ name: v.city, value: v.coord, card: visitCardHTML(v) })) },
+      ],
+    });
+    chinaMapState = "ready";
+  } catch (e) {
+    chinaMapState = "failed";
+    el.classList.add("hidden");
+    document.getElementById("map-fallback").classList.remove("hidden");
+  }
 }
 
 /* ---------------- boot ---------------- */
