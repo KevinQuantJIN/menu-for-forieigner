@@ -3,809 +3,171 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Chopstory Lab · Prompt / Model Playground</title>
+<title>Chopstory Lab · Multi-model benchmark</title>
 <style>
   :root {
-    --bg: #f4f0e6;
-    --panel: #fbf7ea;
-    --ink: #262019;
-    --ink-2: #4c4437;
-    --muted: #75695a;
-    --faint: #8f8270;
-    --line: #ddd0b8;
-    --hair: rgba(38,32,25,.18);
-    --accent: #b23a2f;
-    --accent-soft: #f5e3da;
-    --green: #5c7d46;
-    --green-bg: #e9edd8;
-    --warn: #8f6e1f;
-    --warn-bg: #f3e9c9;
-    --danger: #b23a2f;
-    --danger-bg: #f7e3de;
-    --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
-    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Helvetica Neue", sans-serif;
-    --r: 8px;
+    --bg:#f3efe4; --panel:#fbf7ea; --paper:#fffdf7; --ink:#262019; --muted:#75695a;
+    --line:#d9cdb7; --accent:#ad352c; --green:#587a42; --warn:#946b13; --blue:#315f86;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC",sans-serif;
   }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; min-height: 100%; }
-  body {
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--sans);
-    font-size: 14px;
-    line-height: 1.45;
-  }
-  button, input, select, textarea { font: inherit; color: inherit; }
-  button { cursor: pointer; }
-  a { color: var(--accent); }
-
-  .topbar {
-    position: sticky; top: 0; z-index: 20;
-    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
-    padding: 12px 20px;
-    background: var(--panel);
-    border-bottom: 1.5px solid var(--ink);
-  }
-  .brand { font-weight: 700; letter-spacing: .02em; }
-  .brand span { color: var(--accent); }
-  .topbar .meta { color: var(--muted); font-size: 12px; }
-  .topbar .spacer { flex: 1; }
-  .pill {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 4px 10px; border-radius: 999px;
-    border: 1px solid var(--line); background: #fff;
-    font-size: 12px; color: var(--muted);
-  }
-  .pill.ok { border-color: var(--green); color: var(--green); background: var(--green-bg); }
-  .pill.bad { border-color: var(--danger); color: var(--danger); background: var(--danger-bg); }
-
-  .layout {
-    display: grid;
-    grid-template-columns: minmax(320px, 420px) 1fr;
-    gap: 0;
-    min-height: calc(100dvh - 53px);
-  }
-  @media (max-width: 960px) {
-    .layout { grid-template-columns: 1fr; }
-  }
-
-  .sidebar {
-    border-right: 1px solid var(--line);
-    background: var(--panel);
-    padding: 16px;
-    display: flex; flex-direction: column; gap: 14px;
-    max-height: calc(100dvh - 53px);
-    overflow: auto;
-  }
-  .main {
-    padding: 16px 20px 40px;
-    max-height: calc(100dvh - 53px);
-    overflow: auto;
-  }
-
-  .field { display: flex; flex-direction: column; gap: 6px; }
-  .field label {
-    font-size: 11px; font-weight: 700; letter-spacing: .06em;
-    text-transform: uppercase; color: var(--muted);
-  }
-  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  input[type="text"], input[type="number"], select, textarea {
-    width: 100%;
-    border: 1px solid var(--line);
-    background: #fff;
-    border-radius: var(--r);
-    padding: 8px 10px;
-    outline: none;
-  }
-  input:focus, select:focus, textarea:focus {
-    border-color: var(--ink);
-  }
-  textarea {
-    min-height: 140px;
-    resize: vertical;
-    font-family: var(--mono);
-    font-size: 12px;
-    line-height: 1.5;
-  }
-  textarea.system { min-height: 220px; }
-  .hint { font-size: 12px; color: var(--faint); }
-
-  .btn {
-    border: 1.5px solid var(--ink);
-    background: var(--ink);
-    color: #fbf7ea;
-    border-radius: var(--r);
-    padding: 10px 14px;
-    font-weight: 600;
-  }
-  .btn:hover { background: #3a3228; }
-  .btn:disabled { opacity: .45; cursor: not-allowed; }
-  .btn.ghost {
-    background: transparent; color: var(--ink);
-  }
-  .btn.ghost:hover { background: var(--accent-soft); }
-  .btn.danger {
-    background: transparent; color: var(--danger); border-color: var(--danger);
-  }
-  .actions { display: flex; gap: 8px; flex-wrap: wrap; }
-  .actions .btn { flex: 1; min-width: 110px; }
-
-  .drop {
-    border: 1.5px dashed var(--line);
-    border-radius: var(--r);
-    background: #fff;
-    padding: 14px;
-    text-align: center;
-    color: var(--muted);
-    cursor: pointer;
-    transition: border-color .15s, background .15s;
-  }
-  .drop.drag { border-color: var(--accent); background: var(--accent-soft); }
-  .drop strong { color: var(--ink); display: block; margin-bottom: 4px; }
-  .thumbs {
-    display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px;
-  }
-  .thumb {
-    position: relative;
-    width: 72px; height: 72px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    overflow: hidden;
-    background: #eee;
-  }
-  .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .thumb .n {
-    position: absolute; left: 4px; top: 4px;
-    background: rgba(38,32,25,.85); color: #fff;
-    font-size: 10px; font-family: var(--mono);
-    padding: 1px 5px; border-radius: 4px;
-  }
-  .thumb button {
-    position: absolute; right: 2px; top: 2px;
-    width: 18px; height: 18px; border: 0; border-radius: 50%;
-    background: rgba(178,58,47,.95); color: #fff; font-size: 12px; line-height: 1;
-  }
-
-  .panel {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 14px 16px;
-    margin-bottom: 14px;
-  }
-  .panel h2 {
-    margin: 0 0 10px;
-    font-size: 13px;
-    letter-spacing: .04em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-    gap: 10px;
-  }
-  .stat {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 10px 12px;
-    background: #fff;
-  }
-  .stat .k { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .05em; }
-  .stat .v { font-family: var(--mono); font-size: 20px; font-weight: 700; margin-top: 4px; }
-  .stat .v.good { color: var(--green); }
-  .stat .v.warn { color: var(--warn); }
-
-  .empty {
-    border: 1.5px dashed var(--line);
-    border-radius: 10px;
-    padding: 48px 20px;
-    text-align: center;
-    color: var(--muted);
-    background: rgba(255,255,255,.4);
-  }
-
-  .tabs {
-    display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap;
-  }
-  .tab {
-    border: 1px solid var(--line);
-    background: #fff;
-    border-radius: 999px;
-    padding: 6px 12px;
-    font-size: 13px;
-    color: var(--muted);
-  }
-  .tab.active {
-    border-color: var(--ink);
-    background: var(--ink);
-    color: #fbf7ea;
-  }
-
-  .dish-list { display: flex; flex-direction: column; gap: 10px; }
-  .dish {
-    border: 1px solid var(--line);
-    border-left: 3px solid var(--ink);
-    border-radius: 8px;
-    background: #fff;
-    padding: 12px 14px;
-  }
-  .dish .head {
-    display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap;
-  }
-  .dish .id {
-    font-family: var(--mono); font-size: 12px; color: var(--faint);
-  }
-  .dish .name { font-weight: 700; font-size: 15px; }
-  .dish .name-cn { color: var(--ink-2); }
-  .dish .price {
-    margin-left: auto;
-    font-family: var(--mono);
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .dish .pinyin { color: var(--muted); font-size: 12px; width: 100%; }
-  .dish .desc { margin-top: 6px; color: var(--ink-2); }
-  .dish .meta-row {
-    display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px;
-  }
-  .tag {
-    font-size: 11px;
-    padding: 2px 8px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: var(--bg);
-    color: var(--ink-2);
-  }
-  .tag.cat { border-color: var(--ink); }
-  .tag.spicy { background: var(--accent-soft); border-color: #e0b6ad; color: var(--accent); }
-  .tag.veg { background: var(--green-bg); border-color: #b8c9a7; color: var(--green); }
-  .tag.allergen { background: var(--danger-bg); border-color: #e2b8b1; color: var(--danger); }
-  .tag.texture { background: var(--warn-bg); border-color: #e0d3a2; color: var(--warn); }
-  .story {
-    margin-top: 8px;
-    padding-top: 8px;
-    border-top: 1px dashed var(--line);
-    color: var(--muted);
-    font-size: 13px;
-  }
-  .raw {
-    font-family: var(--mono);
-    font-size: 12px;
-    white-space: pre-wrap;
-    word-break: break-word;
-    background: #1d1a16;
-    color: #e8dfcf;
-    border-radius: 8px;
-    padding: 12px;
-    max-height: 60vh;
-    overflow: auto;
-  }
-  .log-line { margin: 0 0 4px; }
-  .log-line.err { color: #ff8f84; }
-  .log-line.meta { color: #9ecbff; }
-  .log-line.dish { color: #9ed39a; }
-  .status-bar {
-    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-  .spinner {
-    width: 14px; height: 14px;
-    border: 2px solid var(--line);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin .7s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .progress-text { color: var(--muted); font-family: var(--mono); font-size: 12px; }
-  .error-box {
-    background: var(--danger-bg);
-    border: 1px solid #e2b8b1;
-    color: var(--danger);
-    border-radius: 8px;
-    padding: 10px 12px;
-    margin-bottom: 12px;
-    font-family: var(--mono);
-    font-size: 12px;
-    white-space: pre-wrap;
-  }
+  *{box-sizing:border-box} html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font:14px/1.45 var(--sans)}
+  button,input,select,textarea{font:inherit;color:inherit} button{cursor:pointer} a{color:inherit}
+  .top{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:12px;padding:11px 18px;background:var(--panel);border-bottom:1.5px solid var(--ink)}
+  .brand{font-weight:800;font-size:16px}.brand b{color:var(--accent)}.sub{color:var(--muted);font-size:12px}.grow{flex:1}
+  .pill{border:1px solid var(--line);border-radius:999px;padding:4px 9px;background:var(--paper);font-size:11px;color:var(--muted)}
+  .pill.ok{border-color:var(--green);color:var(--green)}.pill.bad{border-color:var(--accent);color:var(--accent)}
+  .layout{display:grid;grid-template-columns:minmax(330px,420px) 1fr;min-height:calc(100vh - 49px)}
+  .side{padding:15px;background:var(--panel);border-right:1px solid var(--line);display:flex;flex-direction:column;gap:12px;max-height:calc(100vh - 49px);overflow:auto}
+  .main{padding:16px 18px 40px;max-height:calc(100vh - 49px);overflow:auto}
+  @media(max-width:900px){.layout{grid-template-columns:1fr}.side,.main{max-height:none}.side{border-right:0;border-bottom:1px solid var(--line)}}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.row.three{grid-template-columns:1fr 1fr 1fr}
+  .field{display:flex;flex-direction:column;gap:5px}.field label,.eyebrow{font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+  select,input,textarea{width:100%;border:1px solid var(--line);border-radius:7px;background:white;padding:8px;outline:none}
+  select:focus,input:focus,textarea:focus{border-color:var(--ink)} textarea{min-height:92px;resize:vertical;font:11px/1.45 var(--mono)}
+  .hint{font-size:11px;color:var(--muted)}.actions{display:flex;gap:7px;flex-wrap:wrap}
+  .btn{border:1.5px solid var(--ink);border-radius:7px;padding:8px 11px;background:var(--ink);color:var(--panel);font-weight:700}
+  .btn.ghost{background:transparent;color:var(--ink)}.btn.danger{background:transparent;color:var(--accent);border-color:var(--accent)}.btn:disabled{opacity:.42;cursor:not-allowed}
+  .drop{border:1.5px dashed var(--line);border-radius:8px;padding:12px;text-align:center;background:white;color:var(--muted)}.drop.drag{border-color:var(--accent);background:#f7e5dd}
+  .thumbs{display:flex;gap:7px;flex-wrap:wrap;margin-top:7px}.thumb{width:64px;position:relative}.thumb img{width:64px;height:64px;object-fit:cover;border:1px solid var(--line);border-radius:5px;display:block}.thumb small{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:9px;color:var(--muted)}
+  .thumb button{position:absolute;right:-3px;top:-3px;width:18px;height:18px;border:0;border-radius:50%;background:var(--accent);color:white;line-height:1}
+  .models{display:grid;gap:4px;max-height:125px;overflow:auto;border:1px solid var(--line);padding:7px;border-radius:7px;background:white}.model-check{display:flex;gap:7px;align-items:center;font-size:11px}.model-check input{width:auto}.model-check.off{opacity:.45}
+  .status{display:flex;align-items:center;gap:9px;margin-bottom:10px;font:11px var(--mono);color:var(--muted)}
+  .spin{width:13px;height:13px;border:2px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+  .error{padding:9px 11px;border:1px solid #dfaaa4;background:#f7e1dc;color:var(--accent);border-radius:7px;margin-bottom:10px;font:11px var(--mono);white-space:pre-wrap}
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(105px,1fr));gap:7px;margin-bottom:12px}.stat{background:var(--paper);border:1px solid var(--line);padding:8px 9px;border-radius:7px}.stat .k{font-size:9px;color:var(--muted);text-transform:uppercase}.stat .v{font:700 16px var(--mono);margin-top:3px;overflow-wrap:anywhere}.stat .v.good{color:var(--green)}.stat .v.warn{color:var(--warn)}
+  .tabs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}.tab{border:1px solid var(--line);background:white;border-radius:999px;padding:5px 10px;color:var(--muted)}.tab.active{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+  .items{display:grid;gap:7px}.item{background:white;border:1px solid var(--line);border-left:3px solid var(--ink);padding:9px 11px;border-radius:7px}.item .head{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}.item .idx{font:10px var(--mono);color:var(--muted)}.item .cn{font-weight:800}.item .en{color:var(--muted)}.item .price{margin-left:auto;color:var(--accent);font:700 12px var(--mono)}.item .desc{margin-top:4px;color:#4c4437;font-size:12px}.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:5px}.tag{padding:1px 6px;border:1px solid var(--line);border-radius:999px;font-size:9px;color:var(--muted)}
+  .raw{background:#1d1a16;color:#e8dfcf;border-radius:7px;padding:10px;max-height:60vh;overflow:auto;white-space:pre-wrap;word-break:break-word;font:11px/1.45 var(--mono)}
+  table{width:100%;border-collapse:collapse;background:white;font-size:11px}th,td{border:1px solid var(--line);padding:6px;text-align:left}th{background:var(--panel);color:var(--muted);position:sticky;top:0}.empty{padding:50px 20px;text-align:center;border:1.5px dashed var(--line);border-radius:9px;color:var(--muted);background:rgba(255,255,255,.45)}
 </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">Chopstory <span>Lab</span></div>
-    <div class="meta">Prompt · Model · Menu image playground</div>
-    <div class="spacer"></div>
-    <div id="keyPill" class="pill">checking API key…</div>
-    <a class="pill" href="/app.html">← Product UI</a>
-  </header>
-
-  <div class="layout">
-    <aside class="sidebar">
-      <div class="field">
-        <label>Model</label>
-        <select id="model"></select>
-        <div class="hint">Uses server-side GOOGLE_API_KEY. Production default is gemini-2.5-flash.</div>
+<header class="top">
+  <div class="brand">Chopstory <b>Lab</b></div><div class="sub">multi-model menu benchmark</div><div class="grow"></div>
+  <span id="keyPill" class="pill">loading providers…</span><a class="pill" href="/app.html">← Product UI</a>
+</header>
+<div class="layout">
+  <aside class="side">
+    <div class="row">
+      <div class="field"><label>Provider</label><select id="provider"></select></div>
+      <div class="field"><label>Mode</label><select id="mode"><option value="extract_only">Extract only</option><option value="full_dish">Full Dish</option></select></div>
+    </div>
+    <div class="field"><label>Model</label><select id="model"></select><div id="modelHint" class="hint"></div></div>
+    <div class="row three">
+      <div class="field"><label>Temperature</label><input id="temperature" type="number" min="0" max="2" step="0.1" value="0"></div>
+      <div class="field"><label>Max tokens</label><input id="maxTokens" type="number" min="256" max="65536" value="8192"></div>
+      <div class="field"><label>Repeats</label><input id="repeatCount" type="number" min="1" max="5" value="3"></div>
+    </div>
+    <details><summary class="eyebrow">Prompt overrides</summary>
+      <div class="field" style="margin-top:7px"><label>System</label><textarea id="systemPrompt"></textarea></div>
+      <div class="field"><label>User</label><textarea id="userPrompt"></textarea></div>
+      <button id="resetPrompts" class="btn ghost" type="button">Reset mode prompts</button>
+    </details>
+    <div class="field"><label>Menu images · 1–9</label>
+      <div id="drop" class="drop"><b>Drop images or click</b><div class="hint">Files keep their names for dishes.csv matching.</div><input id="fileInput" type="file" accept="image/*" multiple hidden></div>
+      <div id="thumbs" class="thumbs"></div>
+    </div>
+    <div class="field"><label>Gold data · optional</label>
+      <input id="goldInput" type="file" accept=".csv,text/csv"><div id="goldHint" class="hint">Load the simple six-column dishes.csv.</div>
+    </div>
+    <div class="field"><label>Benchmark models</label><div id="benchmarkModels" class="models"></div></div>
+    <div class="actions">
+      <button id="runBtn" class="btn" type="button">Run once</button>
+      <button id="benchmarkBtn" class="btn ghost" type="button">Run benchmark</button>
+      <button id="stopBtn" class="btn danger" type="button" disabled>Stop</button>
+    </div>
+    <div class="actions"><button id="exportJsonBtn" class="btn ghost" type="button" disabled>Export JSON</button><button id="exportCsvBtn" class="btn ghost" type="button" disabled>Export CSV</button></div>
+  </aside>
+  <main class="main">
+    <div id="emptyState" class="empty">Upload menu images, select a configured model, then run.<br>Extract only measures perception; Full Dish measures the current end-to-end contract.</div>
+    <div id="resultView" hidden>
+      <div class="status"><span id="spinner" class="spin" hidden></span><span id="runStatus">Idle</span></div><div id="errorBox" class="error" hidden></div>
+      <div class="stats">
+        <div class="stat"><div class="k">Provider</div><div class="v" id="statProvider">—</div></div>
+        <div class="stat"><div class="k">Model</div><div class="v" id="statModel">—</div></div>
+        <div class="stat"><div class="k">Runtime / colo</div><div class="v" id="statRuntime">—</div></div>
+        <div class="stat"><div class="k">Provider headers</div><div class="v" id="statHeaders">—</div></div>
+        <div class="stat"><div class="k">First item</div><div class="v" id="statFirst">—</div></div>
+        <div class="stat"><div class="k">Total</div><div class="v" id="statTotal">—</div></div>
+        <div class="stat"><div class="k">Items</div><div class="v" id="statItems">0</div></div>
+        <div class="stat"><div class="k">Tokens in / out</div><div class="v" id="statTokens">—</div></div>
+        <div class="stat"><div class="k">Name recall</div><div class="v" id="statRecall">—</div></div>
+        <div class="stat"><div class="k">Price exact</div><div class="v" id="statPrice">—</div></div>
+        <div class="stat"><div class="k">Hallucinations</div><div class="v" id="statHallucinations">—</div></div>
       </div>
-
-      <div class="row">
-        <div class="field">
-          <label>Temperature</label>
-          <input id="temperature" type="number" min="0" max="2" step="0.1" value="0.2">
-        </div>
-        <div class="field">
-          <label>Max tokens</label>
-          <input id="maxTokens" type="number" min="256" max="65536" step="256" value="8192">
-        </div>
-      </div>
-
-      <div class="field">
-        <label>System prompt</label>
-        <textarea id="systemPrompt" class="system" spellcheck="false"></textarea>
-        <div class="actions">
-          <button type="button" class="btn ghost" id="resetSystem">Reset production prompt</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>User prompt (per page)</label>
-        <textarea id="userPrompt" spellcheck="false"></textarea>
-        <div class="actions">
-          <button type="button" class="btn ghost" id="resetUser">Reset default user prompt</button>
-        </div>
-      </div>
-
-      <div class="field">
-        <label>Test images (1–9)</label>
-        <div class="drop" id="drop">
-          <strong>Drop images or click to upload</strong>
-          <div class="hint">Same multi-page strategy as production: each page is a separate Gemini call.</div>
-          <input id="fileInput" type="file" accept="image/*" multiple hidden>
-        </div>
-        <div class="thumbs" id="thumbs"></div>
-      </div>
-
-      <div class="actions">
-        <button type="button" class="btn" id="runBtn">Run analysis</button>
-        <button type="button" class="btn danger" id="stopBtn" disabled>Stop</button>
-      </div>
-      <div class="hint">Results stream into the right panel. Timing includes first_dish_ms vs total_ms.</div>
-    </aside>
-
-    <main class="main">
-      <div id="emptyState" class="empty">
-        Upload a menu image, tweak the prompt / model, then Run.<br>
-        Useful for comparing quality, completeness, and latency.
-      </div>
-
-      <div id="resultView" hidden>
-        <div class="status-bar">
-          <div id="runSpinner" class="spinner" hidden></div>
-          <div id="runStatus" class="progress-text">Idle</div>
-        </div>
-        <div id="errorBox" class="error-box" hidden></div>
-
-        <div class="panel">
-          <h2>Timing & summary</h2>
-          <div class="stats">
-            <div class="stat"><div class="k">Model</div><div class="v" id="statModel">—</div></div>
-            <div class="stat"><div class="k">Dishes</div><div class="v" id="statDishes">0</div></div>
-            <div class="stat"><div class="k">First dish</div><div class="v" id="statFirst">—</div></div>
-            <div class="stat"><div class="k">Total</div><div class="v" id="statTotal">—</div></div>
-            <div class="stat"><div class="k">Raw chars</div><div class="v" id="statRaw">0</div></div>
-            <div class="stat"><div class="k">Images</div><div class="v" id="statImages">0</div></div>
-          </div>
-        </div>
-
-        <div class="tabs">
-          <button type="button" class="tab active" data-tab="dishes">Dishes</button>
-          <button type="button" class="tab" data-tab="raw">Raw stream</button>
-          <button type="button" class="tab" data-tab="events">Events log</button>
-        </div>
-
-        <div id="tab-dishes" class="dish-list"></div>
-        <div id="tab-raw" class="raw" hidden></div>
-        <div id="tab-events" class="raw" hidden></div>
-      </div>
-    </main>
-  </div>
-
+      <div class="tabs"><button class="tab active" data-tab="items">Items</button><button class="tab" data-tab="raw">Raw</button><button class="tab" data-tab="events">Events</button><button class="tab" data-tab="benchmark">Benchmark</button></div>
+      <div id="tab-items" class="items"></div><div id="tab-raw" class="raw" hidden></div><div id="tab-events" class="raw" hidden></div>
+      <div id="tab-benchmark" hidden><table><thead><tr><th>Provider / model</th><th>Mode</th><th>Runs</th><th>First P50 / P95</th><th>Total P50 / P95</th><th>Recall</th><th>Errors</th><th>Runtime</th></tr></thead><tbody id="benchmarkRows"></tbody></table></div>
+    </div>
+  </main>
+</div>
 <script>
 (() => {
-  const MAX_IMAGES = 9;
   const $ = (id) => document.getElementById(id);
-
-  const els = {
-    model: $("model"),
-    temperature: $("temperature"),
-    maxTokens: $("maxTokens"),
-    systemPrompt: $("systemPrompt"),
-    userPrompt: $("userPrompt"),
-    resetSystem: $("resetSystem"),
-    resetUser: $("resetUser"),
-    drop: $("drop"),
-    fileInput: $("fileInput"),
-    thumbs: $("thumbs"),
-    runBtn: $("runBtn"),
-    stopBtn: $("stopBtn"),
-    keyPill: $("keyPill"),
-    emptyState: $("emptyState"),
-    resultView: $("resultView"),
-    runSpinner: $("runSpinner"),
-    runStatus: $("runStatus"),
-    errorBox: $("errorBox"),
-    statModel: $("statModel"),
-    statDishes: $("statDishes"),
-    statFirst: $("statFirst"),
-    statTotal: $("statTotal"),
-    statRaw: $("statRaw"),
-    statImages: $("statImages"),
-    tabDishes: $("tab-dishes"),
-    tabRaw: $("tab-raw"),
-    tabEvents: $("tab-events"),
-  };
-
-  let defaults = {
-    models: ["gemini-2.5-flash"],
-    defaultModel: "gemini-2.5-flash",
-    systemPrompt: "",
-    userPrompt: "",
-  };
-  let images = []; // { name, dataUrl }
-  let abortCtrl = null;
-  let dishes = [];
-  let rawText = "";
-  let eventLog = [];
-
-  function fmtMs(ms) {
-    if (ms == null || Number.isNaN(ms)) return "—";
-    if (ms < 1000) return `${ms}ms`;
-    return `${(ms / 1000).toFixed(1)}s`;
+  const els = Object.fromEntries(["provider","model","mode","temperature","maxTokens","repeatCount","systemPrompt","userPrompt","resetPrompts","drop","fileInput","thumbs","goldInput","goldHint","benchmarkModels","runBtn","benchmarkBtn","stopBtn","exportJsonBtn","exportCsvBtn","keyPill","modelHint","emptyState","resultView","spinner","runStatus","errorBox","statProvider","statModel","statRuntime","statHeaders","statFirst","statTotal","statItems","statTokens","statRecall","statPrice","statHallucinations","benchmarkRows"].map(id => [id,$(id)]));
+  let defaults = { providers:[], modelCatalog:[], prompts:{}, defaultProvider:"gemini", defaultModel:"gemini-2.5-flash", defaultMode:"extract_only" };
+  let images = [], goldCsv = "", abortCtrl = null, active = false, currentRun = null, allRuns = [];
+  const tabs = { items:$("tab-items"), raw:$("tab-raw"), events:$("tab-events"), benchmark:$("tab-benchmark") };
+  const esc = (v) => String(v ?? "").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  const fmtMs = (ms) => ms == null ? "—" : ms < 1000 ? `${Math.round(ms)}ms` : `${(ms/1000).toFixed(2)}s`;
+  const pct = (v) => v == null ? "—" : `${(v*100).toFixed(1)}%`;
+  const percentile = (values,p) => { if(!values.length)return null; const a=[...values].sort((x,y)=>x-y); return a[Math.min(a.length-1,Math.ceil(a.length*p)-1)]; };
+  const modePrompt = () => defaults.prompts[els.mode.value] || {systemPrompt:"",userPrompt:""};
+  function setTab(name){ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name)); Object.entries(tabs).forEach(([k,node])=>node.hidden=k!==name); }
+  document.querySelectorAll(".tab").forEach(b=>b.onclick=()=>setTab(b.dataset.tab));
+  function setMetric(el,value,good=null){ el.textContent=value; el.className="v"+(good===true?" good":good===false?" warn":""); }
+  function targetFor(mode,count){ return mode==="extract_only"?{first:count===1?1200:1500,total:count===1?2500:3500}:{first:3000,total:count===1?7000:10000}; }
+  function setBusy(on){ active=on; els.runBtn.disabled=on; els.benchmarkBtn.disabled=on; els.stopBtn.disabled=!on; els.spinner.hidden=!on; }
+  function showError(message){ els.errorBox.hidden=!message; els.errorBox.textContent=message||""; }
+  function refreshModels(){
+    const provider=els.provider.value, mode=els.mode.value; els.model.innerHTML="";
+    defaults.modelCatalog.filter(m=>m.provider===provider&&m.modes.includes(mode)).forEach(m=>{const o=document.createElement("option");o.value=m.model;o.textContent=`${m.label}${m.configured?"":" · not configured"}`;o.disabled=!m.configured;if(m.model===defaults.defaultModel)o.selected=true;els.model.appendChild(o)});
+    const first=[...els.model.options].find(o=>!o.disabled); if(first && (!els.model.value||els.model.selectedOptions[0]?.disabled)) els.model.value=first.value;
+    const spec=defaults.modelCatalog.find(m=>m.provider===provider&&m.model===els.model.value); els.modelHint.textContent=spec?`${spec.snapshot?"fixed snapshot":"moving alias"} · ${spec.configured?"ready":"server credentials missing"}`:"No model available";
   }
-
-  function setTab(name) {
-    document.querySelectorAll(".tab").forEach((t) => {
-      t.classList.toggle("active", t.dataset.tab === name);
-    });
-    els.tabDishes.hidden = name !== "dishes";
-    els.tabRaw.hidden = name !== "raw";
-    els.tabEvents.hidden = name !== "events";
+  function refreshChecks(){ els.benchmarkModels.innerHTML=""; const mode=els.mode.value; defaults.modelCatalog.filter(m=>m.modes.includes(mode)).forEach(m=>{const label=document.createElement("label");label.className=`model-check${m.configured?"":" off"}`;label.innerHTML=`<input type="checkbox" value="${esc(m.provider)}::${esc(m.model)}" ${m.configured?"checked":"disabled"}> <span>${esc(m.label)}</span>`;els.benchmarkModels.appendChild(label)}); }
+  function resetPrompts(){const p=modePrompt();els.systemPrompt.value=p.systemPrompt||"";els.userPrompt.value=p.userPrompt||""}
+  els.provider.onchange=refreshModels; els.model.onchange=refreshModels; els.mode.onchange=()=>{refreshModels();refreshChecks();resetPrompts()}; els.resetPrompts.onclick=resetPrompts;
+  function fileToDataUrl(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result));r.onerror=reject;r.readAsDataURL(file)})}
+  async function compress(file){const start=performance.now(),data=await fileToDataUrl(file),img=new Image();await new Promise((res,rej)=>{img.onload=res;img.onerror=rej;img.src=data});const scale=Math.min(1,1600/Math.max(img.width,img.height)),c=document.createElement("canvas");c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);c.getContext("2d").drawImage(img,0,0,c.width,c.height);const dataUrl=c.toDataURL("image/jpeg",.82);return{name:file.name,dataUrl,originalBytes:file.size,compressedBytes:Math.round((dataUrl.length-dataUrl.indexOf(",")-1)*.75),compressionMs:performance.now()-start}}
+  async function addFiles(list){for(const f of [...(list||[])].filter(f=>f.type.startsWith("image/"))){if(images.length>=9)break;images.push(await compress(f))}renderThumbs()}
+  function renderThumbs(){els.thumbs.innerHTML="";images.forEach((img,i)=>{const d=document.createElement("div");d.className="thumb";d.innerHTML=`<img alt=""><button type="button">×</button><small title="${esc(img.name)}">${esc(img.name)}</small>`;d.querySelector("img").src=img.dataUrl;d.querySelector("button").onclick=()=>{images.splice(i,1);renderThumbs()};els.thumbs.appendChild(d)})}
+  els.drop.onclick=()=>els.fileInput.click();els.fileInput.onchange=async e=>{await addFiles(e.target.files);e.target.value=""};["dragenter","dragover"].forEach(n=>els.drop.addEventListener(n,e=>{e.preventDefault();els.drop.classList.add("drag")}));["dragleave","drop"].forEach(n=>els.drop.addEventListener(n,e=>{e.preventDefault();els.drop.classList.remove("drag")}));els.drop.addEventListener("drop",e=>addFiles(e.dataTransfer.files));
+  els.goldInput.onchange=async e=>{const f=e.target.files[0];goldCsv=f?await f.text():"";els.goldHint.textContent=f?`${f.name} · ${(f.size/1024).toFixed(1)}KB loaded`:"No gold CSV"};
+  function initRun(config){
+    return {id:crypto.randomUUID(),startedAt:new Date().toISOString(),config,images:images.map(({name,originalBytes,compressedBytes,compressionMs})=>({name,originalBytes,compressedBytes,compressionMs})),events:[],predictions:[],raw:"",score:null,meta:null,headersMs:null,firstItemMs:null,totalMs:null,usageByPage:{},usage:{input:0,output:0,thinking:0},errors:[]};
   }
-
-  document.querySelectorAll(".tab").forEach((t) => {
-    t.addEventListener("click", () => setTab(t.dataset.tab));
-  });
-
-  function renderThumbs() {
-    els.thumbs.innerHTML = "";
-    images.forEach((img, i) => {
-      const d = document.createElement("div");
-      d.className = "thumb";
-      d.innerHTML = `<span class="n">${i + 1}</span><img alt=""><button type="button" title="Remove">×</button>`;
-      d.querySelector("img").src = img.dataUrl;
-      d.querySelector("button").onclick = () => {
-        images.splice(i, 1);
-        renderThumbs();
-      };
-      els.thumbs.appendChild(d);
-    });
-  }
-
-  function fileToDataUrl(file) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = reject;
-      reader.readAsDataURL(file);
-    });
-  }
-
-  async function compressToDataUrl(file, maxSide = 1600, quality = 0.82) {
-    const dataUrl = await fileToDataUrl(file);
-    if (!file.type.startsWith("image/") || file.type === "image/gif") return dataUrl;
-    const img = new Image();
-    await new Promise((res, rej) => {
-      img.onload = res;
-      img.onerror = rej;
-      img.src = dataUrl;
-    });
-    let { width, height } = img;
-    const scale = Math.min(1, maxSide / Math.max(width, height));
-    width = Math.round(width * scale);
-    height = Math.round(height * scale);
-    const canvas = document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(img, 0, 0, width, height);
-    return canvas.toDataURL("image/jpeg", quality);
-  }
-
-  async function addFiles(fileList) {
-    const files = Array.from(fileList || []).filter((f) => f.type.startsWith("image/"));
-    for (const f of files) {
-      if (images.length >= MAX_IMAGES) break;
-      const dataUrl = await compressToDataUrl(f);
-      images.push({ name: f.name, dataUrl });
+  function resetView(run){els.emptyState.hidden=true;els.resultView.hidden=false;showError("");Object.values(tabs).forEach(n=>{if(n.tagName!=="TABLE")n.innerHTML=n===tabs.benchmark?n.innerHTML:""});tabs.benchmark.innerHTML=`<table><thead><tr><th>Provider / model</th><th>Mode</th><th>Runs</th><th>First P50 / P95</th><th>Total P50 / P95</th><th>Recall</th><th>Errors</th><th>Runtime</th></tr></thead><tbody id="benchmarkRows"></tbody></table>`;els.benchmarkRows=$("benchmarkRows");setMetric(els.statProvider,run.config.provider);setMetric(els.statModel,run.config.model);[els.statRuntime,els.statHeaders,els.statFirst,els.statTotal,els.statTokens,els.statRecall,els.statPrice,els.statHallucinations].forEach(e=>setMetric(e,"—"));setMetric(els.statItems,"0");setTab("items")}
+  function renderItems(run){tabs.items.innerHTML="";[...run.predictions].sort((a,b)=>a.page-b.page||a.ordinal-b.ordinal).forEach(p=>{const d=p.data,tags=[];(d.allergens||[]).forEach(a=>tags.push(`${a.type}:${a.level}`));(d.textures||[]).forEach(t=>tags.push(t));const el=document.createElement("article");el.className="item";el.innerHTML=`<div class="head"><span class="idx">p${p.page} #${p.ordinal}</span><span class="cn">${esc(d.nameCn)}</span>${d.name&&d.name!==d.nameCn?`<span class="en">${esc(d.name)}</span>`:""}${d.price?`<span class="price">${esc(d.price)}</span>`:""}</div>${d.description?`<div class="desc">${esc(d.description)}</div>`:""}<div class="tags">${tags.map(t=>`<span class="tag">${esc(t)}</span>`).join("")}</div>`;tabs.items.appendChild(el)})}
+  function eventLine(ev){return `${fmtMs(ev.ms)} ${ev.type}${ev.page?` p${ev.page}`:""}${ev.code?` ${ev.code}`:""}`}
+  async function scoreRun(run){if(!goldCsv)return;const body={csv:goldCsv,imageNames:images.map(i=>i.name),predictions:run.predictions.map(p=>({page:p.page,ordinal:p.ordinal,nameCn:p.data.nameCn,price:p.data.price??null}))};const res=await fetch("/api/lab/score",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});if(!res.ok){const e=await res.json();throw new Error(e.code||"score_failed")}run.score=await res.json();setMetric(els.statRecall,pct(run.score.nameRecall),run.score.nameRecall>=.98);setMetric(els.statPrice,pct(run.score.priceExact),run.score.priceExact>=.99);setMetric(els.statHallucinations,String(run.score.hallucinationCount),run.score.hallucinationCount===0)}
+  async function runOne(config,{render=true}={}){
+    if(!images.length)throw new Error("Upload at least one menu image");const run=initRun(config);if(render)resetView(run);const clientStart=performance.now();const res=await fetch("/api/lab",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({provider:config.provider,model:config.model,mode:config.mode,images:images.map(i=>i.dataUrl),imageNames:images.map(i=>i.name),systemPrompt:els.systemPrompt.value,userPrompt:els.userPrompt.value,temperature:Number(els.temperature.value),maxOutputTokens:Number(els.maxTokens.value)}),signal:abortCtrl.signal});run.clientHeadersMs=performance.now()-clientStart;if(!res.ok){const e=await res.json().catch(()=>({}));throw new Error(e.message||e.code||`HTTP ${res.status}`)}const reader=res.body.getReader(),decoder=new TextDecoder();let buf="";
+    function handleEvent(ev){
+      run.events.push(ev);
+      if (ev.type === "page_started") { els.runStatus.textContent=`Page ${ev.page} started`; }
+      if (ev.type === "provider_headers") { run.headersMs=run.headersMs==null?ev.ms:Math.min(run.headersMs,ev.ms);setMetric(els.statHeaders,fmtMs(run.headersMs)); }
+      if (ev.type === "chunk") { run.raw+=ev.text||"";tabs.raw.textContent=run.raw; }
+      if (ev.type === "item") { run.predictions.push({page:ev.page,ordinal:ev.ordinal,data:ev.data});if(run.firstItemMs==null)run.firstItemMs=ev.ms;setMetric(els.statItems,String(run.predictions.length));setMetric(els.statFirst,fmtMs(run.firstItemMs),run.firstItemMs<=targetFor(config.mode,images.length).first);if(render)renderItems(run); }
+      if (ev.type === "page_done") { els.runStatus.textContent=`Page ${ev.page} done · ${ev.total} items`; }
+      if (ev.type === "usage") { run.usageByPage[ev.page]={input:ev.inputTokens||0,output:ev.outputTokens||0,thinking:ev.thinkingTokens||0};run.usage=Object.values(run.usageByPage).reduce((sum,page)=>({input:sum.input+page.input,output:sum.output+page.output,thinking:sum.thinking+page.thinking}),{input:0,output:0,thinking:0});setMetric(els.statTokens,`${run.usage.input} / ${run.usage.output}`); }
+      if (ev.type === "meta") { run.meta=ev;setMetric(els.statRuntime,`${ev.runtime}${ev.colo?` · ${ev.colo}`:""}`); }
+      if (ev.type === "error") { run.errors.push(ev);showError(`${ev.code}: ${ev.message}`); }
+      if (ev.type === "done") { run.totalMs=ev.totalMs;run.partial=ev.partial;setMetric(els.statTotal,fmtMs(ev.totalMs),ev.totalMs<=targetFor(config.mode,images.length).total);els.runStatus.textContent=`Done · ${ev.total} items${ev.partial?" · partial":""}`; }
+      tabs.events.textContent=run.events.map(eventLine).join("\n");
     }
-    renderThumbs();
+    while(true){const {done,value}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});let n;while((n=buf.indexOf("\n"))>=0){const line=buf.slice(0,n).trim();buf=buf.slice(n+1);if(line)handleEvent(JSON.parse(line))}}if(buf.trim())handleEvent(JSON.parse(buf.trim()));try{await scoreRun(run)}catch(e){run.scoreError=e.message;showError(`Score: ${e.message}`)}allRuns.push(run);currentRun=run;els.exportJsonBtn.disabled=false;els.exportCsvBtn.disabled=false;return run;
   }
-
-  els.drop.addEventListener("click", () => els.fileInput.click());
-  els.fileInput.addEventListener("change", async (e) => {
-    await addFiles(e.target.files);
-    els.fileInput.value = "";
-  });
-  ["dragenter", "dragover"].forEach((ev) => {
-    els.drop.addEventListener(ev, (e) => {
-      e.preventDefault();
-      els.drop.classList.add("drag");
-    });
-  });
-  ["dragleave", "drop"].forEach((ev) => {
-    els.drop.addEventListener(ev, (e) => {
-      e.preventDefault();
-      els.drop.classList.remove("drag");
-    });
-  });
-  els.drop.addEventListener("drop", async (e) => {
-    await addFiles(e.dataTransfer?.files);
-  });
-
-  function renderDish(d) {
-    const tags = [];
-    if (d.category) tags.push(`<span class="tag cat">${esc(d.category)}</span>`);
-    if (d.spicy > 0) tags.push(`<span class="tag spicy">spicy ${d.spicy}</span>`);
-    if (d.vegetarian) tags.push(`<span class="tag veg">vegetarian</span>`);
-    (d.allergens || []).forEach((a) => {
-      tags.push(`<span class="tag allergen">${esc(a.type)} · ${esc(a.level)}</span>`);
-    });
-    (d.textures || []).forEach((t) => tags.push(`<span class="tag texture">${esc(t)}</span>`));
-    (d.ingredients || []).forEach((t) => tags.push(`<span class="tag">${esc(t)}</span>`));
-
-    return `<article class="dish">
-      <div class="head">
-        <span class="id">#${d.id}</span>
-        <span class="name">${esc(d.name || "")}</span>
-        <span class="name-cn">${esc(d.nameCn || "")}</span>
-        ${d.price ? `<span class="price">${esc(d.price)}</span>` : ""}
-        ${d.pinyin ? `<div class="pinyin">${esc(d.pinyin)}</div>` : ""}
-      </div>
-      ${d.description ? `<div class="desc">${esc(d.description)}</div>` : ""}
-      <div class="meta-row">${tags.join("")}</div>
-      ${d.story ? `<div class="story">${esc(d.story)}</div>` : ""}
-    </article>`;
-  }
-
-  function esc(s) {
-    return String(s)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
-  function appendEvent(kind, text) {
-    eventLog.push({ kind, text });
-    const line = document.createElement("div");
-    line.className = `log-line ${kind}`;
-    line.textContent = text;
-    els.tabEvents.appendChild(line);
-    els.tabEvents.scrollTop = els.tabEvents.scrollHeight;
-  }
-
-  function resetResultUi() {
-    dishes = [];
-    rawText = "";
-    eventLog = [];
-    els.emptyState.hidden = true;
-    els.resultView.hidden = false;
-    els.errorBox.hidden = true;
-    els.errorBox.textContent = "";
-    els.tabDishes.innerHTML = "";
-    els.tabRaw.textContent = "";
-    els.tabEvents.innerHTML = "";
-    els.statModel.textContent = els.model.value || "—";
-    els.statDishes.textContent = "0";
-    els.statFirst.textContent = "—";
-    els.statTotal.textContent = "—";
-    els.statRaw.textContent = "0";
-    els.statImages.textContent = String(images.length);
-    els.statFirst.className = "v";
-    els.statTotal.className = "v";
-    setTab("dishes");
-  }
-
-  function setRunning(on) {
-    els.runBtn.disabled = on;
-    els.stopBtn.disabled = !on;
-    els.runSpinner.hidden = !on;
-  }
-
-  async function run() {
-    if (!images.length) {
-      alert("Please upload at least one menu image.");
-      return;
-    }
-    if (abortCtrl) abortCtrl.abort();
-    abortCtrl = new AbortController();
-    resetResultUi();
-    setRunning(true);
-    els.runStatus.textContent = "Starting…";
-
-    const body = {
-      images: images.map((i) => i.dataUrl),
-      model: els.model.value,
-      systemPrompt: els.systemPrompt.value,
-      userPrompt: els.userPrompt.value,
-      temperature: Number(els.temperature.value),
-      maxOutputTokens: Number(els.maxTokens.value),
-    };
-
-    let firstDishMs = null;
-    try {
-      const res = await fetch("/api/lab", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-        signal: abortCtrl.signal,
-      });
-
-      if (!res.ok) {
-        let msg = `HTTP ${res.status}`;
-        try {
-          const j = await res.json();
-          msg = j.message || j.code || msg;
-        } catch {}
-        throw new Error(msg);
-      }
-      if (!res.body) throw new Error("empty response body");
-
-      const reader = res.body.getReader();
-      const decoder = new TextDecoder();
-      let buf = "";
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        buf += decoder.decode(value, { stream: true });
-        let nl;
-        while ((nl = buf.indexOf("\n")) >= 0) {
-          const line = buf.slice(0, nl).trim();
-          buf = buf.slice(nl + 1);
-          if (!line) continue;
-          let ev;
-          try { ev = JSON.parse(line); } catch { continue; }
-          handleEvent(ev);
-        }
-      }
-      if (buf.trim()) {
-        try { handleEvent(JSON.parse(buf.trim())); } catch {}
-      }
-    } catch (err) {
-      if (err?.name === "AbortError") {
-        els.runStatus.textContent = "Stopped";
-        appendEvent("err", "aborted by user");
-      } else {
-        const msg = err?.message || String(err);
-        els.errorBox.hidden = false;
-        els.errorBox.textContent = msg;
-        els.runStatus.textContent = "Failed";
-        appendEvent("err", msg);
-      }
-    } finally {
-      setRunning(false);
-      abortCtrl = null;
-      if (els.runStatus.textContent === "Starting…") {
-        els.runStatus.textContent = "Finished";
-      }
-    }
-
-    function handleEvent(ev) {
-      if (ev.type === "meta") {
-        els.statModel.textContent = ev.model || "—";
-        els.statImages.textContent = String(ev.imageCount ?? images.length);
-        els.runStatus.textContent = `Running ${ev.model} · ${ev.imageCount} image(s)…`;
-        appendEvent("meta", `meta model=${ev.model} images=${ev.imageCount} temp=${ev.temperature}`);
-        return;
-      }
-      if (ev.type === "chunk") {
-        rawText += ev.text || "";
-        els.tabRaw.textContent = rawText;
-        els.statRaw.textContent = String(rawText.length);
-        els.runStatus.textContent = `Streaming… dishes=${dishes.length} raw=${rawText.length} @${fmtMs(ev.ms)}`;
-        return;
-      }
-      if (ev.type === "dish") {
-        dishes.push(ev.data);
-        els.tabDishes.insertAdjacentHTML("beforeend", renderDish(ev.data));
-        els.statDishes.textContent = String(dishes.length);
-        if (firstDishMs == null && typeof ev.ms === "number") {
-          firstDishMs = ev.ms;
-          els.statFirst.textContent = fmtMs(firstDishMs);
-          els.statFirst.className = firstDishMs < 20000 ? "v good" : "v warn";
-        }
-        els.runStatus.textContent = `Dish #${ev.data.id} @ ${fmtMs(ev.ms)}`;
-        appendEvent("dish", `#${ev.data.id} ${ev.data.nameCn || ""} / ${ev.data.name || ""} @${fmtMs(ev.ms)}`);
-        return;
-      }
-      if (ev.type === "raw_line") {
-        appendEvent("meta", `raw_line ${String(ev.text || "").slice(0, 200)}`);
-        return;
-      }
-      if (ev.type === "done") {
-        els.statDishes.textContent = String(ev.total ?? dishes.length);
-        els.statTotal.textContent = fmtMs(ev.totalMs);
-        els.statTotal.className = (ev.totalMs || 0) < 35000 ? "v good" : "v warn";
-        if (ev.firstDishMs != null) {
-          els.statFirst.textContent = fmtMs(ev.firstDishMs);
-          els.statFirst.className = ev.firstDishMs < 20000 ? "v good" : "v warn";
-        }
-        els.statRaw.textContent = String(ev.rawChars ?? rawText.length);
-        els.statModel.textContent = ev.model || els.statModel.textContent;
-        els.runStatus.textContent = `Done · ${ev.total ?? dishes.length} dishes · total ${fmtMs(ev.totalMs)} · first ${fmtMs(ev.firstDishMs)}`;
-        appendEvent("meta", `done total=${ev.total} totalMs=${ev.totalMs} firstDishMs=${ev.firstDishMs}`);
-        return;
-      }
-      if (ev.type === "error") {
-        const msg = `${ev.code || "error"}${ev.message ? ": " + ev.message : ""}`;
-        els.errorBox.hidden = false;
-        els.errorBox.textContent = msg;
-        if (typeof ev.ms === "number") els.statTotal.textContent = fmtMs(ev.ms);
-        els.runStatus.textContent = `Error @ ${fmtMs(ev.ms)}`;
-        appendEvent("err", msg);
-      }
-    }
-  }
-
-  els.runBtn.addEventListener("click", run);
-  els.stopBtn.addEventListener("click", () => abortCtrl?.abort());
-  els.resetSystem.addEventListener("click", () => {
-    els.systemPrompt.value = defaults.systemPrompt;
-  });
-  els.resetUser.addEventListener("click", () => {
-    els.userPrompt.value = defaults.userPrompt;
-  });
-
-  async function boot() {
-    try {
-      const res = await fetch("/api/lab");
-      const data = await res.json();
-      defaults = {
-        models: data.models || defaults.models,
-        defaultModel: data.defaultModel || defaults.defaultModel,
-        systemPrompt: data.systemPrompt || "",
-        userPrompt: data.userPrompt || "",
-      };
-      els.model.innerHTML = "";
-      const models = defaults.models.slice();
-      if (defaults.defaultModel && !models.includes(defaults.defaultModel)) {
-        models.unshift(defaults.defaultModel);
-      }
-      models.forEach((m) => {
-        const opt = document.createElement("option");
-        opt.value = m;
-        opt.textContent = m;
-        if (m === defaults.defaultModel) opt.selected = true;
-        els.model.appendChild(opt);
-      });
-      els.systemPrompt.value = defaults.systemPrompt;
-      els.userPrompt.value = defaults.userPrompt;
-      if (data.hasApiKey) {
-        els.keyPill.textContent = "API key ready";
-        els.keyPill.className = "pill ok";
-      } else {
-        els.keyPill.textContent = "No GOOGLE_API_KEY";
-        els.keyPill.className = "pill bad";
-      }
-    } catch (err) {
-      els.keyPill.textContent = "Lab API unavailable";
-      els.keyPill.className = "pill bad";
-      els.systemPrompt.placeholder = "Failed to load defaults from /api/lab";
-    }
-  }
-
+  function selectedConfig(){return{provider:els.provider.value,model:els.model.value,mode:els.mode.value}}
+  async function runSingle(){if(active)return;abortCtrl=new AbortController();setBusy(true);els.runStatus.textContent="Starting…";try{await runOne(selectedConfig())}catch(e){if(e.name==="AbortError")els.runStatus.textContent="Stopped";else{showError(e.message);els.runStatus.textContent="Failed"}}finally{setBusy(false);abortCtrl=null}}
+  function renderBenchmark(){const groups=new Map();allRuns.forEach(r=>{const k=`${r.config.provider}::${r.config.model}::${r.config.mode}`;if(!groups.has(k))groups.set(k,[]);groups.get(k).push(r)});els.benchmarkRows.innerHTML="";for(const runs of groups.values()){const r=runs[0],first=runs.map(x=>x.firstItemMs).filter(Number.isFinite),total=runs.map(x=>x.totalMs).filter(Number.isFinite),recall=runs.map(x=>x.score?.nameRecall).filter(Number.isFinite),errors=runs.reduce((n,x)=>n+x.errors.length+(x.totalMs==null?1:0),0),tr=document.createElement("tr");tr.innerHTML=`<td>${esc(r.config.provider)}<br><small>${esc(r.config.model)}</small></td><td>${esc(r.config.mode)}</td><td>${runs.length}</td><td>${fmtMs(percentile(first,.5))} / ${fmtMs(percentile(first,.95))}</td><td>${fmtMs(percentile(total,.5))} / ${fmtMs(percentile(total,.95))}</td><td>${recall.length?pct(recall.reduce((a,b)=>a+b,0)/recall.length):"—"}</td><td>${errors}</td><td>${esc(r.meta?.runtime||"—")} ${esc(r.meta?.colo||"")}</td>`;els.benchmarkRows.appendChild(tr)}setTab("benchmark")}
+  async function runBenchmark(){if(active)return;const configs=[...els.benchmarkModels.querySelectorAll("input:checked")].map(i=>{const [provider,model]=i.value.split("::");return{provider,model,mode:els.mode.value}});if(!configs.length){showError("Select at least one configured benchmark model");return}abortCtrl=new AbortController();setBusy(true);showError("");const repeats=Math.min(5,Math.max(1,Number(els.repeatCount.value)||3));try{for(const config of configs){for(let i=0;i<repeats;i++){els.runStatus.textContent=`Benchmark ${config.model} · ${i+1}/${repeats}`;await runOne(config,{render:i===0});renderBenchmark()}}}catch(e){if(e.name!=="AbortError")showError(e.message)}finally{setBusy(false);abortCtrl=null;renderBenchmark()}}
+  function download(name,type,text){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+  els.exportJsonBtn.onclick=()=>download(`chopstory-lab-${Date.now()}.json`,"application/json",JSON.stringify({exportedAt:new Date().toISOString(),runs:allRuns},null,2));
+  els.exportCsvBtn.onclick=()=>{const head="provider,model,mode,first_item_ms,total_ms,items,name_recall,price_exact,hallucinations,runtime,colo\n",rows=allRuns.map(r=>[r.config.provider,r.config.model,r.config.mode,r.firstItemMs??"",r.totalMs??"",r.predictions.length,r.score?.nameRecall??"",r.score?.priceExact??"",r.score?.hallucinationCount??"",r.meta?.runtime??"",r.meta?.colo??""].map(v=>`"${String(v).replace(/"/g,'""')}"`).join(",")).join("\n");download(`chopstory-lab-${Date.now()}.csv`,"text/csv",head+rows)};
+  els.runBtn.onclick=runSingle;els.benchmarkBtn.onclick=runBenchmark;els.stopBtn.onclick=()=>abortCtrl?.abort();
+  async function boot(){try{const data=await(await fetch("/api/lab")).json();defaults={...defaults,...data};data.providers.forEach(p=>{const o=document.createElement("option");o.value=p.id;o.textContent=`${p.label}${p.configured?"":" · off"}`;els.provider.appendChild(o)});els.provider.value=data.defaultProvider||"gemini";els.mode.value=data.defaultMode||"extract_only";const ready=data.providers.filter(p=>p.configured).length;els.keyPill.textContent=`${ready}/${data.providers.length} providers ready`;els.keyPill.className=`pill ${ready?"ok":"bad"}`;refreshModels();refreshChecks();resetPrompts()}catch(e){els.keyPill.textContent="Lab API unavailable";els.keyPill.className="pill bad";showError(e.message)}}
   boot();
 })();
 </script>
