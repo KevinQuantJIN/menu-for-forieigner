@@ -69,8 +69,7 @@
       <div class="chips" data-group="allergens">
         <button class="chip" data-v="peanut">🥜 Peanut</button>
         <button class="chip" data-v="tree_nut">🌰 Tree nut</button>
-        <button class="chip" data-v="crustacean">🦐 Shrimp/Crab</button>
-        <button class="chip" data-v="mollusk">🦪 Shellfish (mollusk)</button>
+        <button class="chip" data-v="shellfish">🦐 Shellfish</button>
         <button class="chip" data-v="gluten">🌾 Gluten</button>
         <button class="chip" data-v="soy">🫘 Soy</button>
         <button class="chip" data-v="egg">🥚 Egg</button>
@@ -253,7 +252,7 @@
   </section>
 
   <!-- original menu photo overlay -->
-  <div id="orig-mask" class="hidden" onclick="this.classList.add('hidden')">
+  <div id="orig-mask" class="hidden" onclick="closeOrig(event)">
     <div id="orig-paper" class="menu-paper" style="transform:none;width:100%">
       <h4>川辣小馆·川菜</h4>
       <div class="sec">经典凉菜</div>

@@ -44,7 +44,9 @@ function renderOrder() {
     : `<div class="sec-empty"><span class="e">🍽️</span>还没有选菜</div>`;
 
   /* MY NOTES（英文面：My xx 键名 + 空态提示；Edit 编辑整卡）*/
-  const chipRow = (defs, group) => Object.entries(defs).map(([k, l]) =>
+  const chipRow = (defs, group) => Object.entries(defs)
+    .filter(([k]) => !["crustacean", "mollusk"].includes(k))
+    .map(([k, l]) =>
     `<button class="chip ${profile[group].includes(k) ? "on" : ""}" onclick="toggleProfileItem('${group}','${k}')">${l}</button>`).join("");
   const notesEN = orderEditing ? `
       <div class="chip-group"><div class="gt">Allergies</div><div class="chips">${chipRow(ALLERGEN_LABEL, "allergens")}</div></div>
