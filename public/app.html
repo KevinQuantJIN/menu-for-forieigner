@@ -105,7 +105,8 @@
   .brand em { color: var(--accent); font-style: normal; }
   .tagline { color: var(--muted); font-size: var(--t-sub); margin-top: 6px; }
   .scan-hero {
-    margin: 32px auto 6px; width: 132px; height: 132px; border-radius: 999px;
+    flex: none;
+    margin: 24px auto 4px; width: 120px; height: 120px; border-radius: 999px;
     background: radial-gradient(circle at 35% 28%, #db6c40, var(--accent) 70%);
     color: #fff; font-size: 52px; border: none; cursor: pointer;
     box-shadow: 0 16px 34px rgba(196,87,46,.32), inset 0 1px 0 rgba(255,255,255,.25);
@@ -114,7 +115,7 @@
   .scan-hero:active { transform: scale(.94); box-shadow: 0 8px 18px rgba(196,87,46,.3); }
   .scan-label { font-size: 19px; font-weight: 800; letter-spacing: -.3px; margin-top: 14px; }
   .scan-sub { color: var(--muted); font-size: var(--t-sub); margin-top: 4px; }
-  .or { display: flex; align-items: center; gap: 12px; color: var(--faint); font-size: var(--t-cap); font-weight: 700; margin: 24px 0 12px; }
+  .or { display: flex; align-items: center; gap: 12px; color: var(--faint); font-size: var(--t-cap); font-weight: 700; margin: 18px 0 10px; }
   .or::before, .or::after { content: ""; flex: 1; height: 1px; background: var(--line); }
   .entry-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .entry {
@@ -127,12 +128,50 @@
   .profile-strip {
     margin-top: 20px; display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; align-items: center;
   }
-  .recent {
-    margin-top: 20px; text-align: left; border: 1px dashed #ddd0c0; border-radius: var(--r-md);
-    padding: 14px 15px; background: #fffdf8; cursor: pointer;
+  /* home · "My food story" (胃之书-style recent-eats timeline) */
+  .home-sec { margin-top: 26px; text-align: left; }
+  .home-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .home-sec-head .gt { font-size: var(--t-cap); font-weight: 800; color: var(--faint); text-transform: uppercase; letter-spacing: .06em; }
+  .mini-tabs { display: flex; background: #eee4d7; border-radius: 999px; padding: 3px; }
+  .mini-tab {
+    border: none; border-radius: 999px; padding: 6px 13px; font-size: 12px; font-weight: 800;
+    background: none; color: var(--muted); cursor: pointer;
+    transition: background var(--dur-fast) var(--ease), color var(--dur-fast) var(--ease);
   }
-  .recent .t { font-size: var(--t-cap); font-weight: 800; color: var(--faint); letter-spacing: .06em; text-transform: uppercase; }
-  .recent .r { display: flex; justify-content: space-between; margin-top: 8px; font-size: 14px; }
+  .mini-tab.on { background: var(--paper); color: var(--ink); box-shadow: var(--shadow-1); }
+  .date-lab { display: flex; align-items: baseline; gap: 6px; margin: 16px 2px 12px; }
+  .date-lab b { font-size: 19px; font-weight: 900; letter-spacing: -.3px; }
+  .date-lab span { font-size: 12px; color: var(--faint); font-weight: 700; }
+  .eat-card {
+    position: relative; display: flex; gap: 14px; align-items: center;
+    background: var(--paper); border-radius: var(--r-lg); box-shadow: var(--shadow-1);
+    padding: 14px 15px 14px 12px; margin-bottom: 10px; cursor: pointer;
+    transition: transform var(--dur-fast) var(--ease);
+  }
+  .eat-card:active { transform: scale(.98); }
+  .eat-photo {
+    flex: none; width: 82px; height: 82px; margin-top: -22px;
+    background: linear-gradient(135deg, #f3d9c3, #e7b590);
+    border: 5px solid #fff; border-radius: 4px; box-shadow: var(--shadow-2);
+    display: grid; place-items: center; font-size: 38px;
+    transform: rotate(var(--rot, -4deg));
+  }
+  .eat-info { min-width: 0; flex: 1; }
+  .eat-info .n { font-size: 15px; font-weight: 800; letter-spacing: -.2px; }
+  .eat-info .m { font-size: 12px; color: var(--muted); margin-top: 3px; font-variant-numeric: tabular-nums; }
+  .eat-info .hl { font-size: 12.5px; color: var(--ink-2); margin-top: 7px; background: var(--accent-soft); border-radius: 8px; padding: 5px 9px; display: inline-block; }
+  .eat-info .t { position: absolute; top: 14px; right: 15px; font-size: 11px; color: var(--faint); font-variant-numeric: tabular-nums; }
+  #home-map {
+    position: relative; height: 240px; border-radius: var(--r-lg); overflow: hidden;
+    background: #17140f; cursor: pointer; box-shadow: var(--shadow-2);
+  }
+  #home-map .grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(120,220,160,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(120,220,160,.07) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  #home-map .counts { position: absolute; top: 12px; left: 0; right: 0; text-align: center; font-family: ui-monospace, monospace; font-size: 11px; letter-spacing: .12em; color: #86efac; }
+  #home-map .open-hint { position: absolute; bottom: 10px; left: 0; right: 0; text-align: center; font-size: 11px; color: #b7ac9f; }
   .home-foot { margin-top: auto; padding-top: 20px; font-size: 10.5px; color: var(--faint); line-height: 1.55; }
 
   /* ---------- prefs sheet ---------- */
@@ -379,10 +418,51 @@
       <button class="entry" onclick="go('camera')"><span class="big">🖼️</span>From album</button>
     </div>
     <div class="profile-strip" id="profileStrip"></div>
-    <div class="recent" onclick="go('history')">
-      <div class="t">Recent scans</div>
-      <div class="r"><span>🍜 Ma Wang Zi · Sichuan · Chengdu</span><span style="color:var(--muted)">today ›</span></div>
-      <div class="r"><span>🗺️ My Food Map — 3 dishes · 1 city</span><span style="color:var(--muted)">›</span></div>
+
+    <div class="home-sec">
+      <div class="home-sec-head">
+        <span class="gt">My food story</span>
+        <div class="mini-tabs">
+          <button class="mini-tab on" id="hv-time" onclick="homeView('time')">Recent</button>
+          <button class="mini-tab" id="hv-map" onclick="homeView('map')">🗺 Map</button>
+        </div>
+      </div>
+      <div id="home-time">
+        <div class="date-lab"><b>Today</b><span>Chengdu</span></div>
+        <div class="eat-card" onclick="go('list')">
+          <div class="eat-photo" style="--rot:-4deg">🍜</div>
+          <div class="eat-info">
+            <div class="n">Ma Wang Zi 马旺子</div>
+            <div class="m">Sichuan · 16 dishes scanned · 3 ordered · ¥216 ≈ $30</div>
+            <div class="hl">🌶️ First numbing pepper — 花椒 unlocked</div>
+            <div class="t">12:40</div>
+          </div>
+        </div>
+        <div class="date-lab"><b>Jul 9</b><span>Beijing</span></div>
+        <div class="eat-card" onclick="go('history')">
+          <div class="eat-photo" style="--rot:3deg">🦆</div>
+          <div class="eat-info">
+            <div class="n">Siji Minfu 四季民福</div>
+            <div class="m">Roast Duck · 22 dishes scanned · 5 ordered</div>
+            <div class="hl">🥢 Ordered like a local — zero pointing</div>
+            <div class="t">19:05</div>
+          </div>
+        </div>
+      </div>
+      <div id="home-map" class="hidden" onclick="go('history');histView('map')">
+        <div class="grid"></div>
+        <div class="counts">MY FOOD MAP · DISHES: 8 · CITIES: 2</div>
+        <span class="citytag" style="top:34%;left:16%">成都 CHENGDU</span>
+        <span class="pin" style="top:42%;left:26%"></span>
+        <div class="polaroid" style="top:20%;left:42%;width:96px;transform:rotate(3deg)">
+          <div class="ph" style="height:58px;font-size:28px">🍜</div>
+          <div class="cap">Ma Wang Zi</div>
+          <div class="sub2">TODAY</div>
+        </div>
+        <span class="citytag" style="top:64%;left:60%">北京 BEIJING</span>
+        <span class="pin" style="top:72%;left:70%"></span>
+        <div class="open-hint">Tap to open your full map ›</div>
+      </div>
     </div>
     <p class="home-foot">Dish info is AI-estimated from typical recipes, not actual kitchen ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
   </section>
@@ -879,6 +959,14 @@ function renderOrder() {
       <div class="detail-cta"><button class="btn" onclick="waiterMode=true;renderOrder()">Show to waiter 👋</button></div>
     `}`;
   el.scrollTop = 0;
+}
+
+/* ---------------- home: food story tabs ---------------- */
+function homeView(v) {
+  document.getElementById("hv-time").classList.toggle("on", v === "time");
+  document.getElementById("hv-map").classList.toggle("on", v === "map");
+  document.getElementById("home-time").classList.toggle("hidden", v !== "time");
+  document.getElementById("home-map").classList.toggle("hidden", v !== "map");
 }
 
 /* ---------------- history ---------------- */
