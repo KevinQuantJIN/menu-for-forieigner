@@ -46,7 +46,7 @@
 }
 .sechead b { font-family: var(--sh-en); font-size: 15.5px; font-weight: 800; letter-spacing: -.3px; }
 .sechead span { font-size: 10px; color: #9c8f77; }
-.sechead::after { content: ""; flex: 1; height: 5px; border-top: 1px solid var(--sh-ink); border-bottom: 1px solid var(--sh-hot); opacity: .45; align-self: center; }
+/* 7.13：右侧延展双细线已移除（Julia 定）——分区标题裸排，层级靠字号字重 */
 
 /* 菜品卡：V2 排档框（2px 墨框 + radius 14 + 硬墨影） */
 .pcard {
