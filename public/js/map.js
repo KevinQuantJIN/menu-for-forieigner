@@ -13,8 +13,8 @@ function histView(v) {
    风格：宣纸底 + 墨线省界 + 吃过的省份整块点亮（朱砂赭色）+ 城市涟漪点
    Offline / CDN failure → falls back to the CSS pixel map (#map-fallback). */
 const VISITS = [
-  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", resto:"Ma Wang Zi 马旺子", meta:"3 dishes · $13 ≈ ¥90", date:"TODAY" },
-  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", resto:"Siji Minfu 四季民福", meta:"5 dishes · $64 ≈ ¥458", date:"JUL 09" },
+  { city:"Chengdu", cn:"成都", coord:[104.07,30.67], emoji:"🍜", restoEn:"Ma Wang Zi", restoCn:"马旺子", date:"TODAY" },
+  { city:"Beijing", cn:"北京", coord:[116.40,39.90], emoji:"🦆", restoEn:"Siji Minfu", restoCn:"四季民福", date:"JUL 09" },
 ];
 const LIT_PROVINCES = ["四川省", "北京市"]; // 按省点亮（与 VISITS 城市对应）
 const OTHER_CITIES = [
@@ -58,7 +58,8 @@ async function renderChinaMap() { // 全屏地图（可拖拽缩放，去过的�
     return;
   }
   fullMapInit = true;
-  echarts.init(document.getElementById("chinamap")).setOption({
+  const chart = echarts.init(document.getElementById("chinamap"));
+  chart.setOption({
     backgroundColor: "transparent",
     geo: chinaGeoOption(true),
     series: [
@@ -68,19 +69,25 @@ async function renderChinaMap() { // 全屏地图（可拖拽缩放，去过的�
       { type: "effectScatter", coordinateSystem: "geo", symbolSize: 9, zlevel: 2, silent: true,
         rippleEffect: { brushType: "stroke", scale: 3.4, period: 4 },
         itemStyle: { color: "#7e241c" },
-        label: {
-          show: true, position: "top", distance: 10,
-          formatter: (p) => `{n|${p.data.resto}}\n{d|${p.data.date}}`,
-          backgroundColor: "#fbf7ea", borderColor: "#262019", borderWidth: 1.5, borderRadius: 4,
-          padding: [6, 9], align: "center",
-          rich: {
-            n: { fontSize: 10.5, fontWeight: 700, color: "#262019", lineHeight: 15 },
-            d: { fontSize: 9, color: "#8f8270", lineHeight: 13 },
-          },
-        },
-        data: VISITS.map(v => ({ name: v.city, value: v.coord, resto: v.resto, date: v.date })) },
+        data: VISITS.map(v => ({ name: v.city, value: v.coord })) },
     ],
   });
+  /* 拍立得小卡（map-card-lab 方案A）：ECharts label 画不出白框+底部三角，
+     改用 HTML overlay，convertToPixel 定位，拖拽/缩放时跟随坐标点 */
+  const wrap = document.getElementById("map-pins");
+  wrap.innerHTML = VISITS.map((v, i) => `
+    <div class="map-pola" id="map-pin-${i}" style="--rot:${i % 2 ? "2.5deg" : "-3deg"}">
+      <div class="ph">${v.emoji}</div>
+      <div class="nm">${v.restoEn}<br>${v.restoCn}</div>
+      <div class="dt">${v.date}</div>
+    </div>`).join("");
+  const place = () => VISITS.forEach((v, i) => {
+    const [x, y] = chart.convertToPixel("geo", v.coord);
+    const el = document.getElementById("map-pin-" + i);
+    el.style.left = x + "px"; el.style.top = y + "px";
+  });
+  chart.on("georoam", place);
+  place(); // convertToPixel 在 setOption 后即可用（涟漪动画常驻，"finished" 永不触发，不能依赖它）
 }
 async function renderHomeMap() { // 首页迷你预览（静态，点击进全屏）
   if (homeMapInit) return;
