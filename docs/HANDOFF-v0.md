@@ -1,7 +1,11 @@
 # Chopstory 交接文档 · 分支 `v0`（2026-07-12）
 
 > 给**新对话 / 下一位**用的满上下文包。读完应能不靠旧聊天继续干活。  
-> 当前工作分支：**`v0`**（基于 `ui-prototype` 切出）。**不要把契约改动合回 `ui-prototype`，除非明确要求。**
+> 当前工作分支：**`v0`**。**不要把契约改动合回 `ui-prototype`，除非明确要求。**
+>
+> ⚠️ **2026-07-12 晚：ui-prototype 最新视觉已合入 `v0` 并部署。**  
+> **修 UI / 模块化前端 bug 请优先读 → [`HANDOFF-v0-POST-UI-MERGE.md`](./HANDOFF-v0-POST-UI-MERGE.md)**  
+> 本文 §3 原型路径、§6 部分「单文件 app.html」描述已过时；**契约 v1（§4）与后端仍以本文 + `src/lib/contract.ts` 为准。**
 
 ---
 
@@ -11,12 +15,11 @@
 |---|---|---|
 | `main` | 旧 MenuLens demo 基线 | 线上早期 demo |
 | `ui-prototype` | 同事 UI 原型 + 设计文档同步；**保持干净** | 纯 UI / 视觉 / PRD 源 |
-| **`v0`（当前）** | = `ui-prototype` + **后端契约 v1 落地** | 产品实现主线起点 |
+| **`v0`（当前）** | 契约 v1 后端 + **已合并** 模块化新 UI | 产品实现主线 |
 | `tech-design` | 旧技术讨论痕迹 | 可忽略 |
 
-- 最新提交（v0）：`c13a11a` — *Freeze Chopstory analyze contract v1 on backend*  
-- 基线：`fb3448a` — *Sync team docs + demo stage page for handoff*  
-- **`v0` 尚未 push 远端**（需要时：`git push -u origin v0`）
+- 最新状态见 [`HANDOFF-v0-POST-UI-MERGE.md`](./HANDOFF-v0-POST-UI-MERGE.md)（合并后 HEAD / 线上 / 前端架构）  
+- `v0` 已 push 远端；线上：`https://menulens.web3-fintech-op-service.workers.dev`
 
 工作目录：`/Users/kevin/Documents/menu-for-forieigner`  
 注意：目录名拼写是 `menu-for-forieigner`（foreigner 拼错是历史包袱）。
