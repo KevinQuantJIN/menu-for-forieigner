@@ -23,14 +23,6 @@ const OTHER_CITIES = [
   ["Harbin",126.53,45.80],["Lhasa",91.11,29.97],["Urumqi",87.62,43.83],["Qingdao",120.38,36.07],
   ["Xiamen",118.09,24.48],["Dali",100.27,25.61],["Wuhan",114.31,30.59],["Changsha",112.94,28.23],
 ];
-function visitCardHTML(v) {
-  return `<div style="width:172px;padding:10px;font-family:inherit">
-    <div style="height:72px;border-radius:2px;background:linear-gradient(135deg,#eee2c8,#d9c49c);display:grid;place-items:center;font-size:34px">${v.emoji}</div>
-    <div style="font-weight:800;font-size:13px;margin-top:8px;color:#262019">${v.resto}</div>
-    <div style="font-size:11.5px;color:#75695a;margin-top:2px">${v.meta}</div>
-    <div style="font-size:9.5px;color:#8f8270;margin-top:5px;font-family:'Songti SC',serif">${v.date} · ${v.cn} 已钤印</div>
-  </div>`;
-}
 function chinaGeoOption(interactive) {
   return {
     map: "china", roam: interactive, zoom: interactive ? 1.6 : 2.4, center: interactive ? [105, 33] : [105, 32],
@@ -57,7 +49,7 @@ function ensureChinaAssets() {
   return chinaAssets;
 }
 let fullMapInit = false, homeMapInit = false;
-async function renderChinaMap() { // 全屏地图（可拖拽缩放，点省会城市出卡）
+async function renderChinaMap() { // 全屏地图（可拖拽缩放，去过的点常显小卡片：店名+日期）
   if (fullMapInit) return;
   const ok = await ensureChinaAssets();
   if (!ok) {
@@ -69,21 +61,24 @@ async function renderChinaMap() { // 全屏地图（可拖拽缩放，点省会�
   echarts.init(document.getElementById("chinamap")).setOption({
     backgroundColor: "transparent",
     geo: chinaGeoOption(true),
-    tooltip: {
-      trigger: "item", triggerOn: "click", confine: true,
-      backgroundColor: "#fbf7ea", borderColor: "#262019", borderWidth: 1.5, padding: 0,
-      extraCssText: "border-radius:2px;box-shadow:none;",
-      formatter: (p) => p.data && p.data.card ? p.data.card : "",
-    },
     series: [
       { type: "scatter", coordinateSystem: "geo", symbolSize: 4, silent: true,
         itemStyle: { color: "#b9ad97" },
         data: OTHER_CITIES.map(c => ({ name: c[0], value: [c[1], c[2]] })) },
-      { type: "effectScatter", coordinateSystem: "geo", symbolSize: 9, zlevel: 2,
+      { type: "effectScatter", coordinateSystem: "geo", symbolSize: 9, zlevel: 2, silent: true,
         rippleEffect: { brushType: "stroke", scale: 3.4, period: 4 },
         itemStyle: { color: "#7e241c" },
-        label: { show: true, position: "bottom", formatter: "{b}", fontSize: 10.5, fontWeight: 700, color: "#4c4437", distance: 6, fontFamily: "'Songti SC', serif" },
-        data: VISITS.map(v => ({ name: v.city, value: v.coord, card: visitCardHTML(v) })) },
+        label: {
+          show: true, position: "top", distance: 10,
+          formatter: (p) => `{n|${p.data.resto}}\n{d|${p.data.date}}`,
+          backgroundColor: "#fbf7ea", borderColor: "#262019", borderWidth: 1.5, borderRadius: 4,
+          padding: [6, 9], align: "center",
+          rich: {
+            n: { fontSize: 10.5, fontWeight: 700, color: "#262019", lineHeight: 15 },
+            d: { fontSize: 9, color: "#8f8270", lineHeight: 13 },
+          },
+        },
+        data: VISITS.map(v => ({ name: v.city, value: v.coord, resto: v.resto, date: v.date })) },
     ],
   });
 }

@@ -18,12 +18,6 @@
   }
   #homechinamap { position: absolute; inset: 0; }
   #home-map-fb { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-disp); font-size: 20px; color: #a8987a; }
-  .map-cap {
-    position: absolute; bottom: 0; left: 0; right: 0; z-index: 5; pointer-events: none;
-    padding: 18px 0 9px; text-align: center; font-family: var(--font-disp);
-    font-size: 11.5px; letter-spacing: .18em; color: var(--ink-2);
-    background: linear-gradient(transparent, rgba(243,236,219,.96) 55%);
-  }
   /* home · "My food story"：印刷行版式时间线 */
   .home-sec { margin-top: 26px; text-align: left; }
   .home-sec-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
@@ -32,13 +26,11 @@
   .date-lab { display: flex; align-items: baseline; gap: 6px; margin: 16px 2px 12px; }
   .date-lab b { font-family: var(--font-disp); font-size: 18px; font-weight: 900; letter-spacing: .5px; }
   .date-lab span { font-size: 12px; color: var(--faint); font-weight: 700; }
-  .eat-card {
+  .eat-card { /* 不可点击（历史卡点击逻辑未设计，7.13） */
     position: relative; display: flex; gap: 14px; align-items: center;
     background: none; border-bottom: 1px solid var(--hair);
-    padding: 6px 2px 14px; margin-bottom: 8px; cursor: pointer;
-    transition: transform var(--dur-fast) var(--ease);
+    padding: 6px 2px 14px; margin-bottom: 8px; cursor: default;
   }
-  .eat-card:active { transform: scale(.98); }
   .eat-photo {
     flex: none; width: 78px; height: 78px; margin-top: -4px;
     background: linear-gradient(135deg, #eee2c8, #d9c49c);

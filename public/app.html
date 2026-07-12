@@ -19,7 +19,7 @@
   <section class="screen" id="s-home">
     <div class="home-top">
       <div class="brand"><img class="mark" src="logo.svg" alt="Chopstory logo"><span>Chop<em>story</em></span></div>
-      <h1 class="slogan">Read it. Order it.<br><i>Eat the story.</i></h1>
+      <h1 class="slogan"><i>Decode the Chinese menu,</i><br>order like a local.</h1>
       <div class="scan-row">
         <button class="btn btn-zhu scan-cta" onclick="startScan('camera')">📷 Scan a menu</button>
       </div>
@@ -32,11 +32,10 @@
       </div>
       <div id="home-map" onclick="go('history');histView('map')">
         <div id="homechinamap"></div>
-        <div id="home-map-fb"><span>🗺️ 食迹</span></div>
-        <div class="map-cap"><b>食迹 · YOUR CHOPSTORY</b> · 已钤二印 · 尝八味</div>
+        <div id="home-map-fb"><span>🗺️</span></div>
       </div>
       <div class="date-lab"><b>Today</b><span>Chengdu</span></div>
-      <div class="eat-card" onclick="go('list')">
+      <div class="eat-card">
         <div class="eat-photo" style="--rot:-4deg">🍜</div>
         <div class="eat-info">
           <div class="n">Ma Wang Zi 马旺子</div>
@@ -46,7 +45,7 @@
         </div>
       </div>
       <div class="date-lab"><b>Jul 9</b><span>Beijing</span></div>
-      <div class="eat-card" onclick="go('history')">
+      <div class="eat-card">
         <div class="eat-photo" style="--rot:3deg">🦆</div>
         <div class="eat-info">
           <div class="n">Siji Minfu 四季民福</div>
@@ -170,7 +169,6 @@
     <div class="topbar">
       <button class="back" onclick="go('home')">‹</button>
       <h2>Your menu, decoded</h2>
-      <button class="back" title="History" onclick="go('history')">🗂</button>
     </div>
     <div class="resto-bar">
       <span class="emoji">🍜</span>
@@ -184,7 +182,7 @@
     <p class="disclaimer">AI-estimated from typical recipes, not actual ingredients. Chinese kitchens commonly use peanut and sesame oil. If you have severe allergies, always confirm with staff.</p>
     <div class="cart-bar" id="cartBar" onclick="openOrder()">
       <span class="sum" id="cartSum">Pick dishes to build your order</span>
-      <button class="go">🧾 My Order ›</button>
+      <button class="go">Order card ›</button>
     </div>
   </section>
 
@@ -203,10 +201,10 @@
     </div>
     <div class="htabs">
       <button class="cat on" id="ht-list" onclick="histView('list')">History</button>
-      <button class="cat" id="ht-map" onclick="histView('map')">🗺 Food Map</button>
+      <button class="cat" id="ht-map" onclick="histView('map')">Food Map</button>
     </div>
     <div id="hist-list">
-      <div class="hentry" onclick="go('list')">
+      <div class="hentry">
         <div class="d">Today · 12:40 · Chengdu, China</div>
         <div class="n">🍜 Ma Wang Zi 马旺子 · Sichuan</div>
         <div class="m">16 dishes scanned · 3 ordered · $30 ≈ ¥216</div>
