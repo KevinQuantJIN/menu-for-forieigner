@@ -22,6 +22,7 @@
       <h1 class="slogan"><i>Decode the Chinese menu,</i><br>order like a local.</h1>
       <div class="scan-row">
         <button class="scan-cta" onclick="startScan('camera')"><span class="cam">📷</span>Scan a menu</button>
+        <input id="albumInput" type="file" accept="image/*" multiple hidden />
       </div>
     </div>
 
@@ -161,6 +162,9 @@
       <h2>Reading your menu…</h2>
       <p class="ana-status" id="anaStatus">Looking at the photo</p>
       <div class="ana-track"><i id="anaBar"></i></div>
+      <p class="ana-err hidden" id="anaErr"></p>
+      <button class="btn btn-ghost hidden" id="anaRetry" onclick="startAnalyze()">Try again</button>
+      <div class="ana-thumbs hidden" id="anaThumbs"></div>
     </div>
   </section>
 
@@ -271,6 +275,7 @@
       <div class="row"><span>红糖糍粑</span><span>16</span></div>
     </div>
     <img id="orig-photo" class="hidden" src="real-menu-mawangzi.jpg" alt="Menu photo" style="max-width:100%;max-height:82%;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.5)">
+    <div id="orig-gallery" class="hidden"></div>
   </div>
 </div>
 
