@@ -1,0 +1,430 @@
+{
+  "generatedAt": "2026-07-12T17:43:13.637Z",
+  "provider": "Google Cloud Vision",
+  "feature": "DOCUMENT_TEXT_DETECTION",
+  "datasetDir": "/Users/kevin/Downloads/chopstory-test-data",
+  "execution": {
+    "concurrency": 14,
+    "authentication": "OAuth2"
+  },
+  "summary": {
+    "imageCount": 14,
+    "successfulImages": 14,
+    "goldCount": 625,
+    "strictNames": 567,
+    "fuzzyNames": 587,
+    "strictNameRecall": 0.9072,
+    "fuzzyNameRecall": 0.9392,
+    "uniquePriceCount": 190,
+    "matchedUniquePrices": 189,
+    "uniquePriceCoverage": 0.9947368421052631,
+    "wordCount": 7993,
+    "meanWordConfidence": 0.952554348930314,
+    "latencyP50Ms": 6496,
+    "latencyP95Ms": 8978,
+    "wallClockMs": 9284
+  },
+  "results": [
+    {
+      "imageFile": "M001_P01.jpg",
+      "ok": true,
+      "totalMs": 6103,
+      "text": "珊瑚海蜇头\n杞枣炖响螺\n餐前小食\nAPPETIZERS\n椒盐九肚鱼\nCrispy Bombay Duck Fish topped\n¥78/份per portion\nwith Spiced Salt\n(九肚鱼 Bombay Duck Fish 100g)\n卤水豆腐花生 ¥40/份 per portion\nTofu and Peanut marinated in\nSweet Soy Sauce\n(豆腐 Tofu 100g、花生 Peanut 10g)\n精选炖品\nDOUBLE BOILED TONIC SOUPS\n金银菜炖润肺 ¥280/两位用\nDouble Boiled Pig's Lungs soup\nwith Fresh and Dried White Cabbage\n(猪肺 Pig's Lung 150g\n金银菜 Fresh & Dried White Cabbage、\nfor two persons\n鸡件 Chicken、鸡脚 Chicken Feet、猪肉 Pork)\n天麻炖海班骨\n¥298/两位用\nGastrodia Stewed Grouper Bone\nfor two persons\n(海斑骨 Fish's Bone 300g、鸡件 Chicken.\n鸡脚 Chicken Feet、猪肉 Pork)\n珊瑚海蜇头\nSea Blubber Head in Balsamic Vinegar\n¥78/份 per portion\n(海蜇头 Sea Blubber Head 140g\n(陈酷耳」\n烙烤银杏\n青瓜条 Cucumber Slices\n海椰子清\n红椒丝 Shredded Red Pepper、芫茜 Coriander)\n陈醋詹耳\n¥45/份 per portion\nMarinated Pickled Fungus\n(云耳 Fungus 80gp\n红椒丝 Shredded Red Pepper、\n芫茜 Coriander、洋葱丝 Shredded Onion)\n炖竹丝鸡\n¥298/两位用\nSea Coconut Stewed Silkie Chicken\n(竹丝鸡 Silkie chicken 250克\nfor two persons:\n海椰子 sea coconut、椰丝 shredded coconut、\n红枣 red dates、杞子 wolfberry\n姬松茸炖老鸽¥388/两位用\nDouble-boiled Pigeon with\nBlaze Mushroom\nfor two persons\n迷你佛跳墙\n(老鸽 Pigeon 250g、姬松茸 Blaze Mushroom、\n鸡件 Chicken、鸡脚 Chicken Feet、猪肉 Pork)\n杞枣炖响螺\n¥598/两位用\n和味榨菜\n¥45/份 per portion\nSpicy Preserved Cabbage\n(榨菜片 Preserved Cabbage 70g,\n花生 Peanut, 芫茜 Coriander)\n美极鸭舌\n¥68/份 per portion\nDouble Boiled Sea Whelk Soup\nfor two persons\nDuck Tongue in Maggi Sauce\nwith Red Date and Wolfberry\n(鸭舌 Duck Tongue 100g)\n(响螺 Sea Whelk 300g、红枣 Red Date、\n杞子 Wolfberry、鸡件 Chicken、\n烙烤银杏\n¥45/份 per portion\n卤水鹅掌翼伴花生\nRoasted Gingko Nuts\n(银杏 Gingko Nuts 100g)\n迷你佛跳墙\n卤水鹅掌翼\n¥140/份 per portion\n(预定)\n伴花生\n鸡脚 Chicken Feet、猪肉 Pork)\nDouble Boiled Mini Delicacies\n¥488/位 per person\n(两位起min2 persons)\n\"Buddha Jump over the Wall\" (advanced order)\n(月勾翅 Shark's Fin 40g、\n鲜鲍鱼 Fresh Abalone 25g\nGoose Wings and Webs Marinated\n花胶 Fish Maw 25g、响螺 Sea Whelk 25g、\nin Sweet Soy Sauce\n(鹅掌 Goose Web 50g、鹅翼 Goose Wings 65g、\n花生 Peanut)\n普通茶水费¥10/位\nCharge for standard tea/water ¥10 per person\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n干瑶柱 Dried Conpoy、猪肉 Pork、\n鸡肉 Chicken Meat、鸡脚 Chicken Feet、\n杞子 Wolfberry、红枣 Red Date)\n全单另收百分之十服务费\nAll prices are subject to 10% service charge\n本菜单均以人民币进行结算\nThe currency shows on this menu is in RMB\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n小红书\n小红书号:531163694",
+      "wordCount": 645,
+      "meanWordConfidence": 0.9713185235658914,
+      "goldCount": 14,
+      "strictNames": 11,
+      "fuzzyNames": 12,
+      "strictNameRecall": 0.7857142857142857,
+      "fuzzyNameRecall": 0.8571428571428571,
+      "uniquePriceCount": 10,
+      "matchedUniquePrices": 10,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "海椰子清炖竹丝鸡",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "迷你佛跳墙(预定)",
+          "bestSimilarity": 0.714
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P02.jpg",
+      "ok": true,
+      "totalMs": 6593,
+      "text": "餐前小食\nAPPETIZERS\n琥珀核桃\n¥62/份 per portion\nDeep Fried Walnut Coated with Honey\n(核桃 Walnut 150g、芝麻 Sesame、\n麦芽糖 Malt Sugar)\n琥珀核桃\n金券美骨瓜\n金蒜拍青瓜\n¥40/份 per portion\n健康\nGarlic Flavoured Pickled Cucumber\n研究\n(青瓜 Cucumber 150g、蒜蓉 Garlic、\n红椒丝 Shredded Red Pepper)\n子姜皮蛋\n脆皮素鹅\n三和\n子姜皮蛋\n¥13/位 per person\nPreserved Egg with Young Ginger\n。\n(腐皮 Bean Curd Sheet 25g、\n度\n(皮蛋 Thousand Years old Egg 30g、\n子姜 Young Ginger 6g)\n脆皮素鹅\n¥55/份 per portion\nCrispy Bean Curd Sheet Roll Stuffed with Mushroom\n菇丝 Shredded Mushroom 40g、\n草菇丝 Shredded Straw Mushroom 10g)\nO\n五香牛展\n¥78/份 per portion\nSpicy Beef Shin\n五香牛展\n¥45/份 per portion\n(牛展 Beef Shin 40g、花生 Peanut 10g)\n金柱贡菜\nPreserved Vegetable in XO Sauce\n(贡菜 Preserved Vegetables 150g、\n金柱 Conpoy、XO酱XO Sauce)\n凉拌三丝\n¥58/份\nper portion\nChilled Tofu, Chinese Cabbage Shreds\nand Sea Blubber Shreds\n(海蜇头丝 Sea Blubber 60g、豆腐丝 Tofu 40g、\n白菜丝 Chinese Cabbage 130g、\n红椒丝 Red Pepper、芫茜 Coriander)\n椒盐鸡软骨\n¥58/份 per portion\n金柱贡菜\n椒盐鸡软骨\nDeep Fried Chicken Cartilage with Salt & Pepper\n(鸡软骨 Chicken Cartilage 75g)\n沙姜凤爪\n¥78/份 per portion\nMarinated Chicken Feet with Grounded Ginger\n(凤爪 Chicken Feet 150g、沙姜 Grounded Ginger、\n青红椒角 Red & Green Bell Pepper)\n全单另收百分之十服务费\nAll prices are subject to 10% service charge\n本菜单均以人民币进行结算\nThe currency shows on this menu is in RMB\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n小红书\n小红书号:531163694",
+      "wordCount": 361,
+      "meanWordConfidence": 0.971386784265928,
+      "goldCount": 9,
+      "strictNames": 9,
+      "fuzzyNames": 9,
+      "strictNameRecall": 1,
+      "fuzzyNameRecall": 1,
+      "uniquePriceCount": 7,
+      "matchedUniquePrices": 7,
+      "uniquePriceCoverage": 1,
+      "misses": []
+    },
+    {
+      "imageFile": "M001_P03.jpg",
+      "ok": true,
+      "totalMs": 3494,
+      "text": "(蚝皇扣鮮鮑魚(五头)\n红烧花胶鸡企理\n(50g)\n(50g)\n鲍鱼汁扣\n蚝皇扣辽务\n二头黄鱼大花胶\n珍馐海味-\n鲍鱼,海参,花胶\nDELICACIES-ABALONE,\nSEA CUCUMBER, FISH MAW\n蚝皇扣鲜鲍鱼¥368/只 each\n(五头)\nBraised 5 Heads Fresh Abalone in Oyster Sauce\n(鲜鲍鱼 Fresh Abalone 55g、芦笋 Asparagus)\n蚝皇扣鲜鲍鱼¥468 /只 cach\n(四头)\nBraised 4 Heads Fresh Abalone in Oyster Sauce\n(鲜鲍鱼 Fresh Abalone 55g、芦笋 Asparagus)\n蚝皇扣干鲍鱼¥698/只 cach\n(十八头)(干鲍鱼)\nBraised 18 Heads Dried Abalone in Oyster Sauce\n(干鲍鱼 Dried Abalone 40g、芦笋 Asparagus)\n蚝皇扣干鲍鱼¥1488/只 each\n(十三头)(干鲍鱼)\nBraised 13 Heads Dried Abalone in Oyster Sauce\n(干鲍鱼 Dried Abalone 50g、芦笋 Asparagus)\n¥328/位 per person\nBraised Sea Cucumber in Oyster Sauce\n蚝皇扣辽参\n(辽参 Sea Cucumber 65g.\n小棠菜 Green Brassica-Catty)\n蚝皇扣16头\n¥298/位 per person\n原只花胶\nBraised 16 Heads Fish Maw in Oyster Sauce.\n(花胶 Fish Maw120g.\n小棠菜 Green Brassica-catty)\n鲍鱼汁扣二头黄鱼大花胶\nBraised Yellow Croaker Fish Maw in Abalone Sauce\n(花胶 Fish Maw 50g、 ¥498/50g\n小棠菜 Green Brassica - catty)\n(花胶 Fish Maw 800g/1只) ¥7688/1只原幅\n普通茶水费¥10/位\nCharge for standard tea/water ¥10 per person\nwhole\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n珍馐海味-鱼翅\nDELICACIES - SHARK'S FIN\n红烧花胶\n¥328/位 per person\n鸡丝翅(50克)(鱼翅)\nBraised Shark's Fin with Fish Maw\nand Chicken Meat (50g) (Shark's Fin)\n(鱼翅 Shark's Fin 50g.\n花胶生 Shredded Fish Maw 15g.\n鸡丝 Shredded Chicken Meat 10g)\n红烧蟹肉翅\n(50克)(鱼翅)\n¥328/位 per person\nBraised Shark's Fin with Crab Meat in\nBrown Sauce (50g) (Shark's Fin)\n(魚翅 Shark's Fin 50g、蟹肉 Crab Meat 20g)\n鸿图蟹皇翅\n(50克)(鱼翅)\nBraised Shark's Fin with\n¥488/位 per person\nFresh Crab Cream (50g) (Shark's Fin)\n(鱼翅 Shark's Fin 50g、蟹肉 Crab Meat 15g\n蟹座 Crab Cream10g)\n蟹底干捞翅\n(100克)(鱼翅)\nStir Fried Shark's Fin and\nCrab Meat Served with\n¥768/位 per person\nSuperior Soup (100g) (Shark's Fin)\n(鱼翅 Shark's Fin 100g、蟹肉 Crab Meat 20g)\n(1009)\n浓鸡汤牙勾翅 ¥568/位 per person.\n(100克)(鱼翅)\nBraised Shark's Fin in\nThick Broth (100g) (Shark's Fin)\n(鱼翅 Shark's Fin 100g、鸡肉 Chicken、\n鸡脚 Chicken Feet、猪肉 Pork)\n全单另收百分之十服务费\nAll prices are subject to 10% service charge\n本菜单均以人民币进行结算\nThe currency shows on this menu is in RMB\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n浓鸡汤牙勾翅\n(100g)\n小红书\n小红书号:531163694",
+      "wordCount": 675,
+      "meanWordConfidence": 0.9625391971111114,
+      "goldCount": 12,
+      "strictNames": 5,
+      "fuzzyNames": 6,
+      "strictNameRecall": 0.4166666666666667,
+      "fuzzyNameRecall": 0.5,
+      "uniquePriceCount": 10,
+      "matchedUniquePrices": 10,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "蚝皇扣鲜鲍鱼(五头)",
+          "bestSimilarity": 0.625
+        },
+        {
+          "nameCn": "蚝皇扣鲜鲍鱼(四头)",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "蚝皇扣干鲍鱼(十八头)",
+          "bestSimilarity": 0.45
+        },
+        {
+          "nameCn": "蚝皇扣干鲍鱼(十三头)",
+          "bestSimilarity": 0.444
+        },
+        {
+          "nameCn": "蚝皇扣16头原只花胶",
+          "bestSimilarity": 0.6
+        },
+        {
+          "nameCn": "红烧花胶鸡丝翅(50克)",
+          "bestSimilarity": 0.7
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P04.jpg",
+      "ok": true,
+      "totalMs": 3263,
+      "text": "太极蓝龙虾\n泥蟹、花墨墨\n精选海鲜\nCHEF'S SEAFOOD\nRECOMMENDATIONS\n帝王蟹:\n¥780/500g\n花雕蒸身、\n蟹盖焗饭\nAlaska King Crab.\nSteamed Body with Hua Diao Wine\nand Baked with Rice\n蓝龙虾:\n太极二味\nBlue Lobster-\nSteamed Claw with Egg White and\nDeep Fried with Butter & Salt\n位上海鲜推介\nCHEF'S SEAFOOD\nRECOMMENDATIONS\nXO酱白玉蒸/x98/位per person\n古法蒸珍珠斑球\nSteamed Garoupa Fillet with XO Sauce /\nin Traditional Style\n(斑肉 Garoup Fillet 35g)\n·古法蒸珍珠斑球\n露笋煎珍珠斑肉 ¥98/位 per person\n红焖珍珠斑件\n美极煎大花針\nSteamed Garoupa Fillet\n¥880/500gp\n(斑肉 Garoupa Fillet 35g)\n陈皮葱花蒸/\n¥128/位per person\n红焖珍珠斑件\n龙虾:\n* 1100/500 g\nLobster\n龙腾四海\nSteamed with Egg White Sided with\nSteamed Garoupa Fillet in Traditional Style/ Braised\n(斑件 Garoupa Fillet 75g)\n美极煎大花虾 ¥128 /位 per person\nPan Fried Prawn in Maggi Sauce\n(虾 Prawn 100g)\nSauteed Claw Meat & Pine Nuts\n脆皮煎/\n¥128/位 per person\n龙虾-龙腾四海\n白酒汁大花虾扒\n脆皮煎大花奸扒。\n白酒汁天花虾扒\n龙虾汤\n¥880/500gp\nPan Fried / King Prawn Fillet with White Wine Sauce\n(虾 Prawn 100g)\n过桥象拔蚌\nPoached Geoduck in Lobster Soup\n上汤焗/\n东星斑:\n¥980/500gp\n¥248/位 per person\n盐香芝士开边龙虾\nBaked Lobster in Superior Soup/ with Cheese and Sait\n鲜茄浓汤灼球\n(龙虾 Lobster 150g)\nLeopard Coral Garoupa\nPoached with Tomato in Thick Soup\n¥498/位 per person\n原只龙虾仔\n(白雪藏龙)\nPan Fried Prawn in Maggi Sauce\n(龙虾 Lobster 250g)\n龙虾汤过桥象拔蚌\n*海鲜制作配料另加收费用\nThere will be extra charge for ingredients\n全单另收百分之十服务费\nAll prices are subject to 10% service charge\n本菜单均以人民币进行结算\nThe currency shows on this menu is in RMB\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n翠盏钵酒\n¥98/位 per person\n上汤焗开边龙虾\n原只龙虾仔\n(白雪藏龙)\n焗软壳蟹\nDeep Fried Soft-Shell Crab with Lettuce Slice\n(软壳蟹 Soft Chell Crab 50g)\n普通茶水费¥10/位\nCharge for standard tea/water ¥10 per person\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n小红书\n小红书号:531163694",
+      "wordCount": 523,
+      "meanWordConfidence": 0.9623975580305928,
+      "goldCount": 13,
+      "strictNames": 6,
+      "fuzzyNames": 6,
+      "strictNameRecall": 0.46153846153846156,
+      "fuzzyNameRecall": 0.46153846153846156,
+      "uniquePriceCount": 8,
+      "matchedUniquePrices": 8,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "帝王蟹:花雕蒸身/蟹盖焗饭",
+          "bestSimilarity": 0.727
+        },
+        {
+          "nameCn": "东星斑:鲜茄浓汤灼球",
+          "bestSimilarity": 0.667
+        },
+        {
+          "nameCn": "XO酱白玉蒸/古法蒸珍珠斑球",
+          "bestSimilarity": 0.538
+        },
+        {
+          "nameCn": "陈皮葱花蒸/红焖珍珠斑件",
+          "bestSimilarity": 0.545
+        },
+        {
+          "nameCn": "脆皮煎/白酒汁大花虾扒",
+          "bestSimilarity": 0.7
+        },
+        {
+          "nameCn": "上汤焗/盐香芝士开边龙虾",
+          "bestSimilarity": 0.727
+        },
+        {
+          "nameCn": "翠盏钵酒焗软壳蟹",
+          "bestSimilarity": 0.5
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P05.jpg",
+      "ok": true,
+      "totalMs": 2901,
+      "text": "蟹肉鸡食始熱院\n珍馐海味- 燕窝\nDELICACIES - BIRD'S NEST\n蟹肉鸡茸\n燕窝(50克)\nBraised Bird's Nest with\nv380/12 per person\nFresh Crab Meat and Minced Chicken\n(燕窝 Bird's Nest 50g、\n蟹肉 Crab Meat 15g、\n鸡茸 Minced Chicken,\n蛋白 Egg White)\n枣皇炖燕窝\n¥298/位per person\n(50克)\nwith Red Dates\n(燕窝 Bird's Nest 50g\nDouble Boiled Bird's Nest\n枣皇 Red Dates)\n晶莹官燕\n¥568/位 per person\n(100克)\n『枣皇炖燕窝\nSuperior Soup with Bird's Nest (100g)\n(自选:冰花/杏汁/椰汁/\n顶汤/浓鸡汤)\n(Double-boiled with Rock Sugar\nor Served with Almond Juice /\nCoconut Juice / Superior Soup/\nThick Broth)\n海鲜特别推介\nCHEF'S SEAFOOD\nRECOMMENDATIONS\nXO酱白玉蒸/¥378/份 per portion\n古法蒸珍珠斑球\nSteamed Garoupa Fillet with\nXO Sauce / in Traditional Style\n(斑球 Garoupa Fillet 150g)\n白玉菇翡翠\n煎珍珠斑球\nPan Fried Garoupa Fillet with\nBeech Mushroom and\nGreen Vegetables\n(斑球 Garoupa Fillet 150g)\n陈皮葱花\n蒸珍珠斑件\nSteamed Garoupa Fillet with\n¥378/份 per portion\n古法蒸珍採促球\n¥488/份 per portion\nDried Tangerine and Spring Onion\n(斑件 Garoupa Fillet 300g)\n石窝烧\n珍珠斑件\nSimmered Garoupa Fillet\nin Casserole\n(斑件 Garoupa Fillet 300g)\n石窝烧珍珠斑件。\n湖北黄金凤尾虾\n¥488/份 per portion\n湖北黄金凤尾虾 ¥328/份 per portion\nDeep Fried Prawns coated\nwith Salted Egg Yolk\n(海生虾 Fresh Sea Prawn 125g、\n南瓜角 Pumpkin Slice 60g\n咸蛋 Preserved Salted Egg、\n京葱 Welsh onion、蒜蓉 Minced Garlic)\n普通茶水费¥10/位\nCharge for standard tea/water ¥10 per person\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n本菜单所示图样和相片只供参考,以实物为准\nPhotos for reference only\n普通茶水费¥10/位\nCharge for standard tea/ water ¥10 per person\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n本菜单所示图样和相片只供參考,以实物为准\nPhotos for reference only\n小红书\n小红书号:531163694",
+      "wordCount": 439,
+      "meanWordConfidence": 0.962453477015945,
+      "goldCount": 8,
+      "strictNames": 4,
+      "fuzzyNames": 5,
+      "strictNameRecall": 0.5,
+      "fuzzyNameRecall": 0.625,
+      "uniquePriceCount": 6,
+      "matchedUniquePrices": 6,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "枣皇炖燕窝(50克)",
+          "bestSimilarity": 0.625
+        },
+        {
+          "nameCn": "晶莹官燕(100克)",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "XO酱白玉蒸/古法蒸珍珠斑球",
+          "bestSimilarity": 0.538
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P06.jpg",
+      "ok": true,
+      "totalMs": 5129,
+      "text": "环球生猛海鲜\n海鲜制作配料\nRound Rice Noodle (米线 Round Rice Noodle 450g)\n¥100/份 per portion\nSteamed Lobster with Egg White Sided\nwith Sauteed Claw Meat & Pine Nuts\n(蛋Egg 200g. 葱 Spring Onion, 洋蔥 Onion,\n: Celery, 海鲜汤 Seafood Soup.\n¥50/份 per portion\n( Mushroom and Winter Bamboo Shoots\n支竹 Yuba Bean Curd.\n生根 Bean Curd Ball, 冬笋 Winter Bamboo Shoots.\n姜Ginger. 蒜子Garlic, 葱 Spring Onion)\n¥120/份 per portion\n龙虾汤过桥\nPoached with Seafood Soup\n(龙虾汤 Seafood Soup 600g, 油条Yaotiao.\n芽菜 Bean Sprouts, 芫茜 Coriander,\n芝麻Sesame. 蔥 Spring Onion)\nThick Chicken Broth\n¥80/份 per portion\n(浓鸡汤 Thick Chicken Broth 400g)\n浓鱼汤\n¥120/份 per portion.\nThick Fish Soup (浓鱼汤 Thick Fish Soup 400g)\n米汤堂灼 ¥30/份 per portion\nPoached with Rice Soup\nSEAFOOD\nSEAFOOD DELICACIES\n¥980\n蓝龙虾\n¥880\n东星斑\nBlue Lobster 500g\n煎面底\n¥50/份 per portion\nSpotted Garoupa 500g\nPan Fried Noodle (面 Noodle 250g)\n(北菇\n花金古\n¥980\n龙虾仔\n¥830\n伊面底\n¥50/份 per portion\n生焖/双冬焖\nBraised wit ushrooma\nSpotted Scat 500g\n龙利\n¥520\nMini Lobster 500g\n濑尿虾\nPan Fried E-fu Noodle (伊面 E-fu Noodle 300g)\n¥50/份 per portion\n粗面\n¥880\nMantis Shrimp 500g\nEgg Noodle (粗面 Egg Noodle 300g)\n米线\n¥50/份 per portion\nDover Sole 500g\n老虎斑\n¥450\n帝王蟹\n¥780\n龙腾四海\n浓鸡汤\nAlaskan Crab 500g\nTiger Garoupa 500g\n红丁\n¥980\n大红蟹\n¥980\n紅椒 Red\nGiant Coral Crab 500g\n唐芹 Chinesal Pepper)\nCherry Barb 500g\n白雪藏龙\n¥80/份 per portion\n石头鱼\n¥800\n大鲍鱼\nSteamed Lobster Meat with Egg White\n¥980\n(蛋白 Egg White 150g.\nAbalone 500g\nStonefish 500g\n瓜子斑\n¥980\n˙响螺\n¥1100\nMelon Seed Garoupa 500g\nSea Whelk 500g\n青衣\n¥800\n象拔蚌\n¥880\nGreen Wrasse 500g\nGeoduck 500g\n笋壳鱼\n¥450\n圣子(只)\n¥98\nCrab Meat\nMarble Goby 500g\nRazor Clam pc\n¥120/位per person\n龙虾\n¥1100\n元贝(只)\nCrab Roe\n¥88\nLobster 500g\nScallop pc\n时令海鲜/当日品种\n海鲜制作配料另收费用\n请向店员查询,欢迎预订\nThere will be extra charge for ingredients\nPlease ask our staff for the seafood available for the day.\nYou are welcome to order in advance\n全单另收百分之十服务费\nAll prices are subject to 10% service charge\n本菜单均以人民币进行结算\nThe currency shows on this menu is in RMB\n普通茶水费¥10/位\nCharge for standard tea/water ¥10 per person\n制作需时,售完即止,欢迎预订\nPre-order is welcomed, while stock last\n小西红柿 Cherry Tomato, 蜜豆 Honey Peas)\n头爪煲粥 ¥50/份 per portion\nCongee with Head and Claw(白粥 Congee 750g)\n蟹盖焗饭\nBaked Rice in Crab Shell\n¥60/份 per portion\n(米饭 Rice 450g, 蟹肉 Crab Meat, 虾仁 Shrimp.\n带子 Scallop, 洋葱 Onion, 芥兰粒 Diced Chinese Kale.\n烟肉 Beacon,红椒粒 Diced Red Bell Pepper)\n蟹肉\n¥80/位per person\n(红花蟹肉 Coral Crab Meat 20g)\n蟹皇\n(蟹皇 Crab Roe 15g,红花蟹肉 Crab Meat 20g)\n蟹粉\n¥130/位per person\nCrab Meat\n(蟹粉 Crab Meat 20g, 蟹皇 Crab Roe 10g,\n红花蟹肉 Coral Crab Meat 10g)\n龙虾肉\n¥100/位per person\nLobster Meat\n(龙虾肉 Lobster Meat 50g)\n津白豆腐清汤窝 ¥80/份per portion\nChinese Cream Cabbage and\nTofu in Chicken Broth\n(津白 Chinese Cream Cabbage 200g.\n豆腐Tofu 6件pcs, 清鸡汤 Broth 400g, 姜 Ginger,\n草菇 Straw Mushroom)\n太极二味\n¥50/份 per portion\nTai Chi Sauce\n(咸蛋黄 Salted Egg Yolk, 芥兰 Chinese Kale,\n南瓜 Pumpkin, 蛋白 Egg White)\n(米汤 Rice Soup 100g 姜 Ginger.\n红椒 Red Bell Pepper,芫茜 Coriander,\n大头菜 Turnip,陈皮Dried Tangerine Peel,\n葱 Spring Onion, 唐芹Chinese Celery)\n凉瓜支竹焖 ¥50/份 per portion\nBraised with Bitter Groud and Yuba Bean Curd\n(凉瓜 Bitter Groud 200g,支竹 Yuba Bean Curd 100g.\n姜 Ginger, 蒜子 Garlic, 葱 Spring Onion)\n浓汤津白浸 ¥100/份 per portion\nPoached in Thick Chicken Soup with\nChinese Cream Cabbage\n(浓鸡汤 Thick Chicken Broth 400g,\n津白 Chinese Cream Cabbage 200g,\n蒜苗 Garlic, 姜Ginger, 草菇 Straw Mushroom\n北菇 Mushroom)\n金汤菰米煮 ¥30/位per perse\nWild Rice Cooked in Pumpkin Soup\n(茄米 Wild Rice 30g,杞子 Wolfberry,\n南瓜汁 Pumpkin Soup)\n芫茜豆腐浓鱼汤 ¥140/份p\nCoriander and Tofu in Thick Fish Soup\n(芫茜 Coriander 10g,豆腐 Tofu 6件pcs\n浓鱼汤 Thick Fish Soup 500g,\n草菇 Straw Mushroom, 姜 Ginger)\n枣皇炖\n¥20/位\nDouble-boiled with Red Dates\n(枣皇水 Red Dates Water 150g)\n金銀蛋浸\n¥15/仁\nPoached with Salty Egg and Presen\n(咸蛋 Salty Egg 10g,皮蛋 Preser\n猪肉碎 Minced Meat 20g, 姜 Gis\n草菇 Straw Mushroom)\n小红书\n小红书号:531163694",
+      "wordCount": 1042,
+      "meanWordConfidence": 0.968922392303264,
+      "goldCount": 45,
+      "strictNames": 43,
+      "fuzzyNames": 44,
+      "strictNameRecall": 0.9555555555555556,
+      "fuzzyNameRecall": 0.9777777777777777,
+      "uniquePriceCount": 20,
+      "matchedUniquePrices": 20,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "凉瓜支竹灼",
+          "bestSimilarity": 0.222
+        }
+      ]
+    },
+    {
+      "imageFile": "M002_P01.jpg",
+      "ok": true,
+      "totalMs": 8978,
+      "text": "吴川猫记大排档\n吴川菜\n吴川海鱼\n白切类\n干煎鱿鱼仔\n48元\n(干煎 煎焖 红烧 清蒸 )\n刀里鱼\n白切鸡\n40/例\n时价\n酸甜咕噜肉\n38元\n白切鸭\n40/例\n白仓鱼\n时价\n炒海蜇皮\n30元\n白切鵝\n48/例\n泥艋鱼\n时价\n咸瓜蒸肉饼\n28元\n黄花鱼\n时价\n白切猪肚\n42元\n九菜炒烧肉\n38元\n乌头鱼\n时价\n白切粉肠\n38元\n九菜炒蚬肉\n25元\n马胶鱼\n时价\n白切腩肉\n38元\n炸粉肠\n38元\n福寿鱼\n时价\n白切猪杂\n38元\n蒜生虾仔菜尾 20元\n杂鱼煲\n时价\n胡椒鸭\n45元\n小炒类\n豆芽炒大肠 35元\n尖椒炒大肠 35元\n酸菜炒大肠 35元\n鼓油皇大肠 42元\n凉瓜炒牛肉 38元\n姜葱炒牛肉 38元\n蒜心炒风肉 38元\n兰豆炒腊味 38元\n生蒜炒腊味 38元\n菜椒炒猪肚 38元\n豆角炒腩肉 30元\n鼓油皇腩肉 38元\n九王炒生肠 35元\n沙姜炒鸭掌 38元\n九菜炒河虾 28元\n沙姜炒鸡\n40元\n菜头煎蛋\n15元\n香菇焖鸡\n40元\n葱花煎蛋\n15元\n姜葱焖鸡\n40元\n炒滑蛋\n25元\n沙姜炒鸭\n姜葱炒田鸡\n炒花甲\n油焗虾仔\n生蒜炒鸡杂\n丝瓜炒鸡杂\n豆角炒茄子\n咸虾炒豆角\n虾仔焖豆腐\n家常豆腐 25元\n蒜心炒牛肉 38元\n凌鱼炒凉瓜 25元\n40元\n九王炒蛋\n20元\n38元\n凉瓜炒蛋\n20元\n25元\n蒸水蛋\n20元\n35元\n榨菜肉丝\n25元\n25元\n虎皮尖椒\n28元\n25元\n炒田螺\n20元\n28元\n凉拌青瓜\n15元\n25元\n上汤时蔬\n20元\n22元\n炒时菜\n15元\n捞时叶\n15元\n捞三豆\n15元\n三豆煲\n20元\n电话:15813623503\n2145\n小红书号:9472462055",
+      "wordCount": 378,
+      "meanWordConfidence": 0.9737319164021161,
+      "goldCount": 69,
+      "strictNames": 68,
+      "fuzzyNames": 68,
+      "strictNameRecall": 0.9855072463768116,
+      "fuzzyNameRecall": 0.9855072463768116,
+      "uniquePriceCount": 13,
+      "matchedUniquePrices": 13,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "白切鹅",
+          "bestSimilarity": 0.667
+        }
+      ]
+    },
+    {
+      "imageFile": "M003_P01.jpg",
+      "ok": true,
+      "totalMs": 7748,
+      "text": "冷茶系列\n爆款系列\n☆ 奶奶特色凤爪/只(2只超售)6:\n锅仔系列\n虱 老上海沙拉\n咸蛋黄烩豆腐\n¥ 32\n奶奶的味道\n营业时间:中午10:00-凌晨02:00\n地址:胶州路26号\n汤系列\n□ 干锅手撕包菜\n¥18:\n奶奶招牌炒蛋\n¥32:4□ 罗宋汤\n¥ 32\n□ 本帮酱鸭\n□ 白切鸡\n□口水鸡\n□ 桂花糖藕\n¥ 38\n□ 奶奶柴火豆腐\n¥ 18\n¥ 38:4□ 酸辣汤\n¥ 18\n¥45:\n酱爆猪肝\n¥ 39:\n崇明羊肉煲(红烧、白纯)78:\n:△ 草头肉丸汤\n¥ 28\n¥32:\n.........\n糖醋排条\n□ 酸汤鲈鱼\n¥ 42\n¥88:△□ 腌笃鲜\n: △ 荠菜 口蘑烩鱼糜\n¥ 28\n¥58\n□ 烧汁茄夹\n¥ 42\n时蔬系列\n手作饮品\n¥18:\n椒盐排条\n□ 泰椒土豆丝\n¥ 42\n¥26\n□ 四喜烤麸\n¥18:\n□ 叉烧\n¥40:△\n菠萝咕咾肉\n香酥鸭\n虱 酒香草头\n¥36\n¥42:\n□现榨核桃血麦汁(热)/杯12\n现榨核桃黑米汁(热)杯12\n●\n□ 油焖茭白\n¥36\n□ 奶奶秘制桂花米酿冰饮 16\n¥ 45\n□ 蒜蓉粉丝蒸娃娃菜¥36\n□ 红豆冰沙\n¥ 18\n□ 脆皮五花肉\n¥ 45:口红烧划水\n¥48 雪菜冬笋炒蘑菇\n绿豆冰沙\n¥ 18\n¥38\n□ 微醺紫米酒/杯\n¥ 18\n1本帮熏鱼\n¥48:\n□ 咸蛋黄焗鸡翅\n¥52:\n□ 油浸蚕豆\n¥38\n银耳雪梨羹(热)/杯18\n口 烧味双拼\n¥580\n□ 草头圈子\n¥ 68\n点心系列\n饮料\n□ 烧鹅\n¥98:\n□ 奶奶秘制蹄膀\n¥78:荠菜麻球\n¥ 15:\n阿奶红烧肉\n□ 油条糍粑\n¥ 16:\n¥ 78\n爆款河海鲜\n□ 排骨年糕\n¥ 28\n□响油鳝丝\n¥88\n□□□□\n□ 可乐、雪碧\n¥ 6\n椰汁\n¥ 8\n加多宝\n¥ 8\n可乐、雪碧1.25升 ¥ 15\n□ 炸猪排\n¥ 28\n酒水\n□ 海鲜面疙瘩\n¥ 48\n风味系列\n△ 春卷拼盘\n¥ 28\n黄鱼 (2备 ) (雪菜蒸、红烧)¥58\n主食系列\n□ 椒盐大虾\n¥68:\n奶奶家素百叶包 ¥18\n□白米饭/碗\n□ 油爆大虾\n¥ 68\n□干煸四季豆\n¥ 25:\n□ 酒酿馒头/个\n¥\n□ 元宝虾\n¥68\n□ 鱼香肉丝\n¥32:□猪油菜饭/碗\n¥ 3\n口带鱼(清蒸、酒酿圆子烧、萝卜丝烧)68\n□ 小炒泡椒猪肝\n¥ 39\n□ 扬州炒饭\n¥ 25\n□ 清蒸鲈鱼\n¥ 78\n□ 酸汤肥牛\n¥ 42\n□ 腊味酱油炒饭\n¥ 25.\n□ 上海炒面\n223 25 25\n..................\n□松鼠鲈鱼\n¥ 88\n□ 酸菜黑鱼片\n¥68\n□毛蟹年糕\n¥ 98\n□毛血旺\n¥ 78\n订餐电话\n¥28:\n金色年华 18\n021-6253433\n□□□□□□□□□\n青岛(听)\n¥ 8\n光明(听)\n¥ 10\n雪花扎啤/杯\n¥ 16\n江小白\n¥ 20\n喜力扎啤/杯\n¥ 25\n□ 雪花扎啤/扎\n¥ 32\n喜力扎啤/扎\n¥\n1金色年华(5年)\n小红书\n小红书号:638546764",
+      "wordCount": 625,
+      "meanWordConfidence": 0.9155717005600001,
+      "goldCount": 88,
+      "strictNames": 84,
+      "fuzzyNames": 85,
+      "strictNameRecall": 0.9545454545454546,
+      "fuzzyNameRecall": 0.9659090909090909,
+      "uniquePriceCount": 27,
+      "matchedUniquePrices": 27,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "黄鱼(2条)(雪菜蒸/红烧)",
+          "bestSimilarity": 0.727
+        },
+        {
+          "nameCn": "崇明羊肉煲(红烧/白炖)",
+          "bestSimilarity": 0.727
+        },
+        {
+          "nameCn": "金色年华(8年)",
+          "bestSimilarity": 0.714
+        }
+      ]
+    },
+    {
+      "imageFile": "M004_P01.jpg",
+      "ok": true,
+      "totalMs": 7620,
+      "text": "美团 美团\n香 奶香铺子\n代餐系列\nnicershop\n进店必点\n[代替晚餐就吃她(厚酸奶/双皮奶可选)\n代餐A(第一次吃就点她)\n代餐日(芒果+五谷杂粮 )\n原味酸奶(喝的)\n| 纯粹的味道,通粑粑很见效\n热/冷\n22元\n原味酸奶\n冷\n9元\n热/冷\n22元\n椰子酸奶\n代餐C(最受大众喜爱的芋泥双皮奶)\n代餐(草莓控必点)\n热/冷\n22元\n红颜玫瑰酸奶\n热/冷\n22元\n酸酸百香果酸奶\n冷\n冷\n冷\n11元\n12元\n12元\n干而不愛\n♥代餐F(与杨枝甘露的灵魂搭配\n热/冷\n22元\n♥草莓果肉酸奶\n冷\n13元\n酸奶碗\n♥代餐H(手工芋圆+手工芋泥,很好吃)\n热/冷\n22元\n23\n浓郁可可酸奶\n冷\n15元\n♥超模麦片罐子(椰子味/咖啡味)(更低热量)\n冷\n22元\nhuss\n♥代餐芋泥酸奶盒子(销量最高)\n冷\n23元\n健康清爽解膩饮品\n♥草莓燕麦酸奶碗(很干很噎超多好评)\n冷\n24元\n|健健康康,快快乐乐\n124\n花 墙裂推荐!! $26\n干而不噎酸奶碗系列\n♥巧克力芒果酸奶碗(喜欢厚厚厚酸奶就吃它)\n苹果肉桂酸奶碗(富含蛋白质,做活力美少女)\n♥芭乐芒果酸奶碗(像冰淇淋的芭乐配甘梅粉,绝了)\n♥芭乐百香果酸奶碗\n▶火龙果百香果酸奶碗\n♥蓝莓酸奶碗(滿滿花青素)\n冷\n冷\n冷\n冷\n24元\n百香果双响炮\n冷\n12元\n24元\n25元\n杨枝甘露烧仙草\n椰奶西米露\n冷\n15元\n13元\n25元\n冷\n25元\n26\n芋泥星空奶露\n茉莉綠茶\n热/冷\n16元\n热/冷\n9元\n冷\n26元\n♥蔓越莓银耳莲子羹\n五次\n15元\n店长强烈推荐\n椰奶布鶯血糯米\n软木薯\n厚酸奶(吃的)/双皮奶(可加热)\n| 酸奶口感厚实,双皮奶醇香\n鲜果缤纷厚酸奶/双皮奶\n芒果小丸子厚酸奶/双皮奶\n草莓小丸子 厚酸奶/双皮奶\n【港台经典甜品\n热乎乎的鲜奶茶(第二杯8.8折)\n1 很多客人念念不忘的独家特色\n[精选茶,鲜牛奶,清淡健康好喝\n热/冷\n15元\n♥软糯木薯羹\n热/冷\n14元\n♥茉香奶绿破破\n热/冷\n15元\n热/冷\n15元\n杨枝甘露\n冷\n19元\n可可黑巧破破\n五/冷\n16元\n热/冷\n15元\n多芒小丸子\n冷\n16元\n芋圆芋泥破破\n热/冷\n18元\n酒酿芋圆 厚酸奶/双皮奶\n酒酿芒果厚酸奶/双皮奶\n热/冷\n16元\n芋圆饱饱碗\n热/冷\n20元\n热/冷\n16元\n酒酿奶绿小圈子\n热/冷\n16元\n芋圆仙草\n热/冷\n17元\n$200\n「超模代餐麦片圖子\n芒果小丸子。\n14\n血糯米酒酿厚酸奶/双皮奶\n热/冷\n16元\n牛乳酒酿小圆子\n热/冷\n16元\n鲜果芋圆\n热/冷\n17元\n五谷杂粮厚酸奶/双皮奶\n芋泥肉松厚酸奶/双皮奶\n热/冷\n17元\n椰奶清补凉\n冷\n16元\n热/冷\n18元\n椰奶布蕾血糯米\n热/冷\n20元\n奶百小廈\nFEUB\n$22\n空越母银耳莲子羹\n迷你干吃酸奶杯\n15\n任选一款厚酸奶/双皮奶\n(芒果/燕麦/奧利奧薄脆)\n任选一款厚酸奶/双皮奶\n(蜜红豆/奥利奥/葡萄干)\n原味厚酸奶/双皮奶\n热/冷\n13元\n麻薯芋泥罐子\n热/冷\n20元\n热/冷\n11元\n肉桂燕麦牛奶麻薯\n芒果麻薯糯糯\n热\n16元\n热/冷\n22元\n10%\n热/冷\n9元\n奶香小布營\n冷\n8元\n加料区\n15\n14\n满足您的不过瘾\n2元区\n小丸子血糯米\n南瓜籽葡萄干\n酒酿 椰果 仙草\n3元区\n奶香布蕾芋圆\n那粒 奥利奥\n芒果爆爆珠\n4元区\n芋泥:採系麦片\n日日,胡意更好体验:小红书\n小红书号:423648206\n李健",
+      "wordCount": 809,
+      "meanWordConfidence": 0.8946170783189111,
+      "goldCount": 72,
+      "strictNames": 56,
+      "fuzzyNames": 68,
+      "strictNameRecall": 0.7777777777777778,
+      "fuzzyNameRecall": 0.9444444444444444,
+      "uniquePriceCount": 20,
+      "matchedUniquePrices": 20,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "代餐C(芋泥双皮奶)",
+          "bestSimilarity": 0.533
+        },
+        {
+          "nameCn": "椰粒",
+          "bestSimilarity": 0.25
+        },
+        {
+          "nameCn": "珠茨麦片",
+          "bestSimilarity": 0.333
+        },
+        {
+          "nameCn": "厚椰麦片",
+          "bestSimilarity": 0.333
+        }
+      ]
+    },
+    {
+      "imageFile": "M005_P01.jpg",
+      "ok": true,
+      "totalMs": 7943,
+      "text": "2030\n恩兵饭0\n·小店热卖\n干煸肥肠\n辣子鸡\n48元 水煮牛肉\n55/88元\n38元 诸葛烤鱼\n70元\n铁板牛肉\n45元 酸菜黑鱼 48/75/92元\n铁板田鸡\n45元\n水煮肉片\n香辣田鸡\n孜然牛肉\n55元 水煮田鸡\n田鱼家烧/糖醋 68元\n48元\n50元 沸腾鱼 52/85/110元\n55/88元\n·顾客好评\n梅菜煎蛋\n油条茄子\n宫保鸡丁\n侮香土豆\n鱼香肉丝\n18元 葱油金针菇\n22元 玉米烙\n20元 御膳豆腐\n22元 回锅肉\n18元 葱油海带 22元 香酥排骨\n22元\n38元\n豆芽\n38元\n22元 生炒田鸡\n45元\n25元 干锅肥肠\n45元\n25元 干锅球菜\n22元\n蛋黄红薯\n20元 铁板香芋\n25元 小炒牛肉\n42元\n拔丝红薯\n拔丝香蕉\n椒盐花菜\n干锅花菜\n22元 红烧鲫鱼\n22元 椒盐里脊\n22元 干锅鸡\n22元 糖醋排骨\n32元 糖醋里脊\n32元\n32元 酸菜肥牛\n55元\n35元 番茄黑鱼50/78/100元\n38元 酸菜田鸡 55/88元\n,主食点心。\n大米饭\n2元/碗鸡蛋面\n12元 西红柿蛋面\n18元\n炒蛋饭(紫菜汤)12元 梅菜炒饭\n12元\n面\n18元\n炒面/粉干 12元 扬州炒饭\n炒年糕\n15元 鱼省肉丝盖饭\n22元\n12元 西红柿蛋饭 18元 回锅肉盖饭\n25元.0\n美地址:信河街黄府巷8弄1号 电话:0577-88291046/18968971927 1376\nemov\n王书号:95398900675",
+      "wordCount": 273,
+      "meanWordConfidence": 0.9574406345421242,
+      "goldCount": 55,
+      "strictNames": 51,
+      "fuzzyNames": 52,
+      "strictNameRecall": 0.9272727272727272,
+      "fuzzyNameRecall": 0.9454545454545454,
+      "uniquePriceCount": 21,
+      "matchedUniquePrices": 21,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "豆芽（前字看不清）",
+          "bestSimilarity": 0.286
+        },
+        {
+          "nameCn": "鱼香肉丝盖饭",
+          "bestSimilarity": 0.667
+        },
+        {
+          "nameCn": "猪□面（中间字看不清）",
+          "bestSimilarity": 0.125
+        }
+      ]
+    },
+    {
+      "imageFile": "M006_P01.jpg",
+      "ok": true,
+      "totalMs": 7138,
+      "text": "[巴沙鱼]\n梭边鱼(带皮、无刺)\n黑鱼\n巴沙魚\n梭边鱼(如皮、无刺)\n[ 黑鱼\n虽人杰\nA.花花番茄锅\n单人锅\n双人锅\n¥20□\n¥23\n¥30\nH.黄金鲜辣锅\n¥30\n¥33\n¥40\n三人锅 ¥40\n¥43\n¥50\n黑鱼肉嫩味更鲜\n低脂肪·高蛋白·矿物质丰富\n更 | 营 \\ 养 | 更 / 健 | 康\n精品锅 ¥60\n¥63\n¥80\n单人锅\n双人锅\n三人锅\n精品锅\n¥22\n¥32口\n¥42口\n¥62口\n¥25\n¥30\n¥35\n¥40口\n¥45\n¥50口\n¥65\n¥80\nB.秘制酸菜锅\n单人锅 ¥20\n¥23\n¥30\n荤菜每份4元\n双人锅 ¥30口\n三人锅 ¥40\n精品锅 ¥60\n¥33\n¥40\n蟹棒口\n¥43口\n¥50\n¥63\n¥80\n蟹 排口\n培根口\n甜不辣口\n鱼豆腐口\n千页豆腐口\n虾 饺口\n狮 子 头口\n开花 肠口\n鹌 鹑 蛋口\n墨鱼丸口\n撒尿牛丸口\n虾 丸口\n鱼丸口\n牛肉丸口\n午餐肉\n鸭 血口\n魔芋结口\n单人锅 ¥20\n¥23\n¥30\n双人锅 ¥30口\n三人锅 ¥40\n精品锅 ¥60\n¥33口\n¥40口\n¥43口\n¥63\n¥50口\n¥80\n庆 店长推荐\nD.养生金汤锅\n桌号:\n人数:\n单人锅\n双人锅\n三人锅\n精品锅 ¥62\n¥22口\n¥32口\n¥42口\n¥25\n¥30口\n¥35口\n¥40\n素菜每份2元\n菠菜口\n粉丝口\n金针菇\n娃娃菜\n鲜豆皮口\n凸黑鱼片18元/份口\n油麦菜\n火锅粉口\n蘑菇口\n大白菜口\n油豆皮口\n茼蒿口\n芋头粉口\n香菇口\n西兰花口\n腐竹口\n圆生菜口\n土豆粉口\n水晶粉口\n豆腐口\n土豆口\n海 带口\n冬瓜口\n豆腐串口\n莲藕口\n冻豆腐口\n木耳口\n红薯口\n人均三份菜为\n¥45\n¥50\n¥65\n¥80\n主食每份2元\n米饭口\n方便面口\n烩面口\n会员储值进行中\nE.椒椒香辣锅\n创业合作热线\n400-1515-560\n单人锅 ¥22\n双人锅 ¥32口\n三人锅 ¥42口\n精品锅 ¥62\n¥25口\n¥35\n¥30口\n¥40口\n自制热饮\n麻花口\n自制冷饮\n¥45口\n¥65\n¥50口\n¥80\n香蕉牛奶4元/杯口\n原味奶茶4元/杯口\n巴西甜橙4元/杯口\n雪梨绿茶4元/杯口\n蜜桃乌龙4元/杯口\n柠檬红茶4元/杯口\nF.燃脂藤椒锅 ®\n素健\n单人锅 ¥22口\n双人锅\n三人锅 ¥42口\n精品锅 ¥62\n¥25口\n¥30口\n¥32口\n¥35口\n¥40口\n汽水\n茶\n饮\n¥45口\n¥50口\n¥65\n¥80\n食康\nG.独道香酱锅\n单人锅 ¥22口\n¥25\n¥30\n雪碧\n主常\n双人锅 ¥32口\n¥35\n¥40\n可乐4元/罐口\n雪碧4元/罐口\n健力宝4元/罐口\n果粒橙5元/罐口\n啤酒3元/罐口\n脉科\n农夫山泉2元/瓶\n红 茶3元/瓶\n蜂蜜柚子茶3元/瓶\n黑加仑3元/学\n小木屋4元/月\n加多宝5元/\n动5元\n气\n三人锅\n¥42口\n¥45\n¥50\n义青\n小红书 芒6元\n精品锅 ¥62\n¥65\n¥80\n小红书号:974805416",
+      "wordCount": 684,
+      "meanWordConfidence": 0.9339577238304089,
+      "goldCount": 77,
+      "strictNames": 74,
+      "fuzzyNames": 74,
+      "strictNameRecall": 0.961038961038961,
+      "fuzzyNameRecall": 0.961038961038961,
+      "uniquePriceCount": 8,
+      "matchedUniquePrices": 8,
+      "uniquePriceCoverage": 1,
+      "misses": [
+        {
+          "nameCn": "C.（锅底名看不清）",
+          "bestSimilarity": 0.143
+        },
+        {
+          "nameCn": "脉动",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "□芒（前字看不清）",
+          "bestSimilarity": 0.143
+        }
+      ]
+    },
+    {
+      "imageFile": "M007_P01.jpg",
+      "ok": true,
+      "totalMs": 6339,
+      "text": "r r r r r\n翠竹餐馆\n家常小炒\n香酥炸排骨\n38元\n凉拌百叶肚\n50元\n糖醋排骨\n38元\n青椒百叶肚\n40元\n生焖排骨\n38元\n豆瓣鲤鱼\n35元\n椒盐排骨\n50元\n生闷鱼\n35元\n荷包豆焖排骨\n38元\n酸辣鱼\n35元\n土椒炒肚头\n35元\n红烧草鱼\n40元\n酸辣炒肚头\n35元\n土椒鳅鱼\n40元\n酸炒鳅鱼\n40元\n香煎猪肝\n30元\n土椒鳝鱼\n50元\n青椒炒猪肝\n25元\n红烧带鱼\n青椒腰花\n35元\n土椒炒大肠\n时菜腰花\n35元\n酸辣炒仔肠\n25元\n爆炒猪舌\n30元\n酸辣炒杂烩\n25元\n芹菜腊肉\n35元\n凉瓜炒牛肉\n35元\n藕带炒大肠\n35元\n炒菜花\n15元\n酸炒大肠\n25元\n炒空心菜\n15元\n腐竹肉片\n25元\n炒大白菜\n15元\n青椒肉片\n25元\n炒小白菜\n15元\n酸菜肉片\n25元\n素炒土豆丝\n15元\n茄子肉片\n25元\n榨菜肉汤\n15元\nJ 5 5 5 5 G\n小红书\n小红书号:94139786062",
+      "wordCount": 203,
+      "meanWordConfidence": 0.9547019837931032,
+      "goldCount": 39,
+      "strictNames": 39,
+      "fuzzyNames": 39,
+      "strictNameRecall": 1,
+      "fuzzyNameRecall": 1,
+      "uniquePriceCount": 7,
+      "matchedUniquePrices": 7,
+      "uniquePriceCoverage": 1,
+      "misses": []
+    },
+    {
+      "imageFile": "M007_P02.jpg",
+      "ok": true,
+      "totalMs": 6496,
+      "text": "翠竹餐馆\n家常小炒\n青椒回锅肉\n35元\n酥衣蛋\n25元\n芹菜牛肉\n35元\n蕃茄炒蛋\n15元\n酸炒牛肉\n35元\n青椒炒蛋\n15元\n蚝油牛腱\n40元\n苦瓜炒蛋\n15元\n爆炒田鸡\n48元\n黄瓜炒蛋\n15元\n素腐竹\n15元\n韭菜炒蛋\n15元\n五香豆腐\n15元\n煎滑蛋\n15元\n素苦瓜\n15元\n三鲜汤\n15元\n炒丝瓜\n15元\n紫菜汤\n15元\n素茄子\n15元\n蕃茄蛋汤\n15元\n青菜汤\n15元\n枸杞清汤\n15元\n火锅系列\n招牌啤酒鱼 40元/小锅50元/中锅60元/大锅\n香辣卤味\n60元/锅\n川汤鸡\n88元/只\n农家腊肉\n60元/锅\n黄焖鸡\n88元/只\n豆腐土鳅鱼\n68元/锅\n辣子鸡\n88元/只\n干妈黄鱼\n40元/锅\n蕃茄鸡\n88元/只\n豆腐鱼\n40元/锅\n豆子排骨\n60元/锅\n啤酒鸭釀\n50元/锅\n荷包豆焖鸡\n95元/只 小红书)\n冬笋黄焖鸡\n时价\n荷包豆焖鸭小红雞元:9786062",
+      "wordCount": 206,
+      "meanWordConfidence": 0.9656815733980587,
+      "goldCount": 37,
+      "strictNames": 37,
+      "fuzzyNames": 37,
+      "strictNameRecall": 1,
+      "fuzzyNameRecall": 1,
+      "uniquePriceCount": 12,
+      "matchedUniquePrices": 12,
+      "uniquePriceCoverage": 1,
+      "misses": []
+    },
+    {
+      "imageFile": "M008_P01.jpg",
+      "ok": true,
+      "totalMs": 8688,
+      "text": "马路边边 马路边边火锅串串\n0000000\n成都热门串串香排名NO.1\nMalu Bianbian Hot Pot\n营业时间\n台号:\n14:00-01:00\n人数:\nSunday-Thursday 14:00-24:00\nFriday-Saturday\n(锅底小料\n口味正宗\n路边嫩牛肉\nSpecial Spicy Beef\n冒草原牛肚\n$9.99 口\n$9.99\n口\n番茄锅(不辣)\n$9.99\nTomato soup (Not spicy)\n菌汤锅(不辣)\n$9.99\nMushroom soup (Not spicy)\n番茄菌汤锅(不辣)\n$9.99 ☐\nTomato Soup and Mushroom Soup\n每日现熬骨汤锅\n$9.99\npork bone soup\n传统牛油+菌汤\n$13.99\nTraditional OX spicy butter soup and Mushroom Soup\n传统牛油+番茄\n$13.99\nTraditional OX spicy butter soup and Tomato Soup\n招牌经典锅+菌汤\n$13.99\nClassic spicy oll soup and Mushroom Soup\n招牌经典锅+番茄\n$13.99\nClassic spicy oil soup and Tomato Soup\n白胡椒猪肚鸡锅\n$13.99\nwhite pepper pork stomach chicken soup\n传统牛油+骨汤\n$13.99\nTraditional OX spicy butter soup and pork bone soup.\n招牌经典锅+骨汤\n$13.99\nooooooooooo\nSpicy Beef Stomach\n☐\n招牌经典锅(清油小辣)\nDelicious\n特色冒菜\nInstant Spicy Steampot\n買鸭血\nSpicy Duck Blood\n冒椒火辣脑花\nSpicy Pork Brain\n$9.99\n$10.99 ☐\n$14.99\nClassic spicy oll soup (Mild spicy)\n鼓捣吃干层肚\n$9.99\n☐\n冒虎皮凤爪\n$9.99\n传统牛油锅底(可选择度:小辣、中辣,大辣)\n$14.99\nSpicy Cattle Stomach Slices\nSpicy Chicken Feet\nTraditional OX spicy butter soup (Optional spicy level:\nMild spicy,Medium spicy, Hot spicy)\n火辣冒猪肚\n$9.99\n巴适小土豆\n$6.99\nSpicy pork stomach\n养颜花胶鸡汤锅\nSpicy Potatoes\n$14.99\nFish maw chicken soup (Not spicy)\n火辣冒肥肠\n$9.99\n□\n滋味冒宽粉\n$7.99\n口\n养颜花胶鸡汤+传统牛油\n$14.99\nspicy pig Intestine\nSpicy World Glass Noodle\nFish Maw Chicken Soup and Traditional\nOX spicy butter soup\n养颜花胶鸡汤+招牌经典锅\n$14.99\nFish Maw Chicken Soup and Classic spicy oil soup\n养颜花胶鸡汤+菌汤\n$14.99\nFish Maw Chicken Soup and Mushroom Soup\n养颜花胶鸡汤+番茄\n$14.99 ☐\nFish Maw Chicken Soup and Tomato Soup.\n白胡椒猪肚鸡锅+传统牛油\n$14.99\nwhite pepper pork stomach chicken soup\nand Traditional OX spicy butter soup\n白胡椒猪肚鸡锅+招牌经典锅\n$14.99\nwhite pepper pork stomach chicken soup\nand Classic spicy oil soup\nClassic spicy oil soup and pork bone soup.\n奥兰多马路边边串串\n电话:407-286-1261\n地址:5062w Colonial Dr #110 Orlando FL 32808\n新鲜食材\n人气美食\n:原汁原味\nPOPULAR FOOD\nTARTE\n网站:malubianbianfl.com\n六人以上我们会收取18%服务费\nWe charge 18% service charge for more than six people\n【多重选择・口味正宗】\nFRESH CUT MEET\n鲜\n安格斯牛小排\n$14.99\nAngus beef short ribs\n(切\nPrime USDA 安格斯肥牛\n$9.99\nPremium Usda Angus Sliced Beef\n新西兰草饲高钙羊羔肉\n$9.99\nNew Zealand Lamb Roll\n串串HOTPOT SKEWER $0.35/签\n圆盘菜DISHES $3.99/盘\n自助小吃蘸料Dipping Sauce $2.99/位(12岁以下免费\nBUFFET SNACK DIPPING SAUCE (UNDER 12 YEARS OLD FREE)\n马路边边火锅串串\n特色盘菜\nMalu Bianbian Hot Pot\n经典小碗菜四宫格\n。\n选项(必选)\n酒水 &饮料\nHouse Special Squad\nDrinks\n• House Special Dishes )\nDish Options (Required)\n极品黑毛肚\nBlack beef tripe\n$12.99\n虎皮耙鸡爪\n$4.99\n古法秘制酸梅汤\n$4.99\n瓶装水\n$0.99\nSoft Chicken Feet\nSour Plum Soup (pot)\n金牌白毛肚\n$11.99\n口\n千层肚\nwhite beef tripe\n$4.99\n北冰洋\n$3.49\nWater (bottle)\n科罗娜\n$4.50\nMelaleuca\nArctic Ocean Drink\ncorona beer (bottle)\n路边四脆(黑毛肚/千层肚/黄喉/白毛肚 )\n$19.99 口\n卤味排骨\n$4.99\n王老吉\n$2.99 ☐\n喜力\n$4.50\nHouse Special Combo 4 Dishes\nBraised Pork Ribs\nWang Lo Kat Chinese Herbal Tea\nHeineken(bottle)\n手工现打丸子拼盘(牛肉丸/香菜猪肉丸/虾丸)\n$12.99\n卤味牛肚\n$4.99\n健怡可乐\n$2.99 ☐\n青岛\n$4.99 ☐\nHomemade Meatball Combo\nBralsed Beef Tripe\nDlet Coke\nqingdao (bottle)\n滋补大花胶(不是汤底)\n$12.99\n卤味牛筋\n$4.99\n可口可乐\n$2.99 ☐\n康师傅茉莉茶\n$2.99 ☐\nFish Maw (Not Soup)\nBralsed Beef tendon\nCoke\n路边手打虾滑\n$8.99\n鱼片\n$4.99\n雪碧\n$2.99 ☐\nJasmine tea\n康师傅绿茶\n$2.99\nHandmade Mashed Shrimp Ball\nFish Fillets\nSprite\ngreen tea\n生猪脑\n$9.99\n黄喉\n$4.99\nPork Brain\nFresh Beef Aorta\n康师傅冰红茶\nIced Black Tea\n$2.99 ☐\n元气森林\n$3.49 ☐\nsparking drink\n双椒牛肉\n$9.99\n卤味大肠\n$4.99\nHouse Spicy Green & Pepper W./Beef\nBraised pig Intestine\n霸王牛肉\n$9.99\nHouse Spir\n贵妃牛肉\nHouse spor\n极品千层\nMelaleuca\n$9.99\n小吃&主食\nSnacks & Staple Food\n(特调饮品\nSpecial drinks\n$9.99\n现炸小酥肉\n$7.99 ☐\n去骨鸭掌\n$9.99\nBoneless Duck Paws\nFresh Deep Fried Crispy Pork (cooked)\n黄金小馒头\n蜜桃乌龙茶\n$5.49\n暴打渣男鴨屎香\n$4.99\nPeach Oolong Tea\nLemon green tea\n$5.99 口\n墨鱼仔\n$9.99\nDeep fried steamed bun\n荔枝乌龙茶\n$5.49\n西瓜冰沙\n$4.99\noctopus\n红糖糍粑\n$6.99\n☐\n鸭血\nBlood\n$8.99\nBrown Sugar Rice Cake\nLychee Oolong Tea\n桂花乌龙茶\nWatermelon Smoothie\n$5.49\n菠萝冰沙\n$4.99\nOsmanthus Oolong Tea\nPineapple smoothie\n老成都蛋炒饭\n$5.99\nfried rice\n边边水果茶\n$5.49\n8秒瀑布土豆丝\n$4.99\nBlanblan fruit tea\n加小料(爆珠,椰果) $0.75\nAdd Topping\n8 Seconds Sliced Potato\n白饭\n$1.99\n☐\n( Popping Boba.Jelly)\nRice\n竹笙虾滑\n小红书\n$12.99\nShrimp Paste WJbamboo Fungus\n电话:407-286-1261\n小小:9651810280\n地址:3062 Colonial Dr #110 Orlando FL 32800\n网站:malubianbianfl.c",
+      "wordCount": 1130,
+      "meanWordConfidence": 0.9685152808141593,
+      "goldCount": 87,
+      "strictNames": 80,
+      "fuzzyNames": 82,
+      "strictNameRecall": 0.9195402298850575,
+      "fuzzyNameRecall": 0.9425287356321839,
+      "uniquePriceCount": 21,
+      "matchedUniquePrices": 20,
+      "uniquePriceCoverage": 0.9523809523809523,
+      "misses": [
+        {
+          "nameCn": "冒鸭血",
+          "bestSimilarity": 0.667
+        },
+        {
+          "nameCn": "科罗娜(瓶装)",
+          "bestSimilarity": 0.6
+        },
+        {
+          "nameCn": "喜力(瓶装)",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "青岛(瓶装)",
+          "bestSimilarity": 0.5
+        },
+        {
+          "nameCn": "暴打渣男鸭屎香(柠檬绿茶)",
+          "bestSimilarity": 0.545
+        }
+      ]
+    }
+  ]
+}

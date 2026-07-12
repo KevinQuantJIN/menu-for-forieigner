@@ -26,39 +26,64 @@ const OTHER_CITIES = [
 function chinaGeoOption(interactive) {
   return {
     map: "china", roam: interactive, zoom: interactive ? 1.6 : 2.4, center: interactive ? [105, 33] : [105, 32],
-    itemStyle: { areaColor: "#ece3cc", borderColor: "rgba(38,32,25,.35)", borderWidth: .6 },
+    itemStyle: { areaColor: "#f3ecdb", borderColor: "rgba(38,32,25,.28)", borderWidth: .6 },
     emphasis: { disabled: true }, select: { disabled: true }, label: { show: false },
-    regions: LIT_PROVINCES.map(n => ({ name: n, itemStyle: { areaColor: "#b23a2f", borderColor: "#7e241c", borderWidth: 1 } })),
+    regions: LIT_PROVINCES.map(n => ({
+      name: n,
+      itemStyle: { areaColor: "#b23a2f", borderColor: "#7e241c", borderWidth: 1 },
+      label: { show: true, color: "#f7f2e6", fontSize: 13, fontFamily: "'Kaiti SC','STKaiti',serif", formatter: "食", distance: 0 },
+    })),
   };
 }
-let chinaAssets = null; // Promise<bool>
+let chinaAssets = null;
 function ensureChinaAssets() {
   if (chinaAssets) return chinaAssets;
   chinaAssets = (async () => {
     try {
-      if (!window.echarts) await new Promise((res, rej) => {
-        const s = document.createElement("script");
-        s.src = "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js";
-        s.onload = res; s.onerror = rej; document.head.appendChild(s);
-      });
-      const geo = await (await fetch("https://geo.datav.aliyun.com/areas_v3/bound/100000_full.json")).json();
+      if (!window.echarts) {
+        console.debug("[map] loading echarts from CDN...");
+        await new Promise((res, rej) => {
+          const s = document.createElement("script");
+          s.src = "https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js";
+          s.onload = () => { console.debug("[map] echarts CDN loaded"); res(); };
+          s.onerror = (e) => { console.warn("[map] echarts CDN failed", e); rej(e); };
+          document.head.appendChild(s);
+        });
+      }
+      console.debug("[map] fetching GeoJSON...");
+      const resp = await fetch("/china-geo.json");
+      if (!resp.ok) throw new Error("GeoJSON HTTP " + resp.status);
+      const geo = await resp.json();
       echarts.registerMap("china", geo);
+      console.debug("[map] assets ready, provinces:", Object.keys(geo).filter(k => !k.match(/^[A-Z]/)));
       return true;
-    } catch { return false; }
+    } catch (e) {
+      console.warn("[map] ensureChinaAssets failed:", e.message || e);
+      return false;
+    }
   })();
   return chinaAssets;
 }
 let fullMapInit = false, homeMapInit = false;
-async function renderChinaMap() { // 全屏地图（可拖拽缩放，去过的点常显小卡片：店名+日期）
+function showMapFallback() {
+  const cm = document.getElementById("chinamap");
+  const fb = document.getElementById("map-fallback");
+  if (cm) cm.classList.add("hidden");
+  if (fb) fb.classList.remove("hidden");
+}
+async function renderChinaMap() {
   if (fullMapInit) return;
+  console.debug("[map] renderChinaMap start");
   const ok = await ensureChinaAssets();
-  if (!ok) {
-    document.getElementById("chinamap").classList.add("hidden");
-    document.getElementById("map-fallback").classList.remove("hidden");
-    return;
-  }
+  console.debug("[map] renderChinaMap assets ok=", ok);
+  if (!ok) { showMapFallback(); return; }
   fullMapInit = true;
-  const chart = echarts.init(document.getElementById("chinamap"));
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const el = document.getElementById("chinamap");
+  console.debug("[map] chinamap el:", el, "size:", el?.offsetWidth, "x", el?.offsetHeight, "offsetParent:", !!el?.offsetParent);
+  if (!el || !el.offsetParent) { showMapFallback(); return; }
+  const chart = echarts.init(el);
+  console.debug("[map] echarts.init done");
   chart.setOption({
     backgroundColor: "transparent",
     geo: chinaGeoOption(true),
@@ -87,15 +112,20 @@ async function renderChinaMap() { // 全屏地图（可拖拽缩放，去过的�
     el.style.left = x + "px"; el.style.top = y + "px";
   });
   chart.on("georoam", place);
-  place(); // convertToPixel 在 setOption 后即可用（涟漪动画常驻，"finished" 永不触发，不能依赖它）
+  place();
+  setTimeout(() => { try { chart.resize(); place(); } catch {} }, 200);
 }
-async function renderHomeMap() { // 首页迷你预览（静态，点击进全屏）
+async function renderHomeMap() {
   if (homeMapInit) return;
+  console.debug("[map] renderHomeMap start");
   const ok = await ensureChinaAssets();
-  if (!ok) return; // 保留 #home-map-fb 的文字兜底
+  console.debug("[map] renderHomeMap assets ok=", ok);
+  if (!ok) return;
   homeMapInit = true;
   document.getElementById("home-map-fb").classList.add("hidden");
-  echarts.init(document.getElementById("homechinamap")).setOption({
+  const el = document.getElementById("homechinamap");
+  if (!el || !el.offsetParent) return;
+  echarts.init(el).setOption({
     backgroundColor: "transparent",
     geo: chinaGeoOption(false),
     series: [{ type: "effectScatter", coordinateSystem: "geo", symbolSize: 6, silent: true, zlevel: 2,

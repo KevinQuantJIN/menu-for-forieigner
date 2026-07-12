@@ -56,3 +56,6 @@ __pycache__/
 .claude/worktrees/
 .worktrees/
 .superpowers/
+
+# temp ui audit screenshots
+.tmp-ui-audit/

@@ -4,6 +4,7 @@
 
 - 产品/技术设计：`docs/concept.md`
 - UI 交接文档：`docs/HANDOVER.md`
+- 当前生产迁移交接：`docs/HANDOFF-VISION-GEMINI-MIGRATION.md`
 - 线上 Demo： https://menulens.web3-fintech-op-service.workers.dev
 - 参考菜单数据包：`reference-menu-data.zip`
 

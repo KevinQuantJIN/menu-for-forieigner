@@ -1,0 +1,990 @@
+{
+  "generatedAt": "2026-07-12T17:04:15.020Z",
+  "methodology": {
+    "dataset": "/Users/kevin/Downloads/chopstory-test-data",
+    "images": 14,
+    "goldDishes": 625,
+    "mode": "extract_only",
+    "temperature": 0,
+    "maxOutputTokens": 8192,
+    "concurrency": "Three models in parallel; images sequential within each model",
+    "cloudflareEndpoint": "https://menulens.web3-fintech-op-service.workers.dev/api/lab"
+  },
+  "comparisons": [
+    {
+      "model": "gemini-2.5-flash",
+      "provider": "gemini",
+      "local": {
+        "model": "gemini-2.5-flash",
+        "provider": "gemini",
+        "transport": "gemini",
+        "runs": 14,
+        "usableRuns": 14,
+        "usableRate": 1,
+        "errorRuns": 0,
+        "nameRecall": 0.8128,
+        "namePrecision": 0.748159057437408,
+        "firstItemP50Ms": 2940,
+        "firstItemP95Ms": 5186,
+        "totalP50Ms": 9102,
+        "totalP95Ms": 29513,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4765,
+            "totalMs": 7515,
+            "nameRecall": 0.8571428571428571,
+            "namePrecision": 0.8571428571428571
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2940,
+            "totalMs": 4505,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 13,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5186,
+            "totalMs": 8307,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.38461538461538464
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2658,
+            "totalMs": 5783,
+            "nameRecall": 0.5384615384615384,
+            "namePrecision": 0.5
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 8,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2368,
+            "totalMs": 3983,
+            "nameRecall": 0.75,
+            "namePrecision": 0.75
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 45,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2354,
+            "totalMs": 10545,
+            "nameRecall": 0.8444444444444444,
+            "namePrecision": 0.8444444444444444
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 69,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4359,
+            "totalMs": 15599,
+            "nameRecall": 0.9565217391304348,
+            "namePrecision": 0.9565217391304348
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 87,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3544,
+            "totalMs": 18048,
+            "nameRecall": 0.8181818181818182,
+            "namePrecision": 0.8275862068965517
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 65,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2688,
+            "totalMs": 19002,
+            "nameRecall": 0.5138888888888888,
+            "namePrecision": 0.5692307692307692
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 55,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3585,
+            "totalMs": 12930,
+            "nameRecall": 0.9272727272727272,
+            "namePrecision": 0.9272727272727272
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 91,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4014,
+            "totalMs": 17552,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.7362637362637363
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 39,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2790,
+            "totalMs": 9102,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 37,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2607,
+            "totalMs": 9046,
+            "nameRecall": 0.8918918918918919,
+            "namePrecision": 0.8918918918918919
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 133,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4555,
+            "totalMs": 29513,
+            "nameRecall": 0.7586206896551724,
+            "namePrecision": 0.49624060150375937
+          }
+        ]
+      },
+      "cloudflare": {
+        "model": "gemini-2.5-flash",
+        "provider": "gemini",
+        "transport": "gemini",
+        "runs": 14,
+        "usableRuns": 14,
+        "usableRate": 1,
+        "errorRuns": 0,
+        "nameRecall": 0.784,
+        "namePrecision": 0.6950354609929078,
+        "firstItemP50Ms": 2429,
+        "firstItemP95Ms": 5362,
+        "totalP50Ms": 8906,
+        "totalP95Ms": 37329,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3790,
+            "totalMs": 6397,
+            "nameRecall": 0.8571428571428571,
+            "namePrecision": 0.8571428571428571
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3591,
+            "totalMs": 4976,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 13,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1901,
+            "totalMs": 4905,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.38461538461538464
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4515,
+            "totalMs": 7555,
+            "nameRecall": 0.6153846153846154,
+            "namePrecision": 0.5714285714285714
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 8,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2429,
+            "totalMs": 3958,
+            "nameRecall": 0.75,
+            "namePrecision": 0.75
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 46,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2305,
+            "totalMs": 10542,
+            "nameRecall": 0.8222222222222222,
+            "namePrecision": 0.8043478260869565
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 69,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5362,
+            "totalMs": 16923,
+            "nameRecall": 0.9565217391304348,
+            "namePrecision": 0.9565217391304348
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 84,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2356,
+            "totalMs": 17348,
+            "nameRecall": 0.7954545454545454,
+            "namePrecision": 0.8333333333333334
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 65,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2335,
+            "totalMs": 17671,
+            "nameRecall": 0.5138888888888888,
+            "namePrecision": 0.5692307692307692
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 54,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3902,
+            "totalMs": 13054,
+            "nameRecall": 0.9272727272727272,
+            "namePrecision": 0.9444444444444444
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 102,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3063,
+            "totalMs": 18790,
+            "nameRecall": 0.922077922077922,
+            "namePrecision": 0.696078431372549
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 39,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2351,
+            "totalMs": 8653,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 37,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2381,
+            "totalMs": 8906,
+            "nameRecall": 0.8918918918918919,
+            "namePrecision": 0.8918918918918919
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 151,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4929,
+            "totalMs": 37329,
+            "nameRecall": 0.5287356321839081,
+            "namePrecision": 0.304635761589404
+          }
+        ]
+      },
+      "delta": {
+        "usableRate": 0,
+        "nameRecall": -0.028799999999999937,
+        "namePrecision": -0.053123596444500154,
+        "firstItemP50Ms": -511,
+        "totalP50Ms": -196
+      }
+    },
+    {
+      "model": "qwen3.6-flash",
+      "provider": "qwen",
+      "local": {
+        "model": "qwen3.6-flash",
+        "provider": "qwen",
+        "transport": "dashscope-beijing",
+        "runs": 14,
+        "usableRuns": 14,
+        "usableRate": 1,
+        "errorRuns": 0,
+        "nameRecall": 0.8768,
+        "namePrecision": 0.8549141965678627,
+        "firstItemP50Ms": 1424,
+        "firstItemP95Ms": 2568,
+        "totalP50Ms": 19409,
+        "totalP95Ms": 54085,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1759,
+            "totalMs": 12468,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1494,
+            "totalMs": 6378,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 15,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1318,
+            "totalMs": 11081,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.3333333333333333
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 15,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1424,
+            "totalMs": 9251,
+            "nameRecall": 0.8461538461538461,
+            "namePrecision": 0.7333333333333333
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 10,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1574,
+            "totalMs": 7721,
+            "nameRecall": 0.875,
+            "namePrecision": 0.7
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 45,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1274,
+            "totalMs": 25901,
+            "nameRecall": 0.9333333333333333,
+            "namePrecision": 0.9333333333333333
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 69,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1625,
+            "totalMs": 36969,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 88,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2568,
+            "totalMs": 44222,
+            "nameRecall": 0.8863636363636364,
+            "namePrecision": 0.8863636363636364
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 64,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1307,
+            "totalMs": 36179,
+            "nameRecall": 0.5555555555555556,
+            "namePrecision": 0.625
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 55,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1370,
+            "totalMs": 27176,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 97,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1648,
+            "totalMs": 46601,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.6907216494845361
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 39,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1262,
+            "totalMs": 19409,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 37,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1196,
+            "totalMs": 18321,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 84,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1475,
+            "totalMs": 54085,
+            "nameRecall": 0.8850574712643678,
+            "namePrecision": 0.9166666666666666
+          }
+        ]
+      },
+      "cloudflare": {
+        "model": "qwen3.6-flash",
+        "provider": "qwen",
+        "transport": "dashscope-beijing",
+        "runs": 14,
+        "usableRuns": 6,
+        "usableRate": 0.42857142857142855,
+        "errorRuns": 8,
+        "nameRecall": 0.20512820512820512,
+        "namePrecision": 0.8073394495412844,
+        "firstItemP50Ms": 11476,
+        "firstItemP95Ms": 16167,
+        "totalP50Ms": 17584,
+        "totalP95Ms": 47744,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 15,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 11560,
+            "totalMs": 19923,
+            "nameRecall": 1,
+            "namePrecision": 0.9333333333333333
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 16167,
+            "totalMs": 20652,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 15,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 7874,
+            "totalMs": 17268,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.3333333333333333
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 15,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 9690,
+            "totalMs": 17430,
+            "nameRecall": 0.8461538461538461,
+            "namePrecision": 0.7333333333333333
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 10,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 11747,
+            "totalMs": 17584,
+            "nameRecall": 0.875,
+            "namePrecision": 0.7
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 45,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 11476,
+            "totalMs": 47744,
+            "nameRecall": 0.9333333333333333,
+            "namePrecision": 0.9333333333333333
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 53,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": 25458,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "lab_http_503:<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 0,
+            "complete": false,
+            "error": "lab_http_503:<!DOCTYPE html>\n<!--[if lt IE 7]> <html class=\"no-js ie6 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 7]>    <html class=\"no-js ie7 oldie\" lang=\"en-US\"> <![endif]-->\n<!--[if IE 8]>    <html class=\"no-js ie8 oldie\" lang=\"en-US\"> <![endif]-->",
+            "firstItemMs": null,
+            "totalMs": null,
+            "nameRecall": 0,
+            "namePrecision": 0
+          }
+        ]
+      },
+      "delta": {
+        "usableRate": -0.5714285714285714,
+        "nameRecall": -0.671671794871795,
+        "namePrecision": -0.04757474702657827,
+        "firstItemP50Ms": 10052,
+        "totalP50Ms": -1825
+      }
+    },
+    {
+      "model": "MiniMax-M3",
+      "provider": "minimax",
+      "local": {
+        "model": "MiniMax-M3",
+        "provider": "minimax",
+        "transport": "minimax",
+        "runs": 14,
+        "usableRuns": 14,
+        "usableRate": 1,
+        "errorRuns": 0,
+        "nameRecall": 0.8544,
+        "namePrecision": 0.7563739376770539,
+        "firstItemP50Ms": 4405,
+        "firstItemP95Ms": 6718,
+        "totalP50Ms": 19221,
+        "totalP95Ms": 49324,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5858,
+            "totalMs": 16375,
+            "nameRecall": 0.7142857142857143,
+            "namePrecision": 0.7142857142857143
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4104,
+            "totalMs": 7834,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 18,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4684,
+            "totalMs": 19221,
+            "nameRecall": 1,
+            "namePrecision": 0.6666666666666666
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 13,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3080,
+            "totalMs": 10743,
+            "nameRecall": 0.7692307692307693,
+            "namePrecision": 0.7692307692307693
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 8,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3347,
+            "totalMs": 6923,
+            "nameRecall": 0.875,
+            "namePrecision": 0.875
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 45,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4266,
+            "totalMs": 31499,
+            "nameRecall": 0.9333333333333333,
+            "namePrecision": 0.9333333333333333
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 70,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4886,
+            "totalMs": 26224,
+            "nameRecall": 0.9710144927536232,
+            "namePrecision": 0.9571428571428572
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 89,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5876,
+            "totalMs": 37844,
+            "nameRecall": 0.7954545454545454,
+            "namePrecision": 0.7865168539325843
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 65,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4405,
+            "totalMs": 34031,
+            "nameRecall": 0.5694444444444444,
+            "namePrecision": 0.6307692307692307
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 55,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 6718,
+            "totalMs": 22424,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 160,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3505,
+            "totalMs": 49324,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.41875
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 39,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3730,
+            "totalMs": 13456,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 37,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5460,
+            "totalMs": 15697,
+            "nameRecall": 0.972972972972973,
+            "namePrecision": 0.972972972972973
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 84,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 5417,
+            "totalMs": 38689,
+            "nameRecall": 0.8160919540229885,
+            "namePrecision": 0.8452380952380952
+          }
+        ]
+      },
+      "cloudflare": {
+        "model": "MiniMax-M3",
+        "provider": "minimax",
+        "transport": "minimax",
+        "runs": 14,
+        "usableRuns": 13,
+        "usableRate": 0.9285714285714286,
+        "errorRuns": 1,
+        "nameRecall": 0.5456,
+        "namePrecision": 0.7239915074309978,
+        "firstItemP50Ms": 2628,
+        "firstItemP95Ms": 4452,
+        "totalP50Ms": 10880,
+        "totalP95Ms": 28510,
+        "perImage": [
+          {
+            "imageName": "M001_P01.jpg",
+            "itemCount": 14,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4197,
+            "totalMs": 10880,
+            "nameRecall": 0.8571428571428571,
+            "namePrecision": 0.8571428571428571
+          },
+          {
+            "imageName": "M001_P02.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 4452,
+            "totalMs": 7062,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M001_P03.jpg",
+            "itemCount": 12,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2289,
+            "totalMs": 8700,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.4166666666666667
+          },
+          {
+            "imageName": "M001_P04.jpg",
+            "itemCount": 13,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2574,
+            "totalMs": 7249,
+            "nameRecall": 0.8461538461538461,
+            "namePrecision": 0.8461538461538461
+          },
+          {
+            "imageName": "M001_P05.jpg",
+            "itemCount": 8,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2592,
+            "totalMs": 5474,
+            "nameRecall": 0.75,
+            "namePrecision": 0.75
+          },
+          {
+            "imageName": "M001_P06.jpg",
+            "itemCount": 48,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 1928,
+            "totalMs": 21176,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M002_P01.jpg",
+            "itemCount": 72,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 3167,
+            "totalMs": 21574,
+            "nameRecall": 0.9710144927536232,
+            "namePrecision": 0.9305555555555556
+          },
+          {
+            "imageName": "M003_P01.jpg",
+            "itemCount": 86,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2814,
+            "totalMs": 26040,
+            "nameRecall": 0.7727272727272727,
+            "namePrecision": 0.7906976744186046
+          },
+          {
+            "imageName": "M004_P01.jpg",
+            "itemCount": 69,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2170,
+            "totalMs": 28510,
+            "nameRecall": 0.5277777777777778,
+            "namePrecision": 0.5507246376811594
+          },
+          {
+            "imageName": "M005_P01.jpg",
+            "itemCount": 55,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2628,
+            "totalMs": 14714,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636
+          },
+          {
+            "imageName": "M006_P01.jpg",
+            "itemCount": 9,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2757,
+            "totalMs": 5187,
+            "nameRecall": 0,
+            "namePrecision": 0
+          },
+          {
+            "imageName": "M007_P01.jpg",
+            "itemCount": 39,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2978,
+            "totalMs": 12279,
+            "nameRecall": 1,
+            "namePrecision": 1
+          },
+          {
+            "imageName": "M007_P02.jpg",
+            "itemCount": 22,
+            "complete": true,
+            "error": null,
+            "firstItemMs": 2501,
+            "totalMs": 8817,
+            "nameRecall": 0.5405405405405406,
+            "namePrecision": 0.9090909090909091
+          },
+          {
+            "imageName": "M008_P01.jpg",
+            "itemCount": 15,
+            "complete": false,
+            "error": "incomplete_stream",
+            "firstItemMs": 3021,
+            "totalMs": null,
+            "nameRecall": 0.14942528735632185,
+            "namePrecision": 0.8666666666666667
+          }
+        ]
+      },
+      "delta": {
+        "usableRate": -0.0714285714285714,
+        "nameRecall": -0.3088000000000001,
+        "namePrecision": -0.032382430246056026,
+        "firstItemP50Ms": -1777,
+        "totalP50Ms": -8341
+      }
+    }
+  ]
+}

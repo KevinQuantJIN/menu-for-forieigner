@@ -1,0 +1,1816 @@
+{
+  "generatedAt": "2026-07-12T16:45:35.921Z",
+  "scope": {
+    "environment": "local",
+    "mode": "extract_only",
+    "temperature": 0,
+    "maxOutputTokens": 8192,
+    "included": "configured direct image transports",
+    "excluded": [
+      "Cloudflare (cancelled by user)",
+      "OpenRouter (cancelled by user)",
+      "DeepSeek text-only",
+      "Qwen Singapore/Virginia missing keys"
+    ]
+  },
+  "dataset": {
+    "path": "/Users/kevin/Downloads/chopstory-test-data",
+    "images": 14,
+    "goldDishes": 625
+  },
+  "summaries": [
+    {
+      "provider": "qwen",
+      "transport": "dashscope-beijing",
+      "model": "qwen3.6-flash",
+      "runs": 14,
+      "usableRuns": 14,
+      "usableRate": 1,
+      "errorRuns": 0,
+      "zeroItemRuns": 0,
+      "goldCount": 625,
+      "predictionCount": 641,
+      "matchedNames": 548,
+      "nameRecall": 0.8768,
+      "namePrecision": 0.8549141965678627,
+      "priceCompared": 544,
+      "priceMatched": 359,
+      "priceExact": 0.6599264705882353,
+      "headersP50Ms": 831,
+      "firstItemP50Ms": 1424,
+      "firstItemP95Ms": 2568,
+      "totalP50Ms": 19409,
+      "totalP95Ms": 54085,
+      "errorCounts": {},
+      "worstImages": [
+        {
+          "imageName": "M001_P03.jpg",
+          "recall": 0.4166666666666667,
+          "predictions": 15,
+          "error": null
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "recall": 0.5555555555555556,
+          "predictions": 64,
+          "error": null
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "recall": 0.8461538461538461,
+          "predictions": 15,
+          "error": null
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 1130,
+          "firstItemMs": 1759,
+          "totalMs": 12468,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 14,
+            "matchedNames": 14,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 9,
+          "providerHeadersMs": 884,
+          "firstItemMs": 1494,
+          "totalMs": 6378,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 9,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 15,
+          "providerHeadersMs": 728,
+          "firstItemMs": 1318,
+          "totalMs": 11081,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 15,
+            "matchedNames": 5,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.3333333333333333,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 15,
+          "providerHeadersMs": 888,
+          "firstItemMs": 1424,
+          "totalMs": 9251,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 15,
+            "matchedNames": 11,
+            "nameRecall": 0.8461538461538461,
+            "namePrecision": 0.7333333333333333,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 10,
+          "providerHeadersMs": 714,
+          "firstItemMs": 1574,
+          "totalMs": 7721,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 10,
+            "matchedNames": 7,
+            "nameRecall": 0.875,
+            "namePrecision": 0.7,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 45,
+          "providerHeadersMs": 781,
+          "firstItemMs": 1274,
+          "totalMs": 25901,
+          "error": null,
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 45,
+            "matchedNames": 42,
+            "nameRecall": 0.9333333333333333,
+            "namePrecision": 0.9333333333333333,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 69,
+          "providerHeadersMs": 1113,
+          "firstItemMs": 1625,
+          "totalMs": 36969,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 69,
+            "matchedNames": 69,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 88,
+          "providerHeadersMs": 1572,
+          "firstItemMs": 2568,
+          "totalMs": 44222,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 88,
+            "matchedNames": 78,
+            "nameRecall": 0.8863636363636364,
+            "namePrecision": 0.8863636363636364,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 64,
+          "providerHeadersMs": 744,
+          "firstItemMs": 1307,
+          "totalMs": 36179,
+          "error": null,
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 64,
+            "matchedNames": 40,
+            "nameRecall": 0.5555555555555556,
+            "namePrecision": 0.625,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 55,
+          "providerHeadersMs": 831,
+          "firstItemMs": 1370,
+          "totalMs": 27176,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 55,
+            "matchedNames": 53,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 97,
+          "providerHeadersMs": 1145,
+          "firstItemMs": 1648,
+          "totalMs": 46601,
+          "error": null,
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 97,
+            "matchedNames": 67,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.6907216494845361,
+            "priceExact": 0.2835820895522388
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 39,
+          "providerHeadersMs": 769,
+          "firstItemMs": 1262,
+          "totalMs": 19409,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 39,
+            "matchedNames": 39,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 769,
+          "firstItemMs": 1196,
+          "totalMs": 18321,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 37,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 84,
+          "providerHeadersMs": 884,
+          "firstItemMs": 1475,
+          "totalMs": 54085,
+          "error": null,
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 84,
+            "matchedNames": 77,
+            "nameRecall": 0.8850574712643678,
+            "namePrecision": 0.9166666666666666,
+            "priceExact": 1
+          }
+        }
+      ]
+    },
+    {
+      "provider": "minimax",
+      "transport": "minimax",
+      "model": "MiniMax-M3",
+      "runs": 14,
+      "usableRuns": 14,
+      "usableRate": 1,
+      "errorRuns": 0,
+      "zeroItemRuns": 0,
+      "goldCount": 625,
+      "predictionCount": 706,
+      "matchedNames": 534,
+      "nameRecall": 0.8544,
+      "namePrecision": 0.7563739376770539,
+      "priceCompared": 532,
+      "priceMatched": 354,
+      "priceExact": 0.6654135338345865,
+      "headersP50Ms": 3813,
+      "firstItemP50Ms": 4405,
+      "firstItemP95Ms": 6718,
+      "totalP50Ms": 19221,
+      "totalP95Ms": 49324,
+      "errorCounts": {},
+      "worstImages": [
+        {
+          "imageName": "M004_P01.jpg",
+          "recall": 0.5694444444444444,
+          "predictions": 65,
+          "error": null
+        },
+        {
+          "imageName": "M001_P01.jpg",
+          "recall": 0.7142857142857143,
+          "predictions": 14,
+          "error": null
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "recall": 0.7692307692307693,
+          "predictions": 13,
+          "error": null
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 5195,
+          "firstItemMs": 5858,
+          "totalMs": 16375,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 14,
+            "matchedNames": 10,
+            "nameRecall": 0.7142857142857143,
+            "namePrecision": 0.7142857142857143,
+            "priceExact": 0.9
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 9,
+          "providerHeadersMs": 3813,
+          "firstItemMs": 4104,
+          "totalMs": 7834,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 9,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 18,
+          "providerHeadersMs": 2366,
+          "firstItemMs": 4684,
+          "totalMs": 19221,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 18,
+            "matchedNames": 12,
+            "nameRecall": 1,
+            "namePrecision": 0.6666666666666666,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 13,
+          "providerHeadersMs": 2240,
+          "firstItemMs": 3080,
+          "totalMs": 10743,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 13,
+            "matchedNames": 10,
+            "nameRecall": 0.7692307692307693,
+            "namePrecision": 0.7692307692307693,
+            "priceExact": 0.3
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 8,
+          "providerHeadersMs": 1995,
+          "firstItemMs": 3347,
+          "totalMs": 6923,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 8,
+            "matchedNames": 7,
+            "nameRecall": 0.875,
+            "namePrecision": 0.875,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 45,
+          "providerHeadersMs": 3565,
+          "firstItemMs": 4266,
+          "totalMs": 31499,
+          "error": null,
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 45,
+            "matchedNames": 42,
+            "nameRecall": 0.9333333333333333,
+            "namePrecision": 0.9333333333333333,
+            "priceExact": 0.5
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 70,
+          "providerHeadersMs": 4536,
+          "firstItemMs": 4886,
+          "totalMs": 26224,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 70,
+            "matchedNames": 67,
+            "nameRecall": 0.9710144927536232,
+            "namePrecision": 0.9571428571428572,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 89,
+          "providerHeadersMs": 5093,
+          "firstItemMs": 5876,
+          "totalMs": 37844,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 89,
+            "matchedNames": 70,
+            "nameRecall": 0.7954545454545454,
+            "namePrecision": 0.7865168539325843,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 65,
+          "providerHeadersMs": 3820,
+          "firstItemMs": 4405,
+          "totalMs": 34031,
+          "error": null,
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 65,
+            "matchedNames": 41,
+            "nameRecall": 0.5694444444444444,
+            "namePrecision": 0.6307692307692307,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 55,
+          "providerHeadersMs": 3927,
+          "firstItemMs": 6718,
+          "totalMs": 22424,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 55,
+            "matchedNames": 53,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 160,
+          "providerHeadersMs": 3226,
+          "firstItemMs": 3505,
+          "totalMs": 49324,
+          "error": null,
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 160,
+            "matchedNames": 67,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.41875,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 39,
+          "providerHeadersMs": 3390,
+          "firstItemMs": 3730,
+          "totalMs": 13456,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 39,
+            "matchedNames": 39,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 4393,
+          "firstItemMs": 5460,
+          "totalMs": 15697,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 36,
+            "nameRecall": 0.972972972972973,
+            "namePrecision": 0.972972972972973,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 84,
+          "providerHeadersMs": 4226,
+          "firstItemMs": 5417,
+          "totalMs": 38689,
+          "error": null,
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 84,
+            "matchedNames": 71,
+            "nameRecall": 0.8160919540229885,
+            "namePrecision": 0.8452380952380952,
+            "priceExact": 1
+          }
+        }
+      ]
+    },
+    {
+      "provider": "gemini",
+      "transport": "gemini",
+      "model": "gemini-2.5-flash",
+      "runs": 14,
+      "usableRuns": 14,
+      "usableRate": 1,
+      "errorRuns": 0,
+      "zeroItemRuns": 0,
+      "goldCount": 625,
+      "predictionCount": 679,
+      "matchedNames": 508,
+      "nameRecall": 0.8128,
+      "namePrecision": 0.748159057437408,
+      "priceCompared": 506,
+      "priceMatched": 359,
+      "priceExact": 0.7094861660079052,
+      "headersP50Ms": 2827,
+      "firstItemP50Ms": 2940,
+      "firstItemP95Ms": 5186,
+      "totalP50Ms": 9102,
+      "totalP95Ms": 29513,
+      "errorCounts": {},
+      "worstImages": [
+        {
+          "imageName": "M001_P03.jpg",
+          "recall": 0.4166666666666667,
+          "predictions": 13,
+          "error": null
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "recall": 0.5138888888888888,
+          "predictions": 65,
+          "error": null
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "recall": 0.5384615384615384,
+          "predictions": 14,
+          "error": null
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 4555,
+          "firstItemMs": 4765,
+          "totalMs": 7515,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 14,
+            "matchedNames": 12,
+            "nameRecall": 0.8571428571428571,
+            "namePrecision": 0.8571428571428571,
+            "priceExact": 0.9166666666666666
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 9,
+          "providerHeadersMs": 2827,
+          "firstItemMs": 2940,
+          "totalMs": 4505,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 9,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 13,
+          "providerHeadersMs": 4748,
+          "firstItemMs": 5186,
+          "totalMs": 8307,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 13,
+            "matchedNames": 5,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.38461538461538464,
+            "priceExact": 0.8
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 2350,
+          "firstItemMs": 2658,
+          "totalMs": 5783,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 14,
+            "matchedNames": 7,
+            "nameRecall": 0.5384615384615384,
+            "namePrecision": 0.5,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 8,
+          "providerHeadersMs": 1958,
+          "firstItemMs": 2368,
+          "totalMs": 3983,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 8,
+            "matchedNames": 6,
+            "nameRecall": 0.75,
+            "namePrecision": 0.75,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 45,
+          "providerHeadersMs": 2293,
+          "firstItemMs": 2354,
+          "totalMs": 10545,
+          "error": null,
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 45,
+            "matchedNames": 38,
+            "nameRecall": 0.8444444444444444,
+            "namePrecision": 0.8444444444444444,
+            "priceExact": 0.42105263157894735
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 69,
+          "providerHeadersMs": 4274,
+          "firstItemMs": 4359,
+          "totalMs": 15599,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 69,
+            "matchedNames": 66,
+            "nameRecall": 0.9565217391304348,
+            "namePrecision": 0.9565217391304348,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 87,
+          "providerHeadersMs": 3422,
+          "firstItemMs": 3544,
+          "totalMs": 18048,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 87,
+            "matchedNames": 72,
+            "nameRecall": 0.8181818181818182,
+            "namePrecision": 0.8275862068965517,
+            "priceExact": 0.7222222222222222
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 65,
+          "providerHeadersMs": 2178,
+          "firstItemMs": 2688,
+          "totalMs": 19002,
+          "error": null,
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 65,
+            "matchedNames": 37,
+            "nameRecall": 0.5138888888888888,
+            "namePrecision": 0.5692307692307692,
+            "priceExact": 0.02702702702702703
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 55,
+          "providerHeadersMs": 3460,
+          "firstItemMs": 3585,
+          "totalMs": 12930,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 55,
+            "matchedNames": 51,
+            "nameRecall": 0.9272727272727272,
+            "namePrecision": 0.9272727272727272,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 91,
+          "providerHeadersMs": 3587,
+          "firstItemMs": 4014,
+          "totalMs": 17552,
+          "error": null,
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 91,
+            "matchedNames": 67,
+            "nameRecall": 0.8701298701298701,
+            "namePrecision": 0.7362637362637363,
+            "priceExact": 0.23880597014925373
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 39,
+          "providerHeadersMs": 2724,
+          "firstItemMs": 2790,
+          "totalMs": 9102,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 39,
+            "matchedNames": 39,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 2429,
+          "firstItemMs": 2607,
+          "totalMs": 9046,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 33,
+            "nameRecall": 0.8918918918918919,
+            "namePrecision": 0.8918918918918919,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 133,
+          "providerHeadersMs": 4353,
+          "firstItemMs": 4555,
+          "totalMs": 29513,
+          "error": null,
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 133,
+            "matchedNames": 66,
+            "nameRecall": 0.7586206896551724,
+            "namePrecision": 0.49624060150375937,
+            "priceExact": 1
+          }
+        }
+      ]
+    },
+    {
+      "provider": "doubao",
+      "transport": "ark",
+      "model": "doubao-seed-2-0-lite-260428",
+      "runs": 14,
+      "usableRuns": 10,
+      "usableRate": 0.7142857142857143,
+      "errorRuns": 4,
+      "zeroItemRuns": 2,
+      "goldCount": 625,
+      "predictionCount": 411,
+      "matchedNames": 357,
+      "nameRecall": 0.5712,
+      "namePrecision": 0.8686131386861314,
+      "priceCompared": 355,
+      "priceMatched": 263,
+      "priceExact": 0.7408450704225352,
+      "headersP50Ms": 3436,
+      "firstItemP50Ms": 21611,
+      "firstItemP95Ms": 41676,
+      "totalP50Ms": 45123,
+      "totalP95Ms": 79731,
+      "errorCounts": {
+        "provider_http_500": 1,
+        "timeout_or_abort": 3
+      },
+      "worstImages": [
+        {
+          "imageName": "M001_P06.jpg",
+          "recall": 0,
+          "predictions": 0,
+          "error": "provider_rejected:HTTP 500: {\"error\":{\"code\":\"InternalServiceError\",\"message\":\"The service encountered an unexpected internal error. Request id: 0217838740796759ccb9afc7f062b2675deaa60a1d1"
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "recall": 0,
+          "predictions": 0,
+          "error": "aborted:aborted"
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "recall": 0.027777777777777776,
+          "predictions": 10,
+          "error": "aborted:aborted"
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 3343,
+          "firstItemMs": 30524,
+          "totalMs": 40965,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 14,
+            "matchedNames": 12,
+            "nameRecall": 0.8571428571428571,
+            "namePrecision": 0.8571428571428571,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 9,
+          "providerHeadersMs": 5161,
+          "firstItemMs": 21611,
+          "totalMs": 28254,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 9,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 3956,
+          "firstItemMs": 41676,
+          "totalMs": 57552,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 14,
+            "matchedNames": 5,
+            "nameRecall": 0.4166666666666667,
+            "namePrecision": 0.35714285714285715,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 13,
+          "providerHeadersMs": 2430,
+          "firstItemMs": 16856,
+          "totalMs": 27343,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 13,
+            "matchedNames": 12,
+            "nameRecall": 0.9230769230769231,
+            "namePrecision": 0.9230769230769231,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 8,
+          "providerHeadersMs": 3622,
+          "firstItemMs": 20425,
+          "totalMs": 26652,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 8,
+            "matchedNames": 8,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 0,
+          "providerHeadersMs": null,
+          "firstItemMs": null,
+          "totalMs": 315,
+          "error": "provider_rejected:HTTP 500: {\"error\":{\"code\":\"InternalServiceError\",\"message\":\"The service encountered an unexpected internal error. Request id: 0217838740796759ccb9afc7f062b2675deaa60a1d1",
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 0,
+            "matchedNames": 0,
+            "nameRecall": 0,
+            "namePrecision": 0,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 69,
+          "providerHeadersMs": 4627,
+          "firstItemMs": 24092,
+          "totalMs": 73079,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 69,
+            "matchedNames": 68,
+            "nameRecall": 0.9855072463768116,
+            "namePrecision": 0.9855072463768116,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 86,
+          "providerHeadersMs": 3436,
+          "firstItemMs": 26336,
+          "totalMs": 79731,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 86,
+            "matchedNames": 75,
+            "nameRecall": 0.8522727272727273,
+            "namePrecision": 0.872093023255814,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 10,
+          "providerHeadersMs": 3546,
+          "firstItemMs": 71777,
+          "totalMs": 80008,
+          "error": "aborted:aborted",
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 10,
+            "matchedNames": 2,
+            "nameRecall": 0.027777777777777776,
+            "namePrecision": 0.2,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 55,
+          "providerHeadersMs": 2895,
+          "firstItemMs": 21196,
+          "totalMs": 59756,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 55,
+            "matchedNames": 53,
+            "nameRecall": 0.9636363636363636,
+            "namePrecision": 0.9636363636363636,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 0,
+          "providerHeadersMs": 3663,
+          "firstItemMs": null,
+          "totalMs": 80011,
+          "error": "aborted:aborted",
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 0,
+            "matchedNames": 0,
+            "nameRecall": 0,
+            "namePrecision": 0,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 39,
+          "providerHeadersMs": 3003,
+          "firstItemMs": 34275,
+          "totalMs": 56851,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 39,
+            "matchedNames": 39,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 5440,
+          "firstItemMs": 20123,
+          "totalMs": 45123,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 37,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 57,
+          "providerHeadersMs": 4550,
+          "firstItemMs": 29903,
+          "totalMs": 80003,
+          "error": "aborted:aborted",
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 57,
+            "matchedNames": 37,
+            "nameRecall": 0.42528735632183906,
+            "namePrecision": 0.6491228070175439,
+            "priceExact": 1
+          }
+        }
+      ]
+    },
+    {
+      "provider": "gemini",
+      "transport": "gemini",
+      "model": "gemini-2.5-flash-lite",
+      "runs": 14,
+      "usableRuns": 14,
+      "usableRate": 1,
+      "errorRuns": 0,
+      "zeroItemRuns": 0,
+      "goldCount": 625,
+      "predictionCount": 684,
+      "matchedNames": 307,
+      "nameRecall": 0.4912,
+      "namePrecision": 0.44883040935672514,
+      "priceCompared": 304,
+      "priceMatched": 210,
+      "priceExact": 0.6907894736842105,
+      "headersP50Ms": 3789,
+      "firstItemP50Ms": 4211,
+      "firstItemP95Ms": 13031,
+      "totalP50Ms": 12770,
+      "totalP95Ms": 32210,
+      "errorCounts": {},
+      "worstImages": [
+        {
+          "imageName": "M001_P03.jpg",
+          "recall": 0,
+          "predictions": 16,
+          "error": null
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "recall": 0,
+          "predictions": 15,
+          "error": null
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "recall": 0.01818181818181818,
+          "predictions": 1,
+          "error": null
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 15,
+          "providerHeadersMs": 2138,
+          "firstItemMs": 2447,
+          "totalMs": 4805,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 15,
+            "matchedNames": 7,
+            "nameRecall": 0.5,
+            "namePrecision": 0.4666666666666667,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 9,
+          "providerHeadersMs": 2146,
+          "firstItemMs": 2294,
+          "totalMs": 3536,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 9,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 16,
+          "providerHeadersMs": 4475,
+          "firstItemMs": 4800,
+          "totalMs": 9016,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 16,
+            "matchedNames": 0,
+            "nameRecall": 0,
+            "namePrecision": 0,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 15,
+          "providerHeadersMs": 3789,
+          "firstItemMs": 3951,
+          "totalMs": 7246,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 15,
+            "matchedNames": 0,
+            "nameRecall": 0,
+            "namePrecision": 0,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 10,
+          "providerHeadersMs": 7451,
+          "firstItemMs": 7799,
+          "totalMs": 10112,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 10,
+            "matchedNames": 3,
+            "nameRecall": 0.375,
+            "namePrecision": 0.3,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 52,
+          "providerHeadersMs": 2175,
+          "firstItemMs": 2390,
+          "totalMs": 19860,
+          "error": null,
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 52,
+            "matchedNames": 32,
+            "nameRecall": 0.7111111111111111,
+            "namePrecision": 0.6153846153846154,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 70,
+          "providerHeadersMs": 4123,
+          "firstItemMs": 4323,
+          "totalMs": 16099,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 70,
+            "matchedNames": 60,
+            "nameRecall": 0.8695652173913043,
+            "namePrecision": 0.8571428571428571,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 85,
+          "providerHeadersMs": 4144,
+          "firstItemMs": 4332,
+          "totalMs": 16896,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 85,
+            "matchedNames": 46,
+            "nameRecall": 0.5227272727272727,
+            "namePrecision": 0.5411764705882353,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 65,
+          "providerHeadersMs": 3952,
+          "firstItemMs": 4211,
+          "totalMs": 18435,
+          "error": null,
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 65,
+            "matchedNames": 34,
+            "nameRecall": 0.4722222222222222,
+            "namePrecision": 0.5230769230769231,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 1,
+          "providerHeadersMs": 4421,
+          "firstItemMs": 13031,
+          "totalMs": 13036,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 1,
+            "matchedNames": 1,
+            "nameRecall": 0.01818181818181818,
+            "namePrecision": 1,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 192,
+          "providerHeadersMs": 2191,
+          "firstItemMs": 2373,
+          "totalMs": 32210,
+          "error": null,
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 192,
+            "matchedNames": 4,
+            "nameRecall": 0.05194805194805195,
+            "namePrecision": 0.020833333333333332,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 39,
+          "providerHeadersMs": 2649,
+          "firstItemMs": 6390,
+          "totalMs": 12770,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 39,
+            "matchedNames": 35,
+            "nameRecall": 0.8974358974358975,
+            "namePrecision": 0.8974358974358975,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 4633,
+          "firstItemMs": 4825,
+          "totalMs": 10425,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 31,
+            "nameRecall": 0.8378378378378378,
+            "namePrecision": 0.8378378378378378,
+            "priceExact": 0.967741935483871
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 78,
+          "providerHeadersMs": 2705,
+          "firstItemMs": 3113,
+          "totalMs": 24801,
+          "error": null,
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 78,
+            "matchedNames": 45,
+            "nameRecall": 0.5172413793103449,
+            "namePrecision": 0.5769230769230769,
+            "priceExact": 1
+          }
+        }
+      ]
+    },
+    {
+      "provider": "stepfun",
+      "transport": "stepfun",
+      "model": "step-1o-turbo-vision",
+      "runs": 14,
+      "usableRuns": 12,
+      "usableRate": 0.8571428571428571,
+      "errorRuns": 2,
+      "zeroItemRuns": 0,
+      "goldCount": 625,
+      "predictionCount": 536,
+      "matchedNames": 220,
+      "nameRecall": 0.352,
+      "namePrecision": 0.41044776119402987,
+      "priceCompared": 218,
+      "priceMatched": 126,
+      "priceExact": 0.5779816513761468,
+      "headersP50Ms": 601,
+      "firstItemP50Ms": 1566,
+      "firstItemP95Ms": 3949,
+      "totalP50Ms": 30550,
+      "totalP95Ms": 70650,
+      "errorCounts": {
+        "timeout_or_abort": 2
+      },
+      "worstImages": [
+        {
+          "imageName": "M008_P01.jpg",
+          "recall": 0,
+          "predictions": 48,
+          "error": "aborted:aborted"
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "recall": 0.07692307692307693,
+          "predictions": 24,
+          "error": null
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "recall": 0.07792207792207792,
+          "predictions": 51,
+          "error": null
+        }
+      ],
+      "perImage": [
+        {
+          "imageName": "M001_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 17,
+          "providerHeadersMs": 987,
+          "firstItemMs": 2159,
+          "totalMs": 24728,
+          "error": null,
+          "score": {
+            "goldCount": 14,
+            "predictionCount": 17,
+            "matchedNames": 3,
+            "nameRecall": 0.21428571428571427,
+            "namePrecision": 0.17647058823529413,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 11,
+          "providerHeadersMs": 688,
+          "firstItemMs": 1871,
+          "totalMs": 17491,
+          "error": null,
+          "score": {
+            "goldCount": 9,
+            "predictionCount": 11,
+            "matchedNames": 9,
+            "nameRecall": 1,
+            "namePrecision": 0.8181818181818182,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P03.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 14,
+          "providerHeadersMs": 601,
+          "firstItemMs": 1761,
+          "totalMs": 12653,
+          "error": null,
+          "score": {
+            "goldCount": 12,
+            "predictionCount": 14,
+            "matchedNames": 2,
+            "nameRecall": 0.16666666666666666,
+            "namePrecision": 0.14285714285714285,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P04.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 24,
+          "providerHeadersMs": 538,
+          "firstItemMs": 1560,
+          "totalMs": 25282,
+          "error": null,
+          "score": {
+            "goldCount": 13,
+            "predictionCount": 24,
+            "matchedNames": 1,
+            "nameRecall": 0.07692307692307693,
+            "namePrecision": 0.041666666666666664,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M001_P05.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 8,
+          "providerHeadersMs": 471,
+          "firstItemMs": 2038,
+          "totalMs": 12660,
+          "error": null,
+          "score": {
+            "goldCount": 8,
+            "predictionCount": 8,
+            "matchedNames": 1,
+            "nameRecall": 0.125,
+            "namePrecision": 0.125,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M001_P06.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 62,
+          "providerHeadersMs": 503,
+          "firstItemMs": 1226,
+          "totalMs": 70650,
+          "error": null,
+          "score": {
+            "goldCount": 45,
+            "predictionCount": 62,
+            "matchedNames": 8,
+            "nameRecall": 0.17777777777777778,
+            "namePrecision": 0.12903225806451613,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M002_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 54,
+          "providerHeadersMs": 732,
+          "firstItemMs": 1523,
+          "totalMs": 61545,
+          "error": null,
+          "score": {
+            "goldCount": 69,
+            "predictionCount": 54,
+            "matchedNames": 43,
+            "nameRecall": 0.6231884057971014,
+            "namePrecision": 0.7962962962962963,
+            "priceExact": 0.20930232558139536
+          }
+        },
+        {
+          "imageName": "M003_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 60,
+          "providerHeadersMs": 870,
+          "firstItemMs": 1535,
+          "totalMs": 63011,
+          "error": null,
+          "score": {
+            "goldCount": 88,
+            "predictionCount": 60,
+            "matchedNames": 19,
+            "nameRecall": 0.2159090909090909,
+            "namePrecision": 0.31666666666666665,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M004_P01.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 55,
+          "providerHeadersMs": 512,
+          "firstItemMs": 1299,
+          "totalMs": 80002,
+          "error": "aborted:aborted",
+          "score": {
+            "goldCount": 72,
+            "predictionCount": 55,
+            "matchedNames": 9,
+            "nameRecall": 0.125,
+            "namePrecision": 0.16363636363636364,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M005_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 55,
+          "providerHeadersMs": 888,
+          "firstItemMs": 1566,
+          "totalMs": 64064,
+          "error": null,
+          "score": {
+            "goldCount": 55,
+            "predictionCount": 55,
+            "matchedNames": 44,
+            "nameRecall": 0.8,
+            "namePrecision": 0.8,
+            "priceExact": 0.9772727272727273
+          }
+        },
+        {
+          "imageName": "M006_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 51,
+          "providerHeadersMs": 874,
+          "firstItemMs": 3949,
+          "totalMs": 63755,
+          "error": null,
+          "score": {
+            "goldCount": 77,
+            "predictionCount": 51,
+            "matchedNames": 6,
+            "nameRecall": 0.07792207792207792,
+            "namePrecision": 0.11764705882352941,
+            "priceExact": 0
+          }
+        },
+        {
+          "imageName": "M007_P01.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 40,
+          "providerHeadersMs": 563,
+          "firstItemMs": 1376,
+          "totalMs": 30550,
+          "error": null,
+          "score": {
+            "goldCount": 39,
+            "predictionCount": 40,
+            "matchedNames": 38,
+            "nameRecall": 0.9743589743589743,
+            "namePrecision": 0.95,
+            "priceExact": 1
+          }
+        },
+        {
+          "imageName": "M007_P02.jpg",
+          "complete": true,
+          "partial": false,
+          "itemCount": 37,
+          "providerHeadersMs": 544,
+          "firstItemMs": 2686,
+          "totalMs": 36261,
+          "error": null,
+          "score": {
+            "goldCount": 37,
+            "predictionCount": 37,
+            "matchedNames": 37,
+            "nameRecall": 1,
+            "namePrecision": 1,
+            "priceExact": 0.918918918918919
+          }
+        },
+        {
+          "imageName": "M008_P01.jpg",
+          "complete": true,
+          "partial": true,
+          "itemCount": 48,
+          "providerHeadersMs": 694,
+          "firstItemMs": 1441,
+          "totalMs": 80022,
+          "error": "aborted:aborted",
+          "score": {
+            "goldCount": 87,
+            "predictionCount": 48,
+            "matchedNames": 0,
+            "nameRecall": 0,
+            "namePrecision": 0,
+            "priceExact": 0
+          }
+        }
+      ]
+    }
+  ]
+}

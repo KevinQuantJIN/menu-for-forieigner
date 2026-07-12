@@ -16,7 +16,7 @@ function renderCats() {
     : c === "⭐ Signature" ? streamed.filter(d => d.signature).length
     : streamed.filter(d => (d.category || "Other") === c).length;
   document.getElementById("cats").innerHTML = cats.filter(c => count(c) > 0).map(c =>
-    `<button class="cat ${c===currentCat?"on":""}" data-c="${esc(c)}" onclick="setCat(${JSON.stringify(c)})">${esc(c)}<i>${count(c)}</i></button>`).join("");
+    `<button class="cat ${c===currentCat?"on":""}" data-c="${esc(c)}" onclick="setCat('${c.replace(/'/g,"\\'")}')">${esc(c)}<i>${count(c)}</i></button>`).join("");
 }
 function setCat(c) { currentCat = c; renderCats(); renderList(); }
 
