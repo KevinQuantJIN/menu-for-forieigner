@@ -18,6 +18,7 @@
     --danger: #b23a2f; --danger-bg: #f7e3de;
     --warn: #8f6e1f;  --warn-bg: #f3e9c9;
     --green: #5c7d46; --green-bg: #e9edd8;
+  --gold: #e6c25c;      /* 金签 · 单元标题/语言徽标（order-card-final 定稿引入） */
 
     --t-large: 30px; --t-title: 21px; --t-body: 15px; --t-sub: 13px; --t-cap: 11.5px;
     --r-lg: 8px; --r-md: 6px; --r-sm: 4px;   /* 印刷体系：小切角，禁大圆角 */
