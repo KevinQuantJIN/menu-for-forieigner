@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chopstory · 食单一册 — Demo Stage</title>
+<style>
+  /* =====================================================================
+     Demo 展示壳 · 雕版食单主题
+     舞台 = 一张摊开的木刻印刷食单：纸墨朱、文武边、竖排刊语、朱印、点线菜账
+     手机框 = 精致 iPhone（钛边/灵动岛/侧键/高光/落影），屏内 iframe 真实 app
+     ===================================================================== */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --paper: #f5efe0; --paper-2: #efe7d2;
+    --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a;
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #e9dfc6;
+  }
+  html, body { height: 100%; }
+  body {
+    background: var(--paper); color: var(--ink); overflow: hidden;
+    font-family: "Songti SC", "STSong", Georgia, serif;
+  }
+  /* 纸纹 */
+  body::before {
+    content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
+  }
+  /* 全页文武边（印刷版框） */
+  .stage {
+    position: fixed; inset: 16px;
+    border: 3px solid var(--ink);
+    display: flex; align-items: center; justify-content: center; gap: 4vw;
+    padding: 0 4vw;
+  }
+  .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
+  /* 大字水印「食」 */
+  .watermark {
+    position: absolute; right: -2%; bottom: -12%; font-size: 46vh; line-height: 1;
+    color: transparent; -webkit-text-stroke: 1.5px rgba(38,32,25,.10); pointer-events: none; user-select: none;
+    font-family: "Kaiti SC", serif;
+  }
+
+  /* ---------- 左：竖排刊语 ---------- */
+  .side-left {
+    writing-mode: vertical-rl; text-orientation: upright;
+    display: flex; gap: 26px; align-items: flex-start; height: 62vh;
+    letter-spacing: .35em; flex: none;
+  }
+  .side-left .big { font-size: clamp(22px, 3.2vh, 34px); font-weight: 900; }
+  .side-left .small { font-size: clamp(11px, 1.5vh, 14px); color: var(--ink-3); letter-spacing: .5em; padding-top: 10px; }
+  .side-left .zhu-rule { width: 3px; background: var(--zhu); height: 38vh; margin: 4px 6px 0; }
+
+  /* ---------- 中：手机 ---------- */
+  .phone-wrap { position: relative; flex: none; }
+  /* 落影：接触影 + 环境大影 */
+  .phone-wrap::before {
+    content: ""; position: absolute; left: 6%; right: 6%; bottom: -34px; height: 50px; border-radius: 50%;
+    background: radial-gradient(ellipse at center, rgba(38,32,25,.32), transparent 68%);
+  }
+  .iphone {
+    position: relative; width: min(392px, 40vh + 160px); aspect-ratio: 392 / 800;
+    border-radius: 62px;
+    background: #0d0b09;
+    /* 钛金属边：多层描边模拟金属高光 */
+    box-shadow:
+      0 0 0 4.5px #3d3833,                        /* 钛外圈 */
+      0 0 0 6px #6e675e,                          /* 高光圈 */
+      0 0 0 7px #2b2723,                          /* 收边 */
+      0 34px 70px rgba(38,32,25,.38),             /* 环境影 */
+      inset 0 0 0 3px #000;                       /* 屏内黑缝 */
+    padding: 11px;
+  }
+  /* 金属边光斑 */
+  .iphone::before {
+    content: ""; position: absolute; inset: -6px; border-radius: 66px; pointer-events: none;
+    background: linear-gradient(115deg, rgba(255,255,255,.5) 0%, transparent 12%, transparent 55%, rgba(255,255,255,.28) 68%, transparent 78%);
+    -webkit-mask: linear-gradient(#fff, #fff) content-box, linear-gradient(#fff, #fff);
+    -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px;
+    opacity: .5;
+  }
+  /* 侧键 */
+  .btn-side { position: absolute; background: linear-gradient(90deg, #55504a, #23201c); border-radius: 3px; }
+  .b-action { left: -8.5px; top: 16%; width: 4px; height: 30px; }
+  .b-vol1 { left: -8.5px; top: 26%; width: 4px; height: 52px; }
+  .b-vol2 { left: -8.5px; top: 34%; width: 4px; height: 52px; }
+  .b-power { right: -8.5px; top: 28%; width: 4px; height: 78px; background: linear-gradient(270deg, #55504a, #23201c); }
+  .screen-hole {
+    position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #000;
+  }
+  .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: 100%; border: none; display: block; background: #f7f2e6; }
+  /* 灵动岛 */
+  .island {
+    position: absolute; top: 22px; left: 50%; transform: translateX(-50%);
+    width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5;
+    box-shadow: inset 0 0 2px rgba(255,255,255,.06);
+  }
+  .island::after { content: ""; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
+  /* 屏幕玻璃反光 */
+  .glass { position: absolute; inset: 0; border-radius: 50px; pointer-events: none; z-index: 6;
+    background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
+  .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
+
+  /* ---------- 右：刊头 + 卖点 + 印章 + 扫码 ---------- */
+  .side-right { max-width: 380px; flex: none; }
+  .kicker { display: flex; align-items: center; gap: 10px; font-size: 12px; letter-spacing: .4em; color: var(--ink-3); }
+  .kicker::after { content: ""; flex: 1; height: 1px; background: var(--ink); opacity: .4; }
+  h1.brand { margin-top: 14px; font-size: clamp(34px, 4.6vw, 54px); font-weight: 900; letter-spacing: 1px; line-height: 1.08; }
+  h1.brand em { font-style: normal; color: var(--zhu); }
+  .slogan-en { margin-top: 12px; font-size: 17px; color: var(--ink-2); font-style: italic; }
+  .slogan-en i { font-style: normal; box-shadow: inset 0 -3px 0 var(--zhu); }
+  .slogan-sub { margin-top: 8px; font-size: 12.5px; color: var(--ink-3); letter-spacing: .06em; font-family: "PingFang SC", sans-serif; }
+  .points { margin-top: 26px; }
+  .point { display: flex; align-items: baseline; padding: 10px 2px 9px; border-bottom: 1px solid rgba(38,32,25,.22); font-family: "PingFang SC", sans-serif; }
+  .point:first-child { border-top: 2.5px solid var(--ink); }
+  .point .cn { font-family: "Songti SC", serif; font-weight: 900; font-size: 15px; letter-spacing: .1em; flex: none; }
+  .point .lead { flex: 1; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; min-width: 20px; }
+  .point .en { font-size: 12px; color: var(--ink-3); text-align: right; }
+  .bottom-row { margin-top: 26px; display: flex; align-items: center; gap: 18px; }
+  .qr {
+    width: 92px; height: 92px; flex: none; position: relative;
+    border: 2.5px solid var(--ink); display: grid; place-items: center;
+  }
+  .qr::before { content: ""; position: absolute; inset: 4px; border: 1px solid var(--ink); }
+  .qr span { font-size: 11px; letter-spacing: .2em; color: var(--ink-3); writing-mode: vertical-rl; }
+  .qr b { position: absolute; inset: 14px; display: grid; place-items: center; font-size: 30px; opacity: .85; }
+  .stamp-row { display: flex; flex-direction: column; gap: 8px; }
+  .seal {
+    width: 54px; height: 54px; background: var(--zhu); color: #f6efdc; border-radius: 7px;
+    font-family: "Kaiti SC", serif; font-size: 17px; line-height: 1.15; letter-spacing: 2px;
+    display: grid; place-items: center; text-align: center; transform: rotate(2.5deg);
+    box-shadow: inset 0 0 0 2px rgba(246,239,220,.4);
+  }
+  .stamp-note { font-size: 10.5px; color: var(--ink-3); letter-spacing: .18em; }
+
+  /* ---------- 底部：菜账跑马 ---------- */
+  .ledger {
+    position: absolute; left: 26px; right: 26px; bottom: 14px;
+    display: flex; align-items: baseline; gap: 0; overflow: hidden; white-space: nowrap;
+    border-top: 1px solid rgba(38,32,25,.35); padding-top: 9px;
+    font-size: 12px; color: var(--ink-2);
+  }
+  .ledger .item { display: inline-flex; align-items: baseline; }
+  .ledger .nm { font-weight: 700; letter-spacing: .08em; }
+  .ledger .dots { display: inline-block; width: 34px; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 6px 3px; }
+  .ledger .pr { font-family: ui-monospace, monospace; font-size: 11px; }
+  .ledger .sep { margin: 0 16px; color: var(--zhu); }
+
+  /* 顶部刊眉 */
+  .masthead {
+    position: absolute; top: 14px; left: 26px; right: 26px;
+    display: flex; justify-content: space-between; align-items: baseline;
+    border-bottom: 1px solid rgba(38,32,25,.35); padding-bottom: 8px;
+    font-size: 11.5px; letter-spacing: .3em; color: var(--ink-3);
+  }
+  .masthead b { color: var(--zhu); }
+
+  @media (max-width: 1080px) {
+    .side-left { display: none; }
+    .watermark { font-size: 34vh; }
+  }
+  @media (max-width: 760px) {
+    .side-right { display: none; }
+    .stage { gap: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="stage">
+  <div class="masthead"><span>筷 子 故 事 · 食 单 一 册</span><span>CHOPSTORY · VOL.01 · <b>成都</b> CHENGDU EDITION · MMXXVI</span></div>
+  <div class="watermark">食</div>
+
+  <!-- 左：竖排刊语 -->
+  <aside class="side-left">
+    <span class="big">读得懂 · 点得对 · 吃得明白</span>
+    <span class="zhu-rule"></span>
+    <span class="small">献给每一位在中国餐桌前犹豫的旅人</span>
+  </aside>
+
+  <!-- 中：iPhone -->
+  <div class="phone-wrap">
+    <div class="iphone">
+      <span class="btn-side b-action"></span>
+      <span class="btn-side b-vol1"></span>
+      <span class="btn-side b-vol2"></span>
+      <span class="btn-side b-power"></span>
+      <div class="screen-hole">
+        <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo<br><small style="font-size:10px">npm run dev → localhost:3000</small></div>
+        <iframe src="app.html" title="Chopstory demo"></iframe>
+        <span class="island"></span>
+        <span class="glass"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 右：刊头 -->
+  <aside class="side-right">
+    <div class="kicker">A WOODBLOCK MENU LEDGER</div>
+    <h1 class="brand">Chop<em>story</em></h1>
+    <p class="slogan-en">Taste China, <i>order like a local.</i></p>
+    <p class="slogan-sub">Not just translated. Understood.</p>
+    <div class="points">
+      <div class="point"><span class="cn">看懂菜单</span><span class="lead"></span><span class="en">Your menu, decoded</span></div>
+      <div class="point"><span class="cn">放心下单</span><span class="lead"></span><span class="en">Allergies flagged &amp; folded for you</span></div>
+      <div class="point"><span class="cn">递给店家</span><span class="lead"></span><span class="en">Order like a local — waiter view</span></div>
+      <div class="point"><span class="cn">集印成册</span><span class="lead"></span><span class="en">Your chopstory so far</span></div>
+    </div>
+    <div class="bottom-row">
+      <div class="qr"><b>▦</b><span>扫码试用</span></div>
+      <div class="stamp-row">
+        <span class="seal">食迹</span>
+        <span class="stamp-note">已钤二印 · 尝八味</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- 底部菜账 -->
+  <div class="ledger">
+    <span class="item"><span class="nm">夫妻肺片</span><span class="dots"></span><span class="pr">¥25</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">钵钵鸡</span><span class="dots"></span><span class="pr">¥28</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">宫保鸡丁</span><span class="dots"></span><span class="pr">¥42</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">麻婆豆腐</span><span class="dots"></span><span class="pr">¥32</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">水煮鱼</span><span class="dots"></span><span class="pr">¥58</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">龙抄手</span><span class="dots"></span><span class="pr">¥18</span></span><span class="sep">·</span>
+    <span class="item"><span class="nm">红糖糍粑</span><span class="dots"></span><span class="pr">¥16</span></span>
+  </div>
+</div>
+</body>
+</html>

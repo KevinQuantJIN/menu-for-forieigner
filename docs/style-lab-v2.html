@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MenuLens · 反AI质感实验室 v2 · 三方案</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #e5e0d4; color: #262019; font-family: "PingFang SC", -apple-system, sans-serif; padding: 44px 4vw 90px; }
+  .grain { position: relative; }
+  .grain::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none; border-radius: inherit; z-index: 50;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='140' height='140' filter='url(%23n)' opacity='.045'/></svg>");
+    mix-blend-mode: multiply;
+  }
+  header.page h1 { font-family: "Songti SC", serif; font-size: 30px; letter-spacing: 2px; }
+  header.page p { margin-top: 10px; color: #5d5344; font-size: 13.5px; line-height: 1.8; max-width: 860px; }
+  header.page b { color: #262019; }
+
+  .lab { margin-top: 46px; border-radius: 20px; padding: 32px 32px 40px; }
+  .lab-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+  .lab-head .no { font-size: 13px; letter-spacing: .25em; }
+  .lab-head h2 { font-size: 26px; letter-spacing: 1px; }
+  .lab-head .en { font-size: 12.5px; opacity: .65; font-style: italic; }
+  .lab-desc { margin-top: 10px; font-size: 13px; line-height: 1.8; max-width: 800px; }
+  .craft { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .craft span { font-size: 11.5px; padding: 7px 12px; border-radius: 8px; }
+  .mocks { display: flex; gap: 28px; margin-top: 26px; flex-wrap: wrap; align-items: flex-start; }
+  .ph-label { text-align: center; font-size: 11.5px; opacity: .6; margin-top: 9px; }
+  .phone { width: 316px; border-radius: 38px; border: 9px solid #201a13; overflow: hidden; flex: none; box-shadow: 0 16px 38px rgba(40,30,15,.28); }
+  .screen { height: 640px; overflow: hidden; padding: 20px 16px; position: relative; display: flex; flex-direction: column; }
+  .pal { display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap; }
+  .pc { width: 92px; border-radius: 8px; overflow: hidden; font-size: 10px; }
+  .pc .c { height: 40px; }
+  .pc .t { padding: 5px 7px 6px; }
+  .pc .t b { display: block; font-size: 11px; }
+
+  /* =====================================================================
+     方案 A · 雕版食单 — 印刷工艺 / 墨线 / 朱印
+     线条语言：文武边（粗细双线框）· 发丝分隔线 · leader dots · 无阴影全平面
+     ===================================================================== */
+  .lab-a { background: #f4efe3; color: #262019; }
+  .lab-a .no, .lab-a .lab-head h2 { font-family: "Songti SC", serif; }
+  .lab-a .no { color: #b23a2f; }
+  .lab-a .craft span { background: #ece5d2; color: #5d5344; }
+  .a-screen { background: #f7f2e6; color: #262019; }
+  .a-frame { border: 2.5px solid #262019; outline: 1px solid #262019; outline-offset: -6.5px; } /* 文武边 */
+  .a-brand { display: flex; justify-content: space-between; align-items: center; }
+  .a-brand .n { font-family: "Songti SC", serif; font-size: 15px; font-weight: 900; letter-spacing: 2px; }
+  .a-seal { width: 30px; height: 30px; background: #b23a2f; color: #f7f0df; font-family: "Kaiti SC", serif; font-size: 10.5px; line-height: 1.1; display: grid; place-items: center; text-align: center; border-radius: 4px; transform: rotate(2.5deg); box-shadow: inset 0 0 0 1.5px rgba(247,240,223,.45); }
+  .a-slogan { font-family: "Songti SC", serif; font-size: 24px; line-height: 1.35; margin-top: 16px; text-align: center; letter-spacing: .5px; }
+  .a-slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 #b23a2f; }
+  .a-cta-row { display: flex; gap: 8px; margin-top: 16px; justify-content: center; }
+  .a-cta { background: #262019; color: #f2e9d5; padding: 12px 20px; font-size: 13px; font-weight: 700; border-radius: 5px; letter-spacing: .5px; }
+  .a-cta2 { background: none; color: #262019; padding: 12px 15px; font-size: 13px; font-weight: 700; border: 1.5px solid #262019; border-radius: 5px; }
+  .a-chips { display: flex; gap: 12px; justify-content: center; margin-top: 13px; font-size: 10.5px; color: #5d5344; }
+  .a-chips b { color: #b23a2f; }
+  .a-sechead { margin-top: 18px; display: flex; align-items: center; gap: 8px; font-family: "Songti SC", serif; font-size: 11.5px; letter-spacing: .2em; color: #5d5344; }
+  .a-sechead::before, .a-sechead::after { content: ""; flex: 1; height: 1px; background: #262019; opacity: .35; }
+  .a-map { margin-top: 12px; height: 190px; position: relative; overflow: hidden; background: #f3ecdb; padding: 6px; }
+  .a-map .inner { position: absolute; inset: 6px; }
+  .a-prov { position: absolute; background: #ece3cc; box-shadow: inset 0 0 0 1px rgba(38,32,25,.28); }
+  .a-prov.lit { background: #b23a2f; box-shadow: inset 0 0 0 1.5px #7e241c; transform: rotate(-1deg); } /* 盖章点亮：像在地图上钤了一方朱印 */
+  .a-prov.lit::after { content: "食"; position: absolute; inset: 0; display: grid; place-items: center; color: rgba(247,240,223,.85); font-family: "Kaiti SC", serif; font-size: 13px; }
+  .a-citylab { position: absolute; font-family: "Songti SC", serif; font-size: 9.5px; color: #5d5344; }
+  .a-mapcap { position: absolute; bottom: 6px; left: 6px; right: 6px; text-align: center; font-family: "Songti SC", serif; font-size: 10px; letter-spacing: .18em; color: #5d5344; padding: 14px 0 6px; background: linear-gradient(transparent, rgba(243,236,219,.95) 55%); }
+  .a-restcard { position: absolute; z-index: 5; width: 126px; background: #f7f2e6; border: 1.5px solid #262019; padding: 7px 8px; font-size: 9px; }
+  .a-restcard::before { content: ""; position: absolute; left: -13px; top: 58%; width: 13px; height: 1.5px; background: #262019; }
+  .a-restcard .n { font-family: "Songti SC", serif; font-size: 10.5px; font-weight: 900; }
+  .a-restcard .m { color: #5d5344; margin-top: 2px; font-size: 8.5px; font-variant-numeric: tabular-nums; }
+  .a-restcard .d { margin-top: 4px; font-size: 8px; color: #b23a2f; font-family: "Songti SC", serif; letter-spacing: .1em; }
+  /* A 菜单 list：无卡片。鱼尾节标 + 行 + leader dots + 发丝线 */
+  .a-resto { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 10px; border-bottom: 2.5px solid #262019; }
+  .a-resto .n { font-family: "Songti SC", serif; font-size: 15px; font-weight: 900; letter-spacing: 1px; }
+  .a-resto .v { font-size: 10px; color: #b23a2f; font-weight: 700; }
+  .a-cat { margin-top: 14px; font-family: "Songti SC", serif; font-size: 11.5px; letter-spacing: .25em; color: #262019; }
+  .a-cat::before { content: "【"; color: #b23a2f; } .a-cat::after { content: "】"; color: #b23a2f; }
+  .a-row { padding: 10px 2px 9px; border-bottom: 1px solid rgba(38,32,25,.22); }
+  .a-row .l1 { display: flex; align-items: baseline; }
+  .a-row .nm { font-size: 13.5px; font-weight: 800; letter-spacing: -.1px; }
+  .a-row .lead { flex: 1; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 7px 3px; min-width: 14px; }
+  .a-row .pr { font-size: 13px; font-weight: 800; font-variant-numeric: tabular-nums; font-family: ui-monospace, "SF Mono", monospace; }
+  .a-row .l2 { display: flex; justify-content: space-between; margin-top: 3px; font-size: 10px; color: #5d5344; }
+  .a-row .warn { color: #b23a2f; font-weight: 700; }
+  .a-row .plus { float: right; width: 20px; height: 20px; border: 1.5px solid #262019; border-radius: 3px; display: grid; place-items: center; font-size: 13px; margin-left: 8px; }
+  .a-fold { margin-top: 12px; padding: 9px 2px; border-top: 2.5px solid #b23a2f; border-bottom: 1px solid rgba(38,32,25,.22); font-size: 10.5px; color: #b23a2f; font-weight: 700; }
+  .a-cart { margin-top: auto; border-top: 2.5px solid #262019; padding-top: 10px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 800; font-variant-numeric: tabular-nums; }
+  .a-cart .go { background: #b23a2f; color: #f7f0df; padding: 9px 16px; border-radius: 4px; font-size: 11.5px; }
+
+  /* =====================================================================
+     方案 B · 夜窟青金 — 深石青夜场 + 藤黄鎏金 · 描金发丝框 · 蓝调阴影
+     ===================================================================== */
+  .lab-b { background: #22334c; color: #e9e4d3; }
+  .lab-b .no { color: #d3a94f; font-family: "Songti SC", serif; }
+  .lab-b .lab-head h2 { font-family: "Songti SC", serif; color: #f2edda; }
+  .lab-b .lab-desc { color: #b9c2cf; }
+  .lab-b .craft span { background: rgba(233,228,211,.1); color: #cfd6de; }
+  .b-screen { background: #24364f; color: #ece7d6; }
+  .b-hero { margin: -20px -16px 0; padding: 22px 18px 20px; background: linear-gradient(175deg, #1d2c42, #2a4060); }
+  .b-brand { display: flex; justify-content: space-between; align-items: center; }
+  .b-brand .n { font-size: 15px; font-weight: 900; letter-spacing: .5px; color: #f2edda; }
+  .b-brand .n em { color: #d3a94f; font-style: normal; }
+  .b-moon { width: 26px; height: 26px; border-radius: 999px; background: radial-gradient(circle at 38% 32%, #f4e7bd, #d3a94f 75%); box-shadow: 0 0 14px rgba(211,169,79,.5); }
+  .b-slogan { font-family: "Songti SC", serif; font-size: 24px; line-height: 1.3; margin-top: 14px; text-align: center; color: #f4efdd; }
+  .b-slogan i { font-style: normal; box-shadow: inset 0 -2.5px 0 #d3a94f; }
+  .b-cta-row { display: flex; gap: 8px; margin-top: 15px; justify-content: center; }
+  .b-cta { background: #d3a94f; color: #22334c; border-radius: 999px; padding: 12px 20px; font-size: 13px; font-weight: 800; box-shadow: 0 8px 20px rgba(211,169,79,.28); }
+  .b-cta2 { background: none; color: #e9e4d3; border-radius: 999px; padding: 12px 15px; font-size: 13px; font-weight: 700; box-shadow: inset 0 0 0 1.2px rgba(233,228,211,.45); }
+  .b-chips { display: flex; gap: 6px; justify-content: center; margin-top: 12px; }
+  .b-chip { font-size: 10px; font-weight: 700; border-radius: 999px; padding: 4px 10px; background: rgba(233,228,211,.12); color: #d7dce2; }
+  .b-sec { margin-top: 16px; font-size: 10.5px; font-weight: 800; letter-spacing: .14em; color: #9fabbd; display: flex; justify-content: space-between; }
+  .b-sec .see { color: #d3a94f; }
+  .b-map { margin-top: 10px; height: 188px; border-radius: 16px; position: relative; overflow: hidden; background: #1b2a40; box-shadow: inset 0 0 0 1px rgba(211,169,79,.35), 0 10px 24px rgba(10,18,30,.4); }
+  .b-prov { position: absolute; background: #263c59; box-shadow: inset 0 0 0 1px rgba(211,169,79,.16); }
+  .b-prov.lit { background: linear-gradient(140deg, #e3bb63, #c9973b); box-shadow: 0 0 18px rgba(211,169,79,.45); }
+  .b-star { position: absolute; width: 3px; height: 3px; border-radius: 99px; background: #e9e4d3; opacity: .5; }
+  .b-citylab { position: absolute; font-family: "Songti SC", serif; font-size: 9.5px; color: #cdb87e; }
+  .b-mapcap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-family: "Songti SC", serif; font-size: 10px; letter-spacing: .16em; color: #cdb87e; padding: 14px 0 7px; background: linear-gradient(transparent, rgba(27,42,64,.96) 60%); }
+  .b-restcard { position: absolute; z-index: 5; width: 128px; background: #f4efdd; color: #2b2а20; border-radius: 9px; padding: 7px 8px; font-size: 9px; box-shadow: 0 10px 26px rgba(8,14,24,.55), inset 0 0 0 1px rgba(211,169,79,.5); color: #33291f; }
+  .b-restcard .n { font-size: 10px; font-weight: 800; }
+  .b-restcard .m { color: #7c6a4f; margin-top: 2px; font-size: 8.5px; font-variant-numeric: tabular-nums; }
+  .b-restcard .d { margin-top: 4px; font-size: 8px; color: #9a7c33; font-family: "Songti SC", serif; letter-spacing: .08em; }
+  .b-body { background: #f2eee1; color: #33301f; margin: 14px -16px -20px; flex: 1; border-radius: 22px 22px 0 0; padding: 16px 16px 18px; } /* 升起的米白内容层 */
+  .b-card { background: #fbf8ee; border-radius: 13px; padding: 12px 13px; margin-top: 9px; box-shadow: inset 0 0 0 1px rgba(176,140,64,.35), 0 3px 10px rgba(38,52,76,.1); position: relative; }
+  .b-card .nm { font-size: 13.5px; font-weight: 800; color: #2c2a1e; padding-right: 54px; }
+  .b-card .cn { font-size: 10.5px; color: #837а5e; color: #83795e; margin-top: 3px; }
+  .b-card .pr { position: absolute; top: 12px; right: 13px; text-align: right; font-size: 12.5px; font-weight: 800; font-variant-numeric: tabular-nums; color: #2c2a1e; }
+  .b-card .pr span { display: block; font-size: 8.5px; color: #83795e; font-weight: 500; }
+  .b-tag { display: inline-block; font-size: 9px; font-weight: 700; border-radius: 999px; padding: 3px 8px; margin-top: 7px; }
+  .b-tag.red { background: #f3ded6; color: #a3442d; }
+  .b-tag.gold { background: #f0e5c3; color: #8a6a1d; }
+  .b-tag.green { background: #e4ebd8; color: #58743f; }
+  .b-add { position: absolute; right: 11px; bottom: 10px; width: 24px; height: 24px; border-radius: 999px; background: #2a4060; color: #e9d9a8; font-size: 14px; display: grid; place-items: center; }
+  .b-cats { display: flex; gap: 6px; margin-top: 2px; }
+  .b-cat { font-size: 10.5px; font-weight: 700; border-radius: 999px; padding: 6px 12px; background: none; box-shadow: inset 0 0 0 1px rgba(120,100,60,.4); color: #6d6248; }
+  .b-cat.on { background: #2a4060; color: #ecd9a4; box-shadow: none; }
+  .b-resto { display: flex; gap: 8px; align-items: center; font-size: 12.5px; font-weight: 800; color: #2c2a1e; padding-bottom: 10px; }
+  .b-resto small { display: block; font-weight: 500; font-size: 9.5px; color: #83795e; }
+  .b-resto .v { margin-left: auto; font-size: 10px; color: #9a7c33; font-weight: 700; }
+
+  /* =====================================================================
+     方案 C · 大排档招牌 — 食堂绿×辣椒红×蛋黄 · 2px 墨线描边 + 套色错位硬阴影
+     ===================================================================== */
+  .lab-c { background: #f2eee3; color: #27221c; }
+  .lab-c .no { color: #2f6d4f; font-family: "Kaiti SC", serif; }
+  .lab-c .lab-head h2 { font-family: "Kaiti SC", serif; }
+  .lab-c .craft span { background: #fff; color: #4c4438; box-shadow: inset 0 0 0 1.5px #27221c; border-radius: 6px; }
+  .c-screen { background: #f5f1e6; color: #27221c; }
+  .c-brand { display: flex; justify-content: space-between; align-items: center; }
+  .c-brand .n { font-size: 16px; font-weight: 900; }
+  .c-brand .n em { color: #2f6d4f; font-style: normal; }
+  .c-badge { background: #f2b33d; border: 2px solid #27221c; border-radius: 999px; font-family: "Kaiti SC", serif; font-size: 10px; padding: 4px 9px; transform: rotate(3deg); box-shadow: 2px 2px 0 #27221c; }
+  .c-slogan { font-family: "Kaiti SC", serif; font-size: 26px; line-height: 1.28; margin-top: 15px; text-align: center; }
+  .c-slogan i { font-style: normal; background: linear-gradient(transparent 62%, #f2b33d 62%); }
+  .c-cta-row { display: flex; gap: 9px; margin-top: 16px; justify-content: center; }
+  .c-cta { background: #2f6d4f; color: #f7f2e2; border: 2px solid #27221c; border-radius: 12px; padding: 12px 19px; font-size: 13.5px; font-weight: 800; box-shadow: 3px 3px 0 #27221c; }
+  .c-cta2 { background: #fff; color: #27221c; border: 2px solid #27221c; border-radius: 12px; padding: 12px 14px; font-size: 13.5px; font-weight: 700; box-shadow: 3px 3px 0 rgba(39,34,28,.35); }
+  .c-chips { display: flex; gap: 6px; justify-content: center; margin-top: 14px; }
+  .c-chip { font-size: 10px; font-weight: 800; border-radius: 999px; padding: 4px 10px; background: #fff; border: 1.5px solid #27221c; }
+  .c-sec { margin-top: 17px; display: flex; justify-content: space-between; align-items: center; }
+  .c-sec .t { font-family: "Kaiti SC", serif; font-size: 13px; letter-spacing: .1em; }
+  .c-sec .see { font-size: 10.5px; color: #2f6d4f; font-weight: 800; }
+  .c-map { margin-top: 10px; height: 186px; border-radius: 14px; border: 2px solid #27221c; position: relative; overflow: hidden; background: #eef0e2; box-shadow: 4px 4px 0 rgba(47,109,79,.25); }
+  .c-prov { position: absolute; background: #fff; box-shadow: inset 0 0 0 1.5px #27221c; }
+  .c-prov.lit-g { background: #2f6d4f; }
+  .c-prov.lit-r { background: #c73a2c; }
+  .c-pin { position: absolute; z-index: 4; font-size: 13px; }
+  .c-citylab { position: absolute; font-size: 9.5px; font-weight: 800; }
+  .c-mapcap { position: absolute; bottom: 0; left: 0; right: 0; text-align: center; font-family: "Kaiti SC", serif; font-size: 10.5px; letter-spacing: .1em; padding: 13px 0 6px; background: linear-gradient(transparent, rgba(238,240,226,.97) 55%); }
+  .c-restcard { position: absolute; z-index: 5; width: 128px; background: #fff; border: 2px solid #27221c; border-radius: 10px; padding: 7px 8px; font-size: 9px; transform: rotate(-2.5deg); box-shadow: 3px 3px 0 #27221c; }
+  .c-restcard .n { font-size: 10px; font-weight: 900; }
+  .c-restcard .m { color: #6d6353; margin-top: 2px; font-size: 8.5px; font-variant-numeric: tabular-nums; }
+  .c-restcard .d { margin-top: 4px; font-size: 8px; font-family: "Kaiti SC", serif; color: #c73a2c; }
+  .c-card { background: #fff; border: 2px solid #27221c; border-radius: 14px; padding: 12px 13px; margin-top: 11px; position: relative; box-shadow: 3px 3px 0 rgba(47,109,79,.28); }
+  .c-card .nm { font-size: 13.5px; font-weight: 800; padding-right: 58px; }
+  .c-card .cn { font-size: 10.5px; color: #6d6353; margin-top: 3px; }
+  .c-price { position: absolute; top: -9px; right: 12px; background: #f2b33d; border: 2px solid #27221c; border-radius: 7px; padding: 3px 8px; font-size: 11.5px; font-weight: 900; font-variant-numeric: tabular-nums; transform: rotate(1.5deg); }
+  .c-price small { font-size: 8px; font-weight: 600; }
+  .c-tag { display: inline-block; font-size: 9px; font-weight: 800; border-radius: 999px; padding: 3px 8px; margin-top: 8px; border: 1.5px solid; }
+  .c-tag.red { color: #c73a2c; border-color: #c73a2c; background: #faeae6; }
+  .c-tag.gold { color: #8a6413; border-color: #d9a92c; background: #fbf3d8; }
+  .c-tag.green { color: #2f6d4f; border-color: #2f6d4f; background: #e9f1e8; }
+  .c-add { position: absolute; right: 11px; bottom: 10px; width: 25px; height: 25px; border-radius: 8px; background: #2f6d4f; border: 2px solid #27221c; color: #fff; font-size: 14px; font-weight: 800; display: grid; place-items: center; box-shadow: 2px 2px 0 #27221c; }
+  .c-cats { display: flex; gap: 7px; margin-top: 3px; }
+  .c-cat { font-size: 10.5px; font-weight: 800; border-radius: 999px; padding: 6px 12px; background: #fff; border: 1.5px solid #27221c; }
+  .c-cat.on { background: #27221c; color: #f2b33d; }
+  .c-resto { display: flex; gap: 8px; align-items: center; background: #fff; border: 2px solid #27221c; border-radius: 12px; padding: 10px 12px; font-size: 12.5px; font-weight: 800; box-shadow: 3px 3px 0 rgba(199,58,44,.25); }
+  .c-resto small { display: block; font-weight: 500; font-size: 9.5px; color: #6d6353; }
+  .c-resto .v { margin-left: auto; font-size: 10px; color: #c73a2c; font-weight: 800; }
+  .c-cart { margin-top: auto; background: #27221c; color: #f5f1e6; border-radius: 12px; border: 2px solid #27221c; padding: 10px 10px 10px 15px; display: flex; align-items: center; font-size: 11.5px; font-weight: 800; box-shadow: 3px 3px 0 rgba(242,179,61,.5); }
+  .c-cart .go { margin-left: auto; background: #c73a2c; border-radius: 8px; padding: 8px 13px; font-size: 11px; color: #fff; border: 1.5px solid #f5f1e6; }
+
+  footer.page { margin-top: 48px; color: #5d5344; font-size: 12.5px; line-height: 1.9; max-width: 880px; }
+</style>
+</head>
+<body class="grain">
+
+<header class="page">
+  <h1>反 AI 质感实验室 · 三方案</h1>
+  <p>共同纪律（取自顶级实践与 taste/impeccable 方法论）：<b>禁纯黑</b>（一律苍墨 #262019 级 off-black）、<b>禁高饱和荧光</b>、<b>禁「白底+圆角+浅阴影」万能卡</b>——每一版的容器与线条都有明确工艺出处；
+  <b>数字一律等宽字体</b>；阴影必须带环境色相；全局矿物/纸张颗粒。主色全部避开土黄陶土系（Claude 色带）。</p>
+</header>
+
+<!-- ═══════════════ A 雕版食单 ═══════════════ -->
+<section class="lab lab-a grain">
+  <div class="lab-head"><span class="no">方案一</span><h2>雕版食单</h2><span class="en">Woodblock Ledger · 墨 × 朱印</span></div>
+  <p class="lab-desc">整个 app 是一册<b>木刻印刷的食单</b>：全平面、零阴影、零卡片——层级全靠<b>线条工艺</b>：外粗内细的「文武边」大框、发丝分隔线、菜名与价格之间的<b>引导点线（leader dots）</b>、【鱼尾】节标。
+  朱红只做印章与警示，永不铺面。点亮省份 = 在地图上<b>钤一方朱印</b>（微旋转，人手盖章的不齐）。这是三版中「印刷手工感」最强、离 AI 最远的一版。</p>
+  <div class="craft"><span>线条：文武边双线框 · 发丝线 · 点线引导</span><span>字体：宋体大标 + 等宽数字</span><span>质感：纸纹 + 零阴影全平面</span><span>点睛：朱印章（微旋转）</span></div>
+  <div class="pal">
+    <div class="pc"><div class="c" style="background:#f7f2e6"></div><div class="t"><b>纸白</b>#F7F2E6</div></div>
+    <div class="pc"><div class="c" style="background:#262019"></div><div class="t"><b>苍墨</b>#262019</div></div>
+    <div class="pc"><div class="c" style="background:#b23a2f"></div><div class="t"><b>朱印</b>#B23A2F</div></div>
+    <div class="pc"><div class="c" style="background:#ece3cc"></div><div class="t"><b>茶笺</b>#ECE3CC</div></div>
+  </div>
+  <div class="mocks">
+    <div><div class="phone"><div class="screen a-screen grain">
+      <div class="a-brand"><span class="n">菜单镜 MENULENS</span><span class="a-seal">食迹</span></div>
+      <div class="a-slogan">Read it. Order it.<br><i>Eat the story.</i></div>
+      <div class="a-cta-row"><span class="a-cta">📷 Scan a menu</span><span class="a-cta2">Album</span></div>
+      <div class="a-chips"><span><b>🚫</b> Peanut</span><span><b>🌶</b> Mild</span><span style="text-decoration:underline">edit</span></div>
+      <div class="a-sechead">食 迹 · MY FOOD STORY</div>
+      <div class="a-map a-frame"><div class="inner">
+        <span class="a-prov" style="top:10%;left:34%;width:62px;height:38px"></span>
+        <span class="a-prov lit" style="top:33%;left:15%;width:66px;height:54px"></span>
+        <span class="a-prov lit" style="top:14%;left:64%;width:30px;height:26px;transform:rotate(1.5deg)"></span>
+        <span class="a-prov" style="top:55%;left:50%;width:56px;height:36px"></span>
+        <span class="a-citylab" style="top:56%;left:19%">成都 Chengdu</span>
+        <div class="a-restcard" style="top:16%;left:40%">
+          <div class="n">马旺子 Ma Wang Zi</div>
+          <div class="m">3 dishes · ¥90 ≈ $13</div>
+          <div class="d">今日 · 成都一印</div>
+        </div>
+        <div class="a-mapcap">已 钤 二 印 · 尝 八 味</div>
+      </div></div>
+      <div class="a-row" style="margin-top:12px">
+        <div class="l1"><span class="nm">🦆 Siji Minfu 四季民福</span><span class="lead"></span><span class="pr">Jul 9</span></div>
+        <div class="l2"><span>Beijing · 22 dishes · 5 ordered</span><span class="warn">北京一印</span></div>
+      </div>
+    </div></div><p class="ph-label">首页 · 地图=集印册，餐厅小卡片墨线框</p></div>
+    <div><div class="phone"><div class="screen a-screen grain">
+      <div class="a-resto"><span class="n">川辣小馆</span><span style="font-size:10px;color:#5d5344">Sichuan · 14 dishes</span><span class="v">View original</span></div>
+      <div class="a-cat">凉菜 COLD STARTERS</div>
+      <div class="a-row">
+        <span class="plus">＋</span>
+        <div class="l1"><span class="nm">夫妻肺片</span><span class="lead"></span><span class="pr">¥25</span></div>
+        <div class="l2"><span>"Couple's Lung Slices" — no lungs · fū qī fèi piàn 🔊</span><span>≈$3.5</span></div>
+      </div>
+      <div class="a-row">
+        <span class="plus">＋</span>
+        <div class="l1"><span class="nm">口水鸡</span><span class="lead"></span><span class="pr">¥24</span></div>
+        <div class="l2"><span>Mouthwatering chicken, served cold · 🌶🌶</span><span>≈$3.4</span></div>
+      </div>
+      <div class="a-cat">热菜 MAINS</div>
+      <div class="a-row">
+        <span class="plus">＋</span>
+        <div class="l1"><span class="nm">宫保鸡丁</span><span class="lead"></span><span class="pr">¥42</span></div>
+        <div class="l2"><span>Kung Pao Chicken · <span class="warn">⚠ contains peanut</span></span><span>≈$5.9</span></div>
+      </div>
+      <div class="a-row">
+        <span class="plus">＋</span>
+        <div class="l1"><span class="nm">麻婆豆腐</span><span class="lead"></span><span class="pr">¥32</span></div>
+        <div class="l2"><span>Mapo Tofu · numbing ⚡ · 👑 signature</span><span>≈$4.5</span></div>
+      </div>
+      <div class="a-fold">▸ 一道菜为你隐去 —— 含花生 · tap to review</div>
+      <div class="a-cart"><span>🧾 2 dishes · ¥74 ≈ $10</span><span class="go">View order ›</span></div>
+    </div></div><p class="ph-label">菜单 list · 无卡片：点线引导 + 发丝线 + 鱼尾节标</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════ B 夜窟青金 ═══════════════ -->
+<section class="lab lab-b grain">
+  <div class="lab-head"><span class="no">方案二</span><h2>夜窟青金</h2><span class="en">Azurite Night · 石青 × 鎏金</span></div>
+  <p class="lab-desc">敦煌的另一半：不取沙壁的暖，取<b>夜窟的石青深蓝 × 壁画鎏金</b>。首屏与地图沉在深青夜色里（星点、金月、藤黄点亮省），内容层像一张<b>米白手账从夜色里升起</b>（圆角浮层）。
+  卡片不用灰阴影——用<b>描金发丝框（inset 金线）+ 蓝调环境阴影</b>。气质最「高级馆藏」，且蓝金与 Claude 橙完全无关。</p>
+  <div class="craft"><span>线条：描金发丝框（inset 1px 金）</span><span>字体：宋体标题 + 等宽数字</span><span>质感：夜色渐层 + 星点 + 蓝调阴影</span><span>点睛：金月 / 藤黄点亮</span></div>
+  <div class="pal">
+    <div class="pc" style="color:#e9e4d3"><div class="c" style="background:#22334c"></div><div class="t"><b>夜窟青</b>#22334C</div></div>
+    <div class="pc" style="color:#e9e4d3"><div class="c" style="background:#2a4060"></div><div class="t"><b>石青</b>#2A4060</div></div>
+    <div class="pc"><div class="c" style="background:#d3a94f"></div><div class="t" style="color:#2b2а20;color:#33291f"><b>鎏金</b>#D3A94F</div></div>
+    <div class="pc"><div class="c" style="background:#f2eee1"></div><div class="t" style="color:#33291f"><b>经纸</b>#F2EEE1</div></div>
+  </div>
+  <div class="mocks">
+    <div><div class="phone"><div class="screen b-screen grain">
+      <div class="b-hero">
+        <div class="b-brand"><span class="n">Menu<em>Lens</em></span><span class="b-moon"></span></div>
+        <div class="b-slogan">Read it. Order it.<br><i>Eat the story.</i></div>
+        <div class="b-cta-row"><span class="b-cta">📷 Scan a menu</span><span class="b-cta2">Album</span></div>
+        <div class="b-chips"><span class="b-chip">🚫 Peanut</span><span class="b-chip">🌶 Mild</span><span class="b-chip" style="color:#e9d9a8">✎ edit</span></div>
+        <div class="b-sec"><span>MY FOOD STORY</span><span class="see">See all ›</span></div>
+        <div class="b-map">
+          <span class="b-star" style="top:12%;left:18%"></span><span class="b-star" style="top:22%;left:80%"></span><span class="b-star" style="top:8%;left:55%"></span><span class="b-star" style="top:70%;left:12%"></span><span class="b-star" style="top:60%;left:86%"></span>
+          <span class="b-prov" style="top:12%;left:34%;width:62px;height:38px;border-radius:52% 46% 50% 46%"></span>
+          <span class="b-prov lit" style="top:34%;left:16%;width:66px;height:54px;border-radius:44% 56% 42% 58%"></span>
+          <span class="b-prov lit" style="top:15%;left:63%;width:32px;height:27px;border-radius:50%"></span>
+          <span class="b-prov" style="top:56%;left:50%;width:56px;height:36px;border-radius:46% 54% 48% 46%"></span>
+          <span class="b-citylab" style="top:57%;left:20%">成都 Chengdu</span>
+          <div class="b-restcard" style="top:17%;left:40%">
+            <div class="n">🍜 Ma Wang Zi 马旺子</div>
+            <div class="m">3 dishes · ¥90 ≈ $13</div>
+            <div class="d">TODAY · 成都 燃灯</div>
+          </div>
+          <div class="b-mapcap">食迹 · 已燃 二 灯 · 尝 八 味</div>
+        </div>
+      </div>
+      <div class="b-body grain">
+        <div class="b-card"><div class="nm">🦆 Siji Minfu 四季民福</div><div class="cn">Jul 9 · Beijing · 22 dishes · 5 ordered</div><span class="b-tag gold">🥢 ordered like a local</span></div>
+      </div>
+    </div></div><p class="ph-label">首页 · 夜窟星图 + 燃灯点亮 + 米白浮层</p></div>
+    <div><div class="phone"><div class="screen b-screen grain" style="background:#f2eee1;padding-top:18px">
+      <div style="color:#33301f">
+        <div class="b-resto">🍜 <div>Chuanla Kitchen 川辣小馆<small>Sichuan · 14 dishes</small></div><span class="v">View original</span></div>
+        <div class="b-cats"><span class="b-cat on">All</span><span class="b-cat">⭐ Sig</span><span class="b-cat">Cold</span><span class="b-cat">Mains</span></div>
+        <div class="b-card"><div class="nm">🥜 Kung Pao Chicken</div><div class="cn">宫保鸡丁 · gōng bǎo jī dīng 🔊</div><div class="pr">¥42<span>≈ $5.9 · 🌶</span></div><span class="b-tag red">⚠ contains peanut</span><span class="b-add">＋</span></div>
+        <div class="b-card"><div class="nm">🌶️ Mapo Tofu</div><div class="cn">麻婆豆腐 · má pó dòu fu 🔊</div><div class="pr">¥32<span>≈ $4.5 · 🌶🌶</span></div><span class="b-tag gold">👑 signature</span><span class="b-add">＋</span></div>
+        <div class="b-card"><div class="nm">🥟 Long Chao Shou Wontons</div><div class="cn">龙抄手 · lóng chāo shǒu 🔊</div><div class="pr">¥18<span>≈ $2.5</span></div><span class="b-tag gold" style="background:#efe9d5;color:#6d6248">not spicy</span><span class="b-add">＋</span></div>
+        <div class="b-card"><div class="nm">🍡 Brown-Sugar Rice Cakes</div><div class="cn">红糖糍粑 · hóng táng cí bā 🔊</div><div class="pr">¥16<span>≈ $2.2</span></div><span class="b-tag green">🌱 vegetarian</span><span class="b-add">＋</span></div>
+        <div style="margin-top:12px;border-radius:11px;padding:9px 13px;background:#ecdfd2;color:#a3442d;font-size:10.5px;font-weight:700">▸ 1 dish hidden — contains peanut</div>
+      </div>
+    </div></div><p class="ph-label">菜单 list · 描金发丝框卡片（白日面）</p></div>
+  </div>
+</section>
+
+<!-- ═══════════════ C 大排档招牌 ═══════════════ -->
+<section class="lab lab-c grain">
+  <div class="lab-head"><span class="no">方案三</span><h2>大排档招牌</h2><span class="en">Canteen Sign-Painting · 食堂绿 × 辣椒红 × 蛋黄</span></div>
+  <p class="lab-desc">中国街头食物的视觉母语：<b>老食堂绿墙裙、手写价目牌、搪瓷缸、印刷套色错位</b>。线条语言是 <b>2px 苍墨实线描边 + 无模糊的偏移硬阴影</b>（就是老海报套色没对准的那 3px），
+  价格做成<b>蛋黄底手写价签</b>斜贴在卡片上，徽章微旋转像贴纸。楷体标题自带人手味。三版中最活泼、最「跳脱」、小红书传播脸最好——而且 neo-print 风格和 AI 默认审美是两个宇宙。</p>
+  <div class="craft"><span>线条：2px 墨线描边 + 3px 套色错位硬阴影</span><span>字体：楷体标题 + 等宽数字</span><span>质感：纸纹 + 贴纸微旋转</span><span>点睛：蛋黄价签 / 图钉地图</span></div>
+  <div class="pal">
+    <div class="pc"><div class="c" style="background:#2f6d4f"></div><div class="t" style="color:#fff;background:#2f6d4f"><b>食堂绿</b>#2F6D4F</div></div>
+    <div class="pc"><div class="c" style="background:#c73a2c"></div><div class="t"><b>辣椒红</b>#C73A2C</div></div>
+    <div class="pc"><div class="c" style="background:#f2b33d"></div><div class="t"><b>蛋黄</b>#F2B33D</div></div>
+    <div class="pc"><div class="c" style="background:#f5f1e6"></div><div class="t"><b>米瓷</b>#F5F1E6</div></div>
+    <div class="pc"><div class="c" style="background:#27221c"></div><div class="t" style="color:#fff;background:#27221c"><b>苍墨</b>#27221C</div></div>
+  </div>
+  <div class="mocks">
+    <div><div class="phone"><div class="screen c-screen grain">
+      <div class="c-brand"><span class="n">Menu<em>Lens</em></span><span class="c-badge">今日营业</span></div>
+      <div class="c-slogan">Read it. Order it.<br><i>Eat the story.</i></div>
+      <div class="c-cta-row"><span class="c-cta">📷 Scan a menu</span><span class="c-cta2">🖼️ Album</span></div>
+      <div class="c-chips"><span class="c-chip">🚫 Peanut</span><span class="c-chip">🌶 Mild</span><span class="c-chip" style="background:#f2b33d">✎ edit</span></div>
+      <div class="c-sec"><span class="t">我的美食地图 FOOD STORY</span><span class="see">See all ›</span></div>
+      <div class="c-map">
+        <span class="c-prov" style="top:12%;left:34%;width:62px;height:38px;border-radius:50% 44% 52% 46%"></span>
+        <span class="c-prov lit-g" style="top:34%;left:15%;width:66px;height:54px;border-radius:44% 56% 42% 58%"></span>
+        <span class="c-prov lit-r" style="top:15%;left:63%;width:32px;height:27px;border-radius:50%"></span>
+        <span class="c-prov" style="top:56%;left:50%;width:56px;height:36px;border-radius:46% 54% 48% 46%"></span>
+        <span class="c-pin" style="top:42%;left:24%">📍</span>
+        <span class="c-citylab" style="top:58%;left:19%">成都 Chengdu</span>
+        <div class="c-restcard" style="top:15%;left:40%">
+          <div class="n">🍜 Ma Wang Zi 马旺子</div>
+          <div class="m">3 dishes · ¥90 ≈ $13</div>
+          <div class="d">今日 · 成都点亮！</div>
+        </div>
+        <div class="c-mapcap">已点亮 2 省 · 尝过 8 味</div>
+      </div>
+      <div class="c-card" style="margin-top:14px"><div class="nm">🦆 Siji Minfu 四季民福</div><div class="cn">Jul 9 · Beijing · 22 dishes · 5 ordered</div><span class="c-tag gold">🥢 ordered like a local</span></div>
+    </div></div><p class="ph-label">首页 · 图钉地图 + 贴纸餐厅卡</p></div>
+    <div><div class="phone"><div class="screen c-screen grain">
+      <div class="c-resto">🍜 <div>Chuanla Kitchen 川辣小馆<small>Sichuan · 14 dishes</small></div><span class="v">看原图</span></div>
+      <div class="c-cats"><span class="c-cat on">All</span><span class="c-cat">⭐ Sig</span><span class="c-cat">Cold</span><span class="c-cat">Mains</span></div>
+      <div class="c-card"><span class="c-price">¥42 <small>≈$5.9</small></span><div class="nm">🥜 Kung Pao Chicken</div><div class="cn">宫保鸡丁 · gōng bǎo jī dīng 🔊 · 🌶</div><span class="c-tag red">⚠ 含花生 peanut</span><span class="c-add">＋</span></div>
+      <div class="c-card"><span class="c-price">¥32 <small>≈$4.5</small></span><div class="nm">🌶️ Mapo Tofu</div><div class="cn">麻婆豆腐 · má pó dòu fu 🔊 · 🌶🌶⚡</div><span class="c-tag gold">👑 招牌 signature</span><span class="c-add">＋</span></div>
+      <div class="c-card"><span class="c-price">¥18 <small>≈$2.5</small></span><div class="nm">🥟 Long Chao Shou Wontons</div><div class="cn">龙抄手 · lóng chāo shǒu 🔊 · 不辣</div><span class="c-add">＋</span></div>
+      <div class="c-card"><span class="c-price">¥16 <small>≈$2.2</small></span><div class="nm">🍡 Brown-Sugar Rice Cakes</div><div class="cn">红糖糍粑 · hóng táng cí bā 🔊</div><span class="c-tag green">🌱 素 vegetarian</span><span class="c-add">＋</span></div>
+      <div class="c-cart"><span>🧾 2 dishes · ¥74 ≈ $10</span><span class="go">下单 ›</span></div>
+    </div></div><p class="ph-label">菜单 list · 蛋黄价签斜贴 + 套色错位硬阴影</p></div>
+  </div>
+</section>
+
+<footer class="page">
+  <b>三版的本质区别（不是配色，是工艺）：</b>A 是「印刷品」（零阴影、线条分层、盖章交互）；B 是「馆藏夜场」（深色场景+鎏金细节+浮层）；C 是「街头招牌」（描边+套色错位+贴纸）。
+  <b>我的判断：</b>A 最高级最独特、评委过目不忘，但活泼度靠朱印与文案撑；C 最符合「美食跳脱五彩」且执行容错高；B 居中但首屏深色在餐厅强光下可读性要实测。
+  可混合：<b>A 的菜单 list 线条工艺 + C 的地图与价签 + 任一色系</b>都成立。定稿后 tokens 进 UI-DESIGN.md 再动 app.html。
+</footer>
+</body>
+</html>
