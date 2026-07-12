@@ -6,36 +6,37 @@
 <title>Chopstory · Demo Stage — 方案A 食旅横卷</title>
 <style>
   /* =====================================================================
-     方案 A 「食旅横卷」· 迭代2
-     底部横向 user journey 时间轴（七站，简体数字+中文短注）；
-     左侧品牌区：logo 动画 + 产品名 + slogan 大字 + 三卖点；
-     背景沿用 C 案纹样库，随站点交叉换景。
+     方案 A 「食旅横卷」· 迭代3
+     香槟淡白底 + 固定云纹；手机内 app 恒为 392px 调试尺寸（整体缩放适配）；
+     左栏与时间轴按视口宽度流式缩放。
      ===================================================================== */
   * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --paper: #f5efe0; --paper-2: #efe7d2;
+    --paper: #fbf8f1; --paper-2: #f6f1e6;
     --ink: #262019; --ink-2: #4c4437; --ink-3: #75695a; --ink-4: #b9ad97;
-    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #e9dfc6;
-    --tint: rgba(220,168,66,.04);
+    --zhu: #b23a2f; --zhu-deep: #7e241c; --tea: #f0e9da;
+    --dot: clamp(28px, 2.2vw, 38px);
   }
   html, body { height: 100%; }
-  body { color: var(--ink); overflow: hidden; font-family: "Songti SC", "STSong", Georgia, serif; background: var(--paper); }
-  /* 双层背景交叉淡入换景（纹样库来自 C 案） */
-  .bglayer { position: fixed; inset: 0; z-index: 0; opacity: 0; transition: opacity .9s ease; }
-  .bglayer.show { opacity: 1; }
-  /* 阶段色渍（随站点轻微变化） */
-  .tintlayer { position: fixed; inset: 0; pointer-events: none; z-index: 1; background: var(--tint); transition: background .9s; }
+  body {
+    color: var(--ink); overflow: hidden;
+    font-family: "Songti SC", "STSong", Georgia, serif;
+    background-color: var(--paper);
+    /* 云纹 · 固定基底（不随站点变化） */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='160'><g fill='none' stroke='rgba(38,32,25,0.055)' stroke-width='1.4'><path d='M40 110 a26 26 0 1 1 52 0 a16 16 0 1 0 -32 0 a8 8 0 1 1 16 0'/><path d='M92 110 q44 16 92 0'/><path d='M170 48 a18 18 0 1 1 36 0 a11 11 0 1 0 -22 0 a5 5 0 1 1 10 0'/><path d='M206 48 q26 10 54 0'/></g></svg>");
+    background-size: 260px 160px;
+  }
   /* 纸纹颗粒 */
   .grain {
     position: fixed; inset: 0; pointer-events: none; z-index: 60; mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.05'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2'/><feColorMatrix type='saturate' values='0'/></filter><rect width='160' height='160' filter='url(%23n)' opacity='.04'/></svg>");
   }
   /* 文武边（印刷版框） */
   .stage {
     position: fixed; inset: 18px; z-index: 2;
     border: 3px solid var(--ink);
-    display: grid; grid-template-columns: minmax(340px, 430px) 1fr; grid-template-rows: 1fr auto;
-    column-gap: 3vw; padding: 30px 48px 0;
+    display: grid; grid-template-columns: clamp(360px, 30vw, 600px) 1fr; grid-template-rows: 1fr auto;
+    column-gap: 4vw; padding: 3vh 4vw 0;
   }
   .stage::before { content: ""; position: absolute; inset: 6px; border: 1px solid var(--ink); pointer-events: none; }
 
@@ -55,35 +56,36 @@
   @keyframes lg-pinchB { 0%,100% { transform: rotate(0deg); } 50% { transform: rotate(4.5deg); } }
   @keyframes lg-float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
 
-  /* ---------- 左：品牌区（名字 → slogan 大字 → 干什么的） ---------- */
+  /* ---------- 左：品牌区（宽度流式缩放） ---------- */
   .pitch { align-self: center; padding-bottom: 10px; }
-  .brandrow { display: flex; align-items: center; gap: 16px; }
-  .brandrow .logo { width: 104px; height: 104px; flex: none; }
-  .wordmark b { display: block; font-size: 40px; font-weight: 900; letter-spacing: .5px; }
+  .brandrow { display: flex; align-items: center; gap: clamp(14px, 1.2vw, 22px); }
+  .brandrow .logo { width: clamp(92px, 7.5vw, 140px); height: auto; flex: none; }
+  .wordmark b { display: block; font-size: clamp(34px, 2.8vw, 54px); font-weight: 900; letter-spacing: .5px; }
   .wordmark b em { font-style: normal; color: var(--zhu); }
-  .wordmark span { display: block; margin-top: 4px; font-size: 13px; letter-spacing: .42em; color: var(--ink-3); }
-  h1.headline { margin-top: 24px; font-size: clamp(26px, 2.5vw, 36px); font-weight: 900; line-height: 1.45; }
-  h1.headline em { font-style: normal; box-shadow: inset 0 -7px 0 rgba(178,58,47,.28); }
-  .sub { margin-top: 12px; font-size: 14px; color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
-  .points { margin-top: 20px; }
-  .point { display: flex; align-items: baseline; padding: 9px 2px 8px; border-bottom: 1px solid rgba(38,32,25,.22); }
+  .wordmark span { display: block; margin-top: 4px; font-size: clamp(12px, .95vw, 16px); letter-spacing: .42em; color: var(--ink-3); }
+  h1.headline { margin-top: clamp(18px, 2.2vh, 30px); font-size: clamp(25px, 2.35vw, 42px); font-weight: 900; line-height: 1.5; }
+  h1.headline em { font-style: normal; box-shadow: inset 0 -.18em 0 rgba(178,58,47,.28); }
+  .sub { margin-top: 12px; font-size: clamp(13px, 1vw, 17px); color: var(--ink-2); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+  .points { margin-top: clamp(16px, 2vh, 26px); }
+  .point { display: flex; align-items: baseline; padding: .6em 2px .55em; border-bottom: 1px solid rgba(38,32,25,.22); }
   .point:first-child { border-top: 2.5px solid var(--ink); }
-  .point .cn { font-weight: 900; font-size: 15px; letter-spacing: .12em; flex: none; }
-  .point .lead { flex: none; width: 26px; border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
-  .point .en { font-size: 12.5px; color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
-  .tryline { margin-top: 20px; font-size: 12.5px; color: var(--ink-3); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
+  .point .cn { font-weight: 900; font-size: clamp(14px, 1.05vw, 19px); letter-spacing: .12em; flex: none; }
+  .point .lead { flex: none; width: clamp(22px, 2vw, 38px); border-bottom: 2px dotted rgba(38,32,25,.4); margin: 0 10px 4px; }
+  .point .en { font-size: clamp(12px, .92vw, 16px); color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
+  .tryline { margin-top: clamp(14px, 2vh, 24px); font-size: clamp(12px, .88vw, 15px); color: var(--ink-3); line-height: 1.9; font-family: "PingFang SC", sans-serif; }
   .tryline b { color: var(--zhu); font-weight: 700; }
 
-  /* ---------- 中：手机 ---------- */
-  .phone-zone { display: grid; place-items: center; }
-  .phone-wrap { position: relative; flex: none; }
+  /* ---------- 中：手机（app 恒为 392px 调试尺寸，整体 scale 适配） ---------- */
+  .phone-zone { display: grid; place-items: center; min-height: 0; }
+  .phone-fit { position: relative; }
+  .phone-wrap { position: absolute; left: 0; top: 0; transform-origin: top left; width: 392px; }
   .phone-wrap::before {
     content: ""; position: absolute; left: 6%; right: 6%; bottom: -30px; height: 44px; border-radius: 50%;
     background: radial-gradient(ellipse at center, rgba(38,32,25,.3), transparent 68%);
   }
   .iphone {
-    position: relative; height: min(62vh, 620px); width: auto; aspect-ratio: 392 / 800;
-    border-radius: 58px; background: #0d0b09; padding: 10px;
+    position: relative; width: 392px; height: 800px;
+    border-radius: 58px; background: #0d0b09; padding: 11px;
     box-shadow: 0 0 0 4.5px #3d3833, 0 0 0 6px #6e675e, 0 0 0 7px #2b2723,
       0 30px 60px rgba(38,32,25,.35), inset 0 0 0 3px #000;
   }
@@ -94,36 +96,36 @@
     -webkit-mask-composite: xor; mask-composite: exclude; padding: 6px; opacity: .5;
   }
   .btn-side { position: absolute; background: linear-gradient(90deg, #55504a, #23201c); border-radius: 3px; }
-  .b-action { left: -8.5px; top: 16%; width: 4px; height: 28px; }
-  .b-vol1 { left: -8.5px; top: 25%; width: 4px; height: 48px; }
-  .b-vol2 { left: -8.5px; top: 33%; width: 4px; height: 48px; }
-  .b-power { right: -8.5px; top: 27%; width: 4px; height: 72px; background: linear-gradient(270deg, #55504a, #23201c); }
-  .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 48px; overflow: hidden; background: #000; }
+  .b-action { left: -8.5px; top: 16%; width: 4px; height: 30px; }
+  .b-vol1 { left: -8.5px; top: 26%; width: 4px; height: 52px; }
+  .b-vol2 { left: -8.5px; top: 34%; width: 4px; height: 52px; }
+  .b-power { right: -8.5px; top: 28%; width: 4px; height: 78px; background: linear-gradient(270deg, #55504a, #23201c); }
+  .screen-hole { position: relative; width: 100%; height: 100%; border-radius: 50px; overflow: hidden; background: #000; }
   .screen-hole iframe { position: relative; z-index: 2; width: 100%; height: 100%; border: none; display: block; background: #f7f2e6; }
-  .island { position: absolute; top: 16px; left: 50%; transform: translateX(-50%); width: 27%; height: 24px; border-radius: 999px; background: #000; z-index: 5; }
-  .island::after { content: ""; position: absolute; right: 11px; top: 50%; transform: translateY(-50%); width: 8px; height: 8px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
-  .glass { position: absolute; inset: 0; border-radius: 48px; pointer-events: none; z-index: 6;
+  .island { position: absolute; top: 22px; left: 50%; transform: translateX(-50%); width: 108px; height: 30px; border-radius: 999px; background: #000; z-index: 5; box-shadow: inset 0 0 2px rgba(255,255,255,.06); }
+  .island::after { content: ""; position: absolute; right: 12px; top: 50%; transform: translateY(-50%); width: 9px; height: 9px; border-radius: 99px; background: radial-gradient(circle at 35% 35%, #1c2733, #05070a 70%); }
+  .glass { position: absolute; inset: 0; border-radius: 50px; pointer-events: none; z-index: 6;
     background: linear-gradient(118deg, rgba(255,255,255,.10) 0%, rgba(255,255,255,.03) 18%, transparent 32%); }
   .iframe-fallback { position: absolute; inset: 0; display: grid; place-items: center; color: #b9ad97; font-size: 13px; text-align: center; line-height: 2; z-index: 1; }
 
-  /* ---------- 底：用户动线时间轴（手卷） ---------- */
-  .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 14px; padding: 12px 6px 18px; position: relative; }
-  .jcap { text-align: center; height: 30px; font-size: 13.5px; color: var(--ink-2); font-family: "PingFang SC", sans-serif; }
-  .jcap b { font-family: "Songti SC", serif; font-size: 15px; color: var(--ink); margin-right: 10px; letter-spacing: .08em; }
+  /* ---------- 底：用户动线时间轴（手卷，宽度流式缩放） ---------- */
+  .journey { grid-column: 1 / -1; border-top: 2.5px solid var(--ink); margin-top: 14px; padding: 12px 6px 2vh; position: relative; }
+  .jcap { text-align: center; height: 2.2em; font-size: clamp(13px, .95vw, 17px); color: var(--ink-2); font-family: "PingFang SC", sans-serif; }
+  .jcap b { font-family: "Songti SC", serif; font-size: 1.12em; color: var(--ink); margin-right: 10px; letter-spacing: .08em; }
   .jcap b i { font-style: normal; color: var(--zhu); font-family: ui-monospace, monospace; }
   .jtrack { position: relative; margin-top: 8px; }
-  .jline { position: absolute; left: 3%; right: 3%; top: 15px; border-top: 1px solid rgba(38,32,25,.3); }
-  .jfill { position: absolute; left: 3%; top: 14px; height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
+  .jline { position: absolute; left: 3%; right: 3%; top: calc(var(--dot) / 2); border-top: 1px solid rgba(38,32,25,.3); }
+  .jfill { position: absolute; left: 3%; top: calc(var(--dot) / 2 - 1px); height: 2px; background: var(--zhu); width: 0; transition: width .45s cubic-bezier(.25,1,.5,1); max-width: 94%; }
   .jnodes { position: relative; display: flex; justify-content: space-between; padding: 0 3%; }
-  .jnode { background: none; border: none; cursor: pointer; font: inherit; text-align: center; width: 128px; }
+  .jnode { background: none; border: none; cursor: pointer; font: inherit; text-align: center; width: clamp(96px, 10vw, 170px); }
   .jnode .dot {
-    width: 30px; height: 30px; margin: 0 auto; border-radius: 50%;
+    width: var(--dot); height: var(--dot); margin: 0 auto; border-radius: 50%;
     border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink);
-    display: grid; place-items: center; font-size: 14px; font-weight: 900; font-family: ui-monospace, monospace;
+    display: grid; place-items: center; font-size: clamp(13px, 1vw, 17px); font-weight: 900; font-family: ui-monospace, monospace;
     transition: background .2s, color .2s, border-color .2s, transform .2s; position: relative; z-index: 2;
   }
-  .jnode .tt { margin-top: 7px; font-size: 13px; font-weight: 800; letter-spacing: .05em; }
-  .jnode .zh { margin-top: 2px; font-size: 11px; color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
+  .jnode .tt { margin-top: 7px; font-size: clamp(12.5px, 1vw, 18px); font-weight: 800; letter-spacing: .05em; }
+  .jnode .zh { margin-top: 2px; font-size: clamp(10.5px, .82vw, 14px); color: var(--ink-3); font-family: "PingFang SC", sans-serif; }
   .jnode:hover .dot { background: var(--ink); color: var(--paper); }
   .jnode.on .dot { background: var(--zhu); border-color: var(--zhu-deep); color: #f6efdc; transform: scale(1.12) rotate(-3deg); }
   .jnode.on .tt { color: var(--zhu); }
@@ -132,13 +134,10 @@
   .variant-tag { position: fixed; right: 8px; bottom: 3px; z-index: 70; font-size: 10px; color: var(--ink-4); letter-spacing: .1em; }
 
   @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
-  @media (max-width: 1080px) { .pitch .sub { display: none; } .jnode { width: 96px; } .jnode .zh { display: none; } }
+  @media (max-width: 1080px) { .pitch .sub { display: none; } .jnode .zh { display: none; } }
 </style>
 </head>
 <body>
-<div class="bglayer" id="bgA"></div>
-<div class="bglayer" id="bgB"></div>
-<div class="tintlayer"></div>
 <div class="grain"></div>
 <div class="stage">
 
@@ -182,19 +181,21 @@
     <p class="tryline"><b>右边这台手机可以直接点着玩</b>，或点下方时间轴任意一站，直达对应界面。</p>
   </aside>
 
-  <!-- 中：iPhone -->
+  <!-- 中：iPhone（内容恒为 392px 调试尺寸） -->
   <div class="phone-zone">
-    <div class="phone-wrap">
-      <div class="iphone">
-        <span class="btn-side b-action"></span>
-        <span class="btn-side b-vol1"></span>
-        <span class="btn-side b-vol2"></span>
-        <span class="btn-side b-power"></span>
-        <div class="screen-hole">
-          <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
-          <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
-          <span class="island"></span>
-          <span class="glass"></span>
+    <div class="phone-fit" id="phoneFit">
+      <div class="phone-wrap" id="phoneWrap">
+        <div class="iphone">
+          <span class="btn-side b-action"></span>
+          <span class="btn-side b-vol1"></span>
+          <span class="btn-side b-vol2"></span>
+          <span class="btn-side b-power"></span>
+          <div class="screen-hole">
+            <div class="iframe-fallback">运行 dev server 后<br>此处即真机交互 demo</div>
+            <iframe id="appframe" src="app.html" title="Chopstory demo"></iframe>
+            <span class="island"></span>
+            <span class="glass"></span>
+          </div>
         </div>
       </div>
     </div>
@@ -211,28 +212,36 @@
     <span class="jhint">键盘 ← → 切换</span>
   </div>
 </div>
-<span class="variant-tag">方案A · 迭代2</span>
+<span class="variant-tag">方案A · 迭代3</span>
 
 <script>
-/* ---- 纹样库（沿用 C 案）：随站点交叉换景 ---- */
-const PAT = {
-  cloud: { size: "260px 160px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='260' height='160'><g fill='none' stroke='rgba(38,32,25,0.06)' stroke-width='1.4'><path d='M40 110 a26 26 0 1 1 52 0 a16 16 0 1 0 -32 0 a8 8 0 1 1 16 0'/><path d='M92 110 q44 16 92 0'/><path d='M170 48 a18 18 0 1 1 36 0 a11 11 0 1 0 -22 0 a5 5 0 1 1 10 0'/><path d='M206 48 q26 10 54 0'/></g></svg>\")" },
-  crackle: { size: "420px 420px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><g fill='none' stroke='rgba(38,32,25,0.055)' stroke-width='1.3'><path d='M0 60 L105 82 L180 30 L270 68 L360 22 L420 60'/><path d='M105 82 L90 195 L0 225'/><path d='M180 30 L225 0'/><path d='M270 68 L300 165'/><path d='M90 195 L195 240 L300 165 L420 210'/><path d='M195 240 L165 360 L45 420'/><path d='M165 360 L285 375 L360 300 L420 330'/><path d='M285 375 L270 420'/><path d='M300 165 L360 300'/><path d='M0 330 L45 420'/></g></svg>\")" },
-  wave: { size: "280px 140px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='70'><g fill='none' stroke='rgba(38,32,25,0.062)' stroke-width='1.4'><path d='M-35 35 a35 35 0 0 1 70 0'/><path d='M-24 35 a24 24 0 0 1 48 0'/><path d='M-13 35 a13 13 0 0 1 26 0'/><path d='M35 35 a35 35 0 0 1 70 0'/><path d='M46 35 a24 24 0 0 1 48 0'/><path d='M57 35 a13 13 0 0 1 26 0'/><path d='M105 35 a35 35 0 0 1 70 0'/><path d='M116 35 a24 24 0 0 1 48 0'/><path d='M127 35 a13 13 0 0 1 26 0'/><path d='M0 70 a35 35 0 0 1 70 0'/><path d='M11 70 a24 24 0 0 1 48 0'/><path d='M22 70 a13 13 0 0 1 26 0'/><path d='M70 70 a35 35 0 0 1 70 0'/><path d='M81 70 a24 24 0 0 1 48 0'/><path d='M92 70 a13 13 0 0 1 26 0'/></g></svg>\")" },
-  meander: { size: "144px 144px", url: "url(\"data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='72' height='72'><path d='M12 60 V12 H60 V44 H28 V28 H44' fill='none' stroke='rgba(38,32,25,0.05)' stroke-width='1.6'/></svg>\")" },
-};
+/* ---- 手机适配：app 内容恒为 392x800 调试尺寸，按可用空间整体缩放 ---- */
+const PHONE_W = 392, PHONE_H = 800, PHONE_MARGIN = 46; /* 阴影/金属圈留白 */
+function fitPhone() {
+  const zone = document.querySelector(".phone-zone");
+  const s = Math.min(
+    1.15,
+    (zone.clientHeight - PHONE_MARGIN) / PHONE_H,
+    (zone.clientWidth - PHONE_MARGIN) / PHONE_W
+  );
+  const fit = document.getElementById("phoneFit");
+  fit.style.width = PHONE_W * s + "px";
+  fit.style.height = PHONE_H * s + "px";
+  document.getElementById("phoneWrap").style.transform = `scale(${s})`;
+}
+window.addEventListener("resize", fitPhone);
 
-/* ---- user journey 七站：说人话版 ---- */
+/* ---- user journey 七站 ---- */
 const STAGES = [
-  { k: "home",      n: 1, t: "到店",       zh: "看不懂中文菜单", note: "外国游客坐下，面对一整页看不懂的中文菜单", pat: "cloud",   tint: "rgba(220,168,66,.04)",  act: w => w.go("home") },
-  { k: "camera",    n: 2, t: "拍菜单",     zh: "对着菜单拍一张", note: "对着纸质菜单拍一张照片，入口只有这一个动作", pat: "crackle", tint: "rgba(38,32,25,.04)",    act: w => w.startScan("camera") },
-  { k: "analyzing", n: 3, t: "AI 识别",    zh: "自动读懂菜名",   note: "AI 识别菜名，自动标出辣度和过敏原，约三秒出结果", pat: "wave",    tint: "rgba(178,58,47,.045)",  act: w => w.startAnalyze() },
-  { k: "list",      n: 4, t: "英文菜单",   zh: "每道菜都看得懂", note: "整份菜单变成英文：每道是什么、多少钱、招牌是哪道", pat: "meander", tint: "rgba(92,125,70,.05)",   act: w => ensureMenu(w) },
-  { k: "detail",    n: 5, t: "菜品详情",   zh: "讲清这道菜",     note: "一道菜讲明白：是什么做的、怎么吃、含不含他的忌口", pat: "cloud",   tint: "rgba(220,168,66,.05)",  act: w => { ensureMenu(w); w.openDetail(8); } },
-  { k: "order",     n: 6, t: "中文点单卡", zh: "翻面递给服务员", note: "选好的菜生成点单卡，翻面是中文，直接递给服务员照单", pat: "wave",    tint: "rgba(178,58,47,.05)",   act: w => seedOrder(w) },
-  { k: "map",       n: 7, t: "美食地图",   zh: "记录吃过的美食", note: "吃过的每道菜记在地图上，攒成他自己的中国美食地图", pat: "crackle", tint: "rgba(76,68,55,.06)",    act: w => { w.go("history"); w.histView("map"); } },
+  { k: "home",      n: 1, t: "到店",       zh: "看不懂中文菜单", note: "外国游客坐下，面对一整页看不懂的中文菜单", act: w => w.go("home") },
+  { k: "camera",    n: 2, t: "拍菜单",     zh: "对着菜单拍一张", note: "对着纸质菜单拍一张照片，入口只有这一个动作", act: w => w.startScan("camera") },
+  { k: "analyzing", n: 3, t: "AI 识别",    zh: "自动读懂菜名",   note: "AI 识别菜名，自动标出辣度和过敏原，约三秒出结果", act: w => w.startAnalyze() },
+  { k: "list",      n: 4, t: "英文菜单",   zh: "每道菜都看得懂", note: "整份菜单变成英文：每道是什么、多少钱、招牌是哪道", act: w => ensureMenu(w) },
+  { k: "detail",    n: 5, t: "菜品详情",   zh: "讲清这道菜",     note: "一道菜讲明白：是什么做的、怎么吃、含不含他的忌口", act: w => { ensureMenu(w); w.openDetail(8); } },
+  { k: "order",     n: 6, t: "中文点单卡", zh: "翻面递给服务员", note: "选好的菜生成点单卡，翻面是中文，直接递给服务员照单", act: w => seedOrder(w) },
+  { k: "map",       n: 7, t: "美食地图",   zh: "记录吃过的美食", note: "吃过的每道菜记在地图上，攒成他自己的中国美食地图", act: w => { w.go("history"); w.histView("map"); } },
 ];
-let cur = 0, bgFlip = false;
+let cur = 0;
 
 function appWin() { const w = document.getElementById("appframe").contentWindow; return (w && w.go) ? w : null; }
 function ensureMenu(w) {
@@ -247,21 +256,11 @@ function seedOrder(w) {
   if (empty) { w.addToOrder(3, 1); w.addToOrder(8, 1); }
   w.openOrder();
 }
-function setScenery(patKey, tint) {
-  const showEl = document.getElementById(bgFlip ? "bgA" : "bgB");
-  const hideEl = document.getElementById(bgFlip ? "bgB" : "bgA");
-  showEl.style.backgroundImage = PAT[patKey].url;
-  showEl.style.backgroundSize = PAT[patKey].size;
-  showEl.classList.add("show"); hideEl.classList.remove("show");
-  bgFlip = !bgFlip;
-  document.documentElement.style.setProperty("--tint", tint);
-}
 function jumpTo(i) {
   cur = i; const s = STAGES[i];
   document.querySelectorAll(".jnode").forEach((n, j) => n.classList.toggle("on", j === i));
   document.getElementById("jfill").style.width = (3 + (94 * i / (STAGES.length - 1))) + "%";
   document.getElementById("jcap").innerHTML = `<b><i>${s.n}</i> · ${s.t}</b>${s.note}`;
-  setScenery(s.pat, s.tint);
   const w = appWin(); if (!w) return;
   try { w.closeDetail && w.closeDetail(); } catch (e) {}
   try { w.closeSheet && w.closeSheet(false); } catch (e) {}
@@ -280,6 +279,7 @@ document.addEventListener("keydown", e => {
   if (e.key === "ArrowLeft") jumpTo(Math.max(cur - 1, 0));
 });
 jumpTo(0);
+fitPhone();
 </script>
 </body>
 </html>
