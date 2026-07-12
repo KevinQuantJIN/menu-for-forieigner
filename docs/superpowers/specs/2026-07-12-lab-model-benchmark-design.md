@@ -155,19 +155,21 @@ Lab 同时显示单次结果和聚合结果。模型排名按多个指标展示�
 
 ## 8. 金标与评分
 
+数据采集、目录结构、JSONL 字段、覆盖配额和人工复核流程以 [`2026-07-12-lab-dataset-collection-contract.md`](./2026-07-12-lab-dataset-collection-contract.md) 为唯一规范。
+
 ### 8.1 数据集
 
-使用 `reference-menu-data` 的 21 张图。第一批先覆盖：
+使用 `reference-menu-data` 的 21 张图作为 calibration。正式 v1 另采至少 60 张 holdout 图片。第一批实现先覆盖：
 
 - 北京菜 2 页：当前 43 道性能样本
 - 马旺子 2 页：川菜、文化菜名和过敏风险样本
 - 利苑 2 页：粤菜、长菜名和价格格式样本
 
-随后扩展到全部图片。
+随后扩展到全部 calibration 和新采集 holdout。
 
 ### 8.2 金标格式
 
-按图片保存只读评测事实：page、ordinal、categoryCn、nameCn、price。完整 Dish 的英文解释和风险字段单独人工评审，不混入 OCR 真值。
+按图片保存只读评测事实：page、ordinal、categoryCn、nameCn、price。完整 Dish 的英文解释和风险字段单独人工评审，不混入 OCR 真值。现有图片不得进入 holdout。
 
 ### 8.3 自动指标
 
@@ -272,4 +274,3 @@ Lab 展示经过清洗的错误；完整上游响应仅在确认不包含鉴权�
 6. 生产 `/api/analyze`、`public/app.html` 和契约 v1 无行为变化
 
 本轮不实现生产两阶段管线、知识库、持久缓存、过敏原 v2 语义或生产部署迁移。Lab 数据证明两阶段方案后，再单独设计生产迁移。
-
