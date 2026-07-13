@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "vision-gemini-benchmark-aggregate.v1",
+  "generatedAt": "2026-07-13T06:50:38.833Z",
+  "compatibleRunCount": 3,
+  "harness": {
+    "cliSha256": "bf9291871c3b0bee99eec3a78d0ce092dfb5567e79a779deb68942e7755c4af5",
+    "coreSha256": "2d50f5cbf61e7f43ebd4a23a5547e763e21b582b05ad265ed969f4f0d81342f0"
+  },
+  "model": {
+    "name": "gemini-2.5-flash",
+    "source": "BENCH_MODEL",
+    "generationConfig": {
+      "temperature": 0.2,
+      "maxOutputTokens": 32768,
+      "thinkingBudget": 0,
+      "responseMimeType": "application/json",
+      "responseSchemaVersion": "ocr-dish-envelope.v1"
+    }
+  },
+  "dataset": {
+    "id": "chopstory-test-data",
+    "path": "/Users/kevin/Downloads/chopstory-test-data",
+    "goldCsvSha256": "3e56602a28e30f98010d7c7373ab888e8804217e37dcb455e0533c9017a5342d",
+    "goldRowCount": 625,
+    "imageCount": 14,
+    "menuCount": 8,
+    "images": [
+      {
+        "file": "M001_P01.jpg",
+        "sha256": "4a7214d043a05184d365ee420b2727ee7e5975adc85dab6fa89422f4cafac8d5",
+        "bytes": 371527
+      },
+      {
+        "file": "M001_P02.jpg",
+        "sha256": "d469e13ba220c46674e82f4562be839087b74255db79a11966c479af2d449890",
+        "bytes": 577906
+      },
+      {
+        "file": "M001_P03.jpg",
+        "sha256": "33422f08b5eace7208105c767c0071cd7e52b8190f96ff01992198d1236be074",
+        "bytes": 333976
+      },
+      {
+        "file": "M001_P04.jpg",
+        "sha256": "c56f66f5683b46857d2378ed82abcaacad5d66ccbd9c255d9a218ff67983edcd",
+        "bytes": 356990
+      },
+      {
+        "file": "M001_P05.jpg",
+        "sha256": "8c8a3e9d37892b95508b164a102e5e01a4e576d605e291004247f7c0c1f1a71b",
+        "bytes": 313007
+      },
+      {
+        "file": "M001_P06.jpg",
+        "sha256": "d6edabb361fa681882e67eeaf2da90482c225df50d6f0934e4d39cec61b870d4",
+        "bytes": 355981
+      },
+      {
+        "file": "M002_P01.jpg",
+        "sha256": "588d9702074d4c8011ffa0acea3612eb5253dcb0565ff3c6d94bd23c568ee920",
+        "bytes": 970257
+      },
+      {
+        "file": "M003_P01.jpg",
+        "sha256": "fd9c9d1f3bc64702a8767e24068122282a45c48a731a37f0406cb723eddf14ea",
+        "bytes": 656472
+      },
+      {
+        "file": "M004_P01.jpg",
+        "sha256": "315d6e1bf397f18c3e3cbc55f6ddf9955b07a41c35afa12ffc81a0c1de2dcb95",
+        "bytes": 398313
+      },
+      {
+        "file": "M005_P01.jpg",
+        "sha256": "095cf8507026e189a07844c76e9d5e9c7b4647bbd372e13299c0a94650db53cc",
+        "bytes": 564191
+      },
+      {
+        "file": "M006_P01.jpg",
+        "sha256": "3021df54f69526a3618291987f538aea31c18ca60eda56050e6f2b25c1de7241",
+        "bytes": 529643
+      },
+      {
+        "file": "M007_P01.jpg",
+        "sha256": "a904f4fa236351d4f4d5a9b764acaa6fb6f790c89fcebdbf666c975221a8fbbf",
+        "bytes": 491295
+      },
+      {
+        "file": "M007_P02.jpg",
+        "sha256": "ee1cd5b3fd033da0c7115b3fde0d0e28ee795e3473210a279069b59ec5043120",
+        "bytes": 495715
+      },
+      {
+        "file": "M008_P01.jpg",
+        "sha256": "8efc885e5e3a06fe017d1a5e48c785e3a8cc8b82d713545a14a492a42968f9c6",
+        "bytes": 881444
+      }
+    ]
+  },
+  "perRun": [
+    {
+      "runLabel": "final-v4-run1",
+      "hardGates": {
+        "exactDatasetSize": true,
+        "allImagesCompleted": true,
+        "allMultiPageCompleted": true,
+        "invalidJsonLinesZero": true,
+        "unknownEventsZero": true,
+        "protocolInvalidRunsZero": true,
+        "timingInvalidRunsZero": true,
+        "crossPageBoundaryViolationsZero": true
+      },
+      "hardGatesPassed": true,
+      "metrics": {
+        "nameRecall": 0.8464,
+        "namePrecision": 0.8396825396825397,
+        "priceExact": 0.6520912547528517,
+        "hallucinationCount": 101,
+        "hallucinationRate": 0.16031746031746033,
+        "withinPageInversions": 1593,
+        "totalLatencyP50": 21801.7,
+        "totalLatencyP95": 41257.134999999995,
+        "firstDishP50": 21800.95,
+        "firstDishP95": 41256.274999999994
+      }
+    },
+    {
+      "runLabel": "final-v4-run2",
+      "hardGates": {
+        "exactDatasetSize": true,
+        "allImagesCompleted": true,
+        "allMultiPageCompleted": true,
+        "invalidJsonLinesZero": true,
+        "unknownEventsZero": true,
+        "protocolInvalidRunsZero": true,
+        "timingInvalidRunsZero": true,
+        "crossPageBoundaryViolationsZero": true
+      },
+      "hardGatesPassed": true,
+      "metrics": {
+        "nameRecall": 0.84,
+        "namePrecision": 0.8306962025316456,
+        "priceExact": 0.6781609195402298,
+        "hallucinationCount": 107,
+        "hallucinationRate": 0.16930379746835442,
+        "withinPageInversions": 1124,
+        "totalLatencyP50": 21129.449999999997,
+        "totalLatencyP95": 43018.064999999995,
+        "firstDishP50": 21128.550000000003,
+        "firstDishP95": 43014.454999999994
+      }
+    },
+    {
+      "runLabel": "final-v4-run3",
+      "hardGates": {
+        "exactDatasetSize": true,
+        "allImagesCompleted": true,
+        "allMultiPageCompleted": true,
+        "invalidJsonLinesZero": true,
+        "unknownEventsZero": true,
+        "protocolInvalidRunsZero": true,
+        "timingInvalidRunsZero": true,
+        "crossPageBoundaryViolationsZero": true
+      },
+      "hardGatesPassed": true,
+      "metrics": {
+        "nameRecall": 0.8528,
+        "namePrecision": 0.8487261146496815,
+        "priceExact": 0.6566037735849056,
+        "hallucinationCount": 95,
+        "hallucinationRate": 0.15127388535031847,
+        "withinPageInversions": 1476,
+        "totalLatencyP50": 20901,
+        "totalLatencyP95": 50115.67499999999,
+        "firstDishP50": 20898.45,
+        "firstDishP95": 50114.74
+      }
+    }
+  ],
+  "allHardGatesPassed": true,
+  "quality": {
+    "nameRecall": {
+      "mean": 0.8464,
+      "min": 0.84,
+      "max": 0.8528,
+      "p50": 0.8464
+    },
+    "namePrecision": {
+      "mean": 0.8397016189546221,
+      "min": 0.8306962025316456,
+      "max": 0.8487261146496815,
+      "p50": 0.8396825396825397
+    },
+    "priceExact": {
+      "mean": 0.662285315959329,
+      "min": 0.6520912547528517,
+      "max": 0.6781609195402298,
+      "p50": 0.6566037735849056
+    },
+    "hallucinationCount": {
+      "mean": 101,
+      "min": 95,
+      "max": 107,
+      "p50": 101
+    },
+    "hallucinationRate": {
+      "mean": 0.16029838104537775,
+      "min": 0.15127388535031847,
+      "max": 0.16930379746835442,
+      "p50": 0.16031746031746033
+    },
+    "withinPageInversions": {
+      "mean": 1397.6666666666667,
+      "min": 1124,
+      "max": 1593,
+      "p50": 1476
+    },
+    "totalLatencyP50": {
+      "mean": 21277.38333333333,
+      "min": 20901,
+      "max": 21801.7,
+      "p50": 21129.449999999997
+    },
+    "totalLatencyP95": {
+      "mean": 44796.95833333332,
+      "min": 41257.134999999995,
+      "max": 50115.67499999999,
+      "p50": 43018.064999999995
+    },
+    "firstDishP50": {
+      "mean": 21275.983333333334,
+      "min": 20898.45,
+      "max": 21800.95,
+      "p50": 21128.550000000003
+    },
+    "firstDishP95": {
+      "mean": 44795.156666666655,
+      "min": 41256.274999999994,
+      "max": 50114.74,
+      "p50": 43014.454999999994
+    }
+  },
+  "deltaVsLegacySingleRun": {
+    "baselineClassification": "legacy_single_run_not_reproducible_with_v2_harness",
+    "nameRecallPp": 72,
+    "namePrecisionPp": 8.732066657366977,
+    "priceExactPp": 13.063974633907593,
+    "hallucinationCountDelta": 75
+  },
+  "productQualityThresholds": "not_preapproved_report_only"
+}

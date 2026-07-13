@@ -1,0 +1,241 @@
+{
+  "meta": {
+    "date": "2026-07-13",
+    "path": "Vision OCR -> text-only Gemini",
+    "dataset": "chopstory-test-data 14 images / 625 gold",
+    "repeats": 3,
+    "model": "gemini-2.5-flash (or env)"
+  },
+  "baseline_image_gemini": {
+    "nameRecall": 0.1264,
+    "namePrecision": 0.7523809523809524,
+    "priceExact": 0.5316455696202531,
+    "matchedNames": 79,
+    "predictionCount": 105,
+    "hallucinationCount": 26,
+    "imagesCompleted": 14,
+    "latencyP50": 37716.9,
+    "latencyP95": 120053.5
+  },
+  "runs": [
+    {
+      "run": 1,
+      "nameRecall": 0.7872,
+      "namePrecision": 0.9044117647058824,
+      "priceExact": 0.5787321063394683,
+      "matchedNames": 492,
+      "predictionCount": 544,
+      "hallucinationCount": 52,
+      "missedCount": 133,
+      "imagesCompleted": 14,
+      "pagesWithError": 0,
+      "pagesWithZeroOutput": 0,
+      "latencyP50": 24875.1,
+      "latencyP95": 48350.1
+    },
+    {
+      "run": 2,
+      "nameRecall": 0.7808,
+      "namePrecision": 0.8621908127208481,
+      "priceExact": 0.6185567010309279,
+      "matchedNames": 488,
+      "predictionCount": 566,
+      "hallucinationCount": 78,
+      "missedCount": 137,
+      "imagesCompleted": 14,
+      "pagesWithError": 0,
+      "pagesWithZeroOutput": 0,
+      "latencyP50": 21476.4,
+      "latencyP95": 44394.8
+    },
+    {
+      "run": 3,
+      "nameRecall": 0.8176,
+      "namePrecision": 0.8573825503355704,
+      "priceExact": 0.6279527559055118,
+      "matchedNames": 511,
+      "predictionCount": 596,
+      "hallucinationCount": 85,
+      "missedCount": 114,
+      "imagesCompleted": 14,
+      "pagesWithError": 0,
+      "pagesWithZeroOutput": 0,
+      "latencyP50": 25659,
+      "latencyP95": 47969.5
+    }
+  ],
+  "acrossRuns": {
+    "nameRecallMean": 0.7952,
+    "nameRecallMedian": 0.7872,
+    "nameRecallMin": 0.7808,
+    "nameRecallMax": 0.8176,
+    "namePrecisionMean": 0.8746617092541004,
+    "priceExactMean": 0.6084138544253027,
+    "hallucinationMean": 71.66666666666667,
+    "latencyP50Mean": 24003.5,
+    "latencyP95Mean": 46904.799999999996,
+    "all14CompleteEveryRun": true,
+    "anyZeroOutput": false,
+    "anyPageError": false
+  },
+  "deltaVsBaseline": {
+    "nameRecallPp": 0.6688000000000001,
+    "namePrecisionPp": 0.12228075687314799,
+    "priceExactPp": 0.0767682848050496
+  },
+  "weakPages": [
+    {
+      "imageFile": "M004_P01.jpg",
+      "gold": 72,
+      "recalls": [
+        0,
+        0.5416666666666666,
+        0.4027777777777778
+      ],
+      "meanRecall": 0.3148148148148148,
+      "dishCounts": [
+        1,
+        56,
+        56
+      ],
+      "hallu": [
+        1,
+        17,
+        27
+      ]
+    },
+    {
+      "imageFile": "M001_P05.jpg",
+      "gold": 8,
+      "recalls": [
+        0.5,
+        0.5,
+        0.5
+      ],
+      "meanRecall": 0.5,
+      "dishCounts": [
+        9,
+        9,
+        9
+      ],
+      "hallu": [
+        5,
+        5,
+        5
+      ]
+    },
+    {
+      "imageFile": "M001_P04.jpg",
+      "gold": 13,
+      "recalls": [
+        0.5384615384615384,
+        0.5384615384615384,
+        0.5384615384615384
+      ],
+      "meanRecall": 0.5384615384615384,
+      "dishCounts": [
+        15,
+        19,
+        17
+      ],
+      "hallu": [
+        8,
+        12,
+        10
+      ]
+    },
+    {
+      "imageFile": "M001_P02.jpg",
+      "gold": 9,
+      "recalls": [
+        0.5555555555555556,
+        0.5555555555555556,
+        0.5555555555555556
+      ],
+      "meanRecall": 0.5555555555555556,
+      "dishCounts": [
+        5,
+        5,
+        5
+      ],
+      "hallu": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "multiPage": [
+    {
+      "run": 1,
+      "menus": [
+        {
+          "menuId": "M007",
+          "pages": 2,
+          "dishCount": 76,
+          "totalMs": 20435.8,
+          "errorCode": null
+        },
+        {
+          "menuId": "M001",
+          "pages": 6,
+          "dishCount": 101,
+          "totalMs": 33392.2,
+          "errorCode": null
+        }
+      ]
+    },
+    {
+      "run": 2,
+      "menus": [
+        {
+          "menuId": "M007",
+          "pages": 2,
+          "dishCount": 54,
+          "totalMs": 20358.4,
+          "errorCode": null
+        },
+        {
+          "menuId": "M001",
+          "pages": 6,
+          "dishCount": 105,
+          "totalMs": 33913.7,
+          "errorCode": null
+        }
+      ]
+    },
+    {
+      "run": 3,
+      "menus": [
+        {
+          "menuId": "M007",
+          "pages": 2,
+          "dishCount": 75,
+          "totalMs": 21282.5,
+          "errorCode": null
+        },
+        {
+          "menuId": "M001",
+          "pages": 6,
+          "dishCount": 92,
+          "totalMs": 29657.4,
+          "errorCode": null
+        }
+      ]
+    }
+  ],
+  "smoke": {
+    "ordinarySinglePage": "pass (M001_P01 dishes+done)",
+    "densePage": "pass (M001_P03 dishes+done)",
+    "twoPage": "pass (M001 P01+P02 continuous ids)",
+    "blankImage": "pass (unreadable)",
+    "missingCredentials": "unit/route tested (upstream_error, no silent mock)"
+  },
+  "knownLimitations": [
+    "High run-to-run variance on some pages (e.g. M004, M001_P02/P04/P05)",
+    "Price exact match still modest (~55-60%)",
+    "Name hallucinations/extras still present (OCR join / promo text)",
+    "M002 once dropped to 45/69 dishes mid-run (provider variance)",
+    "No Cloudflare preview validation in this session yet"
+  ]
+}

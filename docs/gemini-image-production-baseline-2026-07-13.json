@@ -1,0 +1,4063 @@
+{
+  "meta": {
+    "baseUrl": "http://localhost:3000",
+    "datasetDir": "/Users/kevin/Downloads/chopstory-test-data",
+    "concurrency": 1,
+    "goldRowCount": 625,
+    "imageCount": 14,
+    "menuCount": 8,
+    "timestamp": "2026-07-12T19:08:28.906Z"
+  },
+  "singlePage": [
+    {
+      "imageFile": "M001_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 15407.9,
+      "totalMs": 22773.2,
+      "firstDishMs": 22773.2,
+      "dishCount": 14,
+      "goldCount": 14,
+      "errorText": null,
+      "scores": {
+        "goldCount": 14,
+        "predictionCount": 14,
+        "matchedNames": 10,
+        "missedCount": 4,
+        "hallucinationCount": 4,
+        "nameRecall": 0.7142857142857143,
+        "namePrecision": 0.7142857142857143,
+        "priceCompared": 10,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "陈醋詹耳",
+            "price": "¥45/份"
+          },
+          {
+            "nameCn": "卤水鹅掌翼伴花生",
+            "price": "¥140/份"
+          },
+          {
+            "nameCn": "天麻炖海斑骨",
+            "price": "¥298/两位用"
+          },
+          {
+            "nameCn": "姬松茸炖老鸽",
+            "price": "¥388/两位用"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "陈醋凤耳",
+            "price": "¥45 /份 per portion"
+          },
+          {
+            "nameCn": "卤水鸭掌翼伴花生",
+            "price": "¥140 /份 per portion"
+          },
+          {
+            "nameCn": "天麻炖海班骨",
+            "price": "¥298 /两位用"
+          },
+          {
+            "nameCn": "姬松茸草炖老鸽",
+            "price": "¥388 /两位用"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "椒盐九肚鱼",
+          "name": "Crispy Salt and Pepper Bombay Duck Fish",
+          "pinyin": "Jiāoyán Jiǔdùyú",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "卤水豆腐花生",
+          "name": "Braised Tofu and Peanuts",
+          "pinyin": "Lǔshuǐ Dòufu Huāshēng",
+          "category": "Appetizers",
+          "price": "¥40 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "珊瑚海蜇头",
+          "name": "Sea Blubber Head in Balsamic Vinegar",
+          "pinyin": "Shānhú Hǎizhétóu",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "陈醋凤耳",
+          "name": "Marinated Pickled Fungus",
+          "pinyin": "Chéncù Fèng'ěr",
+          "category": "Appetizers",
+          "price": "¥45 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "和味榨菜",
+          "name": "Spicy Preserved Cabbage",
+          "pinyin": "Héwèi Zhàcài",
+          "category": "Appetizers",
+          "price": "¥45 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "美极鸭舌",
+          "name": "Duck Tongue in Maggi Sauce",
+          "pinyin": "Měijí Yāshé",
+          "category": "Appetizers",
+          "price": "¥68 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "烙烤银杏",
+          "name": "Roasted Ginkgo Nuts",
+          "pinyin": "Làokǎo Yínxìng",
+          "category": "Appetizers",
+          "price": "¥45 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "卤水鸭掌翼伴花生",
+          "name": "Braised Goose Wings and Webs with Peanuts",
+          "pinyin": "Lǔshuǐ Yāzhǎngyì Bàn Huāshēng",
+          "category": "Appetizers",
+          "price": "¥140 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "金银菜炖润肺",
+          "name": "Double Boiled Pig's Lungs with Fresh and Dried White Cabbage",
+          "pinyin": "Jīnyíncài Dùn Rùnfèi",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥280 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "天麻炖海班骨",
+          "name": "Gastrodia Stewed Grouper Bone",
+          "pinyin": "Tiānmá Dùn Hǎibāngǔ",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥298 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "海椰子清炖竹丝鸡",
+          "name": "Sea Coconut Stewed Silkie Chicken",
+          "pinyin": "Hǎiyēzi Qīngdùn Zhúsījí",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥298 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "姬松茸草炖老鸽",
+          "name": "Double-Boiled Pigeon with Blaze Mushroom",
+          "pinyin": "Jīsōngróng Cǎo Dùn Lǎogē",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥388 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "杞枣炖响螺",
+          "name": "Double Boiled Sea Whelk Soup with Red Date and Wolfberry",
+          "pinyin": "Qǐzǎo Dùn Xiǎngluó",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥598 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "迷你佛跳墙 (预定)",
+          "name": "Double Boiled Mini Delicacies \"Buddha Jump Over the Wall\" (Advanced Order)",
+          "pinyin": "Mínǐ Fótiàoqiáng (Yùdìng)",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥488 /位 per person",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P02.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 11255.5,
+      "totalMs": 16487.8,
+      "firstDishMs": 16487.8,
+      "dishCount": 9,
+      "goldCount": 9,
+      "errorText": null,
+      "scores": {
+        "goldCount": 9,
+        "predictionCount": 9,
+        "matchedNames": 9,
+        "missedCount": 0,
+        "hallucinationCount": 0,
+        "nameRecall": 1,
+        "namePrecision": 1,
+        "priceCompared": 9,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "琥珀核桃",
+          "name": "Deep Fried Walnut Coated with Honey",
+          "pinyin": "Hǔpò Hétáo",
+          "category": "Appetizers",
+          "price": "¥62 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "金蒜拍青瓜",
+          "name": "Garlic Flavoured Pickled Cucumber",
+          "pinyin": "Jīnsuàn Pāi Qīngguā",
+          "category": "Appetizers",
+          "price": "¥40 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "子姜皮蛋",
+          "name": "Preserved Egg with Young Ginger",
+          "pinyin": "Zǐjiāng Pídàn",
+          "category": "Appetizers",
+          "price": "¥13 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "脆皮素鹅",
+          "name": "Crispy Bean Curd Sheet Roll Stuffed with Mushroom",
+          "pinyin": "Cuìpí Sù'é",
+          "category": "Appetizers",
+          "price": "¥55 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "五香牛展",
+          "name": "Spicy Beef Shin",
+          "pinyin": "Wǔxiāng Niúzhǎn",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "金柱贡菜",
+          "name": "Preserved Vegetable in XO Sauce",
+          "pinyin": "Jīnzhù Gòngcài",
+          "category": "Appetizers",
+          "price": "¥45 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "凉拌三丝",
+          "name": "Chilled Tofu, Chinese Cabbage Shreds and Sea Blubber Shreds",
+          "pinyin": "Liángbàn Sānsī",
+          "category": "Appetizers",
+          "price": "¥58 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "椒盐鸡软骨",
+          "name": "Deep Fried Chicken Cartilage with Salt & Pepper",
+          "pinyin": "Jiāoyán Jī Ruǎngǔ",
+          "category": "Appetizers",
+          "price": "¥58 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "沙姜凤爪",
+          "name": "Marinated Chicken Feet with Grounded Ginger",
+          "pinyin": "Shājiāng Fèngzhǎo",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P03.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 15969.7,
+      "totalMs": 22805.4,
+      "firstDishMs": 22805.4,
+      "dishCount": 12,
+      "goldCount": 12,
+      "errorText": null,
+      "scores": {
+        "goldCount": 12,
+        "predictionCount": 12,
+        "matchedNames": 1,
+        "missedCount": 11,
+        "hallucinationCount": 11,
+        "nameRecall": 0.08333333333333333,
+        "namePrecision": 0.08333333333333333,
+        "priceCompared": 1,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "蚝皇扣鲜鲍鱼(五头)",
+            "price": "¥368/只"
+          },
+          {
+            "nameCn": "蚝皇扣鲜鲍鱼(四头)",
+            "price": "¥468/只"
+          },
+          {
+            "nameCn": "蚝皇扣干鲍鱼(十八头)",
+            "price": "¥698/只"
+          },
+          {
+            "nameCn": "蚝皇扣干鲍鱼(十三头)",
+            "price": "¥1488/只"
+          },
+          {
+            "nameCn": "蚝皇扣辽参",
+            "price": "¥328/位"
+          },
+          {
+            "nameCn": "蚝皇扣16头原只花胶",
+            "price": "¥298/位"
+          },
+          {
+            "nameCn": "红烧花胶鸡丝翅(50克)",
+            "price": "¥328/位"
+          },
+          {
+            "nameCn": "红烧蟹肉翅(50克)",
+            "price": "¥328/位"
+          },
+          {
+            "nameCn": "鸿图蟹皇翅(50克)",
+            "price": "¥488/位"
+          },
+          {
+            "nameCn": "蟹底干捞翅(100克)",
+            "price": "¥768/位"
+          },
+          {
+            "nameCn": "浓鸡汤牙勾翅(100克)",
+            "price": "¥568/位"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "鲍皇扣鲜鲍鱼 (五头)",
+            "price": "¥368/只 each"
+          },
+          {
+            "nameCn": "鲍皇扣鲜鲍鱼 (四头)",
+            "price": "¥468/只 each"
+          },
+          {
+            "nameCn": "鲍皇扣干鲍鱼 (十八头)",
+            "price": "¥698/只 each"
+          },
+          {
+            "nameCn": "鲍皇扣干鲍鱼 (十三头)",
+            "price": "¥1488/只 each"
+          },
+          {
+            "nameCn": "鲍皇扣辽参",
+            "price": "¥328/位 per person"
+          },
+          {
+            "nameCn": "鲍皇扣16头原只花胶",
+            "price": "¥298/位 per person"
+          },
+          {
+            "nameCn": "红烧花胶鸡丝翅 (50克)(鱼翅)",
+            "price": "¥328/位 per person"
+          },
+          {
+            "nameCn": "红烧蟹肉翅 (50克)(鱼翅)",
+            "price": "¥328/位 per person"
+          },
+          {
+            "nameCn": "鸿图蟹皇翅 (50克)(鱼翅)",
+            "price": "¥488/位 per person"
+          },
+          {
+            "nameCn": "蟹底干捞翅 (100克)(鱼翅)",
+            "price": "¥768/位 per person"
+          },
+          {
+            "nameCn": "浓汤鸡牙勾翅 (100克)(鱼翅)",
+            "price": "¥568/位 per person"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "鲍皇扣鲜鲍鱼 (五头)",
+          "name": "Braised Fresh Abalone in Oyster Sauce (5 Heads)",
+          "pinyin": "Bào Huáng Kòu Xiān Bāoyú (Wǔ Tóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥368/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍皇扣鲜鲍鱼 (四头)",
+          "name": "Braised Fresh Abalone in Oyster Sauce (4 Heads)",
+          "pinyin": "Bào Huáng Kòu Xiān Bāoyú (Sì Tóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥468/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍皇扣干鲍鱼 (十八头)",
+          "name": "Braised Dried Abalone in Oyster Sauce (18 Heads)",
+          "pinyin": "Bào Huáng Kòu Gān Bāoyú (Shíbā Tóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥698/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍皇扣干鲍鱼 (十三头)",
+          "name": "Braised Dried Abalone in Oyster Sauce (13 Heads)",
+          "pinyin": "Bào Huáng Kòu Gān Bāoyú (Shísān Tóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥1488/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍皇扣辽参",
+          "name": "Braised Sea Cucumber in Oyster Sauce",
+          "pinyin": "Bào Huáng Kòu Liáo Shēn",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍皇扣16头原只花胶",
+          "name": "Braised 16-Head Fish Maw in Oyster Sauce",
+          "pinyin": "Bào Huáng Kòu Shíliù Tóu Yuán Zhǐ Huājiāo",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥298/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍鱼汁扣二头黄鱼大花胶",
+          "name": "Braised Yellow Croaker Fish Maw in Abalone Sauce (2 Heads)",
+          "pinyin": "Bāoyú Zhī Kòu Èr Tóu Huángyú Dà Huājiāo",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥498/50g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "红烧花胶鸡丝翅 (50克)(鱼翅)",
+          "name": "Braised Shark's Fin with Fish Maw and Shredded Chicken",
+          "pinyin": "Hóngshāo Huājiāo Jīsī Chì (Wǔshí Kè)(Yúchì)",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "红烧蟹肉翅 (50克)(鱼翅)",
+          "name": "Braised Shark's Fin with Crab Meat",
+          "pinyin": "Hóngshāo Xièròu Chì (Wǔshí Kè)(Yúchì)",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鸿图蟹皇翅 (50克)(鱼翅)",
+          "name": "Braised Shark's Fin with Fresh Crab Cream",
+          "pinyin": "Hóngtú Xièhuáng Chì (Wǔshí Kè)(Yúchì)",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥488/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蟹底干捞翅 (100克)(鱼翅)",
+          "name": "Stir-Fried Shark's Fin and Crab Meat Served with Superior Soup",
+          "pinyin": "Xiè Dǐ Gān Lāo Chì (Yībǎi Kè)(Yúchì)",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥768/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "浓汤鸡牙勾翅 (100克)(鱼翅)",
+          "name": "Braised Shark's Fin in Thick Chicken Broth",
+          "pinyin": "Nóng Tāng Jī Yá Gōu Chì (Yībǎi Kè)(Yúchì)",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥568/位 per person",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P04.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 16806,
+      "totalMs": 23777.2,
+      "firstDishMs": 23777.2,
+      "dishCount": 12,
+      "goldCount": 13,
+      "errorText": null,
+      "scores": {
+        "goldCount": 13,
+        "predictionCount": 12,
+        "matchedNames": 7,
+        "missedCount": 6,
+        "hallucinationCount": 5,
+        "nameRecall": 0.5384615384615384,
+        "namePrecision": 0.5833333333333334,
+        "priceCompared": 7,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "帝王蟹:花雕蒸身/蟹盖焗饭",
+            "price": "¥780/500g"
+          },
+          {
+            "nameCn": "蓝龙虾:太极二味",
+            "price": "¥880/500g"
+          },
+          {
+            "nameCn": "露笋煎珍珠斑肉",
+            "price": "¥98/位"
+          },
+          {
+            "nameCn": "脆皮煎/白酒汁大花虾扒",
+            "price": "¥128/位"
+          },
+          {
+            "nameCn": "原只龙虾仔(白雪藏龙)",
+            "price": "¥498/位"
+          },
+          {
+            "nameCn": "翠盏钵酒焗软壳蟹",
+            "price": "¥98/位"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "帝王蟹: 花雕蒸身、蟹盖焗饭",
+            "price": "¥780 / 500 g"
+          },
+          {
+            "nameCn": "蓝龙虾: 太极三味",
+            "price": "¥880 / 500 g"
+          },
+          {
+            "nameCn": "露笋珍珠斑肉",
+            "price": "¥98 / per person"
+          },
+          {
+            "nameCn": "脆皮煎 / 白酒汁大花扒",
+            "price": "¥128 / per person"
+          },
+          {
+            "nameCn": "翠盏酒焗 / 焗软壳蟹",
+            "price": "¥98 / per person"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "帝王蟹: 花雕蒸身、蟹盖焗饭",
+          "name": "Alaska King Crab: Steamed Body with Hua Diao Wine, Baked Rice in Crab Shell",
+          "pinyin": "Dìwángxiè: Huādiāo Zhēngshēn, Xiègài Júfàn",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥780 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蓝龙虾: 太极三味",
+          "name": "Blue Lobster: Tai Chi Three Ways",
+          "pinyin": "Lánlóngxiā: Tàijí Sānwèi",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥880 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙虾: 龙腾四海",
+          "name": "Lobster: Dragon Soaring Across the Four Seas",
+          "pinyin": "Lóngxiā: Lóngténg Sìhǎi",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥1100 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙虾汤: 过桥象拔蚌",
+          "name": "Lobster Soup with Geoduck Slices",
+          "pinyin": "Lóngxiātāng: Guòqiáo Xiàngbábàng",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥880 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "东星斑: 鲜茄浓汤灼球",
+          "name": "Leopard Coral Garoupa: Poached Fish Balls in Rich Tomato Soup",
+          "pinyin": "Dōngxīngbān: Xiānqié Nóngtāng Zhuóqiú",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥980 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "XO 酱白玉蒸 / 古法蒸珍珠斑球",
+          "name": "Steamed Garoupa Fillet with XO Sauce / Traditional Steamed Garoupa Fillet",
+          "pinyin": "XO Jiàng Báiyù Zhēng / Gǔfǎ Zhēng Zhēnzhū Bānqiú",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 1
+        },
+        {
+          "nameCn": "露笋珍珠斑肉",
+          "name": "Garoupa Fillet with Asparagus",
+          "pinyin": "Lùsǔn Zhēnzhū Bānròu",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "陈皮葱花蒸 / 红焖珍珠斑件",
+          "name": "Steamed Garoupa Fillet with Dried Tangerine Peel and Scallions / Braised Garoupa Fillet",
+          "pinyin": "Chénpí Cōnghuā Zhēng / Hóngmèn Zhēnzhū Bānjiàn",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "美极煎大花虾",
+          "name": "Pan-Fried Prawn in Maggi Sauce",
+          "pinyin": "Měijí Jiān Dàhuāxiā",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "脆皮煎 / 白酒汁大花扒",
+          "name": "Crispy Pan-Fried / White Wine Sauce King Prawn Fillet",
+          "pinyin": "Cuìpí Jiān / Báijiǔzhī Dàhuāpá",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "上汤焗 / 盐香芝士开边龙虾",
+          "name": "Baked Lobster in Superior Soup / Salted Cheese Lobster",
+          "pinyin": "Shàngtāng Jú / Yánxiāng Zhīshì Kāibiān Lóngxiā",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥248 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "翠盏酒焗 / 焗软壳蟹",
+          "name": "Baked Soft-Shell Crab with Lettuce Slice",
+          "pinyin": "Cuìzhǎn Jiǔjú / Jú Ruǎnqièxiè",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P05.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 9963.2,
+      "totalMs": 14166.1,
+      "firstDishMs": 14166.1,
+      "dishCount": 8,
+      "goldCount": 8,
+      "errorText": null,
+      "scores": {
+        "goldCount": 8,
+        "predictionCount": 8,
+        "matchedNames": 6,
+        "missedCount": 2,
+        "hallucinationCount": 2,
+        "nameRecall": 0.75,
+        "namePrecision": 0.75,
+        "priceCompared": 6,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "XO酱白玉蒸/古法蒸珍珠斑球",
+            "price": "¥378/份"
+          },
+          {
+            "nameCn": "白玉菇翡翠煎珍珠斑球",
+            "price": "¥378/份"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "XO酱白玉蒸 / 古法蒸珍珠斑件",
+            "price": "¥378 /份 per portion"
+          },
+          {
+            "nameCn": "白玉菇翡翠煎珍珠斑件",
+            "price": "¥378 /份 per portion"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "蟹肉鸡茸烩燕窝 (50克)",
+          "name": "Braised Bird's Nest with Crab Meat and Minced Chicken",
+          "pinyin": "Xiè Ròu Jī Róng Huì Yàn Wō",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥380 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "枣皇炖燕窝 (50克)",
+          "name": "Double-Boiled Bird's Nest with Red Dates",
+          "pinyin": "Zǎo Huáng Dùn Yàn Wō",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥298 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "晶莹官燕 (100克)",
+          "name": "Superior Soup with Bird's Nest",
+          "pinyin": "Jīng Yíng Guān Yàn",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥568 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "XO酱白玉蒸 / 古法蒸珍珠斑件",
+          "name": "Steamed Garoupa Fillet with XO Sauce or Traditional Style",
+          "pinyin": "XO Jiàng Bái Yù Zhēng / Gǔ Fǎ Zhēng Zhēn Zhū Bān Jiàn",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥378 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "白玉菇翡翠煎珍珠斑件",
+          "name": "Pan-Fried Garoupa Fillet with Beech Mushroom and Green Vegetables",
+          "pinyin": "Bái Yù Gū Fěi Cuì Jiān Zhēn Zhū Bān Jiàn",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥378 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "陈皮葱花蒸珍珠斑件",
+          "name": "Steamed Garoupa Fillet with Dried Tangerine Peel and Spring Onion",
+          "pinyin": "Chén Pí Cōng Huā Zhēng Zhēn Zhū Bān Jiàn",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥488 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "石窝烧珍珠斑件",
+          "name": "Simmered Garoupa Fillet in Casserole",
+          "pinyin": "Shí Wō Shāo Zhēn Zhū Bān Jiàn",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥488 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "湖北黄金凤尾虾",
+          "name": "Deep-Fried Prawns coated with Salted Egg Yolk",
+          "pinyin": "Hú Běi Huáng Jīn Fèng Wěi Xiā",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥328 /份 per portion",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M001_P06.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 38853.4,
+      "totalMs": 39664.4,
+      "firstDishMs": 39664.4,
+      "dishCount": 3,
+      "goldCount": 45,
+      "errorText": null,
+      "scores": {
+        "goldCount": 45,
+        "predictionCount": 3,
+        "matchedNames": 3,
+        "missedCount": 42,
+        "hallucinationCount": 0,
+        "nameRecall": 0.06666666666666667,
+        "namePrecision": 1,
+        "priceCompared": 3,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "老虎斑",
+            "price": "¥450/500g"
+          },
+          {
+            "nameCn": "红丁",
+            "price": "¥980/500g"
+          },
+          {
+            "nameCn": "石头鱼",
+            "price": "¥800/500g"
+          },
+          {
+            "nameCn": "瓜子斑",
+            "price": "¥980/500g"
+          },
+          {
+            "nameCn": "青衣",
+            "price": "¥800/500g"
+          },
+          {
+            "nameCn": "笋壳鱼",
+            "price": "¥450/500g"
+          },
+          {
+            "nameCn": "龙虾",
+            "price": "¥1100/500g"
+          },
+          {
+            "nameCn": "蓝龙虾",
+            "price": "¥880/500g"
+          },
+          {
+            "nameCn": "龙虾仔",
+            "price": "¥830/500g"
+          },
+          {
+            "nameCn": "濑尿虾",
+            "price": "¥880/500g"
+          },
+          {
+            "nameCn": "帝王蟹",
+            "price": "¥780/500g"
+          },
+          {
+            "nameCn": "大红蟹",
+            "price": "¥980/500g"
+          },
+          {
+            "nameCn": "大鲍鱼",
+            "price": "¥980/500g"
+          },
+          {
+            "nameCn": "响螺",
+            "price": "¥1100/500g"
+          },
+          {
+            "nameCn": "象拔蚌",
+            "price": "¥880/500g"
+          },
+          {
+            "nameCn": "圣子",
+            "price": "¥98/只"
+          },
+          {
+            "nameCn": "元贝",
+            "price": "¥88/只"
+          },
+          {
+            "nameCn": "煎面底",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "伊面底",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "粗面",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "米线",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "龙腾四海",
+            "price": "¥100/份"
+          },
+          {
+            "nameCn": "白雪藏龙",
+            "price": "¥80/份"
+          },
+          {
+            "nameCn": "头爪煲粥",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "蟹盖焗饭",
+            "price": "¥60/份"
+          },
+          {
+            "nameCn": "蟹肉",
+            "price": "¥80/位"
+          },
+          {
+            "nameCn": "蟹皇",
+            "price": "¥120/位"
+          },
+          {
+            "nameCn": "蟹粉",
+            "price": "¥130/位"
+          },
+          {
+            "nameCn": "龙虾肉",
+            "price": "¥100/位"
+          },
+          {
+            "nameCn": "津白豆腐清汤窝",
+            "price": "¥80/份"
+          },
+          {
+            "nameCn": "太极二味",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "生焖/双冬焖",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "龙虾汤过桥",
+            "price": "¥120/份"
+          },
+          {
+            "nameCn": "浓鸡汤",
+            "price": "¥80/份"
+          },
+          {
+            "nameCn": "浓鱼汤",
+            "price": "¥120/份"
+          },
+          {
+            "nameCn": "米汤堂灼",
+            "price": "¥30/份"
+          },
+          {
+            "nameCn": "凉瓜支竹灼",
+            "price": "¥50/份"
+          },
+          {
+            "nameCn": "浓汤津白浸",
+            "price": "¥100/份"
+          },
+          {
+            "nameCn": "金汤菰米煮",
+            "price": "¥30/位"
+          },
+          {
+            "nameCn": "芫茜豆腐浓鱼汤",
+            "price": "¥140/份"
+          },
+          {
+            "nameCn": "枣皇炖",
+            "price": "¥20/位"
+          },
+          {
+            "nameCn": "金银蛋浸",
+            "price": "¥15/份"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "东星斑",
+          "name": "Spotted Garoupa",
+          "pinyin": "Dōngxīngbān",
+          "category": "Live Seafood",
+          "price": "¥980",
+          "spicy": 0
+        },
+        {
+          "nameCn": "花金古",
+          "name": "Spotted Scat",
+          "pinyin": "Huājīngǔ",
+          "category": "Live Seafood",
+          "price": "¥980",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙利",
+          "name": "Dover Sole",
+          "pinyin": "Lónglì",
+          "category": "Live Seafood",
+          "price": "¥520",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M002_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 37297,
+      "totalMs": 37966.9,
+      "firstDishMs": 37966.9,
+      "dishCount": 2,
+      "goldCount": 69,
+      "errorText": null,
+      "scores": {
+        "goldCount": 69,
+        "predictionCount": 2,
+        "matchedNames": 2,
+        "missedCount": 67,
+        "hallucinationCount": 0,
+        "nameRecall": 0.028985507246376812,
+        "namePrecision": 1,
+        "priceCompared": 2,
+        "priceMatched": 2,
+        "priceExact": 1,
+        "misses": [
+          {
+            "nameCn": "炒海蜇皮",
+            "price": "30元"
+          },
+          {
+            "nameCn": "咸瓜蒸肉饼",
+            "price": "28元"
+          },
+          {
+            "nameCn": "九菜炒烧肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "九菜炒蚬肉",
+            "price": "25元"
+          },
+          {
+            "nameCn": "炸粉肠",
+            "price": "38元"
+          },
+          {
+            "nameCn": "蒜生虾仔菜尾",
+            "price": "20元"
+          },
+          {
+            "nameCn": "刀里鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "白仓鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "泥艋鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "黄花鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "乌头鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "马胶鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "福寿鱼",
+            "price": "时价"
+          },
+          {
+            "nameCn": "杂鱼煲",
+            "price": "时价"
+          },
+          {
+            "nameCn": "白切鸡",
+            "price": "40/例"
+          },
+          {
+            "nameCn": "白切鸭",
+            "price": "40/例"
+          },
+          {
+            "nameCn": "白切鹅",
+            "price": "48/例"
+          },
+          {
+            "nameCn": "白切猪肚",
+            "price": "42元"
+          },
+          {
+            "nameCn": "白切粉肠",
+            "price": "38元"
+          },
+          {
+            "nameCn": "白切腩肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "白切猪杂",
+            "price": "38元"
+          },
+          {
+            "nameCn": "胡椒鸭",
+            "price": "45元"
+          },
+          {
+            "nameCn": "豆芽炒大肠",
+            "price": "35元"
+          },
+          {
+            "nameCn": "尖椒炒大肠",
+            "price": "35元"
+          },
+          {
+            "nameCn": "酸菜炒大肠",
+            "price": "35元"
+          },
+          {
+            "nameCn": "鼓油皇大肠",
+            "price": "42元"
+          },
+          {
+            "nameCn": "凉瓜炒牛肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "姜葱炒牛肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "蒜心炒风肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "兰豆炒腊味",
+            "price": "38元"
+          },
+          {
+            "nameCn": "生蒜炒腊味",
+            "price": "38元"
+          },
+          {
+            "nameCn": "菜椒炒猪肚",
+            "price": "38元"
+          },
+          {
+            "nameCn": "豆角炒腩肉",
+            "price": "30元"
+          },
+          {
+            "nameCn": "鼓油皇腩肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "九王炒生肠",
+            "price": "35元"
+          },
+          {
+            "nameCn": "沙姜炒鸭掌",
+            "price": "38元"
+          },
+          {
+            "nameCn": "九菜炒河虾",
+            "price": "28元"
+          },
+          {
+            "nameCn": "沙姜炒鸡",
+            "price": "40元"
+          },
+          {
+            "nameCn": "香菇焖鸡",
+            "price": "40元"
+          },
+          {
+            "nameCn": "姜葱焖鸡",
+            "price": "40元"
+          },
+          {
+            "nameCn": "沙姜炒鸭",
+            "price": "40元"
+          },
+          {
+            "nameCn": "姜葱炒田鸡",
+            "price": "38元"
+          },
+          {
+            "nameCn": "炒花甲",
+            "price": "25元"
+          },
+          {
+            "nameCn": "油焗虾仔",
+            "price": "35元"
+          },
+          {
+            "nameCn": "生蒜炒鸡杂",
+            "price": "25元"
+          },
+          {
+            "nameCn": "丝瓜炒鸡杂",
+            "price": "25元"
+          },
+          {
+            "nameCn": "豆角炒茄子",
+            "price": "28元"
+          },
+          {
+            "nameCn": "咸虾炒豆角",
+            "price": "25元"
+          },
+          {
+            "nameCn": "虾仔焖豆腐",
+            "price": "22元"
+          },
+          {
+            "nameCn": "家常豆腐",
+            "price": "25元"
+          },
+          {
+            "nameCn": "蒜心炒牛肉",
+            "price": "38元"
+          },
+          {
+            "nameCn": "凌鱼炒凉瓜",
+            "price": "25元"
+          },
+          {
+            "nameCn": "菜头煎蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "葱花煎蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "炒滑蛋",
+            "price": "25元"
+          },
+          {
+            "nameCn": "九王炒蛋",
+            "price": "20元"
+          },
+          {
+            "nameCn": "凉瓜炒蛋",
+            "price": "20元"
+          },
+          {
+            "nameCn": "蒸水蛋",
+            "price": "20元"
+          },
+          {
+            "nameCn": "榨菜肉丝",
+            "price": "25元"
+          },
+          {
+            "nameCn": "虎皮尖椒",
+            "price": "28元"
+          },
+          {
+            "nameCn": "炒田螺",
+            "price": "20元"
+          },
+          {
+            "nameCn": "凉拌青瓜",
+            "price": "15元"
+          },
+          {
+            "nameCn": "上汤时蔬",
+            "price": "20元"
+          },
+          {
+            "nameCn": "炒时菜",
+            "price": "15元"
+          },
+          {
+            "nameCn": "捞时叶",
+            "price": "15元"
+          },
+          {
+            "nameCn": "捞三豆",
+            "price": "15元"
+          },
+          {
+            "nameCn": "三豆煲",
+            "price": "20元"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "干煎鱿鱼仔",
+          "name": "Pan-fried Baby Squid",
+          "pinyin": "Gān jiān yóuyú zǐ",
+          "category": "Wuchuan Dishes",
+          "price": "48元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "酸甜咕噜肉",
+          "name": "Sweet and Sour Pork",
+          "pinyin": "Suāntián gūlū ròu",
+          "category": "Wuchuan Dishes",
+          "price": "38元",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M003_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 38735.1,
+      "totalMs": 39268.2,
+      "firstDishMs": 39268.2,
+      "dishCount": 2,
+      "goldCount": 88,
+      "errorText": null,
+      "scores": {
+        "goldCount": 88,
+        "predictionCount": 2,
+        "matchedNames": 1,
+        "missedCount": 87,
+        "hallucinationCount": 1,
+        "nameRecall": 0.011363636363636364,
+        "namePrecision": 0.5,
+        "priceCompared": 1,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "奶奶特色凤爪/只",
+            "price": "¥6"
+          },
+          {
+            "nameCn": "本帮酱鸭",
+            "price": "¥45"
+          },
+          {
+            "nameCn": "白切鸡",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "水鸡",
+            "price": "¥38"
+          },
+          {
+            "nameCn": "桂花糖藕",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "四喜烤麸",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "叉烧",
+            "price": "¥40"
+          },
+          {
+            "nameCn": "脆皮五花肉",
+            "price": "¥45"
+          },
+          {
+            "nameCn": "本帮熏鱼",
+            "price": "¥48"
+          },
+          {
+            "nameCn": "烧味双拼",
+            "price": "¥58"
+          },
+          {
+            "nameCn": "烧鹅",
+            "price": "¥98"
+          },
+          {
+            "nameCn": "咸蛋黄烩豆腐",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "奶奶招牌炒蛋",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "酱爆猪肝",
+            "price": "¥39"
+          },
+          {
+            "nameCn": "糖醋排条",
+            "price": "¥42"
+          },
+          {
+            "nameCn": "烧汁茄夹",
+            "price": "¥42"
+          },
+          {
+            "nameCn": "椒盐排条",
+            "price": "¥42"
+          },
+          {
+            "nameCn": "菠萝咕咾肉",
+            "price": "¥42"
+          },
+          {
+            "nameCn": "香酥鸭",
+            "price": "¥45"
+          },
+          {
+            "nameCn": "红烧划水",
+            "price": "¥48"
+          },
+          {
+            "nameCn": "咸蛋黄焗鸡翅",
+            "price": "¥52"
+          },
+          {
+            "nameCn": "草头圈子",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "奶奶秘制蹄髈",
+            "price": "¥78"
+          },
+          {
+            "nameCn": "阿奶红烧肉",
+            "price": "¥78"
+          },
+          {
+            "nameCn": "响油鳝丝",
+            "price": "¥88"
+          },
+          {
+            "nameCn": "海鲜面疙瘩",
+            "price": "¥48"
+          },
+          {
+            "nameCn": "黄鱼(2条)(雪菜蒸/红烧)",
+            "price": "¥58"
+          },
+          {
+            "nameCn": "椒盐大虾",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "油爆大虾",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "元宝虾",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "带鱼(清蒸/酒酿圆子烧/萝卜丝烧)",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "清蒸鲈鱼",
+            "price": "¥78"
+          },
+          {
+            "nameCn": "松鼠鲈鱼",
+            "price": "¥88"
+          },
+          {
+            "nameCn": "毛蟹年糕",
+            "price": "¥98"
+          },
+          {
+            "nameCn": "奶奶家素百叶包",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "干煸四季豆",
+            "price": "¥25"
+          },
+          {
+            "nameCn": "鱼香肉丝",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "小炒泡椒猪肝",
+            "price": "¥39"
+          },
+          {
+            "nameCn": "酸汤肥牛",
+            "price": "¥42"
+          },
+          {
+            "nameCn": "酸菜黑鱼片",
+            "price": "¥68"
+          },
+          {
+            "nameCn": "毛血旺",
+            "price": "¥78"
+          },
+          {
+            "nameCn": "干锅手撕包菜",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "奶奶柴火豆腐",
+            "price": "¥38"
+          },
+          {
+            "nameCn": "崇明羊肉煲(红烧/白炖)",
+            "price": "¥78"
+          },
+          {
+            "nameCn": "酸汤鲈鱼",
+            "price": "¥88"
+          },
+          {
+            "nameCn": "泰椒土豆丝",
+            "price": "¥26"
+          },
+          {
+            "nameCn": "酒香草头",
+            "price": "¥36"
+          },
+          {
+            "nameCn": "油焖茭白",
+            "price": "¥36"
+          },
+          {
+            "nameCn": "蒜蓉粉丝蒸娃娃菜",
+            "price": "¥36"
+          },
+          {
+            "nameCn": "雪菜冬笋炒蘑菇",
+            "price": "¥38"
+          },
+          {
+            "nameCn": "油浸蚕豆",
+            "price": "¥38"
+          },
+          {
+            "nameCn": "荠菜麻球",
+            "price": "¥15"
+          },
+          {
+            "nameCn": "油条糍粑",
+            "price": "¥16"
+          },
+          {
+            "nameCn": "排骨年糕",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "炸猪排",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "春卷拼盘",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "罗宋汤",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "酸辣汤",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "草头肉丸汤",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "荠菜口蘑烩鱼糜",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "腌笃鲜",
+            "price": "¥58"
+          },
+          {
+            "nameCn": "白米饭/碗",
+            "price": "¥2"
+          },
+          {
+            "nameCn": "酒酿馒头/个",
+            "price": "¥2"
+          },
+          {
+            "nameCn": "猪油菜饭/碗",
+            "price": "¥3"
+          },
+          {
+            "nameCn": "扬州炒饭",
+            "price": "¥25"
+          },
+          {
+            "nameCn": "腊味酱油炒饭",
+            "price": "¥25"
+          },
+          {
+            "nameCn": "上海炒面",
+            "price": "¥28"
+          },
+          {
+            "nameCn": "现榨核桃血麦汁(热)/杯",
+            "price": "¥12"
+          },
+          {
+            "nameCn": "现榨核桃黑米汁(热)/杯",
+            "price": "¥12"
+          },
+          {
+            "nameCn": "奶奶秘制桂花米酿冰饮",
+            "price": "¥16"
+          },
+          {
+            "nameCn": "红豆冰沙",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "绿豆冰沙",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "微醺紫米酒/杯",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "银耳雪梨羹(热)/杯",
+            "price": "¥18"
+          },
+          {
+            "nameCn": "可乐/雪碧",
+            "price": "¥6"
+          },
+          {
+            "nameCn": "椰汁",
+            "price": "¥8"
+          },
+          {
+            "nameCn": "加多宝",
+            "price": "¥8"
+          },
+          {
+            "nameCn": "可乐/雪碧1.25升",
+            "price": "¥15"
+          },
+          {
+            "nameCn": "青岛/听",
+            "price": "¥8"
+          },
+          {
+            "nameCn": "光明/听",
+            "price": "¥10"
+          },
+          {
+            "nameCn": "雪花扎啤/杯",
+            "price": "¥16"
+          },
+          {
+            "nameCn": "江小白",
+            "price": "¥20"
+          },
+          {
+            "nameCn": "喜力扎啤/杯",
+            "price": "¥25"
+          },
+          {
+            "nameCn": "雪花扎啤/扎",
+            "price": "¥32"
+          },
+          {
+            "nameCn": "喜力扎啤/扎",
+            "price": "¥48"
+          },
+          {
+            "nameCn": "金色年华(5年)",
+            "price": ""
+          },
+          {
+            "nameCn": "金色年华(8年)",
+            "price": ""
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "奶奶特色凤爪",
+            "price": "¥18"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "奶奶特色凤爪",
+          "name": "Grandma's Special Chicken Feet",
+          "pinyin": "Nǎinai Tèsè Fèngzhǎo",
+          "category": "Cold Starters",
+          "price": "¥18",
+          "spicy": 0
+        },
+        {
+          "nameCn": "老上海沙拉",
+          "name": "Old Shanghai Salad",
+          "pinyin": "Lǎo Shànghǎi Shālā",
+          "category": "Cold Starters",
+          "price": "¥45",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M004_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 40055.2,
+      "totalMs": 40724.1,
+      "firstDishMs": 40724.1,
+      "dishCount": 2,
+      "goldCount": 72,
+      "errorText": null,
+      "scores": {
+        "goldCount": 72,
+        "predictionCount": 2,
+        "matchedNames": 2,
+        "missedCount": 70,
+        "hallucinationCount": 0,
+        "nameRecall": 0.027777777777777776,
+        "namePrecision": 1,
+        "priceCompared": 2,
+        "priceMatched": 2,
+        "priceExact": 1,
+        "misses": [
+          {
+            "nameCn": "代餐C(芋泥双皮奶)",
+            "price": "22元"
+          },
+          {
+            "nameCn": "代餐D(草莓控必点)",
+            "price": "22元"
+          },
+          {
+            "nameCn": "代餐F(与杨枝甘露搭配)",
+            "price": "22元"
+          },
+          {
+            "nameCn": "代餐H(手工芋圆+手工芋泥)",
+            "price": "22元"
+          },
+          {
+            "nameCn": "超模麦片罐子(椰子味/咖啡味)",
+            "price": "22元"
+          },
+          {
+            "nameCn": "代餐芋泥酸奶盒子",
+            "price": "23元"
+          },
+          {
+            "nameCn": "草莓燕麦酸奶碗",
+            "price": "24元"
+          },
+          {
+            "nameCn": "巧克力芒果酸奶碗",
+            "price": "24元"
+          },
+          {
+            "nameCn": "苹果肉桂酸奶碗",
+            "price": "24元"
+          },
+          {
+            "nameCn": "芭乐芒果酸奶碗",
+            "price": "25元"
+          },
+          {
+            "nameCn": "芭乐百香果酸奶碗",
+            "price": "25元"
+          },
+          {
+            "nameCn": "火龙果百香果酸奶碗",
+            "price": "25元"
+          },
+          {
+            "nameCn": "蓝莓酸奶碗",
+            "price": "26元"
+          },
+          {
+            "nameCn": "鲜果缤纷 厚酸奶/双皮奶",
+            "price": "15元"
+          },
+          {
+            "nameCn": "芒果小丸子 厚酸奶/双皮奶",
+            "price": "15元"
+          },
+          {
+            "nameCn": "草莓小丸子 厚酸奶/双皮奶",
+            "price": "15元"
+          },
+          {
+            "nameCn": "酒酿芋圆 厚酸奶/双皮奶",
+            "price": "16元"
+          },
+          {
+            "nameCn": "酒酿芒果 厚酸奶/双皮奶",
+            "price": "16元"
+          },
+          {
+            "nameCn": "血糯米酒酿 厚酸奶/双皮奶",
+            "price": "16元"
+          },
+          {
+            "nameCn": "五谷杂粮 厚酸奶/双皮奶",
+            "price": "17元"
+          },
+          {
+            "nameCn": "芋泥肉松 厚酸奶/双皮奶",
+            "price": "18元"
+          },
+          {
+            "nameCn": "任选一款 厚酸奶/双皮奶(芒果/燕麦/奥利奥薄脆)",
+            "price": "13元"
+          },
+          {
+            "nameCn": "任选一款 厚酸奶/双皮奶(蜜红豆/奥利奥/葡萄干)",
+            "price": "11元"
+          },
+          {
+            "nameCn": "原味 厚酸奶/双皮奶",
+            "price": "9元"
+          },
+          {
+            "nameCn": "软糯木薯羹",
+            "price": "14元"
+          },
+          {
+            "nameCn": "杨枝甘露",
+            "price": "19元"
+          },
+          {
+            "nameCn": "多芒小丸子",
+            "price": "16元"
+          },
+          {
+            "nameCn": "芋圆饱饱碗",
+            "price": "20元"
+          },
+          {
+            "nameCn": "芋圆仙草",
+            "price": "17元"
+          },
+          {
+            "nameCn": "鲜果芋园",
+            "price": "17元"
+          },
+          {
+            "nameCn": "椰奶清补凉",
+            "price": "16元"
+          },
+          {
+            "nameCn": "椰奶布蕾血糯米",
+            "price": "20元"
+          },
+          {
+            "nameCn": "麻薯芋泥罐子",
+            "price": "20元"
+          },
+          {
+            "nameCn": "肉桂燕麦牛奶麻薯",
+            "price": "16元"
+          },
+          {
+            "nameCn": "芒果麻薯糯糯",
+            "price": "22元"
+          },
+          {
+            "nameCn": "奶香小布蕾",
+            "price": "8元"
+          },
+          {
+            "nameCn": "原味酸奶",
+            "price": "9元"
+          },
+          {
+            "nameCn": "椰子酸奶",
+            "price": "11元"
+          },
+          {
+            "nameCn": "红颜玫瑰酸奶",
+            "price": "12元"
+          },
+          {
+            "nameCn": "酸酸百香果酸奶",
+            "price": "12元"
+          },
+          {
+            "nameCn": "草莓果肉酸奶",
+            "price": "13元"
+          },
+          {
+            "nameCn": "浓郁可可酸奶",
+            "price": "15元"
+          },
+          {
+            "nameCn": "百香果双响炮",
+            "price": "12元"
+          },
+          {
+            "nameCn": "杨枝甘露烧仙草",
+            "price": "15元"
+          },
+          {
+            "nameCn": "椰奶西米露",
+            "price": "13元"
+          },
+          {
+            "nameCn": "芋泥星空奶盖",
+            "price": "16元"
+          },
+          {
+            "nameCn": "茉莉绿茶",
+            "price": "9元"
+          },
+          {
+            "nameCn": "蔓越莓银耳莲子羹",
+            "price": "15元"
+          },
+          {
+            "nameCn": "茉香奶绿破碗",
+            "price": "15元"
+          },
+          {
+            "nameCn": "可可黑巧破碗",
+            "price": "16元"
+          },
+          {
+            "nameCn": "芋圆芋泥破碗",
+            "price": "18元"
+          },
+          {
+            "nameCn": "酒酿奶绿小圆子",
+            "price": "16元"
+          },
+          {
+            "nameCn": "牛乳酒酿小圆子",
+            "price": "16元"
+          },
+          {
+            "nameCn": "小丸子",
+            "price": "2元"
+          },
+          {
+            "nameCn": "血糯米",
+            "price": "2元"
+          },
+          {
+            "nameCn": "南瓜籽",
+            "price": "2元"
+          },
+          {
+            "nameCn": "葡萄干",
+            "price": "2元"
+          },
+          {
+            "nameCn": "酒酿",
+            "price": "2元"
+          },
+          {
+            "nameCn": "椰果",
+            "price": "2元"
+          },
+          {
+            "nameCn": "仙草",
+            "price": "2元"
+          },
+          {
+            "nameCn": "奶香布蕾",
+            "price": "3元"
+          },
+          {
+            "nameCn": "芋圆",
+            "price": "3元"
+          },
+          {
+            "nameCn": "椰粒",
+            "price": "3元"
+          },
+          {
+            "nameCn": "奥利奥",
+            "price": "3元"
+          },
+          {
+            "nameCn": "芒果",
+            "price": "3元"
+          },
+          {
+            "nameCn": "爆爆珠",
+            "price": "3元"
+          },
+          {
+            "nameCn": "芋泥",
+            "price": "4元"
+          },
+          {
+            "nameCn": "珠茨麦片",
+            "price": "4元"
+          },
+          {
+            "nameCn": "椰奶",
+            "price": "4元"
+          },
+          {
+            "nameCn": "厚椰麦片",
+            "price": "4元"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "代餐A (第一次吃就点她)",
+          "name": "Meal Replacement A (First-timer's choice)",
+          "pinyin": "Dàicān A (Dì yī cì chī jiù diǎn tā)",
+          "category": "Meal Replacement Series",
+          "price": "22元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "代餐B (芒果+五谷杂粮)",
+          "name": "Meal Replacement B (Mango + Mixed Grains)",
+          "pinyin": "Dàicān B (Mángguǒ + Wǔgǔ záliáng)",
+          "category": "Meal Replacement Series",
+          "price": "22元",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M005_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 37015.3,
+      "totalMs": 37650.2,
+      "firstDishMs": 37650.2,
+      "dishCount": 2,
+      "goldCount": 55,
+      "errorText": null,
+      "scores": {
+        "goldCount": 55,
+        "predictionCount": 2,
+        "matchedNames": 2,
+        "missedCount": 53,
+        "hallucinationCount": 0,
+        "nameRecall": 0.03636363636363636,
+        "namePrecision": 1,
+        "priceCompared": 2,
+        "priceMatched": 2,
+        "priceExact": 1,
+        "misses": [
+          {
+            "nameCn": "铁板牛肉",
+            "price": "45元"
+          },
+          {
+            "nameCn": "铁板田鸡",
+            "price": "45元"
+          },
+          {
+            "nameCn": "水煮肉片",
+            "price": "48元"
+          },
+          {
+            "nameCn": "香辣田鸡",
+            "price": "50元"
+          },
+          {
+            "nameCn": "孜然牛肉",
+            "price": "55元"
+          },
+          {
+            "nameCn": "水煮牛肉",
+            "price": "55/88元"
+          },
+          {
+            "nameCn": "诸葛烤鱼",
+            "price": "70元"
+          },
+          {
+            "nameCn": "酸菜黑鱼",
+            "price": "48/75/92元"
+          },
+          {
+            "nameCn": "田鱼家烧/糖醋",
+            "price": "68元"
+          },
+          {
+            "nameCn": "沸腾鱼",
+            "price": "52/85/110元"
+          },
+          {
+            "nameCn": "水煮田鸡",
+            "price": "55/88元"
+          },
+          {
+            "nameCn": "梅菜煎蛋",
+            "price": "18元"
+          },
+          {
+            "nameCn": "油条茄子",
+            "price": "18元"
+          },
+          {
+            "nameCn": "宫保鸡丁",
+            "price": "22元"
+          },
+          {
+            "nameCn": "梅香土豆",
+            "price": "20元"
+          },
+          {
+            "nameCn": "鱼香肉丝",
+            "price": "22元"
+          },
+          {
+            "nameCn": "蛋黄红薯",
+            "price": "20元"
+          },
+          {
+            "nameCn": "拔丝红薯",
+            "price": "22元"
+          },
+          {
+            "nameCn": "拔丝香蕉",
+            "price": "22元"
+          },
+          {
+            "nameCn": "椒盐花菜",
+            "price": "22元"
+          },
+          {
+            "nameCn": "干锅花菜",
+            "price": "22元"
+          },
+          {
+            "nameCn": "葱油海带",
+            "price": "22元"
+          },
+          {
+            "nameCn": "葱油金针菇",
+            "price": "22元"
+          },
+          {
+            "nameCn": "玉米烙",
+            "price": "22元"
+          },
+          {
+            "nameCn": "御膳豆腐",
+            "price": "25元"
+          },
+          {
+            "nameCn": "回锅肉",
+            "price": "25元"
+          },
+          {
+            "nameCn": "铁板香芋",
+            "price": "25元"
+          },
+          {
+            "nameCn": "红烧鲫鱼",
+            "price": "32元"
+          },
+          {
+            "nameCn": "椒盐里脊",
+            "price": "32元"
+          },
+          {
+            "nameCn": "干锅鸡",
+            "price": "35元"
+          },
+          {
+            "nameCn": "糖醋排骨",
+            "price": "38元"
+          },
+          {
+            "nameCn": "香酥排骨",
+            "price": "38元"
+          },
+          {
+            "nameCn": "干锅球菜",
+            "price": "22元"
+          },
+          {
+            "nameCn": "小炒牛肉",
+            "price": "42元"
+          },
+          {
+            "nameCn": "糖醋里脊",
+            "price": "32元"
+          },
+          {
+            "nameCn": "酸菜肥牛",
+            "price": "55元"
+          },
+          {
+            "nameCn": "生炒田鸡",
+            "price": "45元"
+          },
+          {
+            "nameCn": "干锅肥肠",
+            "price": "45元"
+          },
+          {
+            "nameCn": "豆芽（前字看不清）",
+            "price": "38元"
+          },
+          {
+            "nameCn": "番茄黑鱼",
+            "price": "50/78/100元"
+          },
+          {
+            "nameCn": "酸菜田鸡",
+            "price": "55/88元"
+          },
+          {
+            "nameCn": "大米饭",
+            "price": "2元/碗"
+          },
+          {
+            "nameCn": "炒蛋饭(紫菜汤)",
+            "price": "12元"
+          },
+          {
+            "nameCn": "炒面/粉干",
+            "price": "12元"
+          },
+          {
+            "nameCn": "炒年糕",
+            "price": "12元"
+          },
+          {
+            "nameCn": "鸡蛋面",
+            "price": "12元"
+          },
+          {
+            "nameCn": "梅菜炒饭",
+            "price": "12元"
+          },
+          {
+            "nameCn": "扬州炒饭",
+            "price": "15元"
+          },
+          {
+            "nameCn": "西红柿蛋饭",
+            "price": "18元"
+          },
+          {
+            "nameCn": "西红柿蛋面",
+            "price": "18元"
+          },
+          {
+            "nameCn": "鱼香肉丝盖饭",
+            "price": "22元"
+          },
+          {
+            "nameCn": "回锅肉盖饭",
+            "price": "25元"
+          },
+          {
+            "nameCn": "猪□面（中间字看不清）",
+            "price": "18元"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "干煸肥肠",
+          "name": "Dry-Fried Pork Intestines",
+          "pinyin": "Gānbiān Féicháng",
+          "category": "Popular Dishes",
+          "price": "48元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "辣子鸡",
+          "name": "Chongqing Spicy Chicken",
+          "pinyin": "Làzǐ Jī",
+          "category": "Popular Dishes",
+          "price": "38元",
+          "spicy": 3
+        }
+      ]
+    },
+    {
+      "imageFile": "M006_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 36978.1,
+      "totalMs": 37716.9,
+      "firstDishMs": 37716.9,
+      "dishCount": 2,
+      "goldCount": 77,
+      "errorText": null,
+      "scores": {
+        "goldCount": 77,
+        "predictionCount": 2,
+        "matchedNames": 0,
+        "missedCount": 77,
+        "hallucinationCount": 2,
+        "nameRecall": 0,
+        "namePrecision": 0,
+        "priceCompared": 0,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "A.花花番茄锅",
+            "price": "单人锅 巴沙¥20/梭边¥23/黑鱼¥30；双人锅 巴沙¥30/梭边¥33/黑鱼¥40；三人锅 巴沙¥40/梭边¥43/黑鱼¥50；精品锅 巴沙¥60/梭边¥63/黑鱼¥80"
+          },
+          {
+            "nameCn": "B.秘制酸菜锅",
+            "price": "单人锅 巴沙¥20/梭边¥23/黑鱼¥30；双人锅 巴沙¥30/梭边¥33/黑鱼¥40；三人锅 巴沙¥40/梭边¥43/黑鱼¥50；精品锅 巴沙¥60/梭边¥63/黑鱼¥80"
+          },
+          {
+            "nameCn": "C.（锅底名看不清）",
+            "price": "单人锅 巴沙¥20/梭边¥23/黑鱼¥30；双人锅 巴沙¥30/梭边¥33/黑鱼¥40；三人锅 巴沙¥40/梭边¥43/黑鱼¥50；精品锅 巴沙¥60/梭边¥63/黑鱼¥80"
+          },
+          {
+            "nameCn": "D.养生金汤锅",
+            "price": "单人锅 巴沙¥22/梭边¥25/黑鱼¥30；双人锅 巴沙¥32/梭边¥35/黑鱼¥40；三人锅 巴沙¥42/梭边¥45/黑鱼¥50；精品锅 巴沙¥62/梭边¥65/黑鱼¥80"
+          },
+          {
+            "nameCn": "E.椒椒香辣锅",
+            "price": "单人锅 巴沙¥22/梭边¥25/黑鱼¥30；双人锅 巴沙¥32/梭边¥35/黑鱼¥40；三人锅 巴沙¥42/梭边¥45/黑鱼¥50；精品锅 巴沙¥62/梭边¥65/黑鱼¥80"
+          },
+          {
+            "nameCn": "F.燃脂藤椒锅",
+            "price": "单人锅 巴沙¥22/梭边¥25/黑鱼¥30；双人锅 巴沙¥32/梭边¥35/黑鱼¥40；三人锅 巴沙¥42/梭边¥45/黑鱼¥50；精品锅 巴沙¥62/梭边¥65/黑鱼¥80"
+          },
+          {
+            "nameCn": "G.独道香酱锅",
+            "price": "单人锅 巴沙¥22/梭边¥25/黑鱼¥30；双人锅 巴沙¥32/梭边¥35/黑鱼¥40；三人锅 巴沙¥42/梭边¥45/黑鱼¥50；精品锅 巴沙¥62/梭边¥65/黑鱼¥80"
+          },
+          {
+            "nameCn": "H.黄金鲜辣锅",
+            "price": "单人锅 巴沙¥22/梭边¥25/黑鱼¥30；双人锅 巴沙¥32/梭边¥35/黑鱼¥40；三人锅 巴沙¥42/梭边¥45/黑鱼¥50；精品锅 巴沙¥62/梭边¥65/黑鱼¥80"
+          },
+          {
+            "nameCn": "蟹棒",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "蟹排",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "培根",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "甜不辣",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "鱼豆腐",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "千页豆腐",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "虾饺",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "狮子头",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "开花肠",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "鹌鹑蛋",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "墨鱼丸",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "撒尿牛丸",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "虾丸",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "鱼丸",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "牛肉丸",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "午餐肉",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "鸭血",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "魔芋结",
+            "price": "4元/份"
+          },
+          {
+            "nameCn": "菠菜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "油麦菜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "茼蒿",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "圆生菜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "土豆",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "莲藕",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "粉丝",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "火锅粉",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "芋头粉",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "土豆粉",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "海带",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "冻豆腐",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "金针菇",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "蘑菇",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "香菇",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "水晶粉",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "冬瓜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "木耳",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "娃娃菜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "大白菜",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "西兰花",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "豆腐",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "豆腐串",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "红薯",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "鲜豆皮",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "油豆皮",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "腐竹",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "黑鱼片",
+            "price": "18元/份"
+          },
+          {
+            "nameCn": "米饭",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "方便面",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "烩面",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "麻花",
+            "price": "2元/份"
+          },
+          {
+            "nameCn": "香蕉牛奶",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "原味奶茶",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "巴西甜橙",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "雪梨绿茶",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "蜜桃乌龙",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "柠檬红茶",
+            "price": "4元/杯"
+          },
+          {
+            "nameCn": "可乐",
+            "price": "4元/罐"
+          },
+          {
+            "nameCn": "雪碧",
+            "price": "4元/罐"
+          },
+          {
+            "nameCn": "健力宝",
+            "price": "4元/罐"
+          },
+          {
+            "nameCn": "果粒橙",
+            "price": "5元/罐"
+          },
+          {
+            "nameCn": "啤酒",
+            "price": "3元/罐"
+          },
+          {
+            "nameCn": "农夫山泉",
+            "price": "2元/瓶"
+          },
+          {
+            "nameCn": "红茶",
+            "price": "3元/瓶"
+          },
+          {
+            "nameCn": "蜂蜜柚子茶",
+            "price": "3元/瓶"
+          },
+          {
+            "nameCn": "黑加仑",
+            "price": "3元/瓶"
+          },
+          {
+            "nameCn": "小木屋",
+            "price": "4元/瓶"
+          },
+          {
+            "nameCn": "加多宝",
+            "price": "5元/瓶"
+          },
+          {
+            "nameCn": "脉动",
+            "price": "5元/瓶"
+          },
+          {
+            "nameCn": "□芒（前字看不清）",
+            "price": "6元/瓶"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "花花番茄锅",
+            "price": "¥20/¥23/¥30 (单人锅)"
+          },
+          {
+            "nameCn": "花花番茄锅",
+            "price": "¥30/¥33/¥40 (双人锅)"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "花花番茄锅",
+          "name": "Tomato Hot Pot",
+          "pinyin": "Huāhuā Fānqié Guō",
+          "category": "Hot Pot Bases",
+          "price": "¥20/¥23/¥30 (单人锅)",
+          "spicy": 0
+        },
+        {
+          "nameCn": "花花番茄锅",
+          "name": "Tomato Hot Pot",
+          "pinyin": "Huāhuā Fānqié Guō",
+          "category": "Hot Pot Bases",
+          "price": "¥30/¥33/¥40 (双人锅)",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M007_P01.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 22724.2,
+      "totalMs": 33858.1,
+      "firstDishMs": 33858.1,
+      "dishCount": 25,
+      "goldCount": 39,
+      "errorText": null,
+      "scores": {
+        "goldCount": 39,
+        "predictionCount": 25,
+        "matchedNames": 24,
+        "missedCount": 15,
+        "hallucinationCount": 1,
+        "nameRecall": 0.6153846153846154,
+        "namePrecision": 0.96,
+        "priceCompared": 24,
+        "priceMatched": 24,
+        "priceExact": 1,
+        "misses": [
+          {
+            "nameCn": "生闷鱼",
+            "price": "35元"
+          },
+          {
+            "nameCn": "土椒鳅鱼",
+            "price": "40元"
+          },
+          {
+            "nameCn": "酸炒鳅鱼",
+            "price": "40元"
+          },
+          {
+            "nameCn": "土椒鳝鱼",
+            "price": "50元"
+          },
+          {
+            "nameCn": "红烧带鱼",
+            "price": ""
+          },
+          {
+            "nameCn": "土椒炒大肠",
+            "price": ""
+          },
+          {
+            "nameCn": "酸辣炒仔肠",
+            "price": "25元"
+          },
+          {
+            "nameCn": "酸辣炒杂烩",
+            "price": "25元"
+          },
+          {
+            "nameCn": "凉瓜炒牛肉",
+            "price": "35元"
+          },
+          {
+            "nameCn": "炒菜花",
+            "price": "15元"
+          },
+          {
+            "nameCn": "炒空心菜",
+            "price": "15元"
+          },
+          {
+            "nameCn": "炒大白菜",
+            "price": "15元"
+          },
+          {
+            "nameCn": "炒小白菜",
+            "price": "15元"
+          },
+          {
+            "nameCn": "素炒土豆丝",
+            "price": "15元"
+          },
+          {
+            "nameCn": "榨菜肉汤",
+            "price": "15元"
+          }
+        ],
+        "extras": [
+          {
+            "nameCn": "生焖鱼",
+            "price": "35元"
+          }
+        ]
+      },
+      "dishes": [
+        {
+          "nameCn": "香酥炸排骨",
+          "name": "Crispy Fried Pork Ribs",
+          "pinyin": "Xiāngsū Zhá Páigǔ",
+          "category": "Home-style Stir-fries",
+          "price": "38元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "糖醋排骨",
+          "name": "Sweet and Sour Pork Ribs",
+          "pinyin": "Tángcù Páigǔ",
+          "category": "Home-style Stir-fries",
+          "price": "38元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "生焖排骨",
+          "name": "Braised Pork Ribs",
+          "pinyin": "Shēngmèn Páigǔ",
+          "category": "Home-style Stir-fries",
+          "price": "38元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "椒盐排骨",
+          "name": "Salt and Pepper Pork Ribs",
+          "pinyin": "Jiāoyán Páigǔ",
+          "category": "Home-style Stir-fries",
+          "price": "50元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "荷包豆焖排骨",
+          "name": "Braised Pork Ribs with Kidney Beans",
+          "pinyin": "Hébāo Dòu Mèn Páigǔ",
+          "category": "Home-style Stir-fries",
+          "price": "38元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "土椒炒肚头",
+          "name": "Stir-fried Pork Stomach with Local Chili",
+          "pinyin": "Tǔjiāo Chǎo Dùtóu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "酸辣炒肚头",
+          "name": "Hot and Sour Stir-fried Pork Stomach",
+          "pinyin": "Suānlà Chǎo Dùtóu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "香煎猪肝",
+          "name": "Pan-fried Pork Liver",
+          "pinyin": "Xiāngjiān Zhūgān",
+          "category": "Home-style Stir-fries",
+          "price": "30元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "青椒炒猪肝",
+          "name": "Stir-fried Pork Liver with Green Peppers",
+          "pinyin": "Qīngjiāo Chǎo Zhūgān",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "青椒腰花",
+          "name": "Stir-fried Pork Kidney with Green Peppers",
+          "pinyin": "Qīngjiāo Yāohuā",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "时菜腰花",
+          "name": "Stir-fried Pork Kidney with Seasonal Vegetables",
+          "pinyin": "Shícài Yāohuā",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "爆炒猪舌",
+          "name": "Quick-fried Pork Tongue",
+          "pinyin": "Bàochǎo Zhūshé",
+          "category": "Home-style Stir-fries",
+          "price": "30元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "芹菜腊肉",
+          "name": "Stir-fried Cured Pork with Celery",
+          "pinyin": "Qíncài Làròu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "藕带炒大肠",
+          "name": "Stir-fried Lotus Root Sprouts with Pork Intestines",
+          "pinyin": "Ǒudài Chǎo Dàcháng",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "酸炒大肠",
+          "name": "Sour Stir-fried Pork Intestines",
+          "pinyin": "Suānchǎo Dàcháng",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "腐竹肉片",
+          "name": "Sliced Pork with Fried Tofu Skin",
+          "pinyin": "Fǔzhú Ròupiàn",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "青椒肉片",
+          "name": "Sliced Pork with Green Peppers",
+          "pinyin": "Qīngjiāo Ròupiàn",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "酸菜肉片",
+          "name": "Sliced Pork with Pickled Mustard Greens",
+          "pinyin": "Suāncài Ròupiàn",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "茄子肉片",
+          "name": "Sliced Pork with Eggplant",
+          "pinyin": "Qiézi Ròupiàn",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "凉拌百叶肚",
+          "name": "Cold Dressed Beef Tripe",
+          "pinyin": "Liángbàn Bǎiyè Dù",
+          "category": "Home-style Stir-fries",
+          "price": "50元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "青椒百叶肚",
+          "name": "Stir-fried Beef Tripe with Green Peppers",
+          "pinyin": "Qīngjiāo Bǎiyè Dù",
+          "category": "Home-style Stir-fries",
+          "price": "40元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "豆瓣鲤鱼",
+          "name": "Carp with Doubanjiang (Broad Bean Paste)",
+          "pinyin": "Dòubàn Lǐyú",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "生焖鱼",
+          "name": "Braised Fish",
+          "pinyin": "Shēngmèn Yú",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "酸辣鱼",
+          "name": "Hot and Sour Fish",
+          "pinyin": "Suānlà Yú",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "红烧草鱼",
+          "name": "Braised Grass Carp in Brown Sauce",
+          "pinyin": "Hóngshāo Cǎoyú",
+          "category": "Home-style Stir-fries",
+          "price": "40元",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M007_P02.jpg",
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 34089,
+      "totalMs": 39074.4,
+      "firstDishMs": 39074.4,
+      "dishCount": 12,
+      "goldCount": 37,
+      "errorText": null,
+      "scores": {
+        "goldCount": 37,
+        "predictionCount": 12,
+        "matchedNames": 12,
+        "missedCount": 25,
+        "hallucinationCount": 0,
+        "nameRecall": 0.32432432432432434,
+        "namePrecision": 1,
+        "priceCompared": 12,
+        "priceMatched": 12,
+        "priceExact": 1,
+        "misses": [
+          {
+            "nameCn": "蕃茄炒蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "青椒炒蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "苦瓜炒蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "黄瓜炒蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "韭菜炒蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "煎滑蛋",
+            "price": "15元"
+          },
+          {
+            "nameCn": "三鲜汤",
+            "price": "15元"
+          },
+          {
+            "nameCn": "紫菜汤",
+            "price": "15元"
+          },
+          {
+            "nameCn": "蕃茄蛋汤",
+            "price": "15元"
+          },
+          {
+            "nameCn": "枸杞清汤",
+            "price": "15元"
+          },
+          {
+            "nameCn": "招牌啤酒鱼",
+            "price": "40元/小锅 50元/中锅 60元/大锅"
+          },
+          {
+            "nameCn": "香辣卤味",
+            "price": "60元/锅"
+          },
+          {
+            "nameCn": "农家腊肉",
+            "price": "60元/锅"
+          },
+          {
+            "nameCn": "豆腐土鳅鱼",
+            "price": "68元/锅"
+          },
+          {
+            "nameCn": "干妈黄鱼",
+            "price": "40元/锅"
+          },
+          {
+            "nameCn": "豆腐鱼",
+            "price": "40元/锅"
+          },
+          {
+            "nameCn": "啤酒鸭",
+            "price": "50元/锅"
+          },
+          {
+            "nameCn": "冬笋黄焖鸡",
+            "price": "时价"
+          },
+          {
+            "nameCn": "川汤鸡",
+            "price": "88元/只"
+          },
+          {
+            "nameCn": "黄焖鸡",
+            "price": "88元/只"
+          },
+          {
+            "nameCn": "辣子鸡",
+            "price": "88元/只"
+          },
+          {
+            "nameCn": "蕃茄鸡",
+            "price": "88元/只"
+          },
+          {
+            "nameCn": "豆子排骨",
+            "price": "60元/锅"
+          },
+          {
+            "nameCn": "荷包豆焖鸡",
+            "price": "95元/只"
+          },
+          {
+            "nameCn": "荷包豆焖鸭",
+            "price": "60元/锅"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": [
+        {
+          "nameCn": "青椒回锅肉",
+          "name": "Twice-cooked Pork with Green Peppers",
+          "pinyin": "Qīngjiāo Huíguōròu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "芹菜牛肉",
+          "name": "Stir-fried Beef with Celery",
+          "pinyin": "Qíncài Niúròu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "酸炒牛肉",
+          "name": "Sour Stir-fried Beef",
+          "pinyin": "Suānchǎo Niúròu",
+          "category": "Home-style Stir-fries",
+          "price": "35元",
+          "spicy": 1
+        },
+        {
+          "nameCn": "蚝油牛腱",
+          "name": "Beef Shank with Oyster Sauce",
+          "pinyin": "Háoyóu Niújiàn",
+          "category": "Home-style Stir-fries",
+          "price": "40元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "爆炒田鸡",
+          "name": "Stir-fried Frog Legs",
+          "pinyin": "Bàochǎo Tiánjī",
+          "category": "Home-style Stir-fries",
+          "price": "48元",
+          "spicy": 2
+        },
+        {
+          "nameCn": "素腐竹",
+          "name": "Vegetarian Braised Tofu Skin",
+          "pinyin": "Sù Fǔzhú",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "五香豆腐",
+          "name": "Five-spice Tofu",
+          "pinyin": "Wǔxiāng Dòufu",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "素苦瓜",
+          "name": "Vegetarian Stir-fried Bitter Melon",
+          "pinyin": "Sù Kǔguā",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "炒丝瓜",
+          "name": "Stir-fried Luffa Gourd",
+          "pinyin": "Chǎo Sīguā",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "素茄子",
+          "name": "Vegetarian Stir-fried Eggplant",
+          "pinyin": "Sù Qiézi",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "青菜汤",
+          "name": "Green Vegetable Soup",
+          "pinyin": "Qīngcài Tāng",
+          "category": "Home-style Stir-fries",
+          "price": "15元",
+          "spicy": 0
+        },
+        {
+          "nameCn": "酥衣蛋",
+          "name": "Crispy Coated Egg",
+          "pinyin": "Sūyī Dàn",
+          "category": "Home-style Stir-fries",
+          "price": "25元",
+          "spicy": 0
+        }
+      ]
+    },
+    {
+      "imageFile": "M008_P01.jpg",
+      "status": 200,
+      "errorCode": "upstream_error",
+      "headerMs": 120052.9,
+      "totalMs": 120053.5,
+      "firstDishMs": null,
+      "dishCount": 0,
+      "goldCount": 87,
+      "errorText": null,
+      "scores": {
+        "goldCount": 87,
+        "predictionCount": 0,
+        "matchedNames": 0,
+        "missedCount": 87,
+        "hallucinationCount": 0,
+        "nameRecall": 0,
+        "namePrecision": 0,
+        "priceCompared": 0,
+        "priceMatched": 0,
+        "priceExact": 0,
+        "misses": [
+          {
+            "nameCn": "番茄锅(不辣)",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "菌汤锅(不辣)",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "番茄菌汤锅(不辣)",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "每日现熬骨汤锅",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "传统牛油+菌汤",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "传统牛油+番茄",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "招牌经典锅+菌汤",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "招牌经典锅+番茄",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "白胡椒猪肚鸡锅",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "传统牛油+骨汤",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "招牌经典锅+骨汤",
+            "price": "$13.99"
+          },
+          {
+            "nameCn": "招牌经典锅(清油小辣)",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "传统牛油锅底(可选辣度:小/中/大辣)",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "养颜花胶鸡汤锅",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "养颜花胶鸡汤+传统牛油",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "养颜花胶鸡汤+招牌经典锅",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "养颜花胶鸡汤+菌汤",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "养颜花胶鸡汤+番茄",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "白胡椒猪肚鸡锅+传统牛油",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "白胡椒猪肚鸡锅+招牌经典锅",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "路边嫩牛肉",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "冒草原牛肚",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "鼓捣吃干层肚",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "火辣冒猪肚",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "火辣冒肥肠",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "冒鸭血",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "冒椒火辣脑花",
+            "price": "$10.99"
+          },
+          {
+            "nameCn": "冒虎皮凤爪",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "巴适小土豆",
+            "price": "$6.99"
+          },
+          {
+            "nameCn": "滋味冒宽粉",
+            "price": "$7.99"
+          },
+          {
+            "nameCn": "安格斯牛小排",
+            "price": "$14.99"
+          },
+          {
+            "nameCn": "Prime USDA安格斯肥牛",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "新西兰草饲高钙羊羔肉",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "串串 HOTPOT SKEWER",
+            "price": "$0.35/签"
+          },
+          {
+            "nameCn": "圆盘菜 DISHES",
+            "price": "$3.99/盘"
+          },
+          {
+            "nameCn": "自助小吃蘸料 Dipping Sauce",
+            "price": "$2.99/位"
+          },
+          {
+            "nameCn": "极品黑毛肚",
+            "price": "$12.99"
+          },
+          {
+            "nameCn": "金牌白毛肚",
+            "price": "$11.99"
+          },
+          {
+            "nameCn": "路边四脆(黑毛肚/千层肚/黄喉/白毛肚)",
+            "price": "$19.99"
+          },
+          {
+            "nameCn": "手工现打丸子拼盘(牛肉丸/香菜猪肉丸/虾丸)",
+            "price": "$12.99"
+          },
+          {
+            "nameCn": "滋补大花胶(不是汤底)",
+            "price": "$12.99"
+          },
+          {
+            "nameCn": "路边手打虾滑",
+            "price": "$8.99"
+          },
+          {
+            "nameCn": "生猪脑",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "双椒牛肉",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "霸王牛肉",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "贵妃牛肉",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "极品千层肚",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "去骨鸭掌",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "墨鱼仔",
+            "price": "$9.99"
+          },
+          {
+            "nameCn": "鸭血",
+            "price": "$8.99"
+          },
+          {
+            "nameCn": "8秒瀑布土豆丝",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "竹笙虾滑",
+            "price": "$12.99"
+          },
+          {
+            "nameCn": "虎皮耙鸡爪",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "千层肚",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "卤味排骨",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "卤味牛肚",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "卤味牛筋",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "鱼片",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "黄喉",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "卤味大肠",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "现炸小酥肉",
+            "price": "$7.99"
+          },
+          {
+            "nameCn": "黄金小馒头",
+            "price": "$5.99"
+          },
+          {
+            "nameCn": "红糖糍粑",
+            "price": "$6.99"
+          },
+          {
+            "nameCn": "老成都蛋炒饭",
+            "price": "$5.99"
+          },
+          {
+            "nameCn": "白饭",
+            "price": "$1.99"
+          },
+          {
+            "nameCn": "古法秘制酸梅汤",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "北冰洋",
+            "price": "$3.49"
+          },
+          {
+            "nameCn": "王老吉",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "健怡可乐",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "可口可乐",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "雪碧",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "康师傅冰红茶",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "瓶装水",
+            "price": "$0.99"
+          },
+          {
+            "nameCn": "科罗娜(瓶装)",
+            "price": "$4.5"
+          },
+          {
+            "nameCn": "喜力(瓶装)",
+            "price": "$4.5"
+          },
+          {
+            "nameCn": "青岛(瓶装)",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "康师傅茉莉茶",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "康师傅绿茶",
+            "price": "$2.99"
+          },
+          {
+            "nameCn": "元气森林",
+            "price": "$3.49"
+          },
+          {
+            "nameCn": "蜜桃乌龙茶",
+            "price": "$5.49"
+          },
+          {
+            "nameCn": "荔枝乌龙茶",
+            "price": "$5.49"
+          },
+          {
+            "nameCn": "桂花乌龙茶",
+            "price": "$5.49"
+          },
+          {
+            "nameCn": "边边水果茶",
+            "price": "$5.49"
+          },
+          {
+            "nameCn": "暴打渣男鸭屎香(柠檬绿茶)",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "西瓜冰沙",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "菠萝冰沙",
+            "price": "$4.99"
+          },
+          {
+            "nameCn": "加小料(爆珠/椰果)",
+            "price": "$0.75"
+          }
+        ],
+        "extras": []
+      },
+      "dishes": []
+    }
+  ],
+  "multiPage": [
+    {
+      "menuId": "M007",
+      "files": [
+        "M007_P01.jpg",
+        "M007_P02.jpg"
+      ],
+      "status": 200,
+      "errorCode": "upstream_error",
+      "headerMs": 339.1,
+      "totalMs": 339.9,
+      "firstDishMs": null,
+      "dishCount": 0,
+      "dishes": []
+    },
+    {
+      "menuId": "M001",
+      "files": [
+        "M001_P01.jpg",
+        "M001_P02.jpg",
+        "M001_P03.jpg",
+        "M001_P04.jpg",
+        "M001_P05.jpg",
+        "M001_P06.jpg"
+      ],
+      "status": 200,
+      "errorCode": null,
+      "headerMs": 36038.9,
+      "totalMs": 36048.7,
+      "firstDishMs": 36048.7,
+      "dishCount": 59,
+      "dishes": [
+        {
+          "nameCn": "椒盐九肚鱼",
+          "name": "Crispy Salt and Pepper Bombay Duck Fish",
+          "pinyin": "Jiāoyán Jiǔdùyú",
+          "category": "Appetizers",
+          "price": "¥78 /份",
+          "spicy": 0
+        },
+        {
+          "nameCn": "卤水豆腐花生",
+          "name": "Braised Tofu and Peanuts in Soy Sauce",
+          "pinyin": "Lǔshuǐ Dòufu Huāshēng",
+          "category": "Appetizers",
+          "price": "¥40 /份",
+          "spicy": 0
+        },
+        {
+          "nameCn": "珊瑚海蜇头",
+          "name": "Sea Blubber Head in Balsamic Vinegar",
+          "pinyin": "Shānhú Hǎizhétou",
+          "category": "Appetizers",
+          "price": "¥78 /份",
+          "spicy": 1
+        },
+        {
+          "nameCn": "陈醋凤耳",
+          "name": "Marinated Pickled Fungus",
+          "pinyin": "Chéncù Fèng'ěr",
+          "category": "Appetizers",
+          "price": "¥45 /份",
+          "spicy": 1
+        },
+        {
+          "nameCn": "和味榨菜",
+          "name": "Spicy Preserved Cabbage",
+          "pinyin": "Héwèi Zhàcài",
+          "category": "Appetizers",
+          "price": "¥45 /份",
+          "spicy": 1
+        },
+        {
+          "nameCn": "美极鸭舌",
+          "name": "Duck Tongue in Maggi Sauce",
+          "pinyin": "Měijí Yāshé",
+          "category": "Appetizers",
+          "price": "¥68 /份",
+          "spicy": 0
+        },
+        {
+          "nameCn": "烙烤银杏",
+          "name": "Roasted Ginkgo Nuts",
+          "pinyin": "Làokǎo Yínxìng",
+          "category": "Appetizers",
+          "price": "¥45 /份",
+          "spicy": 0
+        },
+        {
+          "nameCn": "卤水鸭掌翼伴花生",
+          "name": "Goose Wings and Webs Marinated in Sweet Soy Sauce with Peanuts",
+          "pinyin": "Lǔshuǐ Yāzhǎngyì Bàn Huāshēng",
+          "category": "Appetizers",
+          "price": "¥140 /份",
+          "spicy": 0
+        },
+        {
+          "nameCn": "金银菜炖润肺",
+          "name": "Double Boiled Pig's Lungs with Fresh and Dried White Cabbage",
+          "pinyin": "Jīnyíncài Dùn Rùnfèi",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥280 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "天麻炖海班骨",
+          "name": "Gastrodia Stewed Grouper Bone",
+          "pinyin": "Tiānmá Dùn Hǎibāngǔ",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥298 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "海椰子清炖竹丝鸡",
+          "name": "Sea Coconut Stewed Silkie Chicken",
+          "pinyin": "Hǎiyēzi Qīngdùn Zhúsī Jī",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥298 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "姬松茸草炖老鸽",
+          "name": "Double-boiled Pigeon with Blaze Mushroom",
+          "pinyin": "Jīsōngróng Cǎo Dùn Lǎogē",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥388 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "杞枣炖响螺",
+          "name": "Double Boiled Sea Whelk Soup with Red Date and Wolfberry",
+          "pinyin": "Qǐzǎo Dùn Xiǎngluó",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥598 /两位用",
+          "spicy": 0
+        },
+        {
+          "nameCn": "迷你佛跳墙 (预定)",
+          "name": "Double Boiled Mini Delicacies \"Buddha Jump Over the Wall\" (Advanced Order)",
+          "pinyin": "Mínǐ Fótiàoqiáng (Yùdìng)",
+          "category": "Double Boiled Tonic Soups",
+          "price": "¥488 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "琥珀核桃",
+          "name": "Amber Walnuts",
+          "pinyin": "Hǔpò Hétáo",
+          "category": "Appetizers",
+          "price": "¥62 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "金蒜拍青瓜",
+          "name": "Smashed Cucumber with Garlic",
+          "pinyin": "Jīnsuàn Pāi Qīngguā",
+          "category": "Appetizers",
+          "price": "¥40 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "子姜皮蛋",
+          "name": "Preserved Egg with Young Ginger",
+          "pinyin": "Zǐjiāng Pídàn",
+          "category": "Appetizers",
+          "price": "¥13 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "脆皮素鹅",
+          "name": "Crispy Bean Curd Sheet Roll",
+          "pinyin": "Cuìpí Sù'é",
+          "category": "Appetizers",
+          "price": "¥55 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "五香牛展",
+          "name": "Five-Spice Beef Shin",
+          "pinyin": "Wǔxiāng Niúzhǎn",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "金柱贡菜",
+          "name": "Preserved Vegetable with XO Sauce",
+          "pinyin": "Jīnzhù Gòngcài",
+          "category": "Appetizers",
+          "price": "¥45 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "凉拌三丝",
+          "name": "Chilled Tofu, Cabbage, and Sea Blubber Shreds",
+          "pinyin": "Liángbàn Sānsī",
+          "category": "Appetizers",
+          "price": "¥58 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "椒盐鸡软骨",
+          "name": "Deep Fried Chicken Cartilage with Salt & Pepper",
+          "pinyin": "Jiāoyán Jī Ruǎngǔ",
+          "category": "Appetizers",
+          "price": "¥58 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "沙姜凤爪",
+          "name": "Marinated Chicken Feet with Grounded Ginger",
+          "pinyin": "Shājiāng Fèngzhǎo",
+          "category": "Appetizers",
+          "price": "¥78 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣鲜鲍鱼 (五头)",
+          "name": "Braised Fresh Abalone in Oyster Sauce (5-Head)",
+          "pinyin": "Háohuáng Kòu Xiānbāoyú (Wǔtóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥368/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣鲜鲍鱼 (四头)",
+          "name": "Braised Fresh Abalone in Oyster Sauce (4-Head)",
+          "pinyin": "Háohuáng Kòu Xiānbāoyú (Sìtóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥468/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣干鲍鱼 (十八头)",
+          "name": "Braised Dried Abalone in Oyster Sauce (18-Head)",
+          "pinyin": "Háohuáng Kòu Gānbāoyú (Shíbātóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥698/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣干鲍鱼 (十三头)",
+          "name": "Braised Dried Abalone in Oyster Sauce (13-Head)",
+          "pinyin": "Háohuáng Kòu Gānbāoyú (Shísāntóu)",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥1488/只 each",
+          "spicy": 0
+        },
+        {
+          "nameCn": "红烧花胶",
+          "name": "Braised Shark's Fin with Shredded Chicken Meat",
+          "pinyin": "Hóngshāo Huājiāo",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "红烧蟹肉翅",
+          "name": "Braised Shark's Fin with Crab Meat in Brown Sauce",
+          "pinyin": "Hóngshāo Xièròuchì",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鸿图蟹皇翅",
+          "name": "Braised Shark's Fin with Fresh Crab Cream",
+          "pinyin": "Hóngtú Xièhuángchì",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥488/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣辽参",
+          "name": "Braised Sea Cucumber in Oyster Sauce",
+          "pinyin": "Háohuáng Kòu Liáoshēn",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥328/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蚝皇扣16头原只花胶",
+          "name": "Braised 16-Head Fish Maw in Oyster Sauce",
+          "pinyin": "Háohuáng Kòu Shíliùtóu Yuánzhǐ Huājiāo",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥298/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蟹底干捞翅",
+          "name": "Stir-Fried Shark's Fin and Crab Meat Served with Superior Soup",
+          "pinyin": "Xièdǐ Gānlāochì",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥768/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "浓汤鸡牙勾翅",
+          "name": "Braised Shark's Fin in Thick Chicken Broth",
+          "pinyin": "Nóngtāng Jīyá Gōuchì",
+          "category": "DELICACIES - SHARK'S FIN",
+          "price": "¥568/位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "鲍鱼汁扣二头黄鱼大花胶",
+          "name": "Braised Two-Head Yellow Croaker Fish Maw in Abalone Sauce",
+          "pinyin": "Bāoyúzhī Kòu Èrtóu Huángyú Dàhuājiāo",
+          "category": "DELICACIES - ABALONE, SEA CUCUMBER, FISH MAW",
+          "price": "¥498/50g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "帝王蟹",
+          "name": "Alaska King Crab Two Ways",
+          "pinyin": "Dìwángxiè",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥780 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蓝龙虾",
+          "name": "Blue Lobster Two Ways",
+          "pinyin": "Lánlóngxiā",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥880 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙虾",
+          "name": "Lobster with Egg White and Pine Nuts",
+          "pinyin": "Lóngxiā",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥1100 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙虾汤",
+          "name": "Poached Geoduck in Lobster Soup",
+          "pinyin": "Lóngxiātāng",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥880 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "东星斑",
+          "name": "Leopard Coral Garoupa with Tomato Soup",
+          "pinyin": "Dōngxīngbān",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥980 / 500 g",
+          "spicy": 0
+        },
+        {
+          "nameCn": "XO酱白玉蒸",
+          "name": "Steamed Garoupa Fillet with XO Sauce",
+          "pinyin": "XO Jiàng Báiyù Zhēng",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 1
+        },
+        {
+          "nameCn": "露笋珍珠斑肉",
+          "name": "Steamed Garoupa Fillet with Asparagus",
+          "pinyin": "Lùsǔn Zhēnzhūbānròu",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "陈皮葱花蒸",
+          "name": "Steamed Garoupa Fillet with Dried Tangerine Peel and Scallions",
+          "pinyin": "Chénpí Cōnghuā Zhēng",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "美极煎大花虾",
+          "name": "Pan-Fried Prawns with Maggi Sauce",
+          "pinyin": "Měijí Jiān Dàhuāxiā",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "脆皮煎",
+          "name": "Crispy Pan-Fried King Prawn Fillet with White Wine Sauce",
+          "pinyin": "Cuìpí Jiān",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥128 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "上汤焗",
+          "name": "Baked Lobster in Superior Broth with Cheese and Salt",
+          "pinyin": "Shàngtāng Jú",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥248 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "原只龙虾仔",
+          "name": "Whole Baby Lobster with White Snow Sauce",
+          "pinyin": "Yuánzhǐ Lóngxiāzǎi",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥498 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "翠盏酒",
+          "name": "Deep-Fried Soft-Shell Crab with Lettuce",
+          "pinyin": "Cuìzhǎn Jiǔ",
+          "category": "Individual Seafood Recommendations",
+          "price": "¥98 / per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "蟹肉鸡茸烩燕窝",
+          "name": "Braised Bird's Nest with Crab Meat and Minced Chicken",
+          "pinyin": "Xiè Ròu Jī Róng Huì Yàn Wō",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥380 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "枣皇炖燕窝",
+          "name": "Double-Boiled Bird's Nest with Red Dates",
+          "pinyin": "Zǎo Huáng Dùn Yàn Wō",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥298 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "晶莹官燕",
+          "name": "Superior Soup with Bird's Nest",
+          "pinyin": "Jīng Yíng Guān Yàn",
+          "category": "Delicacies - Bird's Nest",
+          "price": "¥568 /位 per person",
+          "spicy": 0
+        },
+        {
+          "nameCn": "XO酱白玉蒸/古法蒸珍珠斑块",
+          "name": "Steamed Garoupa Fillet with XO Sauce or Traditional Style",
+          "pinyin": "XO Jiàng Bái Yù Zhēng / Gǔ Fǎ Zhēng Zhēn Zhū Bān Kuài",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥378 /份 per portion",
+          "spicy": 1
+        },
+        {
+          "nameCn": "白玉菇翡翠煎珍珠斑块",
+          "name": "Pan-Fried Garoupa Fillet with Beech Mushroom and Green Vegetables",
+          "pinyin": "Bái Yù Gū Fěi Cuì Jiān Zhēn Zhū Bān Kuài",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥378 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "陈皮葱花蒸珍珠斑块",
+          "name": "Steamed Garoupa Fillet with Dried Tangerine and Spring Onion",
+          "pinyin": "Chén Pí Cōng Huā Zhēng Zhēn Zhū Bān Kuài",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥488 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "石窝烧珍珠斑块",
+          "name": "Simmered Garoupa Fillet in Casserole",
+          "pinyin": "Shí Wō Shāo Zhēn Zhū Bān Kuài",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥488 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "湖北黄金凤尾虾",
+          "name": "Deep-Fried Prawns coated with Salted Egg Yolk",
+          "pinyin": "Hú Běi Huáng Jīn Fèng Wěi Xiā",
+          "category": "Chef's Seafood Recommendations",
+          "price": "¥328 /份 per portion",
+          "spicy": 0
+        },
+        {
+          "nameCn": "东星斑",
+          "name": "Spotted Garoupa",
+          "pinyin": "Dōngxīngbān",
+          "category": "Seafood by Weight",
+          "price": "¥980",
+          "spicy": 0
+        },
+        {
+          "nameCn": "花金古",
+          "name": "Spotted Scat",
+          "pinyin": "Huājīngǔ",
+          "category": "Seafood by Weight",
+          "price": "¥980",
+          "spicy": 0
+        },
+        {
+          "nameCn": "龙利",
+          "name": "Dover Sole",
+          "pinyin": "Lónglì",
+          "category": "Seafood by Weight",
+          "price": "¥520",
+          "spicy": 0
+        }
+      ]
+    }
+  ],
+  "aggregate": {
+    "goldCount": 625,
+    "predictionCount": 105,
+    "matchedNames": 79,
+    "missedCount": 546,
+    "hallucinationCount": 26,
+    "nameRecall": 0.1264,
+    "namePrecision": 0.7523809523809524,
+    "priceCompared": 79,
+    "priceMatched": 42,
+    "priceExact": 0.5316455696202531,
+    "pagesWithError": 1,
+    "pagesWithZeroOutput": 1,
+    "latencyP50": 37716.9,
+    "latencyP95": 120053.5,
+    "imagesCompleted": 14,
+    "totalImages": 14
+  }
+}
