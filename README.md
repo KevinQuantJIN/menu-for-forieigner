@@ -15,11 +15,19 @@ npm install
 npm run dev
 ```
 
-打开 http://localhost:3000 。没有配置 API Key 时服务端自动进入 mock 模式，随便选一张图片即可看到所选餐厅的完整可见菜品列表流式返回。
+打开 http://localhost:3000 。
+
+生产路径 `POST /api/analyze` 现为：
+
+```text
+menu images → Google Cloud Vision OCR → text-only Gemini enrichment → NDJSON dish stream
+```
+
+**Mock 仅在显式设置 `MOCK_LLM=1` 时启用。** 缺少 Vision 或 Gemini 凭证时不会静默返回演示菜品，而是返回 `upstream_error`。
 
 也可以直接双击打开 `public/index.html` 调 UI。`file://` 模式下点击 Scan Menu 会直接走浏览器内置 mock。
 
-Mock 数据当前覆盖三家店：
+Mock 数据当前覆盖三家店（需 `MOCK_LLM=1`）：
 
 | 店 | 菜系 | Mock 菜品数 | 图片目录 |
 |---|---|---|---|
@@ -33,7 +41,32 @@ Mock 数据当前覆盖三家店：
 cp .env.example .env.local
 ```
 
+本地 live 验证至少需要：
+
+```text
+GOOGLE_API_KEY=...
+GOOGLE_CLOUD_PROJECT=...
+GOOGLE_VISION_CLIENT_EMAIL=...
+GOOGLE_VISION_PRIVATE_KEY=...   # PKCS#8 PEM; real newlines or escaped \n both OK
+```
+
+不要把私钥写进 `.env.example` 或提交到 Git。临时凭证用完后从本机删除。
+
 ## 环境变量
+
+### 生产 analyze 路径
+
+| 用途 | 变量 |
+|---|---|
+| Gemini 文本富化 | `GOOGLE_API_KEY`（或 `GEMINI_API_KEY`） |
+| Vision 配额项目 | `GOOGLE_CLOUD_PROJECT` |
+| Vision 服务账号 | `GOOGLE_VISION_CLIENT_EMAIL`、`GOOGLE_VISION_PRIVATE_KEY`（Cloudflare secrets） |
+| 显式 mock | `MOCK_LLM=1`、`MOCK_DELAY_MS` |
+| 模型覆盖 | `MENULENS_MODEL`（默认 `gemini-2.5-flash`） |
+
+最低 IAM：在 `GOOGLE_CLOUD_PROJECT` 上启用 Cloud Vision API，服务账号仅需 `roles/serviceusage.serviceUsageConsumer`（或含 `serviceusage.services.use` 的自定义角色）。不要授予 Owner/Editor。
+
+### Lab
 
 Lab 的 8 家逻辑 provider 使用两类 transport：
 
@@ -56,8 +89,6 @@ DeepSeek 当前在 OpenRouter 只有文本输入模型，因此会显示在 cata
 
 Lab 把 `transport` 作为独立 benchmark 维度。同一厂商的 direct 与 OpenRouter 路径会分别统计和导出；如果两条路径使用不同 model ID，结果只能看作“路径 + 模型组合”，不能归因为纯网络差异。OpenRouter 当前没有等价的 Doubao 视觉模型，Ark 提供的 GLM 4.7/5.2 也不是 GLM-V，因此不会伪造这两条图片路径。
 
-主产品的 mock 开关仍为 `MOCK_LLM`、`MOCK_DELAY_MS` 和 `MENULENS_MODEL`。
-
 ## 多模型 Lab
 
 ```bash
@@ -77,15 +108,29 @@ npm run build
 
 ## 部署
 
-Cloudflare Workers 配置已包含：
+先确认 Worker 已配置生产路径所需的四个 secret（命令只显示名称，不显示值）：
 
 ```bash
 npx wrangler login
+npx wrangler secret list
 npx wrangler secret put GOOGLE_API_KEY
+npx wrangler secret put GOOGLE_CLOUD_PROJECT
+npx wrangler secret put GOOGLE_VISION_CLIENT_EMAIL
+npx wrangler secret put GOOGLE_VISION_PRIVATE_KEY
 npm run configure:lab-access
+```
+
+部署前在本地完成发布门禁，再使用现有 Cloudflare/OpenNext 脚本：
+
+```bash
+npm test
+npx tsc --noEmit
+npm run build
 npm run deploy
 ```
 
-The deploy script temporarily isolates `.env.local` while building. Provider
-credentials must be configured as Cloudflare Worker secrets; they are never
-intended to be bundled into the deployment artifact.
+部署输出会给出 Worker URL。至少验证首页可访问、浏览器控制台无关键错误，并用一张普通菜单、一张密集菜单和一组多页菜单实测 `POST /api/analyze`；响应必须只有合法 `dish` 事件和唯一的 `done` 终态，不能暴露 OCR/page/provider 内部字段。固定数据集验收命令见 `scripts/vision-gemini-production-benchmark.mjs`。
+
+部署脚本在构建期间会暂时把 `.env.local` 移出构建目录。Provider 凭证必须保存在 Cloudflare Worker secrets 中，不应被打包进部署产物。
+
+如线上验证失败，先停止继续放量；在 `v0` 上 `git revert <migration-commit>` 生成可审计的回滚提交，推送后重新执行 `npm run deploy`。除非怀疑密钥泄露，回滚旧代码时可暂时保留 Vision secrets；若怀疑泄露，应先禁用服务账号密钥并轮换 Cloudflare secrets。

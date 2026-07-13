@@ -1,7 +1,7 @@
 import { MAX_IMAGES } from "@/lib/contract";
-import { geminiStream, hasGoogleApiKey } from "@/lib/gemini";
 import { mockModelStream } from "@/lib/mock";
 import { modelTextToEvents } from "@/lib/pipeline";
+import { analyzeWithVisionGemini } from "@/lib/vision-gemini";
 
 export const runtime = "nodejs";
 
@@ -38,16 +38,37 @@ export async function POST(req: Request): Promise<Response> {
     return badRequest(tooMany ? "too_many_images" : "invalid_images");
   }
 
-  const useMock = process.env.MOCK_LLM === "1" || !hasGoogleApiKey();
+  const useMock = process.env.MOCK_LLM === "1";
   const abort = new AbortController();
-  // Multi-page runs pages in parallel; keep headroom for slow models.
-  const timeoutMs = Math.min(240_000, 90_000 + images.length * 30_000);
+  const onRequestAbort = () => abort.abort();
+  let requestAbortListenerInstalled = false;
+  if (req.signal) {
+    if (req.signal.aborted) abort.abort();
+    else {
+      req.signal.addEventListener("abort", onRequestAbort, { once: true });
+      requestAbortListenerInstalled = true;
+    }
+  }
+
+  const timeoutMs = Math.min(300_000, 120_000 + images.length * 30_000);
   const timer = setTimeout(() => abort.abort(), timeoutMs);
+
+  let cleaned = false;
+  const cleanup = () => {
+    if (cleaned) return;
+    cleaned = true;
+    clearTimeout(timer);
+    if (requestAbortListenerInstalled) {
+      req.signal.removeEventListener("abort", onRequestAbort);
+      requestAbortListenerInstalled = false;
+    }
+  };
+
   const source = useMock
     ? mockModelStream(body.mockRestaurant)
-    : geminiStream(images, abort.signal);
+    : analyzeWithVisionGemini(images, abort.signal);
 
-  return new Response(modelTextToEvents(source, () => clearTimeout(timer)), {
+  return new Response(modelTextToEvents(source, cleanup), {
     headers: {
       "Content-Type": "text/x-ndjson; charset=utf-8",
       "Cache-Control": "no-store",
